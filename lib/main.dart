@@ -17,7 +17,7 @@ void main() async {
       saveLocale: true,
       child: BlocProvider(
         create: (context) => AppThemeCubit()..initial(),
-        child: const TempApp(),
+        child: const schoolApp(),
       ),
     ),
   );

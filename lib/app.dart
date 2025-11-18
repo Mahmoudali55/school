@@ -8,14 +8,14 @@ import 'core/routes/app_routers_import.dart';
 import 'core/routes/routes_name.dart';
 import 'core/theme/style.dart';
 
-class TempApp extends StatefulWidget {
-  const TempApp({super.key});
+class schoolApp extends StatefulWidget {
+  const schoolApp({super.key});
 
   @override
-  State<TempApp> createState() => _TempAppState();
+  State<schoolApp> createState() => _schoolAppState();
 }
 
-class _TempAppState extends State<TempApp> {
+class _schoolAppState extends State<schoolApp> {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -24,10 +24,7 @@ class _TempAppState extends State<TempApp> {
       splitScreenMode: true,
       builder: (_, child) {
         return MaterialApp(
-          localizationsDelegates: [
-            ...context.localizationDelegates,
-            CountryLocalizations.delegate,
-          ],
+          localizationsDelegates: [...context.localizationDelegates, CountryLocalizations.delegate],
           supportedLocales: context.supportedLocales,
           locale: context.locale,
           debugShowCheckedModeBanner: false,
