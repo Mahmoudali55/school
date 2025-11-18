@@ -1,5 +1,12 @@
 {
-  
-    "PleaseCheckYourConnectionAndTryAgain" : "يرجى التحقق من اتصالك ثم المحاولة مرة أخرى."
-  }
-  
+  "PleaseCheckYourConnectionAndTryAgain": "يرجى التحقق من اتصالك ثم المحاولة مرة أخرى.",
+  "skip": "تخطي",
+  "next": "التالي",
+  "done": "ابدأ الآن",
+  "onboardingtitleone": "مدرستي بين يديك",
+  "onboardingtitletwo": "تعليم أسهل.. متابعة أدق",
+  "onboardingtitlethree": "منصة الطالب الموثوقة",
+  "onboardingDescriptionone": "كل ما تحتاجه لمتابعة الدراسة بسهولة وفي مكان واحد",
+  "onboardingDescriptiontwo": "درجات، واجبات، حضور — كل شيء جاهز بضغطة زر",
+  "onboardingDescriptionthree": "تواصل فوري مع المدرسة وجدولك الدائم معك"
+}

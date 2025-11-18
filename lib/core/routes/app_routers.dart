@@ -12,12 +12,13 @@ class AppRouters {
         return MaterialPageRoute(builder: (_) => HomeScreen());
       case RoutesName.loginScreen:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => sl<AuthCubit>(),
-            child: LoginScreen(),
-          ),
+          builder: (_) => BlocProvider(create: (context) => sl<AuthCubit>(), child: LoginScreen()),
         );
-
+      case RoutesName.onBoardingScreen:
+        return MaterialPageRoute(
+          builder: (_) =>
+              BlocProvider(create: (context) => sl<OnBoardingCubit>(), child: OnBoardingScreen()),
+        );
       default:
         return null;
     }

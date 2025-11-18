@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_single_quotes
 class AppImages {
   AppImages._();
-  
+
   /// Assets for assetsGlobalIconCamera
   /// assets/global_icon/camera.svg
   static const String assetsGlobalIconCamera = "assets/global_icon/camera.svg";
@@ -57,5 +57,8 @@ class AppImages {
   /// Assets for assetsSvgArrowDown
   /// assets/svg/arrowDown.svg
   static const String assetsSvgArrowDown = "assets/svg/arrowDown.svg";
+  static const String education = "assets/image/education.gif";
+  static const String homework = "assets/image/homework.gif";
+  static const String school = "assets/image/school.gif";
+  static const String schoolloge = "assets/image/school_loge.png";
 }
-
