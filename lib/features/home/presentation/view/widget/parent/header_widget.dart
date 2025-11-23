@@ -1,0 +1,102 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class HeaderWidget extends StatelessWidget {
+  final String parentName;
+  final List<String> students;
+  final String selectedStudent;
+
+  const HeaderWidget({
+    super.key,
+    required this.parentName,
+    required this.students,
+    required this.selectedStudent,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "أهلاً،",
+                  style: TextStyle(fontSize: 16.sp, color: const Color(0xFF6B7280)),
+                ),
+                Text(
+                  parentName,
+                  style: TextStyle(
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF1F2937),
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              padding: EdgeInsets.all(12.w),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Icon(Icons.family_restroom, color: const Color(0xFF2E5BFF), size: 28.w),
+            ),
+          ],
+        ),
+        SizedBox(height: 16.h),
+        Text(
+          "اختر الطالب",
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF1F2937),
+          ),
+        ),
+        SizedBox(height: 8.h),
+
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: DropdownButtonFormField<String>(
+            value: selectedStudent,
+            decoration: InputDecoration(
+              labelStyle: TextStyle(color: const Color(0xFF6B7280), fontSize: 14.sp),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(16),
+                borderSide: BorderSide.none,
+              ),
+              filled: true,
+              fillColor: Colors.white,
+              contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+              prefixIcon: const Icon(Icons.person_outline, color: Color(0xFF2E5BFF)),
+            ),
+            items: students
+                .map((student) => DropdownMenuItem(value: student, child: Text(student)))
+                .toList(),
+            onChanged: (value) {},
+          ),
+        ),
+      ],
+    );
+  }
+}

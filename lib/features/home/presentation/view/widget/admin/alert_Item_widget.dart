@@ -1,0 +1,57 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/features/class/data/model/alert_model.dart';
+
+class AlertItem extends StatelessWidget {
+  final Alert alert;
+  const AlertItem({super.key, required this.alert});
+
+  @override
+  Widget build(BuildContext context) {
+    Color alertColor = alert.type == AlertType.security ? Colors.red : Colors.orange;
+    return Container(
+      margin: EdgeInsets.only(bottom: 8.h),
+      padding: EdgeInsets.all(12.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 8.w,
+            height: 8.w,
+            decoration: BoxDecoration(color: alertColor, shape: BoxShape.circle),
+          ),
+          SizedBox(width: 8.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  alert.title,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+                ),
+                Text(
+                  alert.description,
+                  style: TextStyle(fontSize: 10.sp, color: Colors.grey[700]),
+                ),
+                Text(
+                  alert.time,
+                  style: TextStyle(fontSize: 8.sp, color: Colors.grey[400]),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

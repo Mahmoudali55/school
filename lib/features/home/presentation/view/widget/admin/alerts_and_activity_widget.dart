@@ -1,0 +1,39 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/features/class/data/model/alert_model.dart';
+import 'package:my_template/features/home/presentation/view/widget/admin/activity_Item_widget.dart';
+import 'package:my_template/features/home/presentation/view/widget/admin/alert_Item_widget.dart';
+
+class AlertsAndActivity extends StatelessWidget {
+  const AlertsAndActivity({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "الإشعارات والنشاطات",
+          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 12.h),
+        Column(
+          children: [
+            AlertItem(
+              alert: Alert(
+                title: "انتهاء الترخيص",
+                description: "ينتهي خلال 15 يوم",
+                type: AlertType.technical,
+                time: "منذ ساعتين",
+                isUrgent: true,
+              ),
+            ),
+            ActivityItem(
+              activity: Activity(user: "أ. محمد أحمد", action: "تعديل جدول", time: "منذ 10 دقائق"),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}

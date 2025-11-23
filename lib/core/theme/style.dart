@@ -11,11 +11,7 @@ ThemeData appThemeData(BuildContext context) {
     visualDensity: VisualDensity.adaptivePlatformDensity,
     useMaterial3: false,
     hintColor: AppColor.hintColor(context),
-    brightness: AppTheme.getByTheme(
-      context,
-      light: Brightness.light,
-      dark: Brightness.dark,
-    ),
+    brightness: AppTheme.getByTheme(context, light: Brightness.light, dark: Brightness.dark),
     buttonTheme: ButtonThemeData(
       buttonColor: AppColor.primaryColor(context),
       alignedDropdown: true,
@@ -25,14 +21,10 @@ ThemeData appThemeData(BuildContext context) {
       primary: AppColor.primaryColor(context),
       secondary: AppColor.secondAppColor(context),
       surface: AppColor.whiteColor(context),
-      brightness: AppTheme.getByTheme(
-        context,
-        light: Brightness.light,
-        dark: Brightness.dark,
-      ),
+      brightness: AppTheme.getByTheme(context, light: Brightness.light, dark: Brightness.dark),
     ),
     appBarTheme: AppBarTheme(
-      color: AppColor.secondAppColor(context),
+      backgroundColor: AppColor.secondAppColor(context),
       elevation: 0,
       centerTitle: true,
       titleTextStyle: AppTextStyle.appBarStyle(context),
@@ -40,9 +32,7 @@ ThemeData appThemeData(BuildContext context) {
     ),
     scaffoldBackgroundColor: AppColor.scaffoldColor(context),
     fontFamily: context.fontFamily(),
-    textSelectionTheme: TextSelectionThemeData(
-      cursorColor: AppColor.primaryColor(context),
-    ),
+    textSelectionTheme: TextSelectionThemeData(cursorColor: AppColor.primaryColor(context)),
     platform: TargetPlatform.iOS,
   );
 }
