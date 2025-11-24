@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/routes/routes_name.dart';
+import 'package:my_template/core/utils/navigator_methods.dart';
 
 class QuickActionsSection extends StatelessWidget {
   const QuickActionsSection({super.key});
@@ -7,10 +9,10 @@ class QuickActionsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final actions = [
-      ("المكتبة الرقمية", Icons.menu_book, Colors.blue),
-      ("الواجبات", Icons.assignment, Colors.orange),
-      ("جدول الحصص", Icons.schedule, Colors.green),
-      ("الدرجات", Icons.bar_chart, Colors.purple),
+      ("المكتبة الرقمية", Icons.menu_book, Colors.blue, RoutesName.digitalLibraryScreen),
+      ("الواجبات", Icons.assignment, Colors.orange, RoutesName.assignmentsScreen),
+      ("جدول الحصص", Icons.schedule, Colors.green, RoutesName.scheduleScreen),
+      ("الدرجات", Icons.bar_chart, Colors.purple, RoutesName.gradesScreen),
     ];
 
     return Column(
@@ -27,14 +29,19 @@ class QuickActionsSection extends StatelessWidget {
             final item = actions[i];
             return Column(
               children: [
-                Container(
-                  width: 60.w,
-                  height: 60.w,
-                  decoration: BoxDecoration(
-                    color: item.$3.withOpacity(0.15),
-                    borderRadius: BorderRadius.circular(18),
+                GestureDetector(
+                  onTap: () {
+                    NavigatorMethods.pushNamed(context, item.$4);
+                  },
+                  child: Container(
+                    width: 60.w,
+                    height: 60.w,
+                    decoration: BoxDecoration(
+                      color: item.$3.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    child: Icon(item.$2, color: item.$3, size: 28.w),
                   ),
-                  child: Icon(item.$2, color: item.$3, size: 28.w),
                 ),
                 SizedBox(height: 8.h),
                 Text(

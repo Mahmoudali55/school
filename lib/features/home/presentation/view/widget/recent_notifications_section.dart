@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/routes/routes_name.dart';
+import 'package:my_template/core/utils/navigator_methods.dart';
 
 class RecentNotificationsSection extends StatelessWidget {
   const RecentNotificationsSection({super.key});
@@ -23,7 +25,9 @@ class RecentNotificationsSection extends StatelessWidget {
               style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                NavigatorMethods.pushNamed(context, RoutesName.notificationsScreen);
+              },
               child: Text("عرض الكل", style: TextStyle(color: Colors.green)),
             ),
           ],

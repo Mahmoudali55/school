@@ -10,4 +10,9 @@ class RoutesName {
   static const String notificationsScreen = 'notificationsScreen';
   static const String busTrackingScreen = 'busTrackingScreen';
   static const String notificationsParentScreen = 'NotificationsParentScreen';
+  static const String profileScreen = 'profileScreen';
+  static const String digitalLibraryScreen = 'digitalLibraryScreen';
+  static const String assignmentsScreen = 'assignmentsScreen';
+  static const String scheduleScreen = 'scheduleScreen';
+  static const String gradesScreen = 'gradesScreen';
 }

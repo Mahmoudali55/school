@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/routes/routes_name.dart';
+import 'package:my_template/core/utils/navigator_methods.dart';
 
 class HomeHeaderWidget extends StatelessWidget {
   const HomeHeaderWidget({
@@ -17,10 +19,15 @@ class HomeHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        CircleAvatar(
-          radius: 26.w,
-          backgroundColor: Colors.blue.shade50,
-          child: Icon(Icons.person, color: Colors.blue, size: 28.w),
+        GestureDetector(
+          onTap: () {
+            NavigatorMethods.pushNamed(context, RoutesName.profileScreen);
+          },
+          child: CircleAvatar(
+            radius: 26.w,
+            backgroundColor: Colors.blue.shade50,
+            child: Icon(Icons.person, color: Colors.blue, size: 28.w),
+          ),
         ),
         SizedBox(width: 12.w),
         Expanded(

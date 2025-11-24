@@ -42,6 +42,16 @@ class AppRouters {
 
       case RoutesName.notificationsParentScreen:
         return MaterialPageRoute(builder: (_) => NotificationsParentScreen());
+      case RoutesName.profileScreen:
+        return MaterialPageRoute(builder: (_) => ProfileScreen());
+      case RoutesName.digitalLibraryScreen:
+        return MaterialPageRoute(builder: (_) => DigitalLibraryScreen());
+      case RoutesName.assignmentsScreen:
+        return MaterialPageRoute(builder: (_) => AssignmentsScreen());
+      case RoutesName.scheduleScreen:
+        return MaterialPageRoute(builder: (_) => ScheduleScreen());
+      case RoutesName.gradesScreen:
+        return MaterialPageRoute(builder: (_) => GradesScreen());
       default:
         return null;
     }

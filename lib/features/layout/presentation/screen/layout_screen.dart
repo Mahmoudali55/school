@@ -15,6 +15,7 @@ import 'package:my_template/features/home/presentation/view/screen/home_screen.d
 import 'package:my_template/features/home/presentation/view/screen/parent_home_screen.dart';
 import 'package:my_template/features/home/presentation/view/screen/teacher_home_screen.dart';
 import 'package:my_template/features/select_interface/data/model/user_type_model.dart';
+import 'package:my_template/features/setting/presentation/screen/student_settings_screen.dart';
 
 class LayoutScreen extends StatefulWidget {
   const LayoutScreen({super.key, required this.selectedUserType});
@@ -96,7 +97,7 @@ class _LayoutScreenState extends State<LayoutScreen> {
       case 'مدير':
         return const AdminCalendarScreen();
       default:
-        return const StudentClassesScreen();
+        return const StudentSettingsScreen();
     }
   }
 
