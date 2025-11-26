@@ -10,7 +10,14 @@ class LibraryItemDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(context, title: Text(item['title'])),
+      appBar: CustomAppBar(
+        context,
+        title: Text(item['title']),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.all(16.w),
         child: Column(

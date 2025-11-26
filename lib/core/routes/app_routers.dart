@@ -52,6 +52,10 @@ class AppRouters {
         return MaterialPageRoute(builder: (_) => ScheduleScreen());
       case RoutesName.gradesScreen:
         return MaterialPageRoute(builder: (_) => GradesScreen());
+      case RoutesName.parentProfileScreen:
+        return MaterialPageRoute(builder: (_) => ParentProfileScreen());
+      case RoutesName.messagesScreen:
+        return MaterialPageRoute(builder: (_) => ChatsListScreen());
       default:
         return null;
     }

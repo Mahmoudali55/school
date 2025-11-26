@@ -35,4 +35,13 @@ class AppLocalKay {
   static const String classes = 'classes';
   static const String calendar = 'calendar';
   static const String settings = 'settings';
+  static const String admin_classes_title = 'admin_classes_title';
+  static const String search_hint = 'search_hint';
+  static const String filter_all = 'filter_all';
+  static const String filter_grade_1 = 'filter_grade_1';
+  static const String filter_grade_2 = 'filter_grade_2';
+  static const String filter_grade_3 = 'filter_grade_3';
+  static const String filter_full = 'filter_full';
+  static const String filter_available = 'filter_available';
+  static const String stats_classes = 'stats_classes';
 }

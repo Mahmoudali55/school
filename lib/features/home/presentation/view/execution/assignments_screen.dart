@@ -65,7 +65,6 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
       ),
       body: Column(
         children: [
-          // تبويبات
           Container(
             height: 50.h,
             decoration: BoxDecoration(
@@ -104,7 +103,6 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
             ),
           ),
 
-          // محتوى التبويبات
           Expanded(child: _buildTabContent()),
         ],
       ),

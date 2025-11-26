@@ -10,15 +10,26 @@ class AssignmentDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(context, title: Text(assignment['title'])),
+      appBar: CustomAppBar(
+        context,
+        title: Text(assignment['title']),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: Padding(
         padding: EdgeInsets.all(16.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              assignment['title'],
-              style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+            Row(
+              children: [
+                Text(
+                  assignment['title'],
+                  style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
             SizedBox(height: 16.h),
             Text('المادة: ${assignment['subject']}'),

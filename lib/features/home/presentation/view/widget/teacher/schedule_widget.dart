@@ -41,7 +41,7 @@ class ScheduleWidget extends StatelessWidget {
             Text(
               "جدول الحصص اليومي",
               style: TextStyle(
-                fontSize: 18.sp,
+                fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xFF1F2937),
               ),

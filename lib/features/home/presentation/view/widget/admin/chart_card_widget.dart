@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 
 class ChartCard extends StatelessWidget {
   final String title;
@@ -12,7 +13,7 @@ class ChartCard extends StatelessWidget {
       width: 200.w,
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(

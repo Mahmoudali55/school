@@ -1,0 +1,189 @@
+// features/transport/presentation/view/transport_management_page.dart
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+
+class TransportManagementScreen extends StatelessWidget {
+  const TransportManagementScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomAppBar(
+        context,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          'إدارة النقل',
+          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.w),
+        child: Column(
+          children: [
+            // Buses Overview
+            _buildBusesOverview(),
+            SizedBox(height: 20.h),
+            // Buses List
+            Expanded(child: _buildBusesList()),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add new bus
+        },
+        child: Icon(Icons.directions_bus, size: 24.w),
+      ),
+    );
+  }
+
+  Widget _buildBusesOverview() {
+    return Card(
+      child: Padding(
+        padding: EdgeInsets.all(16.w),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _buildOverviewItem('إجمالي الحافلات', '12', Icons.directions_bus),
+            _buildOverviewItem('نشطة', '10', Icons.check_circle),
+            _buildOverviewItem('قيد الصيانة', '2', Icons.build),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildOverviewItem(String title, String value, IconData icon) {
+    return Column(
+      children: [
+        Icon(icon, size: 30.w, color: Colors.blue),
+        SizedBox(height: 8.h),
+        Text(
+          value,
+          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+        ),
+        Text(
+          title,
+          style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBusesList() {
+    return ListView.builder(itemCount: 5, itemBuilder: (context, index) => _buildBusCard(index));
+  }
+
+  Widget _buildBusCard(int index) {
+    return Card(
+      margin: EdgeInsets.only(bottom: 12.h),
+      child: Padding(
+        padding: EdgeInsets.all(16.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'حافلة ${index + 1}',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                  decoration: BoxDecoration(
+                    color: Colors.green.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.circle, size: 8.w, color: Colors.green),
+                      SizedBox(width: 4.w),
+                      Text(
+                        'نشطة',
+                        style: TextStyle(fontSize: 12.sp, color: Colors.green),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 12.h),
+            Row(
+              children: [
+                Icon(Icons.confirmation_number, size: 16.w, color: Colors.grey),
+                SizedBox(width: 8.w),
+                Text('رقم الحافلة: BUS-00${index + 1}', style: TextStyle(fontSize: 12.sp)),
+              ],
+            ),
+            SizedBox(height: 8.h),
+            Row(
+              children: [
+                Icon(Icons.person, size: 16.w, color: Colors.grey),
+                SizedBox(width: 8.w),
+                Text('السائق: محمد أحمد', style: TextStyle(fontSize: 12.sp)),
+              ],
+            ),
+            SizedBox(height: 8.h),
+            Row(
+              children: [
+                Icon(Icons.phone, size: 16.w, color: Colors.grey),
+                SizedBox(width: 8.w),
+                Text('رقم الهاتف: 05xxxxxxxx', style: TextStyle(fontSize: 12.sp)),
+              ],
+            ),
+            SizedBox(height: 8.h),
+            Row(
+              children: [
+                Icon(Icons.people, size: 16.w, color: Colors.grey),
+                SizedBox(width: 8.w),
+                Text('الطلاب: ٢٥/٣٠', style: TextStyle(fontSize: 12.sp)),
+              ],
+            ),
+            SizedBox(height: 12.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () {
+                    // View bus details
+                  },
+                  icon: Icon(Icons.visibility, size: 16.w),
+                  label: Text('عرض'),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                  ),
+                ),
+                OutlinedButton.icon(
+                  onPressed: () {
+                    // Edit bus
+                  },
+                  icon: Icon(Icons.edit, size: 16.w),
+                  label: Text('تعديل'),
+                  style: OutlinedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                  ),
+                ),
+                OutlinedButton.icon(
+                  onPressed: () {
+                    // Track bus
+                  },
+                  icon: Icon(Icons.location_on, size: 16.w),
+                  label: Text('تتبع'),
+                  style: OutlinedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

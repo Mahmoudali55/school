@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/features/class/data/model/schedule_Item_model.dart';
+import 'package:my_template/features/home/presentation/view/execution/attendance_screen.dart';
+import 'package:my_template/features/home/presentation/view/execution/behavior_report_screen.dart';
+import 'package:my_template/features/home/presentation/view/execution/create_assignment_screen.dart';
+import 'package:my_template/features/home/presentation/view/execution/reports_screen.dart';
+import 'package:my_template/features/home/presentation/view/execution/send_notification_screen.dart';
+import 'package:my_template/features/home/presentation/view/execution/upload_lesson_screen.dart';
 
 class ActionCardWidget extends StatelessWidget {
   final QuickAction action;
@@ -9,46 +15,57 @@ class ActionCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        _navigateToScreen(context, action.title);
+      },
       child: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [action.color.withOpacity(0.1), action.color.withOpacity(0.05)],
-          ),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: action.color.withOpacity(0.2)),
+          color: action.color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12.r),
         ),
+        padding: EdgeInsets.all(12.w),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              padding: EdgeInsets.all(12.w),
-              decoration: BoxDecoration(
-                color: action.color.withOpacity(0.2),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(action.icon, color: action.color, size: 24.w),
-            ),
+            Icon(action.icon, color: action.color, size: 32.w),
             SizedBox(height: 8.h),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.w),
-              child: Text(
-                action.title,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF1F2937),
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
+            Text(
+              action.title,
+              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: Colors.black87),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
       ),
     );
+  }
+
+  void _navigateToScreen(BuildContext context, String title) {
+    Widget screen;
+
+    switch (title) {
+      case "رفع درس جديد":
+        screen = const UploadLessonScreen();
+        break;
+      case "تسجيل الحضور":
+        screen = const AttendanceScreen();
+        break;
+      case "إنشاء واجب":
+        screen = const CreateAssignmentScreen();
+        break;
+      case "إرسال إشعار":
+        screen = const SendNotificationScreen();
+        break;
+      case "تقرير سلوك":
+        screen = const BehaviorReportScreen();
+        break;
+      case "التقارير":
+        screen = const ReportsScreen();
+        break;
+      default:
+        screen = const UploadLessonScreen();
+    }
+
+    Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
   }
 }

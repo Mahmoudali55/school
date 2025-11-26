@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 
 class AdminHeader extends StatelessWidget {
   final String name;
@@ -34,7 +35,7 @@ class AdminHeader extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(10.w),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColor.whiteColor(context),
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(

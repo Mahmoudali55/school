@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:share_plus/share_plus.dart';
 
 class GradesScreen extends StatefulWidget {
   const GradesScreen({super.key});
@@ -45,7 +46,6 @@ class _GradesScreenState extends State<GradesScreen> {
       ),
       body: Column(
         children: [
-          // اختيار الفصل
           Container(
             margin: EdgeInsets.symmetric(horizontal: 8.w, vertical: 16.h),
             padding: EdgeInsets.all(12.w),
@@ -81,7 +81,6 @@ class _GradesScreenState extends State<GradesScreen> {
             ),
           ),
 
-          // المعدل التراكمي
           if (currentTermGrades.isNotEmpty) ...[
             Container(
               margin: EdgeInsets.symmetric(horizontal: 16.w),
@@ -131,7 +130,6 @@ class _GradesScreenState extends State<GradesScreen> {
             SizedBox(height: 16.h),
           ],
 
-          // قائمة الدرجات
           Expanded(
             child: currentTermGrades.isEmpty
                 ? Center(
@@ -235,9 +233,9 @@ class _GradesScreenState extends State<GradesScreen> {
   }
 
   void _shareGrades() {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('جاري مشاركة الدرجات...')));
+    final gradesText = "درجات الطالب:\nرياضيات: 95\nعلوم: 90\nلغة عربية: 92";
+
+    SharePlus.instance.share(ShareParams(text: gradesText));
   }
 
   void _viewGradeDetails(Map<String, dynamic> grade) {

@@ -40,7 +40,7 @@ class QuickActionsWidget extends StatelessWidget {
             crossAxisCount: 3,
             crossAxisSpacing: 12.w,
             mainAxisSpacing: 12.h,
-            childAspectRatio: 0.9,
+            childAspectRatio: 0.85,
           ),
           itemCount: actions.length,
           itemBuilder: (context, index) {

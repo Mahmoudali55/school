@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/routes/routes_name.dart';
+import 'package:my_template/core/utils/navigator_methods.dart';
 import 'package:my_template/features/class/data/model/schedule_Item_model.dart';
 import 'package:my_template/features/home/presentation/view/widget/teacher/message_item_widget.dart';
 
@@ -44,7 +46,9 @@ class RecentMessagesWidget extends StatelessWidget {
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                NavigatorMethods.pushNamed(context, RoutesName.messagesScreen);
+              },
               child: Text(
                 "عرض الكل",
                 style: TextStyle(color: const Color(0xFF2E5BFF), fontSize: 14.sp),

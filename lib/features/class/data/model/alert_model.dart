@@ -49,11 +49,12 @@ class ManagementShortcut {
   final String description;
   final IconData icon;
   final Color color;
-
+  final void Function(BuildContext context)? onTap;
   ManagementShortcut({
     required this.title,
     required this.description,
     required this.icon,
     required this.color,
+    this.onTap,
   });
 }

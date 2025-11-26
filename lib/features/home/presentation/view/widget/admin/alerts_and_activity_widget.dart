@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/routes/routes_name.dart';
 import 'package:my_template/features/class/data/model/alert_model.dart';
 import 'package:my_template/features/home/presentation/view/widget/admin/activity_Item_widget.dart';
 import 'package:my_template/features/home/presentation/view/widget/admin/alert_Item_widget.dart';
@@ -12,9 +13,20 @@ class AlertsAndActivity extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "الإشعارات والنشاطات",
-          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+        Row(
+          children: [
+            Text(
+              "الإشعارات والنشاطات",
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+            ),
+            Spacer(),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, RoutesName.notificationsScreen);
+              },
+              child: Text("عرض الكل", style: TextStyle(fontSize: 12.sp)),
+            ),
+          ],
         ),
         SizedBox(height: 12.h),
         Column(

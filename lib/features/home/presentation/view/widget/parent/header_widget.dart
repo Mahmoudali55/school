@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/routes/routes_name.dart';
+import 'package:my_template/core/utils/navigator_methods.dart';
 
 class HeaderWidget extends StatelessWidget {
   final String parentName;
@@ -38,20 +40,25 @@ class HeaderWidget extends StatelessWidget {
                 ),
               ],
             ),
-            Container(
-              padding: EdgeInsets.all(12.w),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+            GestureDetector(
+              onTap: () {
+                NavigatorMethods.pushNamed(context, RoutesName.parentProfileScreen);
+              },
+              child: Container(
+                padding: EdgeInsets.all(12.w),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Icon(Icons.family_restroom, color: const Color(0xFF2E5BFF), size: 28.w),
               ),
-              child: Icon(Icons.family_restroom, color: const Color(0xFF2E5BFF), size: 28.w),
             ),
           ],
         ),

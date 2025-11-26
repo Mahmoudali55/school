@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/features/home/presentation/view/execution/library_item_detail_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/library_search_delegate_screen.dart';
 
@@ -102,17 +103,16 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
       ),
       body: Column(
         children: [
-          // TabBar بدلاً من القائمة الأفقية
           Container(
-            color: Colors.white,
+            color: AppColor.whiteColor(context),
             child: TabBar(
               controller: _tabController,
               tabs: _categories.map((category) {
                 return Tab(text: category);
               }).toList(),
-              labelColor: Colors.blue,
+              labelColor: AppColor.primaryColor(context),
               unselectedLabelColor: Colors.grey,
-              indicatorColor: Colors.blue,
+              indicatorColor: AppColor.primaryColor(context),
               indicatorWeight: 3.0,
               indicatorSize: TabBarIndicatorSize.tab,
               labelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
@@ -124,7 +124,6 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
           ),
           SizedBox(height: 8.h),
 
-          // محتوى التبويبات
           Expanded(
             child: TabBarView(
               controller: _tabController,
@@ -139,7 +138,6 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
   }
 
   Widget _buildTabContent(String category) {
-    // تصفية العناصر حسب التبويب المحدد
     List<Map<String, dynamic>> filteredItems = _libraryItems.where((item) {
       if (category == 'الكل') return true;
       if (category == 'الكتب') return item['type'] == 'كتاب';
@@ -227,7 +225,7 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-              icon: Icon(Icons.download, color: Colors.blue, size: 20.w),
+              icon: Icon(Icons.download, color: AppColor.primaryColor(context), size: 20.w),
               onPressed: () => _downloadItem(item),
             ),
             IconButton(
