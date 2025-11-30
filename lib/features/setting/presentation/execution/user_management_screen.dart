@@ -193,9 +193,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
     }
   }
 
-  void _editUser(User user) {
-    // TODO: تعديل المستخدم
-  }
+  void _editUser(User user) {}
 
   void _toggleUser(User user) {
     setState(() {

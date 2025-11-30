@@ -15,6 +15,7 @@ import 'package:my_template/core/utils/common_methods.dart';
 import 'package:my_template/core/utils/navigator_methods.dart';
 import 'package:my_template/features/select_interface/presentation/cubit/select_interface_cubit.dart';
 import 'package:my_template/features/select_interface/presentation/cubit/select_interface_state.dart';
+import 'package:my_template/features/select_interface/presentation/screen/widget/Interface_card_widget.dart';
 
 class SelectInterfaceScreen extends StatelessWidget {
   const SelectInterfaceScreen({super.key});
@@ -26,108 +27,85 @@ class SelectInterfaceScreen extends StatelessWidget {
       appBar: CustomAppBar(
         context,
         centerTitle: true,
+        elevation: 0,
         title: Text(AppLocalKay.selectUserType.tr(), style: AppTextStyle.appBarStyle(context)),
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 16.h),
           child: Column(
             children: [
-              Image.asset(AppImages.schoolloge, height: 70.h, width: 70.w),
-              Gap(50.h),
+              Center(
+                child: Container(
+                  padding: EdgeInsets.all(14.w),
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(50)),
+                  child: Image.asset(AppImages.schoolloge, height: 80.h),
+                ),
+              ),
+
+              Gap(35.h),
+
               Expanded(
                 child: BlocBuilder<InterfaceCubit, InterfaceState>(
                   builder: (context, state) {
                     final cubit = context.read<InterfaceCubit>();
-                    return GridView.count(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 20,
-                      childAspectRatio: 1.2,
-                      children: cubit.userTypes.map((user) {
-                        bool isSelected = state.selectedUser == user;
 
-                        IconData iconData;
+                    return GridView.builder(
+                      itemCount: cubit.userTypes.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 18.h,
+                        crossAxisSpacing: 18.w,
+                        childAspectRatio: 0.9,
+                      ),
+                      itemBuilder: (_, index) {
+                        final user = cubit.userTypes[index];
+                        final isSelected = state.selectedUser == user;
+
+                        IconData icon = Icons.person;
                         switch (user.icon) {
-                          case 'school':
-                            iconData = Icons.school;
-                            break;
                           case 'family_restroom':
-                            iconData = Icons.family_restroom;
+                            icon = Icons.family_restroom;
                             break;
-                          case 'person':
-                            iconData = Icons.person;
+                          case 'school':
+                            icon = Icons.school;
                             break;
                           case 'apartment':
-                            iconData = Icons.apartment;
-                            break;
-                          default:
-                            iconData = Icons.person;
+                            icon = Icons.apartment;
                             break;
                         }
 
-                        return GestureDetector(
+                        return InterfaceCard(
+                          title: user.title,
+                          icon: icon,
+                          isSelected: isSelected,
                           onTap: () => cubit.selectUser(user),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                            decoration: BoxDecoration(
-                              color: isSelected
-                                  ? AppColor.primaryColor(context).withAlpha(190)
-                                  : AppColor.primaryColor(context).withAlpha(120),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: isSelected
-                                    ? AppColor.blackColor(context)
-                                    : Colors.transparent,
-                                width: 2,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColor.shadowColor(context),
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(iconData, size: 50, color: AppColor.whiteColor(context)),
-                                const SizedBox(height: 10),
-                                Text(
-                                  user.title,
-                                  style: AppTextStyle.headlineSmall(
-                                    context,
-                                    color: AppColor.whiteColor(context),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
                         );
-                      }).toList(),
+                      },
                     );
                   },
                 ),
               ),
-              Gap(20.h),
+
+              Gap(18.h),
+
               CustomButton(
                 radius: 12,
                 child: Text(AppLocalKay.continues.tr(), style: AppTextStyle.buttonStyle(context)),
                 onPressed: () {
                   final selectedUser = context.read<InterfaceCubit>().state.selectedUser;
-                  if (selectedUser != null) {
-                    NavigatorMethods.pushNamed(
-                      context,
-                      RoutesName.loginScreen,
-                      arguments: selectedUser,
-                    );
-                  } else {
+                  if (selectedUser == null) {
                     CommonMethods.showToast(
                       message: AppLocalKay.selectUser.tr(),
                       type: ToastType.error,
                     );
+                    return;
                   }
+                  NavigatorMethods.pushNamed(
+                    context,
+                    RoutesName.loginScreen,
+                    arguments: selectedUser,
+                  );
                 },
               ),
             ],

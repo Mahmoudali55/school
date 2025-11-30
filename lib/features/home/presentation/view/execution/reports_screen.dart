@@ -44,6 +44,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
                     decoration: InputDecoration(
                       labelText: 'الصف',
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
+                      filled: true,
+                      fillColor: AppColor.textFormFillColor(context),
                     ),
                     items: classes.map((String classItem) {
                       return DropdownMenuItem<String>(value: classItem, child: Text(classItem));
@@ -62,6 +64,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
                     decoration: InputDecoration(
                       labelText: 'الفترة',
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
+                      filled: true,
+                      fillColor: AppColor.textFormFillColor(context),
                     ),
                     items: periods.map((String period) {
                       return DropdownMenuItem<String>(value: period, child: Text(period));
@@ -139,9 +143,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
 
   Widget _buildAttendanceReport() {
     return ListView(
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.all(14.w),
       children: [
-        // إحصائيات الحضور
         Card(
           child: Padding(
             padding: EdgeInsets.all(16.w),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
@@ -44,12 +45,13 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
           key: _formKey,
           child: ListView(
             children: [
-              // اختيار نوع المستلمين
               DropdownButtonFormField<String>(
                 value: _selectedAudience,
                 decoration: InputDecoration(
                   labelText: 'إلى',
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
+                  filled: true,
+                  fillColor: AppColor.textFormFillColor(context),
                 ),
                 items: audienceTypes.map((String type) {
                   return DropdownMenuItem<String>(value: type, child: Text(type));
@@ -68,7 +70,6 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
               ),
               SizedBox(height: 16.h),
 
-              // اختيار الصفوف (إذا كانت الصفوف محددة)
               if (_selectedAudience == 'صفوف محددة') ...[
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,7 +107,6 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
                 ),
               ],
 
-              // عنوان الإشعار
               CustomFormField(
                 radius: 12.r,
 
@@ -136,7 +136,6 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
               ),
               SizedBox(height: 16.h),
 
-              // خيارات إضافية
               Card(
                 child: Padding(
                   padding: EdgeInsets.all(16.w),
@@ -171,25 +170,15 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
               ),
               SizedBox(height: 24.h),
 
-              // زر الإرسال
-              SizedBox(
-                width: double.infinity,
-                height: 50.h,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _sendNotification();
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFEC4899),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-                  ),
-                  child: Text(
-                    'إرسال الإشعار',
-                    style: TextStyle(fontSize: 16.sp, color: AppColor.whiteColor(context)),
-                  ),
-                ),
+              CustomButton(
+                text: 'إرسال',
+                radius: 12.r,
+                color: const Color(0xFFEC4899),
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    _sendNotification();
+                  }
+                },
               ),
             ],
           ),

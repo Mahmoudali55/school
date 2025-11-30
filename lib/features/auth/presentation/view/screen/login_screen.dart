@@ -171,13 +171,7 @@ class LoginScreen extends StatelessWidget {
       children: [
         Row(
           children: [
-            Checkbox(
-              value: cubit.state.rememberMe,
-              onChanged: (value) => cubit.changeRememberMe(),
-              activeColor: AppColor.primaryColor(context),
-              checkColor: AppColor.whiteColor(context),
-            ),
-
+            Checkbox(value: cubit.state.rememberMe, onChanged: (_) => cubit.changeRememberMe()),
             Gap(8.w),
             Text(
               AppLocalKay.rememberMe.tr(),

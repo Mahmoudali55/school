@@ -21,7 +21,10 @@ class CustomPageViewWidget extends StatelessWidget {
           Gap(50.h),
           Text(
             page.title,
-            style: AppTextStyle.formTitle20Style(context, color: AppColor.secondAppColor(context)),
+            style: AppTextStyle.titleLarge(
+              context,
+              color: AppColor.blackColor(context),
+            ).copyWith(fontWeight: FontWeight.bold),
           ),
           Gap(20.h),
           Padding(
@@ -29,7 +32,7 @@ class CustomPageViewWidget extends StatelessWidget {
             child: Text(
               page.description,
               textAlign: TextAlign.center,
-              style: AppTextStyle.text16MSecond(context, color: AppColor.secondAppColor(context)),
+              style: AppTextStyle.bodyMedium(context, color: AppColor.greyColor(context)),
             ),
           ),
         ],

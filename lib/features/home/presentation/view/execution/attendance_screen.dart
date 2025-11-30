@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 
@@ -57,6 +58,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     decoration: InputDecoration(
                       labelText: 'الصف',
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
+                      filled: true,
+                      fillColor: AppColor.textFormFillColor(context),
                     ),
                     items: classes.map((String classItem) {
                       return DropdownMenuItem<String>(value: classItem, child: Text(classItem));
@@ -76,6 +79,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       labelText: 'التاريخ',
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
                       suffixIcon: Icon(Icons.calendar_today),
+                      filled: true,
+                      fillColor: AppColor.textFormFillColor(context),
                     ),
                     controller: TextEditingController(
                       text: '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
@@ -98,9 +103,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildStat('الحاضرون', '4', Colors.green),
-                _buildStat('الغائبون', '2', Colors.red),
-                _buildStat('النسبة', '67%', Colors.blue),
+                _buildStat('الحاضرون', '4', AppColor.secondAppColor(context)),
+                _buildStat('الغائبون', '2', AppColor.errorColor(context)),
+                _buildStat('النسبة', '67%', AppColor.primaryColor(context)),
               ],
             ),
           ),
@@ -120,22 +125,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
           // زر الحفظ
           Padding(
-            padding: EdgeInsets.all(16.w),
-            child: SizedBox(
-              width: double.infinity,
-              height: 50.h,
-              child: ElevatedButton(
-                onPressed: _saveAttendance,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF10B981),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-                ),
-                child: Text(
-                  'حفظ الحضور',
-                  style: TextStyle(fontSize: 16.sp, color: AppColor.whiteColor(context)),
-                ),
-              ),
-            ),
+            padding: const EdgeInsets.all(20.0),
+            child: CustomButton(text: 'حفظ الحضور', radius: 12.r, onPressed: _saveAttendance),
           ),
         ],
       ),

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class BehaviorReportScreen extends StatefulWidget {
   const BehaviorReportScreen({super.key});
@@ -45,12 +48,13 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
           key: _formKey,
           child: ListView(
             children: [
-              // اختيار الطالب
+              Text('الطالب', style: AppTextStyle.formTitleStyle(context)),
               DropdownButtonFormField<String>(
                 value: _selectedStudent,
                 decoration: InputDecoration(
-                  labelText: 'الطالب',
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
+                  filled: true,
+                  fillColor: AppColor.textFormFillColor(context),
                 ),
                 items: students.map((String student) {
                   return DropdownMenuItem<String>(value: student, child: Text(student));
@@ -69,12 +73,13 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
               ),
               SizedBox(height: 16.h),
 
-              // نوع السلوك
+              Text('نوع السلوك', style: AppTextStyle.formTitleStyle(context)),
               DropdownButtonFormField<String>(
                 value: _selectedBehaviorType,
                 decoration: InputDecoration(
-                  labelText: 'نوع السلوك',
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
+                  filled: true,
+                  fillColor: AppColor.textFormFillColor(context),
                 ),
                 items: behaviorTypes.map((String type) {
                   return DropdownMenuItem<String>(value: type, child: Text(type));
@@ -93,12 +98,13 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
               ),
               SizedBox(height: 16.h),
 
-              // مستوى الخطورة
               if (_selectedBehaviorType == 'سلبي') ...[
+                Text('مستوى الخطورة', style: AppTextStyle.formTitleStyle(context)),
                 DropdownButtonFormField<String>(
                   value: _selectedSeverity,
                   decoration: InputDecoration(
-                    labelText: 'مستوى الخطورة',
+                    filled: true,
+                    fillColor: AppColor.textFormFillColor(context),
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
                   ),
                   items: severityLevels.map((String level) {
@@ -120,15 +126,13 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
               ],
 
               // تاريخ الحادث
-              TextFormField(
+              CustomFormField(
                 readOnly: true,
-                decoration: InputDecoration(
-                  labelText: 'تاريخ الحادث',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.calendar_today),
-                    onPressed: _selectIncidentDate,
-                  ),
+                radius: 12,
+                title: 'تاريخ الحادث',
+                suffixIcon: IconButton(
+                  icon: Icon(Icons.calendar_today),
+                  onPressed: _selectIncidentDate,
                 ),
                 controller: TextEditingController(
                   text: _incidentDate != null
@@ -145,14 +149,12 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
               SizedBox(height: 16.h),
 
               // تفاصيل السلوك
-              TextFormField(
+              CustomFormField(
                 controller: _detailsController,
                 maxLines: 4,
-                decoration: InputDecoration(
-                  labelText: 'تفاصيل السلوك',
-                  hintText: 'صف السلوك الذي لاحظته...',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                ),
+                title: 'تفاصيل السلوك',
+                hintText: 'صف السلوك الذي لاحظته...',
+
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'يرجى إدخال تفاصيل السلوك';
@@ -164,47 +166,22 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
 
               // إجراء متبع
               if (_selectedBehaviorType == 'سلبي') ...[
-                TextFormField(
+                CustomFormField(
                   maxLines: 2,
-                  decoration: InputDecoration(
-                    labelText: 'الإجراء المتخذ',
-                    hintText: 'صف الإجراء الذي اتبعته...',
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  ),
+                  title: 'الإجراء المتخذ',
+                  hintText: 'صف الإجراء الذي اتبعته...',
                 ),
                 SizedBox(height: 16.h),
               ],
 
-              // توصيات
-              TextFormField(
-                maxLines: 2,
-                decoration: InputDecoration(
-                  labelText: 'توصيات',
-                  hintText: 'أي توصيات إضافية...',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                ),
-              ),
+              CustomFormField(maxLines: 2, title: 'توصيات', hintText: 'أي توصيات إضافية...'),
               SizedBox(height: 24.h),
 
-              // زر الحفظ
-              SizedBox(
-                width: double.infinity,
-                height: 50.h,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _saveBehaviorReport();
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFDC2626),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-                  ),
-                  child: Text(
-                    'حفظ التقرير',
-                    style: TextStyle(fontSize: 16.sp, color: AppColor.whiteColor(context)),
-                  ),
-                ),
+              CustomButton(
+                text: 'حفظ',
+                onPressed: _saveBehaviorReport,
+                radius: 12.r,
+                color: AppColor.errorColor(context),
               ),
             ],
           ),

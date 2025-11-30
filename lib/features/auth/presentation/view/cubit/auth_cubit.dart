@@ -12,30 +12,33 @@ class AuthCubit extends Cubit<AuthState> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController accountTypeController = TextEditingController();
 
-  set mobile(String mobile) => mobileController.text = mobile;
-  set password(String password) => passwordController.text = password;
-  set accountType(String accountType) => accountTypeController.text = accountType;
-
-  bool rememberMe = false;
-
   void changeRememberMe() {
     emit(state.copyWith(rememberMe: !state.rememberMe));
   }
 
-  Future<void> login({BuildContext? context}) async {
+  Future<void> login(BuildContext context) async {
     emit(state.copyWith(loginStatus: StatusState.loading()));
 
     final result = await authRepo.login(
       mobile: mobileController.text,
       password: passwordController.text,
-      rememberMe: rememberMe,
+      rememberMe: state.rememberMe,
       accountType: accountTypeController.text,
     );
+
     result.fold(
       (error) => emit(state.copyWith(loginStatus: StatusState.failure(error.errMessage))),
       (success) {
         emit(state.copyWith(loginStatus: StatusState.success(success)));
       },
     );
+  }
+
+  @override
+  Future<void> close() {
+    mobileController.dispose();
+    passwordController.dispose();
+    accountTypeController.dispose();
+    return super.close();
   }
 }
