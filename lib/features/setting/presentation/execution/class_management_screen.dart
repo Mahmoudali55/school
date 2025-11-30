@@ -1,6 +1,10 @@
 // lib/features/settings/presentation/screens/class_management_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
+import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class ClassManagementScreen extends StatefulWidget {
   const ClassManagementScreen({super.key});
@@ -21,13 +25,17 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
+        context,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: Text(
           'إدارة الصفوف',
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+
         elevation: 0,
         actions: [IconButton(icon: Icon(Icons.add), onPressed: _addNewClass)],
       ),
@@ -137,32 +145,46 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
   }
 
   void _addNewClass() {
-    showDialog(
+    showModalBottomSheet(
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+      ),
       context: context,
       builder: (BuildContext context) {
-        return AddClassDialog(
-          onClassAdded: (newClass) {
-            setState(() {
-              _classes.add(newClass);
-            });
-          },
+        return SizedBox(
+          height: 500.h,
+          child: AddClassDialog(
+            onClassAdded: (newClass) {
+              setState(() {
+                _classes.add(newClass);
+              });
+            },
+          ),
         );
       },
     );
   }
 
   void _editClass(SchoolClass schoolClass) {
-    showDialog(
+    showModalBottomSheet(
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+      ),
       context: context,
       builder: (BuildContext context) {
-        return EditClassDialog(
-          schoolClass: schoolClass,
-          onClassUpdated: (updatedClass) {
-            setState(() {
-              final index = _classes.indexOf(schoolClass);
-              _classes[index] = updatedClass;
-            });
-          },
+        return SizedBox(
+          height: 500.h,
+          child: EditClassDialog(
+            schoolClass: schoolClass,
+            onClassUpdated: (updatedClass) {
+              setState(() {
+                final index = _classes.indexOf(schoolClass);
+                _classes[index] = updatedClass;
+              });
+            },
+          ),
         );
       },
     );
@@ -226,16 +248,28 @@ class _AddClassDialogState extends State<AddClassDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text('إضافة صف جديد'),
-      content: Form(
-        key: _formKey,
+    return Form(
+      key: _formKey,
+      child: Padding(
+        padding: const EdgeInsets.all(10),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextFormField(
+            Align(
+              alignment: Alignment.topRight,
+              child: IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(Icons.close),
+              ),
+            ),
+            Center(child: Text('إضافة صف جديد', style: AppTextStyle.formTitle20Style(context))),
+            SizedBox(height: 16.h),
+            CustomFormField(
+              radius: 12.r,
               controller: _gradeController,
-              decoration: InputDecoration(labelText: 'الصف', border: OutlineInputBorder()),
+              title: 'الصف',
+
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'يرجى إدخال اسم الصف';
@@ -244,9 +278,10 @@ class _AddClassDialogState extends State<AddClassDialog> {
               },
             ),
             SizedBox(height: 16.h),
-            TextFormField(
+            CustomFormField(
+              radius: 12.r,
               controller: _sectionController,
-              decoration: InputDecoration(labelText: 'الشعبة', border: OutlineInputBorder()),
+              title: 'الشعبة',
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'يرجى إدخال الشعبة';
@@ -255,9 +290,11 @@ class _AddClassDialogState extends State<AddClassDialog> {
               },
             ),
             SizedBox(height: 16.h),
-            TextFormField(
+            CustomFormField(
+              radius: 12.r,
               controller: _teacherController,
-              decoration: InputDecoration(labelText: 'المعلم', border: OutlineInputBorder()),
+              title: 'المعلم',
+
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'يرجى إدخال اسم المعلم';
@@ -266,9 +303,10 @@ class _AddClassDialogState extends State<AddClassDialog> {
               },
             ),
             SizedBox(height: 16.h),
-            TextFormField(
+            CustomFormField(
+              radius: 12.r,
               controller: _studentCountController,
-              decoration: InputDecoration(labelText: 'عدد الطلاب', border: OutlineInputBorder()),
+              title: 'عدد الطلاب',
               keyboardType: TextInputType.number,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -277,27 +315,41 @@ class _AddClassDialogState extends State<AddClassDialog> {
                 return null;
               },
             ),
+            SizedBox(height: 16.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: CustomButton(
+                    text: 'إلغاء',
+                    radius: 12.r,
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: CustomButton(
+                    radius: 12.r,
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        final newClass = SchoolClass(
+                          _gradeController.text,
+                          _sectionController.text,
+                          int.parse(_studentCountController.text),
+                          _teacherController.text,
+                        );
+                        widget.onClassAdded(newClass);
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    text: 'إضافة',
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
-      actions: [
-        TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('إلغاء')),
-        TextButton(
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              final newClass = SchoolClass(
-                _gradeController.text,
-                _sectionController.text,
-                int.parse(_studentCountController.text),
-                _teacherController.text,
-              );
-              widget.onClassAdded(newClass);
-              Navigator.of(context).pop();
-            }
-          },
-          child: Text('إضافة'),
-        ),
-      ],
     );
   }
 }
@@ -333,78 +385,110 @@ class _EditClassDialogState extends State<EditClassDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text('تعديل الصف'),
-      content: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextFormField(
-              controller: _gradeController,
-              decoration: InputDecoration(labelText: 'الصف', border: OutlineInputBorder()),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'يرجى إدخال اسم الصف';
-                }
-                return null;
-              },
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.topRight,
+            child: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(Icons.close),
             ),
-            SizedBox(height: 16.h),
-            TextFormField(
-              controller: _sectionController,
-              decoration: InputDecoration(labelText: 'الشعبة', border: OutlineInputBorder()),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'يرجى إدخال الشعبة';
-                }
-                return null;
-              },
+          ),
+          Text('تعديل الصف', style: AppTextStyle.formTitle20Style(context)),
+          Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CustomFormField(
+                  radius: 12.r,
+                  controller: _gradeController,
+                  title: 'الصف',
+
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'يرجى إدخال اسم الصف';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16.h),
+                CustomFormField(
+                  radius: 12.r,
+                  controller: _sectionController,
+                  title: 'الشعبة',
+
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'يرجى إدخال الشعبة';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16.h),
+                CustomFormField(
+                  radius: 12.r,
+                  controller: _teacherController,
+                  title: 'المعلم',
+
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'يرجى إدخال اسم المعلم';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16.h),
+                CustomFormField(
+                  radius: 12.r,
+                  controller: _studentCountController,
+                  title: 'عدد الطلاب',
+
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'يرجى إدخال عدد الطلاب';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 16.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: CustomButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        text: 'إلغاء',
+                      ),
+                    ),
+                    Expanded(
+                      child: CustomButton(
+                        text: 'حفظ',
+                        radius: 12.r,
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            final updatedClass = SchoolClass(
+                              _gradeController.text,
+                              _sectionController.text,
+                              int.parse(_studentCountController.text),
+                              _teacherController.text,
+                            );
+                            widget.onClassUpdated(updatedClass);
+                            Navigator.of(context).pop();
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            SizedBox(height: 16.h),
-            TextFormField(
-              controller: _teacherController,
-              decoration: InputDecoration(labelText: 'المعلم', border: OutlineInputBorder()),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'يرجى إدخال اسم المعلم';
-                }
-                return null;
-              },
-            ),
-            SizedBox(height: 16.h),
-            TextFormField(
-              controller: _studentCountController,
-              decoration: InputDecoration(labelText: 'عدد الطلاب', border: OutlineInputBorder()),
-              keyboardType: TextInputType.number,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'يرجى إدخال عدد الطلاب';
-                }
-                return null;
-              },
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
-      actions: [
-        TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('إلغاء')),
-        TextButton(
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              final updatedClass = SchoolClass(
-                _gradeController.text,
-                _sectionController.text,
-                int.parse(_studentCountController.text),
-                _teacherController.text,
-              );
-              widget.onClassUpdated(updatedClass);
-              Navigator.of(context).pop();
-            }
-          },
-          child: Text('حفظ'),
-        ),
-      ],
     );
   }
 }

@@ -1,6 +1,8 @@
 // lib/features/settings/presentation/screens/notification_settings_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class NotificationSettingsScreen extends StatefulWidget {
   const NotificationSettingsScreen({super.key});
@@ -22,13 +24,17 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
+        context,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: Text(
           'إعدادات الإشعارات',
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+
         elevation: 0,
         actions: [IconButton(icon: Icon(Icons.save), onPressed: _saveNotificationSettings)],
       ),
@@ -40,11 +46,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
             // أنواع الإشعارات
             Text(
               'قنوات الإشعارات',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF1F2937),
-              ),
+              style: AppTextStyle.titleLarge(context, color: const Color(0xFF1F2937)),
             ),
             SizedBox(height: 16.h),
 

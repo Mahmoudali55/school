@@ -1,6 +1,11 @@
 // lib/features/settings/presentation/screens/school_info_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
+import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class SchoolInfoScreen extends StatefulWidget {
   const SchoolInfoScreen({super.key});
@@ -23,13 +28,17 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
+        context,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: Text(
           'معلومات المدرسة',
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+
         elevation: 0,
         actions: [IconButton(icon: Icon(Icons.save), onPressed: _saveSchoolInfo)],
       ),
@@ -44,17 +53,21 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                 children: [
                   CircleAvatar(
                     radius: 50.r,
-                    backgroundColor: const Color(0xFF2E5BFF).withOpacity(0.1),
-                    child: Icon(Icons.school, size: 50.w, color: const Color(0xFF2E5BFF)),
+                    backgroundColor: AppColor.primaryColor(context).withOpacity(0.1),
+                    child: Icon(Icons.school, size: 50.w, color: AppColor.primaryColor(context)),
                   ),
                   Positioned(
                     bottom: 0,
                     right: 0,
                     child: CircleAvatar(
                       radius: 15.r,
-                      backgroundColor: const Color(0xFF2E5BFF),
+                      backgroundColor: AppColor.primaryColor(context),
                       child: IconButton(
-                        icon: Icon(Icons.camera_alt, size: 12.w, color: Colors.white),
+                        icon: Icon(
+                          Icons.camera_alt,
+                          size: 12.w,
+                          color: AppColor.whiteColor(context),
+                        ),
                         onPressed: _changeSchoolLogo,
                       ),
                     ),
@@ -64,13 +77,12 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
               SizedBox(height: 24.h),
 
               // اسم المدرسة
-              TextFormField(
+              CustomFormField(
+                radius: 12.r,
                 controller: _schoolNameController,
-                decoration: InputDecoration(
-                  labelText: 'اسم المدرسة',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  prefixIcon: Icon(Icons.school),
-                ),
+                title: 'اسم المدرسة',
+                prefixIcon: Icon(Icons.school),
+
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'يرجى إدخال اسم المدرسة';
@@ -81,13 +93,12 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
               SizedBox(height: 16.h),
 
               // رقم هوية المدرسة
-              TextFormField(
+              CustomFormField(
+                radius: 12.r,
                 controller: _schoolIdController,
-                decoration: InputDecoration(
-                  labelText: 'رقم هوية المدرسة',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  prefixIcon: Icon(Icons.confirmation_number),
-                ),
+                title: 'رقم هوية المدرسة',
+                prefixIcon: Icon(Icons.confirmation_number),
+
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'يرجى إدخال رقم هوية المدرسة';
@@ -98,14 +109,13 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
               SizedBox(height: 16.h),
 
               // العنوان
-              TextFormField(
+              CustomFormField(
+                radius: 12.r,
                 controller: _addressController,
                 maxLines: 2,
-                decoration: InputDecoration(
-                  labelText: 'العنوان',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  prefixIcon: Icon(Icons.location_on),
-                ),
+                title: 'العنوان',
+                prefixIcon: Icon(Icons.location_on),
+
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'يرجى إدخال عنوان المدرسة';
@@ -116,13 +126,12 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
               SizedBox(height: 16.h),
 
               // رقم الهاتف
-              TextFormField(
+              CustomFormField(
+                radius: 12.r,
                 controller: _phoneController,
-                decoration: InputDecoration(
-                  labelText: 'رقم الهاتف',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  prefixIcon: Icon(Icons.phone),
-                ),
+                title: 'رقم الهاتف',
+                prefixIcon: Icon(Icons.phone),
+
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'يرجى إدخال رقم الهاتف';
@@ -133,13 +142,12 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
               SizedBox(height: 16.h),
 
               // البريد الإلكتروني
-              TextFormField(
+              CustomFormField(
+                radius: 12.r,
                 controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'البريد الإلكتروني',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  prefixIcon: Icon(Icons.email),
-                ),
+                title: 'البريد الإلكتروني',
+                prefixIcon: Icon(Icons.email),
+
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'يرجى إدخال البريد الإلكتروني';
@@ -153,24 +161,21 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
               SizedBox(height: 16.h),
 
               // الموقع الإلكتروني
-              TextFormField(
+              CustomFormField(
+                radius: 12.r,
                 controller: _websiteController,
-                decoration: InputDecoration(
-                  labelText: 'الموقع الإلكتروني',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  prefixIcon: Icon(Icons.language),
-                ),
+                title: 'الموقع الإلكتروني',
+                prefixIcon: Icon(Icons.language),
               ),
               SizedBox(height: 16.h),
 
               // اسم المدير
-              TextFormField(
+              CustomFormField(
+                radius: 12.r,
                 controller: _principalController,
-                decoration: InputDecoration(
-                  labelText: 'اسم المدير',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  prefixIcon: Icon(Icons.person),
-                ),
+                title: 'اسم المدير',
+                prefixIcon: Icon(Icons.person),
+
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'يرجى إدخال اسم المدير';
@@ -181,33 +186,17 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
               SizedBox(height: 16.h),
 
               // سنة التأسيس
-              TextFormField(
+              CustomFormField(
+                radius: 12.r,
                 controller: _establishedController,
-                decoration: InputDecoration(
-                  labelText: 'سنة التأسيس',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  prefixIcon: Icon(Icons.calendar_today),
-                ),
+                title: 'سنة التأسيس',
+
+                prefixIcon: Icon(Icons.calendar_today),
                 keyboardType: TextInputType.number,
               ),
               SizedBox(height: 32.h),
 
-              // زر الحفظ
-              SizedBox(
-                width: double.infinity,
-                height: 50.h,
-                child: ElevatedButton(
-                  onPressed: _saveSchoolInfo,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2E5BFF),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-                  ),
-                  child: Text(
-                    'حفظ معلومات المدرسة',
-                    style: TextStyle(fontSize: 16.sp, color: Colors.white),
-                  ),
-                ),
-              ),
+              CustomButton(text: 'حفظ معلومات المدرسة', onPressed: _saveSchoolInfo, radius: 12.r),
             ],
           ),
         ),

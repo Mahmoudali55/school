@@ -1,6 +1,11 @@
 // lib/features/settings/presentation/screens/change_password_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
+import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -21,13 +26,17 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
+        context,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: Text(
           'تغيير كلمة المرور',
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -35,24 +44,23 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // كلمة المرور الحالية
-              TextFormField(
+              CustomFormField(
                 controller: _currentPasswordController,
-                obscureText: _obscureCurrentPassword,
-                decoration: InputDecoration(
-                  labelText: 'كلمة المرور الحالية',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  prefixIcon: Icon(Icons.lock),
-                  suffixIcon: IconButton(
-                    icon: Icon(_obscureCurrentPassword ? Icons.visibility : Icons.visibility_off),
-                    onPressed: () {
-                      setState(() {
-                        _obscureCurrentPassword = !_obscureCurrentPassword;
-                      });
-                    },
-                  ),
+                prefixIcon: Icon(Icons.lock),
+                suffixIcon: IconButton(
+                  icon: Icon(_obscureCurrentPassword ? Icons.visibility : Icons.visibility_off),
+                  onPressed: () {
+                    setState(() {
+                      _obscureCurrentPassword = !_obscureCurrentPassword;
+                    });
+                  },
                 ),
+                isPassword: _obscureCurrentPassword,
+                title: 'كلمة المرور الحالية',
+                radius: 12.r,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'يرجى إدخال كلمة المرور الحالية';
@@ -63,22 +71,20 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               SizedBox(height: 16.h),
 
               // كلمة المرور الجديدة
-              TextFormField(
+              CustomFormField(
                 controller: _newPasswordController,
-                obscureText: _obscureNewPassword,
-                decoration: InputDecoration(
-                  labelText: 'كلمة المرور الجديدة',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  prefixIcon: Icon(Icons.lock_outline),
-                  suffixIcon: IconButton(
-                    icon: Icon(_obscureNewPassword ? Icons.visibility : Icons.visibility_off),
-                    onPressed: () {
-                      setState(() {
-                        _obscureNewPassword = !_obscureNewPassword;
-                      });
-                    },
-                  ),
+                isPassword: _obscureNewPassword,
+                title: 'كلمة المرور الجديدة',
+                prefixIcon: Icon(Icons.lock_outline),
+                suffixIcon: IconButton(
+                  icon: Icon(_obscureNewPassword ? Icons.visibility : Icons.visibility_off),
+                  onPressed: () {
+                    setState(() {
+                      _obscureNewPassword = !_obscureNewPassword;
+                    });
+                  },
                 ),
+                radius: 12.r,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'يرجى إدخال كلمة المرور الجديدة';
@@ -92,22 +98,20 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               SizedBox(height: 16.h),
 
               // تأكيد كلمة المرور
-              TextFormField(
+              CustomFormField(
                 controller: _confirmPasswordController,
-                obscureText: _obscureConfirmPassword,
-                decoration: InputDecoration(
-                  labelText: 'تأكيد كلمة المرور الجديدة',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  prefixIcon: Icon(Icons.lock_reset),
-                  suffixIcon: IconButton(
-                    icon: Icon(_obscureConfirmPassword ? Icons.visibility : Icons.visibility_off),
-                    onPressed: () {
-                      setState(() {
-                        _obscureConfirmPassword = !_obscureConfirmPassword;
-                      });
-                    },
-                  ),
+                isPassword: _obscureConfirmPassword,
+                title: 'تأكيد كلمة المرور الجديدة',
+                prefixIcon: Icon(Icons.lock_reset),
+                suffixIcon: IconButton(
+                  icon: Icon(_obscureConfirmPassword ? Icons.visibility : Icons.visibility_off),
+                  onPressed: () {
+                    setState(() {
+                      _obscureConfirmPassword = !_obscureConfirmPassword;
+                    });
+                  },
                 ),
+                radius: 12.r,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'يرجى تأكيد كلمة المرور';
@@ -121,49 +125,36 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               SizedBox(height: 24.h),
 
               // نصائح الأمان
-              Card(
-                color: Colors.blue[50],
-                child: Padding(
-                  padding: EdgeInsets.all(16.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'نصائح لأمان أفضل:',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue[800],
-                        ),
+              Padding(
+                padding: EdgeInsets.all(16.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'نصائح لأمان أفضل:',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue[800],
                       ),
-                      SizedBox(height: 8.h),
-                      Text(
-                        '• استخدم مزيج من الأحرف والأرقام والرموز\n'
-                        '• تجنب استخدام كلمات مرور سهلة التخمين\n'
-                        '• غير كلمة المرور بشكل دوري',
-                        style: TextStyle(fontSize: 12.sp, color: Colors.blue[700]),
-                      ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 8.h),
+                    Text(
+                      '• استخدم مزيج من الأحرف والأرقام والرموز\n'
+                      '• تجنب استخدام كلمات مرور سهلة التخمين\n'
+                      '• غير كلمة المرور بشكل دوري',
+                      style: TextStyle(fontSize: 12.sp, color: Colors.blue[700]),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(height: 32.h),
 
-              // زر تغيير كلمة المرور
-              SizedBox(
-                width: double.infinity,
-                height: 50.h,
-                child: ElevatedButton(
-                  onPressed: _changePassword,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2E5BFF),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-                  ),
-                  child: Text(
-                    'تغيير كلمة المرور',
-                    style: TextStyle(fontSize: 16.sp, color: Colors.white),
-                  ),
-                ),
+              CustomButton(
+                text: 'تغيير كلمة المرور',
+                radius: 16.r,
+                color: AppColor.primaryColor(context),
+                onPressed: _changePassword,
               ),
             ],
           ),

@@ -1,6 +1,9 @@
 // lib/features/settings/presentation/screens/system_settings_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/setting/presentation/screen/widget/admin_settings/setting_item_widget.dart';
 
 class SystemSettingsScreen extends StatefulWidget {
@@ -21,13 +24,17 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
+        context,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: Text(
           'إعدادات النظام',
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+
         elevation: 0,
         actions: [IconButton(icon: Icon(Icons.save), onPressed: _saveSystemSettings)],
       ),
@@ -39,7 +46,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
             // السنة الدراسية
             Card(
               child: ListTile(
-                leading: Icon(Icons.calendar_today, color: const Color(0xFF2E5BFF)),
+                leading: Icon(Icons.calendar_today, color: AppColor.primaryColor(context)),
                 title: Text('السنة الدراسية الحالية'),
                 subtitle: Text(_academicYear),
                 trailing: DropdownButton<String>(
@@ -64,7 +71,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
             // النسخ الاحتياطي التلقائي
             Card(
               child: SwitchListTile(
-                secondary: Icon(Icons.backup, color: const Color(0xFF2E5BFF)),
+                secondary: Icon(Icons.backup, color: AppColor.primaryColor(context)),
                 title: Text('النسخ الاحتياطي التلقائي'),
                 subtitle: Text('نسخ البيانات تلقائياً بشكل دوري'),
                 value: _autoBackup,
@@ -81,7 +88,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
             if (_autoBackup) ...[
               Card(
                 child: ListTile(
-                  leading: Icon(Icons.schedule, color: const Color(0xFF2E5BFF)),
+                  leading: Icon(Icons.schedule, color: AppColor.primaryColor(context)),
                   title: Text('تردد النسخ الاحتياطي'),
                   subtitle: Text(_backupFrequency),
                   trailing: DropdownButton<String>(
@@ -107,7 +114,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
             // فترة احتفاظ البيانات
             Card(
               child: ListTile(
-                leading: Icon(Icons.storage, color: const Color(0xFF2E5BFF)),
+                leading: Icon(Icons.storage, color: AppColor.primaryColor(context)),
                 title: Text('فترة احتفاظ البيانات'),
                 subtitle: Text(_dataRetention),
                 trailing: DropdownButton<String>(
@@ -132,7 +139,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
             // وضع الصيانة
             Card(
               child: SwitchListTile(
-                secondary: Icon(Icons.engineering, color: const Color(0xFF2E5BFF)),
+                secondary: Icon(Icons.engineering, color: AppColor.primaryColor(context)),
                 title: Text('وضع الصيانة'),
                 subtitle: Text('إيقاف النظام للصيانة (للمشرفين فقط)'),
                 value: _maintenanceMode,
@@ -148,7 +155,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
             // وضع التصحيح
             Card(
               child: SwitchListTile(
-                secondary: Icon(Icons.bug_report, color: const Color(0xFF2E5BFF)),
+                secondary: Icon(Icons.bug_report, color: AppColor.primaryColor(context)),
                 title: Text('وضع التصحيح'),
                 subtitle: Text('تفعيل سجلات التصحيح للأخطاء'),
                 value: _debugMode,
@@ -227,7 +234,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
               child: ElevatedButton(
                 onPressed: _saveSystemSettings,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF2E5BFF),
+                  backgroundColor: AppColor.primaryColor(context),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
                 ),
                 child: Text(
@@ -329,11 +336,11 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('تم استعادة الإعدادات الافتراضية'),
-                    backgroundColor: Colors.green,
+                    backgroundColor: AppColor.secondAppColor(context),
                   ),
                 );
               },
-              child: Text('استعادة', style: TextStyle(color: Colors.red)),
+              child: Text('استعادة', style: TextStyle(color: AppColor.errorColor(context))),
             ),
           ],
         );

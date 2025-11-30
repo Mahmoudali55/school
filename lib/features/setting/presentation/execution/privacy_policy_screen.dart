@@ -1,6 +1,8 @@
 // lib/features/settings/presentation/screens/privacy_policy_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
   const PrivacyPolicyScreen({super.key});
@@ -8,13 +10,16 @@ class PrivacyPolicyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
+        context,
         title: Text(
           'سياسة الخصوصية',
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -28,14 +33,11 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'آخر تحديث: 20 مارس 2024',
-                      style: TextStyle(fontSize: 14.sp, color: Colors.grey),
-                    ),
+                    Text('آخر تحديث: 20 مارس 2024', style: AppTextStyle.bodyMedium(context)),
                     SizedBox(height: 8.h),
                     Text(
                       'نحن في مدرسة النموذجية نلتزم بحماية خصوصيتك وبياناتك الشخصية.',
-                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+                      style: AppTextStyle.bodyMedium(context),
                     ),
                   ],
                 ),
@@ -50,6 +52,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   '• المعلومات الأكاديمية (الدرجات، الحضور، السلوك)\n'
                   '• معلومات الجهاز وعنوان IP\n'
                   '• سجل النشاط على النظام',
+              context,
             ),
             SizedBox(height: 24.h),
 
@@ -61,6 +64,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   '• التواصل مع أولياء الأمور والطلاب\n'
                   '• تحليل الأداء الأكاديمي\n'
                   '• الالتزام بالمتطلبات القانونية',
+              context,
             ),
             SizedBox(height: 24.h),
 
@@ -71,6 +75,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   '• عند وجود متطلبات قانونية\n'
                   '• مع مزودي الخدمات الذين يعملون نيابة عننا\n'
                   '• للحفاظ على سلامة وأمن المستخدمين',
+              context,
             ),
             SizedBox(height: 24.h),
 
@@ -81,6 +86,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   '• التحكم في الوصول بناءً على الصلاحيات\n'
                   '• مراجعة دورية لإجراءات الأمان\n'
                   '• تدريب الموظفين على حماية البيانات',
+              context,
             ),
             SizedBox(height: 24.h),
 
@@ -92,18 +98,21 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   '• طلب حذف بياناتك الشخصية\n'
                   '• الاعتراض على معالجة بياناتك\n'
                   '• نقل بياناتك إلى نظام آخر',
+              context,
             ),
             SizedBox(height: 24.h),
 
             _buildPrivacySection(
               '6. ملفات تعريف الارتباط',
               'نستخدم ملفات تعريف الارتباط (Cookies) لتحسين تجربة المستخدم وتذكر تفضيلاتك. يمكنك التحكم في ملفات تعريف الارتباط من خلال إعدادات المتصفح.',
+              context,
             ),
             SizedBox(height: 24.h),
 
             _buildPrivacySection(
               '7. التغييرات على السياسة',
               'قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر. سنقوم بإعلامك بأي تغييرات جوهرية من خلال الإشعارات في التطبيق أو عبر البريد الإلكتروني.',
+              context,
             ),
             SizedBox(height: 24.h),
 
@@ -113,6 +122,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   '• البريد الإلكتروني: privacy@school.edu\n'
                   '• الهاتف: +966 123 456 789\n'
                   '• العنوان: الرياض، حي العليا',
+              context,
             ),
             SizedBox(height: 32.h),
 
@@ -126,16 +136,16 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   children: [
                     Text(
                       'موافقتك',
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green[800],
-                      ),
+                      style: AppTextStyle.titleLarge(
+                        context,
+                      ).copyWith(fontWeight: FontWeight.bold, color: Colors.green[800]),
                     ),
                     SizedBox(height: 8.h),
                     Text(
                       'باستخدامك لهذا التطبيق، فإنك توافق على شروط وسياسة الخصوصية المذكورة أعلاه.',
-                      style: TextStyle(fontSize: 14.sp, color: Colors.green[700]),
+                      style: AppTextStyle.bodyMedium(
+                        context,
+                      ).copyWith(height: 1.6, color: Colors.green[800]),
                     ),
                   ],
                 ),
@@ -147,22 +157,15 @@ class PrivacyPolicyScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPrivacySection(String title, String content) {
+  Widget _buildPrivacySection(String title, String content, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF1F2937),
-          ),
-        ),
+        Text(title, style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold)),
         SizedBox(height: 12.h),
         Text(
           content,
-          style: TextStyle(fontSize: 14.sp, color: Colors.grey[700], height: 1.6),
+          style: AppTextStyle.bodyMedium(context).copyWith(height: 1.6),
           textAlign: TextAlign.justify,
         ),
       ],

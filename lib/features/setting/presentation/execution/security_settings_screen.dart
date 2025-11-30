@@ -1,6 +1,10 @@
 // lib/features/settings/presentation/screens/security_settings_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
+import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/setting/presentation/execution/login_history_screen.dart';
 
 class SecuritySettingsScreen extends StatefulWidget {
@@ -21,13 +25,16 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
+        context,
         title: Text(
           'الإعدادات الأمنية',
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
         elevation: 0,
         actions: [IconButton(icon: Icon(Icons.save), onPressed: _saveSecuritySettings)],
       ),
@@ -39,7 +46,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
             // المصادقة الثنائية
             Card(
               child: SwitchListTile(
-                secondary: Icon(Icons.security, color: const Color(0xFF2E5BFF)),
+                secondary: Icon(Icons.security, color: AppColor.primaryColor(context)),
                 title: Text('المصادقة الثنائية'),
                 subtitle: Text('تفعيل المصادقة الثنائية لتسجيل الدخول'),
                 value: _twoFactorAuth,
@@ -55,7 +62,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
             // المصادقة البيومترية
             Card(
               child: SwitchListTile(
-                secondary: Icon(Icons.fingerprint, color: const Color(0xFF2E5BFF)),
+                secondary: Icon(Icons.fingerprint, color: AppColor.primaryColor(context)),
                 title: Text('المصادقة البيومترية'),
                 subtitle: Text('استخدام البصمة أو التعرف على الوجه'),
                 value: _biometricAuth,
@@ -71,7 +78,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
             // تسجيل الخروج التلقائي
             Card(
               child: SwitchListTile(
-                secondary: Icon(Icons.timer, color: const Color(0xFF2E5BFF)),
+                secondary: Icon(Icons.timer, color: AppColor.primaryColor(context)),
                 title: Text('تسجيل الخروج التلقائي'),
                 subtitle: Text('تسجيل الخروج بعد فترة من عدم النشاط'),
                 value: _autoLogout,
@@ -88,7 +95,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
             if (_autoLogout) ...[
               Card(
                 child: ListTile(
-                  leading: Icon(Icons.access_time, color: const Color(0xFF2E5BFF)),
+                  leading: Icon(Icons.access_time, color: AppColor.primaryColor(context)),
                   title: Text('مهلة الجلسة'),
                   subtitle: Text('${_sessionTimeout} دقيقة'),
                   trailing: DropdownButton<int>(
@@ -114,7 +121,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
             // تنبيهات تسجيل الدخول
             Card(
               child: SwitchListTile(
-                secondary: Icon(Icons.warning, color: const Color(0xFF2E5BFF)),
+                secondary: Icon(Icons.warning, color: AppColor.primaryColor(context)),
                 title: Text('تنبيهات تسجيل الدخول'),
                 subtitle: Text('إرسال تنبيه عند تسجيل الدخول من جهاز جديد'),
                 value: _loginAlerts,
@@ -130,7 +137,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
             // إدارة الأجهزة
             Card(
               child: SwitchListTile(
-                secondary: Icon(Icons.devices, color: const Color(0xFF2E5BFF)),
+                secondary: Icon(Icons.devices, color: AppColor.primaryColor(context)),
                 title: Text('إدارة الأجهزة'),
                 subtitle: Text('عرض وإدارة الأجهزة المتصلة بالحساب'),
                 value: _deviceManagement,
@@ -155,7 +162,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
             SizedBox(height: 16.h),
             Card(
               child: ListTile(
-                leading: Icon(Icons.history, color: const Color(0xFF2E5BFF)),
+                leading: Icon(Icons.history, color: AppColor.primaryColor(context)),
                 title: Text('عرض سجل الدخول'),
                 subtitle: Text('عرض جميع محاولات الدخول إلى الحساب'),
                 trailing: Icon(Icons.arrow_forward_ios, size: 16.w),
@@ -165,20 +172,10 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
             SizedBox(height: 32.h),
 
             // زر الحفظ
-            SizedBox(
-              width: double.infinity,
-              height: 50.h,
-              child: ElevatedButton(
-                onPressed: _saveSecuritySettings,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF2E5BFF),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-                ),
-                child: Text(
-                  'حفظ الإعدادات الأمنية',
-                  style: TextStyle(fontSize: 16.sp, color: Colors.white),
-                ),
-              ),
+            CustomButton(
+              text: 'حفظ الإعدادات الأمنية',
+              onPressed: _saveSecuritySettings,
+              radius: 12,
             ),
           ],
         ),

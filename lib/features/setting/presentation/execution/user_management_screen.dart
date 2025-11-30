@@ -1,6 +1,10 @@
 // lib/features/settings/presentation/screens/user_management_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
+import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class UserManagementScreen extends StatefulWidget {
   const UserManagementScreen({super.key});
@@ -20,29 +24,35 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // خزّن ألوان الثيم داخل build method لتجنب مشاكل Provider
+    final primaryColor = AppColor.primaryColor(context);
+    final secondColor = AppColor.secondAppColor(context);
+    final errorColor = AppColor.errorColor(context);
+    final greyColor = AppColor.greyColor(context);
+
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
+        context,
         title: Text(
           'إدارة المستخدمين',
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
         elevation: 0,
         actions: [IconButton(icon: Icon(Icons.person_add), onPressed: _addNewUser)],
       ),
       body: Column(
         children: [
-          // إحصائيات سريعة
           _buildUserStats(),
-
-          // قائمة المستخدمين
           Expanded(
             child: ListView.builder(
               padding: EdgeInsets.all(16.w),
               itemCount: _users.length,
               itemBuilder: (context, index) {
-                return _buildUserCard(_users[index]);
+                return _buildUserCard(_users[index], secondColor, errorColor, greyColor);
               },
             ),
           ),
@@ -50,8 +60,8 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addNewUser,
-        backgroundColor: const Color(0xFF2E5BFF),
-        child: Icon(Icons.person_add, color: Colors.white),
+        backgroundColor: primaryColor,
+        child: Icon(Icons.person_add, color: AppColor.whiteColor(context)),
       ),
     );
   }
@@ -89,20 +99,19 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
           child: Center(
             child: Text(
               value,
-              style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold, color: color),
+              style: AppTextStyle.titleMedium(
+                context,
+              ).copyWith(fontWeight: FontWeight.bold, color: color),
             ),
           ),
         ),
         SizedBox(height: 4.h),
-        Text(
-          label,
-          style: TextStyle(fontSize: 10.sp, color: Colors.grey),
-        ),
+        Text(label, style: AppTextStyle.titleSmall(context).copyWith(color: Colors.grey)),
       ],
     );
   }
 
-  Widget _buildUserCard(User user) {
+  Widget _buildUserCard(User user, Color secondColor, Color errorColor, Color greyColor) {
     return Card(
       margin: EdgeInsets.only(bottom: 12.h),
       child: ListTile(
@@ -110,21 +119,18 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
           backgroundColor: _getRoleColor(user.role),
           child: Text(
             user.name.split(' ').first[0],
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: AppTextStyle.bodyMedium(context).copyWith(color: AppColor.whiteColor(context)),
           ),
         ),
         title: Text(
           user.name,
-          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+          style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(user.role),
-            Text(
-              user.email,
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey),
-            ),
+            Text(user.email, style: AppTextStyle.bodyMedium(context).copyWith(color: greyColor)),
           ],
         ),
         trailing: Row(
@@ -132,19 +138,19 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
           children: [
             Icon(
               user.isActive ? Icons.check_circle : Icons.remove_circle,
-              color: user.isActive ? Colors.green : Colors.red,
+              color: user.isActive ? secondColor : errorColor,
               size: 20.w,
             ),
             SizedBox(width: 8.w),
             PopupMenuButton<String>(
               icon: Icon(Icons.more_vert),
-              onSelected: (value) => _handleUserAction(value, user),
+              onSelected: (value) => _handleUserAction(value, user, errorColor),
               itemBuilder: (BuildContext context) => [
                 PopupMenuItem(value: 'edit', child: Text('تعديل')),
                 PopupMenuItem(value: 'toggle', child: Text(user.isActive ? 'تعطيل' : 'تفعيل')),
                 PopupMenuItem(
                   value: 'delete',
-                  child: Text('حذف', style: TextStyle(color: Colors.red)),
+                  child: Text('حذف', style: TextStyle(color: errorColor)),
                 ),
               ],
             ),
@@ -173,7 +179,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
     // TODO: إضافة مستخدم جديد
   }
 
-  void _handleUserAction(String action, User user) {
+  void _handleUserAction(String action, User user, Color errorColor) {
     switch (action) {
       case 'edit':
         _editUser(user);
@@ -205,18 +211,23 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
           title: Text('حذف المستخدم'),
           content: Text('هل أنت متأكد من أنك تريد حذف المستخدم ${user.name}؟'),
           actions: [
-            TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('إلغاء')),
-            TextButton(
+            CustomButton(onPressed: () => Navigator.of(context).pop(), text: 'إلغاء'),
+            SizedBox(height: 16.w),
+            CustomButton(
+              color: AppColor.errorColor(context),
               onPressed: () {
                 setState(() {
                   _users.remove(user);
                 });
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('تم حذف المستخدم بنجاح'), backgroundColor: Colors.green),
+                  SnackBar(
+                    content: Text('تم حذف المستخدم بنجاح'),
+                    backgroundColor: AppColor.secondAppColor(context),
+                  ),
                 );
               },
-              child: Text('حذف', style: TextStyle(color: Colors.red)),
+              text: 'حذف',
             ),
           ],
         );

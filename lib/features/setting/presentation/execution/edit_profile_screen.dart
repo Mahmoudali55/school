@@ -1,6 +1,11 @@
 // lib/features/settings/presentation/screens/edit_profile_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
+import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -19,13 +24,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
+        context,
         title: Text(
           'تعديل الملف الشخصي',
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+
         elevation: 0,
         actions: [IconButton(icon: Icon(Icons.save), onPressed: _saveProfile)],
       ),
@@ -40,17 +45,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 children: [
                   CircleAvatar(
                     radius: 50.r,
-                    backgroundColor: const Color(0xFF2E5BFF).withOpacity(0.1),
-                    child: Icon(Icons.school, size: 50.w, color: const Color(0xFF2E5BFF)),
+                    backgroundColor: AppColor.primaryColor(context).withOpacity(0.1),
+                    child: Icon(Icons.school, size: 50.w, color: AppColor.primaryColor(context)),
                   ),
                   Positioned(
                     bottom: 0,
                     right: 0,
                     child: CircleAvatar(
                       radius: 15.r,
-                      backgroundColor: const Color(0xFF2E5BFF),
+                      backgroundColor: AppColor.primaryColor(context),
                       child: IconButton(
-                        icon: Icon(Icons.camera_alt, size: 12.w, color: Colors.white),
+                        icon: Icon(
+                          Icons.camera_alt,
+                          size: 12.w,
+                          color: AppColor.whiteColor(context),
+                        ),
                         onPressed: _changeProfilePicture,
                       ),
                     ),
@@ -60,13 +69,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               SizedBox(height: 24.h),
 
               // الاسم الكامل
-              TextFormField(
+              CustomFormField(
+                radius: 12.r,
                 controller: _nameController,
-                decoration: InputDecoration(
-                  labelText: 'الاسم الكامل',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  prefixIcon: Icon(Icons.person),
-                ),
+                title: 'الاسم الكامل',
+                prefixIcon: Icon(Icons.person),
+
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'يرجى إدخال الاسم الكامل';
@@ -77,13 +85,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               SizedBox(height: 16.h),
 
               // البريد الإلكتروني
-              TextFormField(
+              CustomFormField(
                 controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: 'البريد الإلكتروني',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  prefixIcon: Icon(Icons.email),
-                ),
+                title: 'البريد الإلكتروني',
+                prefixIcon: Icon(Icons.email),
+                radius: 12.r,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'يرجى إدخال البريد الإلكتروني';
@@ -97,13 +103,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               SizedBox(height: 16.h),
 
               // رقم الهاتف
-              TextFormField(
+              CustomFormField(
+                radius: 12.r,
                 controller: _phoneController,
-                decoration: InputDecoration(
-                  labelText: 'رقم الهاتف',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  prefixIcon: Icon(Icons.phone),
-                ),
+                title: 'رقم الهاتف',
+                prefixIcon: Icon(Icons.phone),
+
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'يرجى إدخال رقم الهاتف';
@@ -114,13 +119,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               SizedBox(height: 16.h),
 
               // المنصب
-              TextFormField(
+              CustomFormField(
+                radius: 12.r,
                 controller: _positionController,
-                decoration: InputDecoration(
-                  labelText: 'المنصب',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  prefixIcon: Icon(Icons.work),
-                ),
+                title: 'المنصب',
+                prefixIcon: Icon(Icons.work),
+
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'يرجى إدخال المنصب';
@@ -130,22 +134,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               SizedBox(height: 32.h),
 
-              // زر الحفظ
-              SizedBox(
-                width: double.infinity,
-                height: 50.h,
-                child: ElevatedButton(
-                  onPressed: _saveProfile,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2E5BFF),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-                  ),
-                  child: Text(
-                    'حفظ التغييرات',
-                    style: TextStyle(fontSize: 16.sp, color: Colors.white),
-                  ),
-                ),
-              ),
+              CustomButton(text: 'حفظ التغييرات', radius: 12.r),
             ],
           ),
         ),

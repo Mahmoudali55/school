@@ -1,6 +1,11 @@
 // lib/features/settings/presentation/screens/help_center_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
+import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class HelpCenterScreen extends StatefulWidget {
   const HelpCenterScreen({super.key});
@@ -45,13 +50,17 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
+        context,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
         title: Text(
           'مركز المساعدة',
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+
         elevation: 0,
       ),
       body: Column(
@@ -59,19 +68,11 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           // شريط البحث
           Padding(
             padding: EdgeInsets.all(16.w),
-            child: TextField(
+            child: CustomFormField(
               controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'ابحث في الأسئلة الشائعة...',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25.r),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: Colors.grey[100],
-                contentPadding: EdgeInsets.symmetric(vertical: 12.h),
-              ),
+              hintText: 'ابحث في الأسئلة الشائعة...',
+              radius: 12.r,
+              prefixIcon: Icon(Icons.search),
               onChanged: _onSearchChanged,
             ),
           ),
@@ -128,8 +129,8 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _contactSupport,
-        backgroundColor: const Color(0xFF2E5BFF),
-        child: Icon(Icons.chat, color: Colors.white),
+        backgroundColor: AppColor.primaryColor(context),
+        child: Icon(Icons.chat, color: AppColor.whiteColor(context)),
       ),
     );
   }
@@ -159,19 +160,23 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
   Widget _buildFAQItem(FAQItem faqItem) {
     return Card(
       margin: EdgeInsets.only(bottom: 12.h),
-      child: ExpansionTile(
-        leading: Icon(Icons.help_outline, color: const Color(0xFF2E5BFF)),
-        title: Text(
-          faqItem.question,
-          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
-        ),
+      child: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.all(16.w),
-            child: Text(
-              faqItem.answer,
-              style: TextStyle(fontSize: 14.sp, color: Colors.grey[700], height: 1.5),
+          ExpansionTile(
+            leading: Icon(Icons.help_outline, color: AppColor.primaryColor(context)),
+            title: Text(
+              faqItem.question,
+              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
             ),
+            children: [
+              Padding(
+                padding: EdgeInsets.all(16.w),
+                child: Text(
+                  faqItem.answer,
+                  style: TextStyle(fontSize: 14.sp, color: Colors.grey[700], height: 1.5),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -219,6 +224,10 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
 
   void _contactSupport() {
     showModalBottomSheet(
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+      ),
       context: context,
       builder: (context) {
         return Container(
@@ -227,44 +236,37 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'اتصل بالدعم الفني',
-                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-              ),
+              Text('اتصل بالدعم الفني', style: AppTextStyle.bodyLarge(context)),
               SizedBox(height: 16.h),
               ListTile(
                 leading: Icon(Icons.phone, color: Colors.green),
-                title: Text('الهاتف'),
-                subtitle: Text('+966 123 456 789'),
+                title: Text('الهاتف', style: AppTextStyle.bodyMedium(context)),
+                subtitle: Text('+966 123 456 789', style: AppTextStyle.bodySmall(context)),
                 onTap: () {
                   // TODO: فتح تطبيق الهاتف
                 },
               ),
               ListTile(
                 leading: Icon(Icons.email, color: Colors.blue),
-                title: Text('البريد الإلكتروني'),
-                subtitle: Text('support@school.edu'),
+                title: Text('البريد الإلكتروني', style: AppTextStyle.bodyMedium(context)),
+                subtitle: Text('support@school.edu', style: AppTextStyle.bodySmall(context)),
                 onTap: () {
                   // TODO: فتح تطبيق البريد
                 },
               ),
               ListTile(
                 leading: Icon(Icons.chat, color: Colors.orange),
-                title: Text('الدردشة المباشرة'),
-                subtitle: Text('متاح من 8 صباحاً إلى 4 مساءً'),
+                title: Text('الدردشة المباشرة', style: AppTextStyle.bodyMedium(context)),
+                subtitle: Text(
+                  'متاح من 8 صباحاً إلى 4 مساءً',
+                  style: AppTextStyle.bodySmall(context),
+                ),
                 onTap: () {
                   // TODO: فتح الدردشة
                 },
               ),
               SizedBox(height: 16.h),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF2E5BFF)),
-                  child: Text('إغلاق'),
-                ),
-              ),
+              CustomButton(radius: 12.r, text: 'اغلاق', onPressed: () => Navigator.pop(context)),
             ],
           ),
         );
