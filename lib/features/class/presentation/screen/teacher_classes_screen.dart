@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 
 class TeacherClassesScreen extends StatelessWidget {
@@ -8,15 +9,15 @@ class TeacherClassesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: AppBar(
+      appBar: CustomAppBar(
+        context,
         title: Text(
           'فصولي الدراسية',
-          style: TextStyle(fontWeight: FontWeight.bold, color: AppColor.whiteColor(context)),
+          style: TextStyle(fontWeight: FontWeight.bold, color: AppColor.blackColor(context)),
         ),
-        backgroundColor: Colors.green[700],
+
         centerTitle: true,
         elevation: 0,
-        actions: [IconButton(icon: const Icon(Icons.notifications), onPressed: () {})],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -92,7 +93,7 @@ class TeacherClassesScreen extends StatelessWidget {
         onPressed: () {
           // TODO: إضافة فصل جديد
         },
-        backgroundColor: Colors.green,
+        backgroundColor: Color(0xFFFF9800),
         child: Icon(Icons.add, color: AppColor.whiteColor(context)),
       ),
     );

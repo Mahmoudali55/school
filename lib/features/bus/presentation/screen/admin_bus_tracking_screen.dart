@@ -1095,7 +1095,7 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
   Widget _buildEmergencyButton() {
     return FloatingActionButton(
       onPressed: _showEmergencyDialog,
-      backgroundColor: Color(0xFFF44336),
+      backgroundColor: Color(0xFF9C27B0),
       foregroundColor: Colors.white,
       child: Icon(Icons.emergency_rounded, size: 24.w),
     );

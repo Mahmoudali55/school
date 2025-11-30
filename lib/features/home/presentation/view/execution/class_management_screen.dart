@@ -68,7 +68,7 @@ class ClassManagementScreen extends StatelessWidget {
 
   Widget _buildStatCard(String title, String value, Color color, BuildContext context) {
     return Card(
-      color: Colors.white,
+      color: AppColor.whiteColor(context),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       child: Column(
         children: [

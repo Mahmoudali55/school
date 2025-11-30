@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:share_plus/share_plus.dart';
 
 class GradesScreen extends StatefulWidget {
@@ -71,7 +72,7 @@ class _GradesScreenState extends State<GradesScreen> {
                     child: Text(
                       _terms[index],
                       style: TextStyle(
-                        color: _selectedTerm == index ? Colors.white : Colors.grey,
+                        color: _selectedTerm == index ? AppColor.whiteColor(context) : Colors.grey,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -96,12 +97,12 @@ class _GradesScreenState extends State<GradesScreen> {
                     children: [
                       Text(
                         'المعدل التراكمي',
-                        style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                        style: TextStyle(color: AppColor.whiteColor(context), fontSize: 14.sp),
                       ),
                       Text(
                         average.toStringAsFixed(1),
                         style: TextStyle(
-                          color: Colors.white,
+                          color: AppColor.whiteColor(context),
                           fontSize: 24.sp,
                           fontWeight: FontWeight.bold,
                         ),
@@ -112,12 +113,12 @@ class _GradesScreenState extends State<GradesScreen> {
                     children: [
                       Text(
                         'التقدير',
-                        style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                        style: TextStyle(color: AppColor.whiteColor(context), fontSize: 14.sp),
                       ),
                       Text(
                         _getGradeDescription(average),
                         style: TextStyle(
-                          color: Colors.white,
+                          color: AppColor.whiteColor(context),
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
                         ),

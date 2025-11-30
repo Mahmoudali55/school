@@ -116,8 +116,8 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addNewClass,
-        backgroundColor: const Color(0xFF2E5BFF),
-        child: Icon(Icons.add, color: Colors.white),
+        backgroundColor: Color(0xFF9C27B0),
+        child: Icon(Icons.add, color: AppColor.whiteColor(context)),
       ),
     );
   }
@@ -139,7 +139,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                 borderSide: BorderSide.none,
               ),
               filled: true,
-              fillColor: Colors.white,
+              fillColor: AppColor.whiteColor(context),
               contentPadding: EdgeInsets.symmetric(vertical: 12.h),
             ),
             onChanged: _onSearchChanged,
@@ -180,7 +180,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
           _applyFilters();
         });
       },
-      backgroundColor: Colors.white,
+      backgroundColor: AppColor.whiteColor(context),
       selectedColor: const Color(0xFF9C27B0).withOpacity(0.1),
       checkmarkColor: const Color(0xFF9C27B0),
       labelStyle: TextStyle(
@@ -202,7 +202,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
       ),
       child: Row(
@@ -436,7 +436,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
           ElevatedButton(
             onPressed: _addNewClass,
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF2E5BFF),
+              backgroundColor: Color(0xFF9C27B0),
               padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
             ),
             child: Text(

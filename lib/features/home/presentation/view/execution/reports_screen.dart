@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 
 class ReportsScreen extends StatefulWidget {
   const ReportsScreen({super.key});
@@ -113,7 +114,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
           title,
           style: TextStyle(
             fontSize: 14.sp,
-            color: _selectedTab == index ? Colors.white : Colors.black,
+            color: _selectedTab == index ? AppColor.whiteColor(context) : Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),

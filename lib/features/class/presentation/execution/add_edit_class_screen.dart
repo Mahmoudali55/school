@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/features/class/data/model/school_class_model.dart';
 
 class AddEditClassScreen extends StatefulWidget {
@@ -47,7 +48,7 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
           widget.schoolClass == null ? 'إضافة فصل جديد' : 'تعديل الفصل',
           style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColor.whiteColor(context),
         foregroundColor: Colors.black,
         elevation: 0,
         actions: [IconButton(icon: Icon(Icons.save), onPressed: _saveClass)],
@@ -201,7 +202,7 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
                   ),
                   child: Text(
                     widget.schoolClass == null ? 'إضافة الفصل' : 'حفظ التغييرات',
-                    style: TextStyle(fontSize: 16.sp, color: Colors.white),
+                    style: TextStyle(fontSize: 16.sp, color: AppColor.whiteColor(context)),
                   ),
                 ),
               ),

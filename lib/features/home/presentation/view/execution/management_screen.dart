@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 
-// صفحة إدارة المستخدمين
 class UserManagementSCreen extends StatelessWidget {
   UserManagementSCreen({super.key});
 
@@ -13,10 +13,9 @@ class UserManagementSCreen extends StatelessWidget {
         padding: EdgeInsets.all(16.w),
         child: Column(
           children: [
-            // Search Bar
             Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColor.whiteColor(context),
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
@@ -39,7 +38,6 @@ class UserManagementSCreen extends StatelessWidget {
 
             SizedBox(height: 20.h),
 
-            // Tabs for Students and Teachers
             DefaultTabController(
               length: 2,
               child: Expanded(
@@ -55,7 +53,7 @@ class UserManagementSCreen extends StatelessWidget {
                           color: Colors.blue,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        labelColor: Colors.white,
+                        labelColor: AppColor.whiteColor(context),
                         unselectedLabelColor: Colors.grey[600],
                         tabs: const [
                           Tab(text: 'الطلاب'),
@@ -69,10 +67,8 @@ class UserManagementSCreen extends StatelessWidget {
                     Expanded(
                       child: TabBarView(
                         children: [
-                          // Students Tab
                           _buildUsersList(isStudents: true),
 
-                          // Teachers Tab
                           _buildUsersList(isStudents: false),
                         ],
                       ),
@@ -85,11 +81,9 @@ class UserManagementSCreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: إضافة مستخدم جديد
-        },
+        onPressed: () {},
         backgroundColor: Colors.blue,
-        child: const Icon(Icons.person_add, color: Colors.white),
+        child: Icon(Icons.person_add, color: AppColor.whiteColor(context)),
       ),
     );
   }
@@ -120,15 +114,11 @@ class UserManagementSCreen extends StatelessWidget {
               children: [
                 IconButton(
                   icon: const Icon(Icons.edit, color: Colors.blue),
-                  onPressed: () {
-                    // TODO: تعديل المستخدم
-                  },
+                  onPressed: () {},
                 ),
                 IconButton(
                   icon: const Icon(Icons.delete, color: Colors.red),
-                  onPressed: () {
-                    // TODO: حذف المستخدم
-                  },
+                  onPressed: () {},
                 ),
               ],
             ),
@@ -153,11 +143,6 @@ class UserManagementSCreen extends StatelessWidget {
   ];
 }
 
-// صفحة إدارة الفصول
-
-// صفحة التقارير والإحصائيات
-
-// صفحة إدارة النقل
 class TransportationManagementScreen extends StatelessWidget {
   TransportationManagementScreen({super.key});
 
@@ -169,7 +154,6 @@ class TransportationManagementScreen extends StatelessWidget {
         padding: EdgeInsets.all(16.w),
         child: Column(
           children: [
-            // Buses Overview
             Row(
               children: [
                 Expanded(child: _buildTransportStat('إجمالي الحافلات', '8', Colors.purple)),
@@ -182,7 +166,6 @@ class TransportationManagementScreen extends StatelessWidget {
 
             SizedBox(height: 20.h),
 
-            // Buses List
             Expanded(
               child: ListView.builder(
                 itemCount: _buses.length,
@@ -217,7 +200,7 @@ class TransportationManagementScreen extends StatelessWidget {
                         ),
                         child: Text(
                           bus['status']!,
-                          style: const TextStyle(color: Colors.white, fontSize: 12),
+                          style: TextStyle(color: AppColor.whiteColor(context), fontSize: 12),
                         ),
                       ),
                     ),
@@ -229,11 +212,9 @@ class TransportationManagementScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: إضافة حافلة جديدة
-        },
+        onPressed: () {},
         backgroundColor: Colors.purple,
-        child: const Icon(Icons.directions_bus, color: Colors.white),
+        child: Icon(Icons.directions_bus, color: AppColor.whiteColor(context)),
       ),
     );
   }

@@ -1,6 +1,7 @@
 // features/class/presentation/execution/class_schedule_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/features/class/data/model/school_class_model.dart';
 
 class ClassScheduleScreen extends StatefulWidget {
@@ -63,7 +64,7 @@ class _ClassScheduleScreenState extends State<ClassScheduleScreen> {
           'جدول حصص ${widget.schoolClass.name}',
           style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor:  AppColor.whiteColor(context),
         foregroundColor: Colors.black,
         elevation: 0,
       ),
@@ -88,7 +89,7 @@ class _ClassScheduleScreenState extends State<ClassScheduleScreen> {
                     },
                     selectedColor: Colors.blue,
                     labelStyle: TextStyle(
-                      color: _selectedDay == index ? Colors.white : Colors.black,
+                      color: _selectedDay == index ?  AppColor.whiteColor(context) : Colors.black,
                       fontSize: 14.sp,
                     ),
                   ),
@@ -118,7 +119,7 @@ class _ClassScheduleScreenState extends State<ClassScheduleScreen> {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
 
-      color: isBreak ? Colors.orange.shade50 : Colors.white,
+      color: isBreak ? Colors.orange.shade50 :  AppColor.whiteColor(context),
       child: Container(
         child: ListTile(
           leading: Container(

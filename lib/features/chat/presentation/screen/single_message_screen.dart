@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/features/chat/data/model/chat_message_model.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -65,7 +66,9 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                       child: Text(
                         message.text,
-                        style: TextStyle(color: message.isMe ? Colors.white : Colors.black),
+                        style: TextStyle(
+                          color: message.isMe ? AppColor.whiteColor(context) : Colors.black,
+                        ),
                       ),
                     ),
                   );
@@ -95,7 +98,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   CircleAvatar(
                     backgroundColor: Colors.blue,
                     child: IconButton(
-                      icon: Icon(Icons.send, color: Colors.white),
+                      icon: Icon(Icons.send, color: AppColor.whiteColor(context)),
                       onPressed: _sendMessage,
                     ),
                   ),

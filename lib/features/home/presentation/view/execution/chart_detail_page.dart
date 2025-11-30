@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 
 class ChartDetailPage extends StatefulWidget {
   final String chartTitle;
@@ -178,7 +179,7 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
       barTouchData: BarTouchData(
         enabled: true,
         touchTooltipData: BarTouchTooltipData(
-          getTooltipColor: (_) => Colors.white,
+          getTooltipColor: (_) => AppColor.whiteColor(context),
           getTooltipItem: (group, groupIndex, rod, rodIndex) {
             return BarTooltipItem(
               '${rod.toY.toInt()}%\n${_getBarTitles()[group.x.toInt()]}',
@@ -316,7 +317,7 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
       lineTouchData: LineTouchData(
         enabled: true,
         touchTooltipData: LineTouchTooltipData(
-          getTooltipColor: (_) => Colors.white,
+          getTooltipColor: (_) => AppColor.whiteColor(context),
           getTooltipItems: (touchedSpots) {
             return touchedSpots.map((touchedSpot) {
               return LineTooltipItem(
@@ -393,7 +394,7 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
                 radius: 5.r,
                 color: widget.chartColor,
                 strokeWidth: 2,
-                strokeColor: Colors.white,
+                strokeColor: AppColor.whiteColor(context),
               );
             },
           ),
@@ -463,13 +464,13 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
         titleStyle: TextStyle(
           fontSize: fontSize.sp,
           fontWeight: FontWeight.bold,
-          color: Colors.white,
+          color: AppColor.whiteColor(context),
         ),
         badgeWidget: isTouched
             ? Container(
                 padding: EdgeInsets.all(6.w),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColor.whiteColor(context),
                   borderRadius: BorderRadius.circular(6.r),
                   boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4.r)],
                 ),

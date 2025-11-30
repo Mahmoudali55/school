@@ -12,7 +12,6 @@ class ReportsScreen extends StatelessWidget {
         padding: EdgeInsets.all(16.w),
         child: Column(
           children: [
-            // Report Types Grid
             GridView.builder(
               shrinkWrap: true,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -28,9 +27,7 @@ class ReportsScreen extends StatelessWidget {
                   elevation: 2,
                   color: report['color']!.withOpacity(0.1),
                   child: InkWell(
-                    onTap: () {
-                      // TODO: عرض التقرير المحدد
-                    },
+                    onTap: () {},
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -54,7 +51,6 @@ class ReportsScreen extends StatelessWidget {
 
             SizedBox(height: 20.h),
 
-            // Recent Reports
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,9 +72,7 @@ class ReportsScreen extends StatelessWidget {
                             subtitle: Text(report['date']!),
                             trailing: IconButton(
                               icon: const Icon(Icons.download, color: Colors.orange),
-                              onPressed: () {
-                                // TODO: تحميل التقرير
-                              },
+                              onPressed: () {},
                             ),
                           ),
                         );

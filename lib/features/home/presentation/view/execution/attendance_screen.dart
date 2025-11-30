@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 
 class AttendanceScreen extends StatefulWidget {
   const AttendanceScreen({super.key});
@@ -131,7 +132,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 ),
                 child: Text(
                   'حفظ الحضور',
-                  style: TextStyle(fontSize: 16.sp, color: Colors.white),
+                  style: TextStyle(fontSize: 16.sp, color: AppColor.whiteColor(context)),
                 ),
               ),
             ),

@@ -1,6 +1,7 @@
 // lib/features/classes/presentation/screens/class_students_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 
 import '../../data/model/school_class_model.dart';
 
@@ -39,7 +40,7 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
           'طلاب ${widget.schoolClass.name}',
           style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColor.whiteColor(context),
         foregroundColor: Colors.black,
         elevation: 0,
         actions: [IconButton(icon: Icon(Icons.person_add), onPressed: _addStudent)],
@@ -84,7 +85,7 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: _addStudent,
         backgroundColor: const Color(0xFF2E5BFF),
-        child: Icon(Icons.person_add, color: Colors.white),
+        child: Icon(Icons.person_add, color: AppColor.whiteColor(context)),
       ),
     );
   }
@@ -93,7 +94,7 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
       ),
       child: Row(

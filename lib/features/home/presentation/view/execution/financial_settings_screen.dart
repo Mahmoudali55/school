@@ -26,10 +26,8 @@ class FinancialSettingsScreen extends StatelessWidget {
         padding: EdgeInsets.all(16.w),
         child: Column(
           children: [
-            // Financial Summary
             _buildFinancialSummary(),
             SizedBox(height: 20.h),
-            // Financial Settings Tabs
             Expanded(
               child: DefaultTabController(
                 length: 3,
@@ -118,9 +116,7 @@ class FinancialSettingsScreen extends StatelessWidget {
           ),
           subtitle: Text('٢٠٠٠ ر.س - تنتهي في ٣٠/٠٦/٢٠٢٤', style: TextStyle(fontSize: 12.sp)),
           trailing: Icon(Icons.arrow_forward_ios, size: 16.w),
-          onTap: () {
-            // View fee details
-          },
+          onTap: () {},
         ),
       ),
     );
@@ -145,9 +141,7 @@ class FinancialSettingsScreen extends StatelessWidget {
             style: TextStyle(fontSize: 12.sp),
           ),
           trailing: Icon(Icons.arrow_forward_ios, size: 16.w),
-          onTap: () {
-            // View expense details
-          },
+          onTap: () {},
         ),
       ),
     );
@@ -171,12 +165,6 @@ class FinancialSettingsScreen extends StatelessWidget {
   }
 
   Widget _buildSettingItem(String title, String value) {
-    return ListTile(
-      title: Text(title),
-      trailing: Text(value),
-      onTap: () {
-        // Edit setting
-      },
-    );
+    return ListTile(title: Text(title), trailing: Text(value), onTap: () {});
   }
 }

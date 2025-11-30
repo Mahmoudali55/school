@@ -1,6 +1,7 @@
 // lib/features/classes/presentation/screens/class_details_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/features/class/presentation/execution/add_edit_class_screen.dart';
 import 'package:my_template/features/class/presentation/execution/class_reports_screen.dart';
 import 'package:my_template/features/class/presentation/execution/class_schedule_screen.dart';
@@ -23,7 +24,7 @@ class ClassDetailsScreen extends StatelessWidget {
           'تفاصيل الفصل',
           style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColor.whiteColor(context),
         foregroundColor: Colors.black,
         elevation: 0,
       ),

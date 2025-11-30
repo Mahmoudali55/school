@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 
 class UploadLessonScreen extends StatefulWidget {
   const UploadLessonScreen({super.key});
@@ -160,7 +161,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                   ),
                   child: Text(
                     'رفع الدرس',
-                    style: TextStyle(fontSize: 16.sp, color: Colors.white),
+                    style: TextStyle(fontSize: 16.sp, color: AppColor.whiteColor(context)),
                   ),
                 ),
               ),

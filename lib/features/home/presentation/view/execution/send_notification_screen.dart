@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 
 class SendNotificationScreen extends StatefulWidget {
   const SendNotificationScreen({super.key});
@@ -83,6 +85,10 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
                         return FilterChip(
                           label: Text(classItem),
                           selected: selectedClasses.contains(classItem),
+                          selectedColor: AppColor.primaryColor(context),
+                          labelStyle: TextStyle(color: Colors.white),
+                          checkmarkColor: AppColor.whiteColor(context),
+
                           onSelected: (bool selected) {
                             setState(() {
                               if (selected) {
@@ -101,12 +107,11 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
               ],
 
               // عنوان الإشعار
-              TextFormField(
+              CustomFormField(
+                radius: 12.r,
+
                 controller: _titleController,
-                decoration: InputDecoration(
-                  labelText: 'عنوان الإشعار',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                ),
+                title: 'عنوان الإشعار',
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'يرجى إدخال عنوان الإشعار';
@@ -116,14 +121,12 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
               ),
               SizedBox(height: 16.h),
 
-              // نص الإشعار
-              TextFormField(
+              CustomFormField(
+                radius: 12.r,
                 controller: _messageController,
                 maxLines: 5,
-                decoration: InputDecoration(
-                  labelText: 'نص الإشعار',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                ),
+                title: 'نص الإشعار',
+
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'يرجى إدخال نص الإشعار';
@@ -184,7 +187,7 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
                   ),
                   child: Text(
                     'إرسال الإشعار',
-                    style: TextStyle(fontSize: 16.sp, color: Colors.white),
+                    style: TextStyle(fontSize: 16.sp, color: AppColor.whiteColor(context)),
                   ),
                 ),
               ),

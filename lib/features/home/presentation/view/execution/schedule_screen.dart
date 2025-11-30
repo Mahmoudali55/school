@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});
@@ -107,7 +108,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         Text(
                           _days[index],
                           style: TextStyle(
-                            color: _selectedDay == index ? Colors.white : Colors.grey,
+                            color: _selectedDay == index
+                                ? AppColor.whiteColor(context)
+                                : Colors.grey,
                             fontWeight: FontWeight.bold,
                             fontSize: 12.sp,
                           ),
@@ -116,7 +119,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         Text(
                           '${_schedule[_days[index]]?.length ?? 0}',
                           style: TextStyle(
-                            color: _selectedDay == index ? Colors.white : Colors.grey,
+                            color: _selectedDay == index
+                                ? AppColor.whiteColor(context)
+                                : Colors.grey,
                             fontSize: 10.sp,
                           ),
                         ),

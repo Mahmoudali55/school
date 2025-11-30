@@ -15,6 +15,7 @@ import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/common_methods.dart';
 import 'package:my_template/core/utils/navigator_methods.dart';
 import 'package:my_template/features/auth/presentation/view/cubit/auth_cubit.dart';
+import 'package:my_template/features/auth/presentation/view/cubit/auth_state.dart';
 import 'package:my_template/features/select_interface/data/model/user_type_model.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -171,10 +172,12 @@ class LoginScreen extends StatelessWidget {
         Row(
           children: [
             Checkbox(
-              value: cubit.rememberMe,
+              value: cubit.state.rememberMe,
               onChanged: (value) => cubit.changeRememberMe(),
-              fillColor: WidgetStateProperty.all(AppColor.primaryColor(context)),
+              activeColor: AppColor.primaryColor(context),
+              checkColor: AppColor.whiteColor(context),
             ),
+
             Gap(8.w),
             Text(
               AppLocalKay.rememberMe.tr(),

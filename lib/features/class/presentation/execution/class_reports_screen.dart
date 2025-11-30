@@ -1,6 +1,7 @@
 // features/class/presentation/execution/class_reports_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/features/class/data/model/school_class_model.dart';
 
 class ClassReportsScreen extends StatefulWidget {
@@ -29,7 +30,7 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
           'تقارير ${widget.schoolClass.name}',
           style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor:  AppColor.whiteColor(context),
         foregroundColor: Colors.black,
         elevation: 0,
       ),
@@ -65,7 +66,7 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
                     avatar: Icon(
                       report['icon'],
                       size: 18.w,
-                      color: _selectedReportType == index ? Colors.white : report['color'],
+                      color: _selectedReportType == index ?  AppColor.whiteColor(context) : report['color'],
                     ),
                     selected: _selectedReportType == index,
                     onSelected: (selected) {
@@ -75,7 +76,7 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
                     },
                     selectedColor: report['color'],
                     labelStyle: TextStyle(
-                      color: _selectedReportType == index ? Colors.white : Colors.black,
+                      color: _selectedReportType == index ?  AppColor.whiteColor(context) : Colors.black,
                       fontSize: 14.sp,
                     ),
                   ),
@@ -237,7 +238,7 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
             ),
             child: Text(
               student['percentage'],
-              style: TextStyle(fontSize: 12.sp, color: Colors.white, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 12.sp, color:  AppColor.whiteColor(context), fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -383,7 +384,7 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
           CircleAvatar(
             radius: 20.r,
             backgroundColor: _getBehaviorColor(student['points']),
-            child: Icon(_getBehaviorIcon(student['points']), size: 18.w, color: Colors.white),
+            child: Icon(_getBehaviorIcon(student['points']), size: 18.w, color:  AppColor.whiteColor(context)),
           ),
           SizedBox(width: 12.w),
           Expanded(
@@ -410,7 +411,7 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
             ),
             child: Text(
               student['status'],
-              style: TextStyle(fontSize: 12.sp, color: Colors.white, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 12.sp, color:  AppColor.whiteColor(context), fontWeight: FontWeight.bold),
             ),
           ),
         ],

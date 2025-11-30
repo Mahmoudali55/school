@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/features/home/presentation/view/execution/assignment_detail_screen.dart';
 
 class AssignmentsScreen extends StatefulWidget {
@@ -90,7 +91,9 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
                         child: Text(
                           _tabs[index],
                           style: TextStyle(
-                            color: _selectedTab == index ? Colors.white : Colors.grey,
+                            color: _selectedTab == index
+                                ? AppColor.whiteColor(context)
+                                : Colors.grey,
                             fontWeight: FontWeight.bold,
                             fontSize: 14.sp,
                           ),

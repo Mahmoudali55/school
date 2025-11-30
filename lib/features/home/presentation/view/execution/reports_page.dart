@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/features/home/presentation/view/execution/chart_detail_page.dart';
 
 class ReportsPage extends StatefulWidget {
@@ -160,7 +161,7 @@ class _ReportsPageState extends State<ReportsPage> {
   Widget _buildStatCard(Map<String, dynamic> stat) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8.r, offset: Offset(0, 2.h)),
@@ -234,7 +235,7 @@ class _ReportsPageState extends State<ReportsPage> {
 
         Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColor.whiteColor(context),
             borderRadius: BorderRadius.circular(12.r),
             boxShadow: [
               BoxShadow(
@@ -282,7 +283,7 @@ class _ReportsPageState extends State<ReportsPage> {
                           type,
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: isSelected ? Colors.white : Colors.grey.shade700,
+                            color: isSelected ? AppColor.whiteColor(context) : Colors.grey.shade700,
                             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                           ),
                         ),
@@ -352,7 +353,7 @@ class _ReportsPageState extends State<ReportsPage> {
                             label: Text('تصدير PDF'),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue,
-                              foregroundColor: Colors.white,
+                              foregroundColor: AppColor.whiteColor(context),
                               minimumSize: Size.fromHeight(44.h),
                             ),
                           ),
@@ -405,7 +406,7 @@ class _ReportsPageState extends State<ReportsPage> {
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(12.r),
         boxShadow: [
           BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8.r, offset: Offset(0, 2.h)),
@@ -532,7 +533,7 @@ class _ReportsPageState extends State<ReportsPage> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColor.whiteColor(context),
           borderRadius: BorderRadius.circular(12.r),
           boxShadow: [
             BoxShadow(
