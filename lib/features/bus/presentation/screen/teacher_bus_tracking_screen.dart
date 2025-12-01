@@ -215,61 +215,6 @@ class _TeacherBusTrackingScreenState extends State<TeacherBusTrackingScreen>
       ),
 
       // Quick Action Button
-      floatingActionButton: _buildQuickActionButton(),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [Color(0xFFFF9800), Color(0xFFF57C00), Color(0xFFE65100)],
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "متابعة حافلات الطلاب",
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    "الأستاذ أحمد - مدرس الرياضيات",
-                    style: TextStyle(fontSize: 14.sp, color: Colors.white.withOpacity(0.9)),
-                  ),
-                ],
-              ),
-              Container(
-                padding: EdgeInsets.all(12.w),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(Icons.school_rounded, color: Colors.white, size: 24.w),
-              ),
-            ],
-          ),
-          SizedBox(height: 16.h),
-          Text(
-            "الجمعة، 15 نوفمبر 2024 - وقت الحصة: 08:30 ص",
-            style: TextStyle(fontSize: 14.sp, color: Colors.white.withOpacity(0.8)),
-          ),
-        ],
-      ),
     );
   }
 

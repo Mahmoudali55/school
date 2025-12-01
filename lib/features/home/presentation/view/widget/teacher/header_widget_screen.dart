@@ -1,5 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class HeaderWidget extends StatelessWidget {
   final String teacherName;
@@ -19,33 +23,31 @@ class HeaderWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "مرحباً،",
-                  style: TextStyle(fontSize: 16.sp, color: const Color(0xFF6B7280)),
+                  AppLocalKay.welcome.tr(),
+                  style: AppTextStyle.bodyLarge(context).copyWith(color: const Color(0xFF1F2937)),
                 ),
                 Text(
                   teacherName,
-                  style: TextStyle(
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF1F2937),
-                  ),
+                  style: AppTextStyle.displaySmall(
+                    context,
+                  ).copyWith(color: const Color(0xFF1F2937)),
                 ),
               ],
             ),
             Container(
               padding: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColor.whiteColor(context),
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: AppColor.blackColor(context).withOpacity(0.1),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
                 ],
               ),
-              child: Icon(Icons.school, color: const Color(0xFF2E5BFF), size: 28.w),
+              child: Icon(Icons.school, color: AppColor.primaryColor(context), size: 28.w),
             ),
           ],
         ),
@@ -57,17 +59,15 @@ class HeaderWidget extends StatelessWidget {
             return Container(
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
               decoration: BoxDecoration(
-                color: const Color(0xFF2E5BFF).withOpacity(0.1),
+                color: AppColor.primaryColor(context).withOpacity(0.1),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: const Color(0xFF2E5BFF).withOpacity(0.3)),
+                border: Border.all(color: AppColor.primaryColor(context).withOpacity(0.3)),
               ),
               child: Text(
                 subject,
-                style: TextStyle(
-                  color: const Color(0xFF2E5BFF),
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: AppTextStyle.bodyMedium(
+                  context,
+                ).copyWith(color: AppColor.primaryColor(context)),
               ),
             );
           }).toList(),

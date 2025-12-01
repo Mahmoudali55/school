@@ -1,5 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/schedule_Item_model.dart';
 import 'package:my_template/features/home/presentation/view/widget/teacher/schedule_Item_widget.dart';
 
@@ -39,16 +42,12 @@ class ScheduleWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "جدول الحصص اليومي",
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF1F2937),
-              ),
+              AppLocalKay.schedule.tr(),
+              style: AppTextStyle.bodyLarge(context).copyWith(color: const Color(0xFF1F2937)),
             ),
             Text(
-              "اليوم - ${_getTodayDate()}",
-              style: TextStyle(color: const Color(0xFF6B7280), fontSize: 14.sp),
+              "${AppLocalKay.today.tr()} - ${_getTodayDate()}",
+              style: AppTextStyle.bodyMedium(context).copyWith(color: const Color(0xFF1F2937)),
             ),
           ],
         ),

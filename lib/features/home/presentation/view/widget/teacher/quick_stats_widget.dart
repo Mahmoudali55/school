@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/home/presentation/view/widget/teacher/stat_card_widget.dart';
 
 class QuickStatsWidget extends StatelessWidget {
@@ -11,9 +13,9 @@ class QuickStatsWidget extends StatelessWidget {
       children: [
         Expanded(
           child: StatCardWidget(
-            title: "الواجبات المنتظرة",
+            title: AppLocalKay.todo.tr(),
             value: "5",
-            subtitle: "تحتاج تصحيح",
+            subtitle: AppLocalKay.todo_hint.tr(),
             icon: Icons.assignment,
             color: Color(0xFFF59E0B),
           ),
@@ -21,9 +23,9 @@ class QuickStatsWidget extends StatelessWidget {
         SizedBox(width: 12.w),
         Expanded(
           child: StatCardWidget(
-            title: "الإشعارات المرسلة",
+            title: AppLocalKay.notification.tr(),
             value: "3",
-            subtitle: "هذا الأسبوع",
+            subtitle: AppLocalKay.week.tr(),
             icon: Icons.notifications,
             color: Color(0xFF10B981),
           ),

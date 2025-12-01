@@ -89,13 +89,6 @@ class TeacherClassesScreen extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: إضافة فصل جديد
-        },
-        backgroundColor: Color(0xFFFF9800),
-        child: Icon(Icons.add, color: AppColor.whiteColor(context)),
-      ),
     );
   }
 
@@ -353,7 +346,7 @@ class TeacherClassesScreen extends StatelessWidget {
 
                 Expanded(
                   child: _buildActionButton(
-                    text: 'الواجبات ($assignments)',
+                    text: 'الواجبات ',
                     icon: Icons.assignment,
                     onPressed: () {
                       // TODO: عرض الواجبات
@@ -374,19 +367,6 @@ class TeacherClassesScreen extends StatelessWidget {
                 ),
 
                 const SizedBox(width: 8),
-
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: IconButton(
-                    onPressed: () {
-                      // TODO: دخول الفصل
-                    },
-                    icon: Icon(Icons.arrow_forward, color: AppColor.whiteColor(context)),
-                  ),
-                ),
               ],
             ),
           ],

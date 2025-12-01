@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/schedule_Item_model.dart';
 import 'package:my_template/features/home/presentation/view/execution/attendance_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/behavior_report_screen.dart';
@@ -31,7 +34,7 @@ class ActionCardWidget extends StatelessWidget {
             SizedBox(height: 8.h),
             Text(
               action.title,
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600, color: Colors.black87),
+              style: AppTextStyle.bodyMedium(context, color: AppColor.blackColor(context)),
               textAlign: TextAlign.center,
             ),
           ],
@@ -44,22 +47,22 @@ class ActionCardWidget extends StatelessWidget {
     Widget screen;
 
     switch (title) {
-      case "رفع درس جديد":
+      case AppLocalKay.new_class:
         screen = const UploadLessonScreen();
         break;
-      case "تسجيل الحضور":
+      case AppLocalKay.check_in:
         screen = const AttendanceScreen();
         break;
-      case "إنشاء واجب":
+      case AppLocalKay.create_todo:
         screen = const CreateAssignmentScreen();
         break;
-      case "إرسال إشعار":
+      case AppLocalKay.send_notification:
         screen = const SendNotificationScreen();
         break;
-      case "تقرير سلوك":
+      case AppLocalKay.behavior:
         screen = const BehaviorReportScreen();
         break;
-      case "التقارير":
+      case AppLocalKay.report:
         screen = const ReportsScreen();
         break;
       default:
