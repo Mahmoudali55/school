@@ -88,4 +88,17 @@ class AppLocalKay {
   static const String students = 'students';
   static const String checkin = 'checkin';
   static const String dialog_delete_confirm = 'dialog_delete_confirm';
+  static const String bus_title = 'bustitle';
+  static const String ConnectDriver = 'ConnectDriver';
+  static const String ParentNotification = 'ParentNotification';
+  static const String reportS = 'reportS';
+  static const String route = 'route';
+  static const String classetitle = 'classetitle';
+  static const String ConnectDriverHint = 'ConnectDriverHint';
+  static const String Connect = 'Connect';
+  static const String busstudents = 'busstudents';
+  static const String busdetails = 'busdetails';
+  static const String travels = 'travels';
+  static const String no_travels = 'no_travels';
+  static const String no_travels_hint = 'no_travels_hint';
 }

@@ -109,5 +109,18 @@
     "empty_classes_hint":"قم بإضافة فصل جديد",
     "program":"تقدم المنهج",
     "students":"الطلاب",
-    "checkin":"الحضور"
+    "checkin":"الحضور",
+    "bustitle":"الحافلة المدرسية",
+    "ConnectDriver":"اتصال سائق",
+    "ParentNotification":"إشعار أولياء أمور",
+    "reportS":"تقرير",
+    "route":"رحلات",
+    "classetitle":"الفصول الدراسية",
+    "ConnectDriverHint":"هل تريد الاتصال بالسائق؟",
+    "Connect":"اتصال",
+    "busstudents":"الطلاب على الحافلة",
+    "busdetails":"تفاصيل الفصل والحافلة",
+    "travels":"الرحلات الميدانية",
+    "no_travels":"لا توجد رحلات ميدانية",
+    "no_travels_hint": "يمكنك إضافة رحلات جديدة"
 }
