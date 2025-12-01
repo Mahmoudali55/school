@@ -100,5 +100,14 @@
     "no_tasks":"لا توجد مهام قادمة",
     "complete": "تصحيح",
     "prepare":"تحضير",
-    "upcoming":"المهام القادمة"
+    "upcoming":"المهام القادمة",
+    "classestitle":"الفصول المدرسية",
+    "studentstitle":"إجمالي الطلاب",
+    "todostitle":"الواجبات",
+    "checkintitle":"الحضور اليوم",
+    "empty_classes":"  لا توجد فصول دراسية",
+    "empty_classes_hint":"قم بإضافة فصل جديد",
+    "program":"تقدم المنهج",
+    "students":"الطلاب",
+    "checkin":"الحضور"
 }

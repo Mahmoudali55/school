@@ -40,7 +40,7 @@ class DailyViewWidget extends StatelessWidget {
 
   Widget _buildDailyHeader(CalendarState state, int eventCount, {required BuildContext context}) {
     return Container(
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.all(10.w),
       decoration: BoxDecoration(
         color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(12),
@@ -71,10 +71,12 @@ class DailyViewWidget extends StatelessWidget {
                   _getFormattedDate(state.selectedDate),
                   style: AppTextStyle.bodyMedium(context, color: AppColor.blackColor(context)),
                 ),
-                SizedBox(height: 2.h),
+                SizedBox(height: 5.h),
                 Text(
                   _getDayName(state.selectedDate.weekday),
-                  style: AppTextStyle.bodySmall(context, color: AppColor.greyColor(context)),
+                  style: AppTextStyle.bodyMedium(context, color: AppColor.greyColor(context)),
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),

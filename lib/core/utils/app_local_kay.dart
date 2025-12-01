@@ -78,4 +78,14 @@ class AppLocalKay {
   static const String complete = 'complete';
   static const String prepare = 'prepare';
   static const String upcoming = 'upcoming';
+  static const String classestitle = 'classestitle';
+  static const String studentstitle = 'studentstitle';
+  static const String todostitle = 'todostitle';
+  static const String checkintitle = 'checkintitle';
+  static const String empty_classes = 'empty_classes';
+  static const String empty_classes_hint = 'empty_classes_hint';
+  static const String program = 'program';
+  static const String students = 'students';
+  static const String checkin = 'checkin';
+  static const String dialog_delete_confirm = 'dialog_delete_confirm';
 }

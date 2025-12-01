@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -61,7 +62,7 @@ class MonthlyViewWidget extends StatelessWidget {
         },
         calendarFormat: CalendarFormat.month,
         startingDayOfWeek: StartingDayOfWeek.saturday,
-        locale: 'ar',
+        locale: context.locale.languageCode,
         calendarStyle: CalendarStyle(
           selectedDecoration: BoxDecoration(color: const Color(0xFFFF9800), shape: BoxShape.circle),
           todayDecoration: BoxDecoration(

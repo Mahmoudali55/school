@@ -51,7 +51,7 @@ class CalendarEventItemWidget extends StatelessWidget {
                     SizedBox(width: 8.w),
                     Text(
                       "${_formatDate(task.date)} • ${task.formattedTime}",
-                      style: AppTextStyle.bodySmall(context, color: AppColor.greyColor(context)),
+                      style: AppTextStyle.bodyMedium(context, color: AppColor.greyColor(context)),
                     ),
                   ],
                 ),
