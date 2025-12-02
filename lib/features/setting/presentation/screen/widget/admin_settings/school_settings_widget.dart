@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/setting/presentation/execution/class_management_screen.dart';
 import 'package:my_template/features/setting/presentation/execution/school_info_screen.dart';
 import 'package:my_template/features/setting/presentation/execution/system_settings_screen.dart';
@@ -14,26 +16,26 @@ class SchoolSettingsWidget extends StatelessWidget {
       children: [
         SettingItemWidget(
           icon: Icons.school,
-          title: 'معلومات المدرسة',
-          subtitle: 'تعديل بيانات المدرسة',
+          title: AppLocalKay.schoolInfo.tr(),
+          subtitle: AppLocalKay.schoolInfoSub.tr(),
           onTap: () => editSchoolInfo(context),
         ),
         SettingItemWidget(
           icon: Icons.group,
-          title: 'إدارة المستخدمين',
-          subtitle: 'إضافة وحذف المستخدمين',
+          title: AppLocalKay.users.tr(),
+          subtitle: AppLocalKay.usersSub.tr(),
           onTap: () => manageUsers(context),
         ),
         SettingItemWidget(
           icon: Icons.class_,
-          title: 'إدارة الصفوف',
-          subtitle: 'تنظيم الصفوف والشعب',
+          title: AppLocalKay.manageClasses.tr(),
+          subtitle: AppLocalKay.classesSub.tr(),
           onTap: () => manageClasses(context),
         ),
         SettingItemWidget(
           icon: Icons.assignment,
-          title: 'إعدادات النظام',
-          subtitle: 'إعدادات الدرجات والتقارير',
+          title: AppLocalKay.system.tr(),
+          subtitle: AppLocalKay.systemSub.tr(),
           onTap: () => systemSettings(context),
         ),
       ],

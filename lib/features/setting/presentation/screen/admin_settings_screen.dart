@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/setting/presentation/screen/widget/admin_settings/account_settings.dart';
 import 'package:my_template/features/setting/presentation/screen/widget/admin_settings/action_buttons_widget.dart';
 import 'package:my_template/features/setting/presentation/screen/widget/admin_settings/app_info_widget.dart';
@@ -26,45 +29,46 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'الإعدادات',
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: AppColor.whiteColor(context),
-        foregroundColor: AppColor.hintColor(context),
-        elevation: 0,
-        centerTitle: true,
-      ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ProfileCardWidget(),
-            SizedBox(height: 24.h),
-            SectionTitleWidget(title: 'إعدادات الحساب'),
-            SizedBox(height: 16.h),
-            AccountSettingsWidget(),
-            SizedBox(height: 24.h),
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Text(
+                  AppLocalKay.settings.tr(),
+                  style: AppTextStyle.titleLarge(
+                    context,
+                    color: AppColor.blackColor(context),
+                  ).copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
+              ProfileCardWidget(),
+              SizedBox(height: 24.h),
+              SectionTitleWidget(title: AppLocalKay.setting_account.tr()),
+              SizedBox(height: 16.h),
+              AccountSettingsWidget(),
+              SizedBox(height: 24.h),
 
-            SectionTitleWidget(title: 'إعدادات المدرسة'),
-            SizedBox(height: 16.h),
-            SchoolSettingsWidget(),
-            SizedBox(height: 24.h),
+              SectionTitleWidget(title: AppLocalKay.setting_school.tr()),
+              SizedBox(height: 16.h),
+              SchoolSettingsWidget(),
+              SizedBox(height: 24.h),
 
-            SectionTitleWidget(title: 'إعدادات التطبيق'),
-            SizedBox(height: 16.h),
-            AppSettingsWidget(),
-            SizedBox(height: 24.h),
+              SectionTitleWidget(title: AppLocalKay.setting_app.tr()),
+              SizedBox(height: 16.h),
+              AppSettingsWidget(),
+              SizedBox(height: 24.h),
 
-            SectionTitleWidget(title: 'المعلومات'),
-            SizedBox(height: 16.h),
-            AppInfoWidget(),
-            SizedBox(height: 32.h),
+              SectionTitleWidget(title: AppLocalKay.setting_info.tr()),
+              SizedBox(height: 16.h),
+              AppInfoWidget(),
+              SizedBox(height: 32.h),
 
-            ActionButtonsWidget(),
-          ],
+              ActionButtonsWidget(),
+            ],
+          ),
         ),
       ),
     );

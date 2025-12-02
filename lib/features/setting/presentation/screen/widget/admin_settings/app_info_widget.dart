@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/setting/presentation/execution/help_center_screen.dart';
 import 'package:my_template/features/setting/presentation/execution/privacy_policy_screen.dart';
 import 'package:my_template/features/setting/presentation/execution/terms_screen.dart';
@@ -14,26 +16,26 @@ class AppInfoWidget extends StatelessWidget {
       children: [
         SettingItemWidget(
           icon: Icons.help,
-          title: 'مركز المساعدة',
-          subtitle: 'الدعم والأسئلة الشائعة',
+          title: AppLocalKay.helpCenter_title.tr(),
+          subtitle: AppLocalKay.helpCenter_subtitle.tr(),
           onTap: () => showHelpCenter(context),
         ),
         SettingItemWidget(
           icon: Icons.privacy_tip,
-          title: 'الخصوصية',
-          subtitle: 'سياسة الخصوصية',
+          title: AppLocalKay.privacyPolicy_title.tr(),
+          subtitle: AppLocalKay.privacyPolicy_subtitle.tr(),
           onTap: () => showPrivacyPolicy(context),
         ),
         SettingItemWidget(
           icon: Icons.description,
-          title: 'الشروط والأحكام',
-          subtitle: 'شروط استخدام التطبيق',
+          title: AppLocalKay.terms_title.tr(),
+          subtitle: AppLocalKay.terms_subtitle.tr(),
           onTap: () => showTerms(context),
         ),
         SettingItemWidget(
           icon: Icons.info,
-          title: 'حول التطبيق',
-          subtitle: 'الإصدار والمعلومات',
+          title: AppLocalKay.about_title.tr(),
+          subtitle: AppLocalKay.about_subtitle.tr(),
           onTap: () => showAbout(context),
         ),
       ],
@@ -55,8 +57,8 @@ class AppInfoWidget extends StatelessWidget {
   showAbout(BuildContext context) {
     showAboutDialog(
       context: context,
-      applicationName: 'نظام إدارة المدرسة',
-      applicationVersion: 'الإصدار 2.1.0',
+      applicationName: AppLocalKay.appName.tr(),
+      applicationVersion: AppLocalKay.appVersion.tr(),
       applicationIcon: Icon(Icons.school, size: 50.w),
     );
   }

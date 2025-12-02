@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/setting/presentation/execution/change_password_screen.dart';
 import 'package:my_template/features/setting/presentation/execution/language_settings_screen.dart';
 import 'package:my_template/features/setting/presentation/execution/notifications_settings_screen.dart';
@@ -16,25 +18,25 @@ class GeneralSettingsSection extends StatelessWidget {
         children: [
           SettingsTileWidget(
             icon: Icons.lock,
-            title: "تغيير كلمة المرور",
+            title: AppLocalKay.setting_password.tr(),
             onTap: () => _navigateToChangePassword(context),
           ),
           divider(),
           SettingsTileWidget(
             icon: Icons.language,
-            title: "اللغة",
+            title: AppLocalKay.language.tr(),
             onTap: () => _navigateToLanguageSettings(context),
           ),
           divider(),
           SettingsTileWidget(
             icon: Icons.notifications,
-            title: "الإشعارات",
+            title: AppLocalKay.setting_notification.tr(),
             onTap: () => _navigateToNotificationsSettings(context),
           ),
           divider(),
           SettingsTileWidget(
             icon: Icons.privacy_tip,
-            title: "الخصوصية",
+            title: AppLocalKay.privacy.tr(),
             onTap: () => _navigateToPrivacySettings(context),
           ),
         ],

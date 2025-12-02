@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class AppSettingsWidget extends StatefulWidget {
   const AppSettingsWidget({super.key});
@@ -15,19 +18,19 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
     bool _notificationsEnabled = true;
     bool _darkModeEnabled = false;
     bool _biometricEnabled = false;
-    String _selectedLanguage = 'العربية';
-    String _selectedTheme = 'فاتح';
+    String _selectedLanguage = AppLocalKay.arabic.tr();
+    String _selectedTheme = AppLocalKay.light.tr();
     return Column(
       children: [
         // اللغة
         Card(
           child: ListTile(
             leading: Icon(Icons.language, color: AppColor.primaryColor(context)),
-            title: Text('اللغة'),
+            title: Text(AppLocalKay.language.tr(), style: AppTextStyle.bodyLarge(context)),
             subtitle: Text(_selectedLanguage),
             trailing: DropdownButton<String>(
               value: _selectedLanguage,
-              items: ['العربية', 'English', 'Français']
+              items: [AppLocalKay.arabic.tr(), AppLocalKay.english.tr()]
                   .map((String value) => DropdownMenuItem<String>(value: value, child: Text(value)))
                   .toList(),
               onChanged: (String? newValue) {
@@ -49,7 +52,7 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
             subtitle: Text(_selectedTheme),
             trailing: DropdownButton<String>(
               value: _selectedTheme,
-              items: ['فاتح', 'غامق', 'تلقائي']
+              items: [AppLocalKay.light.tr(), AppLocalKay.dark.tr(), AppLocalKay.system_theme.tr()]
                   .map((String value) => DropdownMenuItem<String>(value: value, child: Text(value)))
                   .toList(),
               onChanged: (String? newValue) {
@@ -67,8 +70,11 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
         Card(
           child: SwitchListTile(
             secondary: Icon(Icons.notifications_active, color: AppColor.primaryColor(context)),
-            title: Text('الإشعارات'),
-            subtitle: Text('تفعيل/تعطيل الإشعارات'),
+            title: Text(AppLocalKay.notification.tr()),
+            subtitle: Text(
+              AppLocalKay.notificationsSub.tr(),
+              style: AppTextStyle.bodyLarge(context),
+            ),
             value: _notificationsEnabled,
             onChanged: (bool value) {
               setState(() {
@@ -83,8 +89,8 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
         Card(
           child: SwitchListTile(
             secondary: Icon(Icons.fingerprint, color: AppColor.primaryColor(context)),
-            title: Text('المصادقة البيومترية'),
-            subtitle: Text('استخدام البصمة أو التعرف على الوجه'),
+            title: Text(AppLocalKay.biometric.tr(), style: AppTextStyle.bodyLarge(context)),
+            subtitle: Text(AppLocalKay.biometricSub.tr(), style: AppTextStyle.bodyMedium(context)),
             value: _biometricEnabled,
             onChanged: (bool value) {
               setState(() {

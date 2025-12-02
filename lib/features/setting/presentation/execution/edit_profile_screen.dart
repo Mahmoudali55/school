@@ -30,9 +30,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           'تعديل الملف الشخصي',
           style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
-
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: AppColor.blackColor(context)),
+          onPressed: () => Navigator.pop(context),
+        ),
         elevation: 0,
-        actions: [IconButton(icon: Icon(Icons.save), onPressed: _saveProfile)],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.w),

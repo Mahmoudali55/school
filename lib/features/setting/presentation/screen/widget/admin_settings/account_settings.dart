@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/setting/presentation/execution/change_password_screen.dart';
 import 'package:my_template/features/setting/presentation/execution/edit_profile_screen.dart';
 import 'package:my_template/features/setting/presentation/execution/notification_settings_screen.dart';
@@ -14,26 +16,26 @@ class AccountSettingsWidget extends StatelessWidget {
       children: [
         SettingItemWidget(
           icon: Icons.person,
-          title: 'الملف الشخصي',
-          subtitle: 'تعديل المعلومات الشخصية',
+          title: AppLocalKay.setting_profile.tr(),
+          subtitle: AppLocalKay.setting_profile_edit.tr(),
           onTap: () => editProfile(context),
         ),
         SettingItemWidget(
           icon: Icons.lock,
-          title: 'كلمة المرور',
-          subtitle: 'تغيير كلمة المرور',
+          title: AppLocalKay.setting_password.tr(),
+          subtitle: AppLocalKay.setting_password_change.tr(),
           onTap: () => changePassword(context),
         ),
         SettingItemWidget(
           icon: Icons.security,
-          title: 'الأمان',
-          subtitle: 'المصادقة الثنائية والإعدادات الأمنية',
+          title: AppLocalKay.setting_safety.tr(),
+          subtitle: AppLocalKay.setting_security.tr(),
           onTap: () => securitySettings(context),
         ),
         SettingItemWidget(
           icon: Icons.notifications,
-          title: 'الإشعارات',
-          subtitle: 'إدارة الإشعارات والتنبيهات',
+          title: AppLocalKay.setting_notification.tr(),
+          subtitle: AppLocalKay.setting_notification_alert.tr(),
           onTap: () => notificationSettings(context),
         ),
       ],
