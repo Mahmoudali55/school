@@ -58,6 +58,10 @@ dependencies:
   fl_chart: ^1.1.1
   file_picker: ^10.3.7
   table_calendar: ^3.2.0
+
+
+
+
   flutter:
     sdk: flutter
 
