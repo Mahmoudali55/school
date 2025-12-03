@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
@@ -5,6 +6,7 @@ import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.da
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class BehaviorReportScreen extends StatefulWidget {
   const BehaviorReportScreen({super.key});
@@ -31,7 +33,7 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
       appBar: CustomAppBar(
         context,
         title: Text(
-          'تقرير سلوك',
+          AppLocalKay.behavior_report.tr(),
           style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -48,7 +50,7 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
           key: _formKey,
           child: ListView(
             children: [
-              Text('الطالب', style: AppTextStyle.formTitleStyle(context)),
+              Text(AppLocalKay.student.tr(), style: AppTextStyle.formTitleStyle(context)),
               DropdownButtonFormField<String>(
                 value: _selectedStudent,
                 decoration: InputDecoration(
@@ -66,14 +68,14 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى اختيار الطالب';
+                    return AppLocalKay.select_student.tr();
                   }
                   return null;
                 },
               ),
               SizedBox(height: 16.h),
 
-              Text('نوع السلوك', style: AppTextStyle.formTitleStyle(context)),
+              Text(AppLocalKay.behavior_type.tr(), style: AppTextStyle.formTitleStyle(context)),
               DropdownButtonFormField<String>(
                 value: _selectedBehaviorType,
                 decoration: InputDecoration(
@@ -91,7 +93,7 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى اختيار نوع السلوك';
+                    return AppLocalKay.select_behavior.tr();
                   }
                   return null;
                 },
@@ -99,7 +101,7 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
               SizedBox(height: 16.h),
 
               if (_selectedBehaviorType == 'سلبي') ...[
-                Text('مستوى الخطورة', style: AppTextStyle.formTitleStyle(context)),
+                Text(AppLocalKay.severity_level.tr(), style: AppTextStyle.formTitleStyle(context)),
                 DropdownButtonFormField<String>(
                   value: _selectedSeverity,
                   decoration: InputDecoration(
@@ -117,7 +119,7 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'يرجى اختيار مستوى الخطورة';
+                      return AppLocalKay.select_severity.tr();
                     }
                     return null;
                   },
@@ -129,7 +131,7 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
               CustomFormField(
                 readOnly: true,
                 radius: 12,
-                title: 'تاريخ الحادث',
+                title: AppLocalKay.incident_date.tr(),
                 suffixIcon: IconButton(
                   icon: Icon(Icons.calendar_today),
                   onPressed: _selectIncidentDate,
@@ -137,11 +139,11 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
                 controller: TextEditingController(
                   text: _incidentDate != null
                       ? '${_incidentDate!.day}/${_incidentDate!.month}/${_incidentDate!.year}'
-                      : 'اختر تاريخ الحادث',
+                      : AppLocalKay.choose_incident_date.tr(),
                 ),
                 validator: (value) {
                   if (_incidentDate == null) {
-                    return 'يرجى اختيار تاريخ الحادث';
+                    return AppLocalKay.select_incident_date.tr();
                   }
                   return null;
                 },
@@ -152,12 +154,12 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
               CustomFormField(
                 controller: _detailsController,
                 maxLines: 4,
-                title: 'تفاصيل السلوك',
-                hintText: 'صف السلوك الذي لاحظته...',
+                title: AppLocalKay.behavior_details.tr(),
+                hintText: AppLocalKay.select_behavior_details.tr(),
 
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى إدخال تفاصيل السلوك';
+                    return AppLocalKay.enter_behavior_details.tr();
                   }
                   return null;
                 },
@@ -168,17 +170,21 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
               if (_selectedBehaviorType == 'سلبي') ...[
                 CustomFormField(
                   maxLines: 2,
-                  title: 'الإجراء المتخذ',
-                  hintText: 'صف الإجراء الذي اتبعته...',
+                  title: AppLocalKay.action_taken.tr(),
+                  hintText: AppLocalKay.select_action_taken.tr(),
                 ),
                 SizedBox(height: 16.h),
               ],
 
-              CustomFormField(maxLines: 2, title: 'توصيات', hintText: 'أي توصيات إضافية...'),
+              CustomFormField(
+                maxLines: 2,
+                title: AppLocalKay.recommendations.tr(),
+                hintText: AppLocalKay.enter_recommendations.tr(),
+              ),
               SizedBox(height: 24.h),
 
               CustomButton(
-                text: 'حفظ',
+                text: AppLocalKay.save.tr(),
                 onPressed: _saveBehaviorReport,
                 radius: 12.r,
                 color: AppColor.errorColor(context),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,7 @@ import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.da
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class UploadLessonScreen extends StatefulWidget {
   const UploadLessonScreen({super.key});
@@ -36,8 +38,8 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
       appBar: CustomAppBar(
         context,
         title: Text(
-          'رفع درس جديد',
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          AppLocalKay.new_class.tr(),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         leading: IconButton(
@@ -53,7 +55,10 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('المادة', style: AppTextStyle.formTitle20Style(context)),
+                Text(
+                  AppLocalKay.user_management_subject.tr(),
+                  style: AppTextStyle.formTitle20Style(context),
+                ),
                 DropdownButtonFormField<String>(
                   value: _selectedSubject,
                   decoration: InputDecoration(
@@ -71,13 +76,16 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'يرجى اختيار المادة';
+                      return AppLocalKay.user_management_select_subject.tr();
                     }
                     return null;
                   },
                 ),
 
-                Text('الصف', style: AppTextStyle.formTitle20Style(context)),
+                Text(
+                  AppLocalKay.user_management_class.tr(),
+                  style: AppTextStyle.formTitle20Style(context),
+                ),
                 // اختيار الصف
                 DropdownButtonFormField<String>(
                   value: _selectedClass,
@@ -96,7 +104,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'يرجى اختيار الصف';
+                      return AppLocalKay.user_management_select_class.tr();
                     }
                     return null;
                   },
@@ -106,11 +114,11 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                 // عنوان الدرس
                 CustomFormField(
                   controller: _titleController,
-                  title: 'عنوان الدرس',
+                  title: AppLocalKay.user_management_title.tr(),
                   radius: 12.r,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'يرجى إدخال عنوان الدرس';
+                      return AppLocalKay.user_management_select_task.tr();
                     }
                     return null;
                   },
@@ -121,7 +129,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                 CustomFormField(
                   controller: _descriptionController,
                   maxLines: 4,
-                  title: 'وصف الدرس',
+                  title: AppLocalKay.user_management_description.tr(),
                   radius: 12.r,
                 ),
                 SizedBox(height: 16.h),
@@ -134,10 +142,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                     );
 
                     if (result != null) {
-                      print("Selected File: ${result.files.single.name}");
-                    } else {
-                      print("User canceled");
-                    }
+                    } else {}
                   },
                   child: Container(
                     width: double.infinity,
@@ -151,7 +156,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                         Icon(Icons.cloud_upload, size: 40.w, color: Colors.grey),
                         SizedBox(height: 8.h),
                         Text(
-                          'ارفع ملفات الدرس',
+                          AppLocalKay.user_management_upload_lesson.tr(),
                           style: AppTextStyle.titleMedium(
                             context,
                           ).copyWith(fontWeight: FontWeight.bold),
@@ -170,7 +175,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                 SizedBox(height: 24.h),
 
                 CustomButton(
-                  text: 'رفع الدرس',
+                  text: AppLocalKay.user_management_create_lesson.tr(),
                   radius: 12.r,
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {

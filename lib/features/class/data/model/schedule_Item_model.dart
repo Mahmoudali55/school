@@ -17,11 +17,12 @@ class ScheduleItem {
 }
 
 class QuickAction {
+  final String key;
   final String title;
   final IconData icon;
   final Color color;
 
-  QuickAction({required this.title, required this.icon, required this.color});
+  QuickAction({required this.key, required this.title, required this.icon, required this.color});
 }
 
 class Message {

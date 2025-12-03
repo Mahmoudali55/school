@@ -1,7 +1,11 @@
 // features/transport/presentation/view/transport_management_page.dart
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class TransportManagementScreen extends StatelessWidget {
   const TransportManagementScreen({super.key});
@@ -16,8 +20,8 @@ class TransportManagementScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'إدارة النقل',
-          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+          AppLocalKay.transport_desc.tr(),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -49,9 +53,13 @@ class TransportManagementScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildOverviewItem('إجمالي الحافلات', '12', Icons.directions_bus),
-            _buildOverviewItem('نشطة', '10', Icons.check_circle),
-            _buildOverviewItem('قيد الصيانة', '2', Icons.build),
+            _buildOverviewItem(
+              AppLocalKay.user_management_total_buses.tr(),
+              '12',
+              Icons.directions_bus,
+            ),
+            _buildOverviewItem(AppLocalKay.user_management_active.tr(), '10', Icons.check_circle),
+            _buildOverviewItem(AppLocalKay.user_management_maintenance.tr(), '2', Icons.build),
           ],
         ),
       ),
@@ -76,10 +84,13 @@ class TransportManagementScreen extends StatelessWidget {
   }
 
   Widget _buildBusesList() {
-    return ListView.builder(itemCount: 5, itemBuilder: (context, index) => _buildBusCard(index));
+    return ListView.builder(
+      itemCount: 5,
+      itemBuilder: (context, index) => _buildBusCard(index, context),
+    );
   }
 
-  Widget _buildBusCard(int index) {
+  Widget _buildBusCard(int index, BuildContext context) {
     return Card(
       margin: EdgeInsets.only(bottom: 12.h),
       child: Padding(
@@ -105,7 +116,7 @@ class TransportManagementScreen extends StatelessWidget {
                       Icon(Icons.circle, size: 8.w, color: Colors.green),
                       SizedBox(width: 4.w),
                       Text(
-                        'نشطة',
+                        AppLocalKay.user_management_active.tr(),
                         style: TextStyle(fontSize: 12.sp, color: Colors.green),
                       ),
                     ],
@@ -154,7 +165,12 @@ class TransportManagementScreen extends StatelessWidget {
                     // View bus details
                   },
                   icon: Icon(Icons.visibility, size: 16.w),
-                  label: Text('عرض'),
+                  label: Text(
+                    AppLocalKay.user_management_view.tr(),
+                    style: AppTextStyle.bodyMedium(
+                      context,
+                    ).copyWith(color: AppColor.whiteColor(context)),
+                  ),
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                   ),
@@ -164,7 +180,7 @@ class TransportManagementScreen extends StatelessWidget {
                     // Edit bus
                   },
                   icon: Icon(Icons.edit, size: 16.w),
-                  label: Text('تعديل'),
+                  label: Text(AppLocalKay.user_management_edit.tr()),
                   style: OutlinedButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                   ),
@@ -174,7 +190,7 @@ class TransportManagementScreen extends StatelessWidget {
                     // Track bus
                   },
                   icon: Icon(Icons.location_on, size: 16.w),
-                  label: Text('تتبع'),
+                  label: Text(AppLocalKay.user_management_track.tr()),
                   style: OutlinedButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                   ),

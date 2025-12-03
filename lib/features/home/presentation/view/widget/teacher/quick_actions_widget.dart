@@ -14,31 +14,41 @@ class QuickActionsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     List<QuickAction> actions = [
       QuickAction(
+        key: AppLocalKay.new_class,
         title: AppLocalKay.new_class.tr(),
         icon: Icons.upload,
         color: AppColor.primaryColor(context),
       ),
       QuickAction(
+        key: AppLocalKay.check_in,
         title: AppLocalKay.check_in.tr(),
         icon: Icons.people,
         color: AppColor.secondAppColor(context),
       ),
       QuickAction(
+        key: AppLocalKay.create_todo,
         title: AppLocalKay.create_todo.tr(),
         icon: Icons.assignment,
         color: AppColor.accentColor(context),
       ),
       QuickAction(
+        key: AppLocalKay.send_notification,
         title: AppLocalKay.send_notification.tr(),
         icon: Icons.notification_important,
         color: Color(0xFFEC4899),
       ),
       QuickAction(
+        key: AppLocalKay.behavior,
         title: AppLocalKay.behavior.tr(),
         icon: Icons.report,
         color: AppColor.errorColor(context),
       ),
-      QuickAction(title: AppLocalKay.report.tr(), icon: Icons.analytics, color: Color(0xFF7C3AED)),
+      QuickAction(
+        key: AppLocalKay.report,
+        title: AppLocalKay.report.tr(),
+        icon: Icons.analytics,
+        color: Color(0xFF7C3AED),
+      ),
     ];
 
     return Column(

@@ -1,9 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class SendNotificationScreen extends StatefulWidget {
   const SendNotificationScreen({super.key});
@@ -28,8 +31,8 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
       appBar: CustomAppBar(
         context,
         title: Text(
-          'إرسال إشعار',
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          AppLocalKay.send_notification.tr(),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         leading: IconButton(
@@ -45,10 +48,11 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
           key: _formKey,
           child: ListView(
             children: [
+              Text(AppLocalKay.to.tr(), style: AppTextStyle.formTitleStyle(context)),
+              SizedBox(height: 5.h),
               DropdownButtonFormField<String>(
                 value: _selectedAudience,
                 decoration: InputDecoration(
-                  labelText: 'إلى',
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
                   filled: true,
                   fillColor: AppColor.textFormFillColor(context),
@@ -63,7 +67,7 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى اختيار المستلمين';
+                    return AppLocalKay.select_audience_error.tr();
                   }
                   return null;
                 },
@@ -75,8 +79,8 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'اختر الصفوف:',
-                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                      AppLocalKay.select_classes.tr(),
+                      style: AppTextStyle.formTitleStyle(context),
                     ),
                     SizedBox(height: 8.h),
                     Wrap(
@@ -87,7 +91,7 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
                           label: Text(classItem),
                           selected: selectedClasses.contains(classItem),
                           selectedColor: AppColor.primaryColor(context),
-                          labelStyle: TextStyle(color: Colors.white),
+                          labelStyle: TextStyle(color: AppColor.whiteColor(context)),
                           checkmarkColor: AppColor.whiteColor(context),
 
                           onSelected: (bool selected) {
@@ -111,10 +115,10 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
                 radius: 12.r,
 
                 controller: _titleController,
-                title: 'عنوان الإشعار',
+                title: AppLocalKay.notification_title.tr(),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى إدخال عنوان الإشعار';
+                    return AppLocalKay.enter_title_error.tr();
                   }
                   return null;
                 },
@@ -125,11 +129,11 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
                 radius: 12.r,
                 controller: _messageController,
                 maxLines: 5,
-                title: 'نص الإشعار',
+                title: AppLocalKay.notification_message.tr(),
 
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى إدخال نص الإشعار';
+                    return AppLocalKay.enter_message_error.tr();
                   }
                   return null;
                 },
@@ -143,7 +147,7 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'خيارات إضافية',
+                        AppLocalKay.additional_options.tr(),
                         style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 12.h),
@@ -151,17 +155,20 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
                         children: [
                           Icon(Icons.important_devices, color: Colors.grey),
                           SizedBox(width: 8.w),
-                          Text('سيتم إرسال الإشعار عبر:', style: TextStyle(fontSize: 14.sp)),
+                          Text(
+                            AppLocalKay.will_send_via.tr(),
+                            style: AppTextStyle.bodyMedium(context),
+                          ),
                         ],
                       ),
                       SizedBox(height: 8.h),
                       Row(
                         children: [
                           Checkbox(value: true, onChanged: (v) {}),
-                          Text('التطبيق', style: TextStyle(fontSize: 14.sp)),
+                          Text(AppLocalKay.app.tr(), style: AppTextStyle.bodyMedium(context)),
                           SizedBox(width: 16.w),
                           Checkbox(value: false, onChanged: (v) {}),
-                          Text('البريد الإلكتروني', style: TextStyle(fontSize: 14.sp)),
+                          Text(AppLocalKay.email.tr(), style: AppTextStyle.bodyMedium(context)),
                         ],
                       ),
                     ],
@@ -171,7 +178,7 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
               SizedBox(height: 24.h),
 
               CustomButton(
-                text: 'إرسال',
+                text: AppLocalKay.send.tr(),
                 radius: 12.r,
                 color: const Color(0xFFEC4899),
                 onPressed: () {

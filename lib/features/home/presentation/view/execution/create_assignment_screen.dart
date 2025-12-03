@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +7,7 @@ import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.da
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class CreateAssignmentScreen extends StatefulWidget {
   const CreateAssignmentScreen({super.key});
@@ -37,7 +39,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
       appBar: CustomAppBar(
         context,
         title: Text(
-          'إنشاء واجب',
+          AppLocalKay.create_todo.tr(),
           style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -52,12 +54,14 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
           key: _formKey,
           child: ListView(
             children: [
-              Text('المادة', style: AppTextStyle.formTitleStyle(context)),
+              Text(
+                AppLocalKay.user_management_subject.tr(),
+                style: AppTextStyle.formTitleStyle(context),
+              ),
               SizedBox(height: 8.h),
               DropdownButtonFormField<String>(
                 value: _selectedSubject,
                 decoration: InputDecoration(
-                  labelText: 'المادة',
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
                   filled: true,
                   fillColor: AppColor.textFormFillColor(context),
@@ -72,14 +76,17 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى اختيار المادة';
+                    return AppLocalKay.user_management_select_subject.tr();
                   }
                   return null;
                 },
               ),
               SizedBox(height: 16.h),
 
-              Text('الصف', style: AppTextStyle.formTitleStyle(context)),
+              Text(
+                AppLocalKay.user_management_class.tr(),
+                style: AppTextStyle.formTitleStyle(context),
+              ),
               SizedBox(height: 8.h),
               DropdownButtonFormField<String>(
                 value: _selectedClass,
@@ -98,7 +105,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى اختيار الصف';
+                    return AppLocalKay.user_management_select_class.tr();
                   }
                   return null;
                 },
@@ -108,10 +115,10 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
               CustomFormField(
                 controller: _titleController,
                 radius: 12,
-                title: 'عنوان الواجب',
+                title: AppLocalKay.user_management_task.tr(),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى إدخال عنوان الواجب';
+                    return AppLocalKay.user_management_select_task.tr();
                   }
                   return null;
                 },
@@ -123,10 +130,10 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                 controller: _descriptionController,
                 maxLines: 4,
                 radius: 12,
-                title: 'وصف الواجب',
+                title: AppLocalKay.user_management_description.tr(),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى إدخال وصف الواجب';
+                    return AppLocalKay.user_management_select_description.tr();
                   }
                   return null;
                 },
@@ -137,16 +144,16 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
               CustomFormField(
                 readOnly: true,
                 radius: 12,
-                title: 'تاريخ التسليم',
+                title: AppLocalKay.user_management_deadline.tr(),
                 suffixIcon: IconButton(icon: Icon(Icons.calendar_today), onPressed: _selectDueDate),
                 controller: TextEditingController(
                   text: _dueDate != null
                       ? '${_dueDate!.day}/${_dueDate!.month}/${_dueDate!.year}'
-                      : 'اختر تاريخ التسليم',
+                      : AppLocalKay.user_management_select_deadline.tr(),
                 ),
                 validator: (value) {
                   if (_dueDate == null) {
-                    return 'يرجى اختيار تاريخ التسليم';
+                    return AppLocalKay.user_management_no_deadline.tr();
                   }
                   return null;
                 },
@@ -162,10 +169,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                   );
 
                   if (result != null) {
-                    print("Selected File: ${result.files.single.name}");
-                  } else {
-                    print("User canceled");
-                  }
+                  } else {}
                 },
                 child: Container(
                   width: double.infinity,
@@ -179,7 +183,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                       Icon(Icons.cloud_upload, size: 40.w, color: Colors.grey),
                       SizedBox(height: 8.h),
                       Text(
-                        'ارفع ملفات الواجب',
+                        AppLocalKay.user_management_upload_files.tr(),
                         style: AppTextStyle.titleMedium(
                           context,
                         ).copyWith(fontWeight: FontWeight.bold),
@@ -200,7 +204,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
               // زر الإنشاء
               CustomButton(
                 radius: 12.r,
-                text: 'انشاء الواجب',
+                text: AppLocalKay.user_management_create_task.tr(),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _createAssignment();

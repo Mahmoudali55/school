@@ -1,8 +1,11 @@
 // features/class_management/presentation/view/class_management_page.dart
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class ClassManagementScreen extends StatelessWidget {
   const ClassManagementScreen({super.key});
@@ -17,8 +20,8 @@ class ClassManagementScreen extends StatelessWidget {
         ),
         context,
         title: Text(
-          'إدارة الفصول',
-          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+          AppLocalKay.class_management_title.tr(),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -57,11 +60,32 @@ class ClassManagementScreen extends StatelessWidget {
   Widget _buildStatisticsCards(BuildContext context) {
     return Row(
       children: [
-        Expanded(child: _buildStatCard('إجمالي الفصول', '24', Colors.blue, context)),
+        Expanded(
+          child: _buildStatCard(
+            AppLocalKay.user_management_total_classes.tr(),
+            '24',
+            Colors.blue,
+            context,
+          ),
+        ),
         SizedBox(width: 12.w),
-        Expanded(child: _buildStatCard('فصول ممتلئة', '18', Colors.green, context)),
+        Expanded(
+          child: _buildStatCard(
+            AppLocalKay.user_management_absent_classes.tr(),
+            '18',
+            Colors.green,
+            context,
+          ),
+        ),
         SizedBox(width: 12.w),
-        Expanded(child: _buildStatCard('فصول شاغرة', '6', Colors.orange, context)),
+        Expanded(
+          child: _buildStatCard(
+            AppLocalKay.user_management_present_classes.tr(),
+            '6',
+            Colors.orange,
+            context,
+          ),
+        ),
       ],
     );
   }

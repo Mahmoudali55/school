@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class AttendanceScreen extends StatefulWidget {
   const AttendanceScreen({super.key});
@@ -36,7 +38,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       appBar: CustomAppBar(
         context,
         title: Text(
-          'تسجيل الحضور',
+          AppLocalKay.check_in.tr(),
           style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
@@ -56,7 +58,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   child: DropdownButtonFormField<String>(
                     value: _selectedClass,
                     decoration: InputDecoration(
-                      labelText: 'الصف',
+                      labelText: AppLocalKay.user_management_class.tr(),
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
                       filled: true,
                       fillColor: AppColor.textFormFillColor(context),
@@ -76,7 +78,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   child: TextFormField(
                     readOnly: true,
                     decoration: InputDecoration(
-                      labelText: 'التاريخ',
+                      labelText: AppLocalKay.user_management_date.tr(),
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
                       suffixIcon: Icon(Icons.calendar_today),
                       filled: true,
@@ -103,9 +105,21 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildStat('الحاضرون', '4', AppColor.secondAppColor(context)),
-                _buildStat('الغائبون', '2', AppColor.errorColor(context)),
-                _buildStat('النسبة', '67%', AppColor.primaryColor(context)),
+                _buildStat(
+                  AppLocalKay.user_management_attendees.tr(),
+                  '4',
+                  AppColor.secondAppColor(context),
+                ),
+                _buildStat(
+                  AppLocalKay.user_management_absent.tr(),
+                  '2',
+                  AppColor.errorColor(context),
+                ),
+                _buildStat(
+                  AppLocalKay.user_management_percentage.tr(),
+                  '67%',
+                  AppColor.primaryColor(context),
+                ),
               ],
             ),
           ),
@@ -126,7 +140,11 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           // زر الحفظ
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: CustomButton(text: 'حفظ الحضور', radius: 12.r, onPressed: _saveAttendance),
+            child: CustomButton(
+              text: AppLocalKay.user_management_save.tr(),
+              radius: 12.r,
+              onPressed: _saveAttendance,
+            ),
           ),
         ],
       ),

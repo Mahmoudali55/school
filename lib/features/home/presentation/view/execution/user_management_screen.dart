@@ -1,8 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class UserManagementScreen extends StatelessWidget {
   const UserManagementScreen({super.key});
@@ -17,8 +20,8 @@ class UserManagementScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'إدارة المستخدمين',
-          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+          AppLocalKay.user_management_title.tr(),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -54,7 +57,7 @@ class UserManagementScreen extends StatelessWidget {
         CustomFormField(
           radius: 12,
           controller: TextEditingController(),
-          hintText: 'ابحث عن مستخدم...',
+          hintText: AppLocalKay.user_management_search_hint.tr(),
           prefixIcon: Icon(Icons.search),
         ),
         SizedBox(height: 12.h),
@@ -65,14 +68,20 @@ class UserManagementScreen extends StatelessWidget {
                 height: 48.h,
                 child: DropdownButtonFormField(
                   decoration: InputDecoration(
-                    labelText: 'نوع المستخدم',
+                    labelText: AppLocalKay.user_management_type_label.tr(),
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r)),
                     filled: true,
                     fillColor: AppColor.textFormFillColor(context),
                   ),
-                  items: ['جميع المستخدمين', 'طلاب', 'معلمين', 'إداريين'].map((String value) {
-                    return DropdownMenuItem(value: value, child: Text(value));
-                  }).toList(),
+                  items:
+                      [
+                        AppLocalKay.user_management_type_all.tr(),
+                        AppLocalKay.user_management_type_teacher.tr(),
+                        AppLocalKay.user_management_type_student.tr(),
+                        AppLocalKay.user_management_type_admin.tr(),
+                      ].map((String value) {
+                        return DropdownMenuItem(value: value, child: Text(value));
+                      }).toList(),
                   onChanged: (value) {},
                 ),
               ),
@@ -83,14 +92,19 @@ class UserManagementScreen extends StatelessWidget {
                 height: 48.h,
                 child: DropdownButtonFormField(
                   decoration: InputDecoration(
-                    labelText: 'الحالة',
+                    labelText: AppLocalKay.user_management_status_label.tr(),
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r)),
                     filled: true,
                     fillColor: AppColor.textFormFillColor(context),
                   ),
-                  items: ['جميع الحالات', 'نشط', 'غير نشط'].map((String value) {
-                    return DropdownMenuItem(value: value, child: Text(value));
-                  }).toList(),
+                  items:
+                      [
+                        AppLocalKay.user_management_status_all.tr(),
+                        AppLocalKay.user_management_status_active.tr(),
+                        AppLocalKay.user_management_status_inactive.tr(),
+                      ].map((String value) {
+                        return DropdownMenuItem(value: value, child: Text(value));
+                      }).toList(),
                   onChanged: (value) {},
                 ),
               ),

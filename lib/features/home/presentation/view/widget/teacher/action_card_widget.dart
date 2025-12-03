@@ -19,7 +19,7 @@ class ActionCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _navigateToScreen(context, action.title);
+        _navigateToScreen(context, action.key);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -43,10 +43,10 @@ class ActionCardWidget extends StatelessWidget {
     );
   }
 
-  void _navigateToScreen(BuildContext context, String title) {
+  void _navigateToScreen(BuildContext context, String key) {
     Widget screen;
 
-    switch (title) {
+    switch (key) {
       case AppLocalKay.new_class:
         screen = const UploadLessonScreen();
         break;

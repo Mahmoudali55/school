@@ -1,7 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/home/presentation/view/execution/chart_detail_page.dart';
 
 class ReportsPage extends StatefulWidget {
@@ -94,8 +97,8 @@ class _ReportsPageState extends State<ReportsPage> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'التقارير والإحصائيات',
-          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+          AppLocalKay.reports_title.tr(),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -130,7 +133,7 @@ class _ReportsPageState extends State<ReportsPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'نظرة سريعة',
+          AppLocalKay.user_management_quick_report.tr(),
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
@@ -224,7 +227,7 @@ class _ReportsPageState extends State<ReportsPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'تصفية التقارير',
+          AppLocalKay.user_management_clear_reports.tr(),
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
@@ -255,7 +258,7 @@ class _ReportsPageState extends State<ReportsPage> {
                     Icon(Icons.filter_list, size: 18.w, color: Colors.grey),
                     SizedBox(width: 8.w),
                     Text(
-                      'نوع التقرير:',
+                      AppLocalKay.user_management_report_type.tr(),
                       style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
                     ),
                   ],
@@ -304,7 +307,7 @@ class _ReportsPageState extends State<ReportsPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'الفترة الزمنية:',
+                            AppLocalKay.user_management_report_period.tr(),
                             style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
                           ),
                           SizedBox(height: 8.h),
@@ -350,7 +353,10 @@ class _ReportsPageState extends State<ReportsPage> {
                           ElevatedButton.icon(
                             onPressed: _exportReport,
                             icon: Icon(Icons.picture_as_pdf, size: 16.w),
-                            label: Text('تصدير PDF'),
+                            label: Text(
+                              AppLocalKay.user_management_export_pdf.tr(),
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue,
                               foregroundColor: AppColor.whiteColor(context),
@@ -378,7 +384,7 @@ class _ReportsPageState extends State<ReportsPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'آخر التقارير',
+              AppLocalKay.user_management_no_reports.tr(),
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
@@ -387,7 +393,7 @@ class _ReportsPageState extends State<ReportsPage> {
             ),
             TextButton(
               onPressed: () {},
-              child: Text('عرض الكل', style: TextStyle(fontSize: 12.sp)),
+              child: Text(AppLocalKay.show_all.tr(), style: TextStyle(fontSize: 12.sp)),
             ),
           ],
         ),
@@ -475,7 +481,7 @@ class _ReportsPageState extends State<ReportsPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'الرسوم البيانية',
+          AppLocalKay.user_management_fees.tr(),
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
@@ -614,7 +620,7 @@ class _ReportsPageState extends State<ReportsPage> {
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
                 child: Text(
-                  'عرض الرسم',
+                  AppLocalKay.user_management_view_chart.tr(),
                   style: TextStyle(fontSize: 12.sp, color: chart['color'] as Color),
                 ),
               ),

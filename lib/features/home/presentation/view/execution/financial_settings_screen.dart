@@ -1,8 +1,11 @@
 // features/finance/presentation/view/financial_settings_page.dart
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class FinancialSettingsScreen extends StatelessWidget {
   const FinancialSettingsScreen({super.key});
@@ -17,8 +20,8 @@ class FinancialSettingsScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'الإعدادات المالية',
-          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+          AppLocalKay.financial_title.tr(),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -46,9 +49,9 @@ class FinancialSettingsScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                         tabs: [
-                          Tab(text: 'الرسوم'),
-                          Tab(text: 'المصروفات'),
-                          Tab(text: 'الإعدادات'),
+                          Tab(text: AppLocalKay.user_management_Fees.tr()),
+                          Tab(text: AppLocalKay.user_management_Expenses.tr()),
+                          Tab(text: AppLocalKay.user_management_settings.tr()),
                         ],
                       ),
                     ),
@@ -75,9 +78,13 @@ class FinancialSettingsScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildSummaryItem('الإيرادات', '١٢٥,٠٠٠ ر.س', Colors.green),
-            _buildSummaryItem('المصروفات', '٨٥,٠٠٠ ر.س', Colors.red),
-            _buildSummaryItem('الصافي', '٤٠,٠٠٠ ر.س', Colors.blue),
+            _buildSummaryItem(
+              AppLocalKay.user_management_expenses.tr(),
+              '١٢٥,٠٠٠ ر.س',
+              Colors.green,
+            ),
+            _buildSummaryItem(AppLocalKay.user_management_revenue.tr(), '٨٥,٠٠٠ ر.س', Colors.red),
+            _buildSummaryItem(AppLocalKay.user_management_net.tr(), '٤٠,٠٠٠ ر.س', Colors.blue),
           ],
         ),
       ),

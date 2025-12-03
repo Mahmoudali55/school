@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/metric_card_model.dart';
 import 'package:my_template/features/home/presentation/view/widget/admin/metric_card_widget.dart';
 
@@ -55,7 +57,7 @@ class MetricsDashboard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "نظرة عامة",
+          AppLocalKay.generalView.tr(),
           style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 12.h),

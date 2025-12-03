@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class MiniCharts extends StatelessWidget {
   const MiniCharts({super.key});
@@ -11,7 +13,7 @@ class MiniCharts extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "التحليلات السريعة",
+          AppLocalKay.quickAnalysis.tr(),
           style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
         ),
 
@@ -22,12 +24,18 @@ class MiniCharts extends StatelessWidget {
             children: [
               SizedBox(
                 width: 180.w,
-                child: ChartCard(title: "توزيع الغياب", chart: _buildPieChart()),
+                child: ChartCard(
+                  title: AppLocalKay.absenceDistribution.tr(),
+                  chart: _buildPieChart(),
+                ),
               ),
               SizedBox(width: 12.w),
               SizedBox(
                 width: 180.w,
-                child: ChartCard(title: "نسب النجاح في المواد", chart: _buildBarChart()),
+                child: ChartCard(
+                  title: AppLocalKay.successDistribution.tr(),
+                  chart: _buildBarChart(),
+                ),
               ),
             ],
           ),
