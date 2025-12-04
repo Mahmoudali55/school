@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/routes/routes_name.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/navigator_methods.dart';
 
 class HomeHeaderWidget extends StatelessWidget {
@@ -41,7 +43,7 @@ class HomeHeaderWidget extends StatelessWidget {
               SizedBox(height: 4.h),
               Text(
                 classInfo,
-                style: TextStyle(fontSize: 13.sp, color: Colors.grey),
+                style: AppTextStyle.bodySmall(context).copyWith(color: AppColor.greyColor(context)),
               ),
             ],
           ),
@@ -49,17 +51,17 @@ class HomeHeaderWidget extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(12.w),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColor.whiteColor(context),
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: AppColor.blackColor(context).withOpacity(0.1),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
             ],
           ),
-          child: Icon(Icons.school, color: const Color(0xFF4CAF50), size: 28.w),
+          child: Icon(Icons.school, color: AppColor.secondAppColor(context), size: 28.w),
         ),
       ],
     );

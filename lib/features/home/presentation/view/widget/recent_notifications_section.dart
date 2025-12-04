@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/routes/routes_name.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/navigator_methods.dart';
 
 class RecentNotificationsSection extends StatelessWidget {
@@ -21,14 +24,14 @@ class RecentNotificationsSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "آخر الإشعارات",
+              AppLocalKay.last_notifications.tr(),
               style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
             TextButton(
               onPressed: () {
                 NavigatorMethods.pushNamed(context, RoutesName.notificationsScreen);
               },
-              child: Text("عرض الكل", style: TextStyle(color: Colors.green)),
+              child: Text(AppLocalKay.show_all.tr(), style: TextStyle(color: Colors.green)),
             ),
           ],
         ),
@@ -39,11 +42,11 @@ class RecentNotificationsSection extends StatelessWidget {
               margin: EdgeInsets.only(bottom: 12.h),
               padding: EdgeInsets.all(16.w),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColor.whiteColor(context),
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: AppColor.blackColor(context).withOpacity(0.05),
                     blurRadius: 8,
                     offset: Offset(0, 2),
                   ),
@@ -71,12 +74,12 @@ class RecentNotificationsSection extends StatelessWidget {
                         SizedBox(height: 4.h),
                         Text(
                           item.$2,
-                          style: TextStyle(color: Colors.grey, fontSize: 12.sp),
+                          style: TextStyle(color: AppColor.greyColor(context), fontSize: 12.sp),
                         ),
                         SizedBox(height: 4.h),
                         Text(
                           item.$3,
-                          style: TextStyle(color: Colors.grey, fontSize: 10.sp),
+                          style: TextStyle(color: AppColor.greyColor(context), fontSize: 10.sp),
                         ),
                       ],
                     ),

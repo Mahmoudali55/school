@@ -423,7 +423,26 @@
   "select_child":"اختر الابن / الابنة",
   "this_month":"هذا الشهر",
   "gpas":"المعدل العام",
-  "scheduls":"الجدول"
+  "scheduls":"الجدول",
+  "next_class":"الحصة القادمة",
+  "join_class":"انضم إلى الحصة الافتراضية",
+  "quick_access":"الوصول السريع",
+  "last_notifications":"آخر الإشعارات",
+  "no_notifications":"ما يجب عليك فعله",
+  "fees":"المستحقات المالية",
+  "fees_section":"الرسوم المستحقة",
+  "pay_now":"ادفع الآن",
+  "hello":"أهلاً،",
+  "real_time":"المتابعة المباشرة",
+  "route_map": "خريطة الحافلة",
+  "quick_snapshot":"لمحة سريعة عن الطالب",
+  "behaviors":"السلوك",
+  "urgent_notifications":"الإشعارات العاجلة",
+  "level":"المستوى",
+  "info":"المعلومات",
+  "activities":"النشاطات",
+  "achievements":"الإنجازات",
+  "personal_info":"المعلومات الشخصية"
 
 
 

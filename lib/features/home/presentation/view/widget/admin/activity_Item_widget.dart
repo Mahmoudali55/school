@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/features/class/data/model/alert_model.dart';
 
 class ActivityItem extends StatelessWidget {
@@ -12,11 +13,11 @@ class ActivityItem extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 8.h),
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: AppColor.blackColor(context).withOpacity(0.03),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -24,7 +25,7 @@ class ActivityItem extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(Icons.person, color: Colors.blue, size: 20.w),
+          Icon(Icons.person, color: AppColor.primaryColor(context), size: 20.w),
           SizedBox(width: 8.w),
           Expanded(
             child: Column(

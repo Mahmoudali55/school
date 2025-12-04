@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/profile/presentation/screen/widget/card_style.dart';
 import 'package:my_template/features/profile/presentation/screen/widget/stat_Item_widget.dart';
 
@@ -17,7 +19,7 @@ class StatCard extends StatelessWidget {
           StatItem(
             icon: Icons.calendar_today,
             value: '${studentData['attendanceRate']}%',
-            label: 'الحضور',
+            label: AppLocalKay.checkin.tr(),
           ),
           StatItem(icon: Icons.grade, value: '${studentData['averageGrade']}', label: 'المعدل'),
           StatItem(icon: Icons.star, value: 'ممتاز', label: 'التقييم'),

@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class LiveTrackingWidget extends StatelessWidget {
   const LiveTrackingWidget({super.key});
@@ -13,7 +15,7 @@ class LiveTrackingWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "المتابعة المباشرة",
+              AppLocalKay.real_time.tr(),
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
@@ -39,7 +41,7 @@ class LiveTrackingWidget extends StatelessWidget {
                   ),
                   SizedBox(width: 4.w),
                   Text(
-                    "نشط",
+                    AppLocalKay.user_management_status_active.tr(),
                     style: TextStyle(
                       color: const Color(0xFF10B981),
                       fontSize: 10.sp,
@@ -120,7 +122,10 @@ class LiveTrackingWidget extends StatelessWidget {
                           children: [
                             Icon(Icons.location_on, size: 16.w),
                             SizedBox(width: 4.w),
-                            Text("تتبع", style: TextStyle(fontSize: 14.sp)),
+                            Text(
+                              AppLocalKay.user_management_track.tr(),
+                              style: TextStyle(fontSize: 14.sp),
+                            ),
                           ],
                         ),
                       ),
@@ -147,7 +152,7 @@ class LiveTrackingWidget extends StatelessWidget {
                               Icon(Icons.map_outlined, color: const Color(0xFF2E5BFF), size: 32.w),
                               SizedBox(height: 8.h),
                               Text(
-                                "خريطة الحافلة",
+                                AppLocalKay.route_map.tr(),
                                 style: TextStyle(color: const Color(0xFF6B7280), fontSize: 14.sp),
                               ),
                             ],

@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/home/presentation/view/widget/parent/snapshot_item.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -12,7 +14,7 @@ class StudentSnapshotWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "لمحة سريعة عن الطالب",
+          AppLocalKay.quick_snapshot.tr(),
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
@@ -42,7 +44,7 @@ class StudentSnapshotWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               SnapshotItem(
-                title: "الحضور",
+                title: AppLocalKay.checkin.tr(),
                 child: CircularPercentIndicator(
                   radius: 35.w,
                   lineWidth: 6.w,
@@ -62,7 +64,7 @@ class StudentSnapshotWidget extends StatelessWidget {
               ),
 
               SnapshotItem(
-                title: "الدرجات",
+                title: AppLocalKay.grades.tr(),
                 child: Container(
                   padding: EdgeInsets.all(8.w),
                   decoration: BoxDecoration(
@@ -94,7 +96,7 @@ class StudentSnapshotWidget extends StatelessWidget {
               ),
 
               SnapshotItem(
-                title: "السلوك",
+                title: AppLocalKay.behaviors.tr(),
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                   decoration: BoxDecoration(

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/alert_model.dart';
 import 'package:my_template/features/home/presentation/view/execution/class_management_screen.dart';
@@ -76,7 +77,7 @@ class ManagementShortcuts extends StatelessWidget {
       children: [
         Text(
           AppLocalKay.quickLinks.tr(),
-          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 12.h),
         GridView.builder(

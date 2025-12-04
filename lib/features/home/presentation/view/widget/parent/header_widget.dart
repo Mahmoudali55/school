@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/routes/routes_name.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/navigator_methods.dart';
 
 class HeaderWidget extends StatelessWidget {
@@ -27,7 +29,7 @@ class HeaderWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "أهلاً،",
+                  AppLocalKay.welcome.tr(),
                   style: TextStyle(fontSize: 16.sp, color: const Color(0xFF6B7280)),
                 ),
                 Text(
@@ -64,7 +66,7 @@ class HeaderWidget extends StatelessWidget {
         ),
         SizedBox(height: 16.h),
         Text(
-          "اختر الطالب",
+          AppLocalKay.select_student.tr(),
           style: TextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.bold,

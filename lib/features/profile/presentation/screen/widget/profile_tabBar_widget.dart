@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class ProfileTabBar extends StatelessWidget {
   final TabController tabController;
@@ -10,7 +12,9 @@ class ProfileTabBar extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColor.whiteColor(context),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
+        boxShadow: [
+          BoxShadow(color: AppColor.blackColor(context).withOpacity(0.05), blurRadius: 10),
+        ],
       ),
       child: TabBar(
         controller: tabController,
@@ -18,10 +22,10 @@ class ProfileTabBar extends StatelessWidget {
         labelColor: AppColor.primaryColor(context),
         unselectedLabelColor: Colors.grey.shade500,
         labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-        tabs: const [
-          Tab(text: "المعلومات"),
-          Tab(text: "النشاطات"),
-          Tab(text: "الإنجازات"),
+        tabs: [
+          Tab(text: AppLocalKay.info.tr()),
+          Tab(text: AppLocalKay.activities.tr()),
+          Tab(text: AppLocalKay.achievements.tr()),
         ],
       ),
     );

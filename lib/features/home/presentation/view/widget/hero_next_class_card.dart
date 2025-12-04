@@ -1,5 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class HeroNextClassCard extends StatelessWidget {
   const HeroNextClassCard({super.key});
@@ -9,8 +13,8 @@ class HeroNextClassCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF4CAF50), Color(0xFF2196F3)],
+        gradient: LinearGradient(
+          colors: [AppColor.secondAppColor(context), AppColor.primaryColor(context)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -21,11 +25,14 @@ class HeroNextClassCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.schedule, color: Colors.white, size: 26.w),
+              Icon(Icons.schedule, color: AppColor.whiteColor(context), size: 26.w),
               SizedBox(width: 8.w),
               Text(
-                "الحصة القادمة",
-                style: TextStyle(color: Colors.white, fontSize: 16.sp, fontWeight: FontWeight.bold),
+                AppLocalKay.join_class.tr(),
+                style: AppTextStyle.bodyLarge(
+                  context,
+                  color: AppColor.whiteColor(context),
+                ).copyWith(fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -33,18 +40,22 @@ class HeroNextClassCard extends StatelessWidget {
 
           Text(
             "الرياضيات",
-            style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold, color: Colors.white),
+            style: TextStyle(
+              fontSize: 24.sp,
+              fontWeight: FontWeight.bold,
+              color: AppColor.whiteColor(context),
+            ),
           ),
 
           SizedBox(height: 8.h),
 
           Row(
             children: [
-              Icon(Icons.access_time, color: Colors.white, size: 16.w),
+              Icon(Icons.access_time, color: AppColor.whiteColor(context), size: 16.w),
               SizedBox(width: 6.w),
               Text(
                 "١٠:٠٠ - ١٠:٤٥ صباحاً",
-                style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                style: TextStyle(color: AppColor.whiteColor(context), fontSize: 14.sp),
               ),
             ],
           ),
@@ -53,11 +64,11 @@ class HeroNextClassCard extends StatelessWidget {
 
           Row(
             children: [
-              Icon(Icons.person, color: Colors.white, size: 16.w),
+              Icon(Icons.person, color: AppColor.whiteColor(context), size: 16.w),
               SizedBox(width: 6.w),
               Text(
                 "أ. أحمد محمد",
-                style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                style: TextStyle(color: AppColor.whiteColor(context), fontSize: 14.sp),
               ),
             ],
           ),
@@ -72,8 +83,8 @@ class HeroNextClassCard extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
             ),
             style: ElevatedButton.styleFrom(
-              foregroundColor: Color(0xFF2196F3),
-              backgroundColor: Colors.white,
+              foregroundColor: AppColor.primaryColor(context),
+              backgroundColor: AppColor.whiteColor(context),
               padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),

@@ -405,4 +405,22 @@ class AppLocalKay {
   static const String this_month = 'this_month';
   static const String gpas = 'gpas';
   static const String scheduls = 'scheduls';
+  static const String join_class = 'join_class';
+  static const String quick_access = 'quick_access';
+  static const String last_notifications = 'last_notifications';
+  static const String no_notifications = 'no_notifications';
+  static const String fees = 'fees';
+  static const String fees_section = 'fees_section';
+  static const String pay_now = 'pay_now';
+  static const String hello = 'hello';
+  static const String real_time = 'real_time';
+  static const String route_map = 'route_map';
+  static const String quick_snapshot = 'quick_snapshot';
+  static const String behaviors = 'behaviors';
+  static const String urgent_notifications = 'urgent_notifications';
+  static const String level = 'level';
+  static const String info = 'info';
+  static const String activities = 'activities';
+  static const String achievements = 'achievements';
+  static const String personal_info = 'personal_info';
 }

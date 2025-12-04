@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/home/presentation/view/widget/parent/alert_Item_widget.dart';
 
 class UrgentAlertsWidget extends StatelessWidget {
@@ -14,7 +16,7 @@ class UrgentAlertsWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "الإشعارات العاجلة",
+              AppLocalKay.urgent_notifications.tr(),
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,

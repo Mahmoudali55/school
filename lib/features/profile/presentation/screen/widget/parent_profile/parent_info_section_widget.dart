@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class ParentInfoSection extends StatelessWidget {
   final info = [
@@ -24,7 +26,7 @@ class ParentInfoSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "المعلومات الشخصية",
+            AppLocalKay.personal_info.tr(),
             style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
           ),
           12.verticalSpace,

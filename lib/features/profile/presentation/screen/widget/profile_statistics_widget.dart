@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class ProfileStatistics extends StatelessWidget {
   final double attendance;
@@ -14,9 +16,9 @@ class ProfileStatistics extends StatelessWidget {
       decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(14)),
       child: Row(
         children: [
-          Expanded(child: _statItem('الحضور', '$attendance%')),
-          Expanded(child: _statItem('المعدل', '$avg')),
-          Expanded(child: _statItem('المستوى', 'ممتاز')),
+          Expanded(child: _statItem(AppLocalKay.checkin.tr(), '$attendance%')),
+          Expanded(child: _statItem(AppLocalKay.gpa.tr(), '$avg')),
+          Expanded(child: _statItem(AppLocalKay.level.tr(), 'ممتاز')),
         ],
       ),
     );

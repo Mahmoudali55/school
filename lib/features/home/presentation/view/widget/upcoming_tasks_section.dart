@@ -1,5 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class UpcomingTasksSection extends StatelessWidget {
   const UpcomingTasksSection({super.key});
@@ -7,16 +10,16 @@ class UpcomingTasksSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tasks = [
-      ("حل تمارين الرياضيات", "الرياضيات", "غداً", Colors.red),
-      ("بحث عن النظام الشمسي", "العلوم", "بعد ٣ أيام", Colors.orange),
-      ("اختبار الوحدة الثانية", "العربية", "الأسبوع القادم", Colors.green),
+      ("حل تمارين الرياضيات", "الرياضيات", "غداً", AppColor.warningColor(context)),
+      ("بحث عن النظام الشمسي", "العلوم", "بعد ٣ أيام", AppColor.accentColor(context)),
+      ("اختبار الوحدة الثانية", "العربية", "الأسبوع القادم", AppColor.secondAppColor(context)),
     ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "ما يجب عليك فعله",
+          AppLocalKay.no_notifications.tr(),
           style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 16.h),
@@ -26,11 +29,11 @@ class UpcomingTasksSection extends StatelessWidget {
               margin: EdgeInsets.only(bottom: 12.h),
               padding: EdgeInsets.all(16.w),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColor.whiteColor(context),
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: AppColor.blackColor(context).withOpacity(0.05),
                     blurRadius: 8,
                     offset: Offset(0, 2),
                   ),
@@ -61,14 +64,21 @@ class UpcomingTasksSection extends StatelessWidget {
                           children: [
                             Text(
                               task.$2,
-                              style: TextStyle(color: Colors.blue, fontSize: 11.sp),
+                              style: TextStyle(
+                                color: AppColor.primaryColor(context),
+                                fontSize: 11.sp,
+                              ),
                             ),
                             SizedBox(width: 8.w),
-                            Icon(Icons.calendar_today, size: 12.w, color: Colors.grey),
+                            Icon(
+                              Icons.calendar_today,
+                              size: 12.w,
+                              color: AppColor.greyColor(context),
+                            ),
                             SizedBox(width: 4.w),
                             Text(
                               task.$3,
-                              style: TextStyle(color: Colors.grey, fontSize: 11.sp),
+                              style: TextStyle(color: AppColor.greyColor(context), fontSize: 11.sp),
                             ),
                           ],
                         ),

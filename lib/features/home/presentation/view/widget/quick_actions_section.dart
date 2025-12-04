@@ -1,6 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/routes/routes_name.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/navigator_methods.dart';
 
 class QuickActionsSection extends StatelessWidget {
@@ -9,18 +13,33 @@ class QuickActionsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final actions = [
-      ("المكتبة الرقمية", Icons.menu_book, Colors.blue, RoutesName.digitalLibraryScreen),
-      ("الواجبات", Icons.assignment, Colors.orange, RoutesName.assignmentsScreen),
-      ("جدول الحصص", Icons.schedule, Colors.green, RoutesName.scheduleScreen),
-      ("الدرجات", Icons.bar_chart, Colors.purple, RoutesName.gradesScreen),
+      (
+        AppLocalKay.digital_library.tr(),
+        Icons.menu_book,
+        AppColor.primaryColor(context),
+        RoutesName.digitalLibraryScreen,
+      ),
+      (
+        AppLocalKay.todostitle.tr(),
+        Icons.assignment,
+        AppColor.accentColor(context),
+        RoutesName.assignmentsScreen,
+      ),
+      (
+        AppLocalKay.schedules.tr(),
+        Icons.schedule,
+        AppColor.secondAppColor(context),
+        RoutesName.scheduleScreen,
+      ),
+      (AppLocalKay.grades.tr(), Icons.bar_chart, Colors.purple, RoutesName.gradesScreen),
     ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "الوصول السريع",
-          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+          AppLocalKay.quick_actions.tr(),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 16.h),
         Row(

@@ -1,5 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class FinancialStatusWidget extends StatelessWidget {
   const FinancialStatusWidget({super.key});
@@ -10,7 +13,7 @@ class FinancialStatusWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "المستحقات المالية",
+          AppLocalKay.fees.tr(),
           style: TextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.bold,
@@ -23,7 +26,7 @@ class FinancialStatusWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.08),
+                color: AppColor.blackColor(context).withOpacity(0.08),
                 blurRadius: 20,
                 offset: const Offset(0, 8),
               ),
@@ -32,7 +35,7 @@ class FinancialStatusWidget extends StatelessWidget {
           child: Card(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             elevation: 0,
-            color: Colors.white,
+            color: AppColor.whiteColor(context),
             child: Padding(
               padding: EdgeInsets.all(16.w),
               child: Row(
@@ -62,7 +65,7 @@ class FinancialStatusWidget extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "الرسوم المستحقة",
+                                    AppLocalKay.fees_section.tr(),
                                     style: TextStyle(
                                       color: const Color(0xFF6B7280),
                                       fontSize: 12.sp,
@@ -122,7 +125,7 @@ class FinancialStatusWidget extends StatelessWidget {
                       elevation: 0,
                     ),
                     child: Text(
-                      "ادفع الآن",
+                      AppLocalKay.pay_now.tr(),
                       style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
                     ),
                   ),

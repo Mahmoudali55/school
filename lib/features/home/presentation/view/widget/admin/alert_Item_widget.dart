@@ -9,7 +9,9 @@ class AlertItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color alertColor = alert.type == AlertType.security ? Colors.red : Colors.orange;
+    Color alertColor = alert.type == AlertType.security
+        ? AppColor.warningColor(context)
+        : AppColor.accentColor(context);
     return Container(
       margin: EdgeInsets.only(bottom: 8.h),
       padding: EdgeInsets.all(12.w),
@@ -18,7 +20,7 @@ class AlertItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: AppColor.blackColor(context).withOpacity(0.03),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),

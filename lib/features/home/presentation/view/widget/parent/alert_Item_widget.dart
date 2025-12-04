@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 
 class AlertItem extends StatelessWidget {
   final IconData icon;
@@ -26,7 +27,7 @@ class AlertItem extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: isUrgent ? const Color(0xFFFEF2F2) : const Color(0xFFE5E7EB),
@@ -34,7 +35,7 @@ class AlertItem extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
