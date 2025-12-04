@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class NotificationsScreen extends StatelessWidget {
   const NotificationsScreen({super.key});
@@ -22,8 +24,8 @@ class NotificationsScreen extends StatelessWidget {
         centerTitle: true,
 
         title: Text(
-          "الإشعارات",
-          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+          AppLocalKay.notifications.tr(),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, size: 20.w, color: AppColor.blackColor(context)),

@@ -1,7 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/home/presentation/view/execution/library_item_detail_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/library_search_delegate_screen.dart';
 
@@ -98,7 +101,10 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
           },
         ),
         context,
-        title: const Text('المكتبة الرقمية'),
+        title: Text(
+          AppLocalKay.digital_library.tr(),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
+        ),
         actions: [IconButton(icon: const Icon(Icons.search), onPressed: _searchLibrary)],
       ),
       body: Column(
@@ -139,11 +145,12 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
 
   Widget _buildTabContent(String category) {
     List<Map<String, dynamic>> filteredItems = _libraryItems.where((item) {
-      if (category == 'الكل') return true;
-      if (category == 'الكتب') return item['type'] == 'كتاب';
-      if (category == 'الفيديوهات') return item['type'] == 'فيديو';
-      if (category == 'الملخصات') return item['type'] == 'ملخص';
-      if (category == 'أوراق العمل') return item['type'] == 'ورقة عمل';
+      if (category == AppLocalKay.all.tr()) return true;
+      if (category == AppLocalKay.books.tr()) return item['type'] == AppLocalKay.book.tr();
+      if (category == AppLocalKay.videos.tr()) return item['type'] == AppLocalKay.video.tr();
+      if (category == AppLocalKay.summaries.tr()) return item['type'] == AppLocalKay.summary.tr();
+      if (category == AppLocalKay.worksheets.tr())
+        return item['type'] == AppLocalKay.worksheet.tr();
       return true;
     }).toList();
 
@@ -175,15 +182,15 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
 
   IconData _getCategoryIcon(String category) {
     switch (category) {
-      case 'الكل':
+      case AppLocalKay.all:
         return Icons.all_inclusive;
-      case 'الكتب':
+      case AppLocalKay.books:
         return Icons.menu_book;
-      case 'الفيديوهات':
+      case AppLocalKay.videos:
         return Icons.video_library;
-      case 'الملخصات':
+      case AppLocalKay.summaries:
         return Icons.description;
-      case 'أوراق العمل':
+      case AppLocalKay.worksheets:
         return Icons.assignment;
       default:
         return Icons.folder;

@@ -1,5 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class RouteProgress extends StatelessWidget {
   final List<Map<String, dynamic>> stops;
@@ -12,11 +16,11 @@ class RouteProgress extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -26,7 +30,7 @@ class RouteProgress extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "مسار الرحلة",
+            AppLocalKay.routes.tr(),
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.bold,
@@ -50,21 +54,27 @@ class RouteProgress extends StatelessWidget {
                         height: 20.w,
                         decoration: BoxDecoration(
                           color: stop['current']
-                              ? const Color(0xFF4CAF50)
+                              ? AppColor.secondAppColor(context)
                               : stop['passed']
-                              ? const Color(0xFF4CAF50).withOpacity(0.5)
-                              : const Color(0xFFE5E7EB),
+                              ? AppColor.secondAppColor(context).withOpacity(0.5)
+                              : AppColor.whiteColor(context),
                           shape: BoxShape.circle,
                         ),
                         child: stop['current']
-                            ? Icon(Icons.directions_bus_rounded, size: 12.w, color: Colors.white)
+                            ? Icon(
+                                Icons.directions_bus_rounded,
+                                size: 12.w,
+                                color: AppColor.whiteColor(context),
+                              )
                             : null,
                       ),
                       if (!isLast)
                         Container(
                           width: 2.w,
                           height: 40.h,
-                          color: stop['passed'] ? const Color(0xFF4CAF50) : const Color(0xFFE5E7EB),
+                          color: stop['passed']
+                              ? AppColor.secondAppColor(context)
+                              : AppColor.whiteColor(context),
                         ),
                     ],
                   ),
@@ -73,13 +83,13 @@ class RouteProgress extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          stop['name'],
-                          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
-                        ),
+                        Text(stop['name'], style: AppTextStyle.bodyMedium(context)),
                         Text(
                           stop['time'],
-                          style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                          style: AppTextStyle.bodyMedium(
+                            context,
+                            color: AppColor.greyColor(context),
+                          ),
                         ),
                       ],
                     ),

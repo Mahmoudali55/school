@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class ParentBusTrackingScreen extends StatefulWidget {
   const ParentBusTrackingScreen({super.key});
@@ -119,7 +122,10 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
             // App Bar
             SliverToBoxAdapter(
               child: Center(
-                child: Text("الحافلة المدرسية", style: AppTextStyle.text16SDark(context)),
+                child: Text(
+                  AppLocalKay.bus_title.tr(),
+                  style: AppTextStyle.bodyLarge(context).copyWith(fontWeight: FontWeight.bold),
+                ),
               ),
             ),
             // Children Selector
@@ -169,7 +175,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                 style: TextStyle(
                   fontSize: 28.sp,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: AppColor.whiteColor(context),
                   height: 1.2,
                 ),
               ),
@@ -178,7 +184,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                 "تابع أبنائك في الوقت الفعلي",
                 style: TextStyle(
                   fontSize: 14.sp,
-                  color: Colors.white.withOpacity(0.9),
+                  color: AppColor.whiteColor(context).withOpacity(0.9),
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -194,11 +200,11 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
       margin: EdgeInsets.all(16.w),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: AppColor.blackColor(context).withOpacity(0.1),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -209,10 +215,14 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
         children: [
           Row(
             children: [
-              Icon(Icons.family_restroom_rounded, color: const Color(0xFF2196F3), size: 20.w),
+              Icon(
+                Icons.family_restroom_rounded,
+                color: AppColor.primaryColor(context),
+                size: 20.w,
+              ),
               SizedBox(width: 8.w),
               Text(
-                "اختر الابن للمتابعة",
+                AppLocalKay.select_student.tr(),
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
@@ -243,7 +253,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
           Icon(
             childData['onBoard'] ? Icons.directions_bus_rounded : Icons.person_rounded,
             size: 16.w,
-            color: isSelected ? Colors.white : childData['busColor'],
+            color: isSelected ? AppColor.whiteColor(context) : childData['busColor'],
           ),
           SizedBox(width: 6.w),
           Text(childName),
@@ -256,11 +266,11 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
           _selectedBusData = childData;
         });
       },
-      backgroundColor: Colors.white,
+      backgroundColor: AppColor.whiteColor(context),
       selectedColor: childData['busColor'],
       labelStyle: TextStyle(
         fontSize: 14.sp,
-        color: isSelected ? Colors.white : const Color(0xFF6B7280),
+        color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF6B7280),
         fontWeight: FontWeight.w600,
       ),
       shape: RoundedRectangleBorder(
@@ -283,7 +293,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: AppColor.blackColor(context).withOpacity(0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -294,18 +304,28 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
         children: [
           _buildOverviewItem(
             "3",
-            "الأبناء",
+            AppLocalKay.children.tr(),
             Icons.family_restroom_rounded,
-            const Color(0xFF10B981),
+            AppColor.secondAppColor(context),
           ),
           _buildOverviewItem(
             "2",
-            "في الحافلة",
+            AppLocalKay.in_bus.tr(),
             Icons.directions_bus_rounded,
-            const Color(0xFF3B82F6),
+            AppColor.primaryColor(context),
           ),
-          _buildOverviewItem("7 د", "أقرب وصول", Icons.schedule_rounded, const Color(0xFFF59E0B)),
-          _buildOverviewItem("٣/٣", "آمنة", Icons.verified_rounded, const Color(0xFFEC4899)),
+          _buildOverviewItem(
+            "7 د",
+            AppLocalKay.nearest_arrival.tr(),
+            Icons.schedule_rounded,
+            AppColor.accentColor(context),
+          ),
+          _buildOverviewItem(
+            "٣/٣",
+            AppLocalKay.safe.tr(),
+            Icons.verified_rounded,
+            const Color(0xFFEC4899),
+          ),
         ],
       ),
     );
@@ -327,7 +347,11 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
         SizedBox(height: 8.h),
         Text(
           value,
-          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.bold,
+            color: AppColor.whiteColor(context),
+          ),
         ),
         SizedBox(height: 4.h),
         Text(
@@ -347,11 +371,11 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
       margin: EdgeInsets.all(16.w),
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: AppColor.blackColor(context).withOpacity(0.1),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -411,8 +435,8 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
           decoration: BoxDecoration(
             color: _selectedBusData['onBoard']
-                ? const Color(0xFF10B981).withOpacity(0.1)
-                : const Color(0xFFFF9800).withOpacity(0.1),
+                ? AppColor.secondAppColor(context).withOpacity(0.1)
+                : AppColor.accentColor(context).withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
@@ -420,8 +444,8 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
             style: TextStyle(
               fontSize: 12.sp,
               color: _selectedBusData['onBoard']
-                  ? const Color(0xFF10B981)
-                  : const Color(0xFFFF9800),
+                  ? AppColor.secondAppColor(context)
+                  : AppColor.accentColor(context),
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -459,7 +483,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
             top: 80.h,
             child: Column(
               children: [
-                Icon(Icons.home_rounded, color: const Color(0xFF10B981), size: 24.w),
+                Icon(Icons.home_rounded, color: AppColor.secondAppColor(context), size: 24.w),
                 SizedBox(height: 4.h),
                 Text(
                   "المنزل",
@@ -478,7 +502,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
             top: 80.h,
             child: Column(
               children: [
-                Icon(Icons.school_rounded, color: const Color(0xFF2196F3), size: 24.w),
+                Icon(Icons.school_rounded, color: AppColor.primaryColor(context), size: 24.w),
                 SizedBox(height: 4.h),
                 Text(
                   "المدرسة",
@@ -510,11 +534,11 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
             child: Container(
               padding: EdgeInsets.all(10.w),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColor.whiteColor(context),
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: AppColor.blackColor(context).withOpacity(0.2),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   ),
@@ -537,27 +561,27 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
       children: [
         Expanded(
           child: _buildActionButton(
-            "اتصال بالسائق",
+            AppLocalKay.call_driver.tr(),
             Icons.phone_rounded,
-            const Color(0xFF4CAF50),
+            AppColor.secondAppColor(context),
             _callDriver,
           ),
         ),
         SizedBox(width: 12.w),
         Expanded(
           child: _buildActionButton(
-            "مشاركة الموقع",
+            AppLocalKay.share_location.tr(),
             Icons.share_rounded,
-            const Color(0xFF2196F3),
+            AppColor.primaryColor(context),
             _shareLocation,
           ),
         ),
         SizedBox(width: 12.w),
         Expanded(
           child: _buildActionButton(
-            "تنبيه الوصول",
+            AppLocalKay.arrival_alert.tr(),
             Icons.notifications_rounded,
-            const Color(0xFFFF9800),
+            AppColor.accentColor(context),
             _setArrivalAlert,
           ),
         ),
@@ -591,11 +615,11 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
       margin: EdgeInsets.all(16.w),
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -608,7 +632,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "حالة جميع الأبناء",
+                AppLocalKay.all_children.tr(),
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
@@ -618,14 +642,14 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF2196F3).withOpacity(0.1),
+                  color: AppColor.primaryColor(context).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
                   "${_childrenBusData.length} أبناء",
                   style: TextStyle(
                     fontSize: 12.sp,
-                    color: const Color(0xFF2196F3),
+                    color: AppColor.primaryColor(context),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -703,15 +727,17 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                 padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
                 decoration: BoxDecoration(
                   color: childData['onBoard']
-                      ? const Color(0xFF10B981).withOpacity(0.1)
-                      : const Color(0xFFFF9800).withOpacity(0.1),
+                      ? AppColor.secondAppColor(context).withOpacity(0.1)
+                      : AppColor.accentColor(context).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
                   childData['onBoard'] ? "في الحافلة" : "في الانتظار",
                   style: TextStyle(
                     fontSize: 9.sp,
-                    color: childData['onBoard'] ? const Color(0xFF10B981) : const Color(0xFFFF9800),
+                    color: childData['onBoard']
+                        ? AppColor.secondAppColor(context)
+                        : AppColor.accentColor(context),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -733,11 +759,11 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
       margin: EdgeInsets.all(16.w),
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -747,7 +773,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "تفاصيل الحافلة",
+            AppLocalKay.route_details.tr(),
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.bold,
@@ -764,20 +790,32 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
             childAspectRatio: 1.5,
             children: [
               _buildDetailItem(
-                "رقم الحافلة",
+                AppLocalKay.bus_number.tr(),
                 _selectedBusData['busNumber'],
                 Icons.directions_bus_rounded,
               ),
-              _buildDetailItem("السائق", _selectedBusData['driverName'], Icons.person_rounded),
-              _buildDetailItem("رقم الهاتف", _selectedBusData['driverPhone'], Icons.phone_rounded),
               _buildDetailItem(
-                "الموقع",
+                AppLocalKay.driver.tr(),
+                _selectedBusData['driverName'],
+                Icons.person_rounded,
+              ),
+              _buildDetailItem(
+                AppLocalKay.phone.tr(),
+                _selectedBusData['driverPhone'],
+                Icons.phone_rounded,
+              ),
+              _buildDetailItem(
+                AppLocalKay.current_location.tr(),
                 _selectedBusData['currentLocation'],
                 Icons.location_on_rounded,
               ),
-              _buildDetailItem("المحطة التالية", _selectedBusData['nextStop'], Icons.flag_rounded),
               _buildDetailItem(
-                "السعة",
+                AppLocalKay.next_stop.tr(),
+                _selectedBusData['nextStop'],
+                Icons.flag_rounded,
+              ),
+              _buildDetailItem(
+                AppLocalKay.capacity.tr(),
                 "${_selectedBusData['occupiedSeats']}/${_selectedBusData['capacity']}",
                 Icons.people_rounded,
               ),
@@ -838,11 +876,11 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
       margin: EdgeInsets.all(16.w),
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -853,10 +891,10 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
         children: [
           Row(
             children: [
-              Icon(Icons.security_rounded, color: const Color(0xFF2196F3), size: 20.w),
+              Icon(Icons.security_rounded, color: AppColor.primaryColor(context), size: 20.w),
               SizedBox(width: 8.w),
               Text(
-                "ميزات السلامة",
+                AppLocalKay.features.tr(),
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
@@ -870,7 +908,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
             children: [
               Expanded(
                 child: _buildSafetyFeature(
-                  "تنبيه الوصول",
+                  AppLocalKay.arrival_alert.tr(),
                   Icons.notifications_active_rounded,
                   const Color(0xFF4CAF50),
                 ),
@@ -878,17 +916,17 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
               SizedBox(width: 12.w),
               Expanded(
                 child: _buildSafetyFeature(
-                  "متابعة الرحلة",
+                  AppLocalKay.follow_route.tr(),
                   Icons.travel_explore_rounded,
-                  const Color(0xFF2196F3),
+                  AppColor.primaryColor(context),
                 ),
               ),
               SizedBox(width: 12.w),
               Expanded(
                 child: _buildSafetyFeature(
-                  "الإبلاغ عن مشكلة",
+                  AppLocalKay.report_incident.tr(),
                   Icons.report_problem_rounded,
-                  const Color(0xFFFF9800),
+                  AppColor.accentColor(context),
                 ),
               ),
             ],
@@ -927,7 +965,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
     return FloatingActionButton(
       onPressed: _showEmergencyDialog,
       backgroundColor: const Color(0xFFF44336),
-      foregroundColor: Colors.white,
+      foregroundColor: AppColor.whiteColor(context),
       child: Icon(Icons.emergency_rounded, size: 24.w),
     );
   }
@@ -991,7 +1029,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('فتح سجل رحلات ${_selectedBusData['childName']}'),
-        backgroundColor: const Color(0xFF2196F3),
+        backgroundColor: AppColor.primaryColor(context),
       ),
     );
   }

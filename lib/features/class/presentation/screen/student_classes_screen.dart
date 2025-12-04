@@ -1,6 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class StudentClassesScreen extends StatelessWidget {
   const StudentClassesScreen({super.key});
@@ -12,8 +17,11 @@ class StudentClassesScreen extends StatelessWidget {
       appBar: CustomAppBar(
         context,
         title: Text(
-          'الفصول الدراسية',
-          style: TextStyle(fontWeight: FontWeight.bold, color: AppColor.blackColor(context)),
+          AppLocalKay.classesSection.tr(),
+          style: AppTextStyle.titleLarge(
+            context,
+            color: AppColor.blackColor(context),
+          ).copyWith(fontWeight: FontWeight.bold),
         ),
 
         centerTitle: true,
@@ -25,34 +33,18 @@ class StudentClassesScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Search Bar
-            Container(
-              decoration: BoxDecoration(
-                color: AppColor.whiteColor(context),
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'ابحث عن فصل...',
-                  hintStyle: const TextStyle(color: Colors.grey),
-                  prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                ),
-              ),
+            CustomFormField(
+              controller: TextEditingController(),
+              radius: 12.r,
+              prefixIcon: const Icon(Icons.search),
+              hintText: 'ابحث في الفصول الدراسية',
             ),
 
             const SizedBox(height: 20),
 
             // Title
-            const Text(
-              'فصولك الدراسية',
+            Text(
+              AppLocalKay.classes_section.tr(),
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
             ),
 

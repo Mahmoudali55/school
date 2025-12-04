@@ -1,5 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class ParentClassScreen extends StatefulWidget {
   const ParentClassScreen({super.key});
@@ -22,7 +25,10 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
-        title: const Text("الفصول", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(
+          AppLocalKay.classes.tr(),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
+        ),
         elevation: 0,
         backgroundColor: AppColor.whiteColor(context),
         foregroundColor: Colors.black,
@@ -65,8 +71,8 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
           children: [
             CircleAvatar(
               radius: 32,
-              backgroundColor: Colors.purple[100],
-              child: Icon(Icons.person, size: 40, color: Colors.purple[700]),
+              backgroundColor: Colors.blue[100],
+              child: Icon(Icons.person, size: 40, color: Colors.blue[700]),
             ),
             const SizedBox(width: 16),
 
@@ -97,7 +103,7 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
 
             IconButton(
               onPressed: () {},
-              icon: Icon(Icons.message, color: Colors.purple[700]),
+              icon: Icon(Icons.message, color: Colors.blue[700]),
             ),
           ],
         ),
@@ -110,8 +116,8 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          "اختر الابن / الابنة",
+        Text(
+          AppLocalKay.select_child.tr(),
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
         ),
         const SizedBox(height: 8),
@@ -142,14 +148,14 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
       width: 160,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: isSelected ? Colors.purple[50] : AppColor.whiteColor(context),
-        border: Border.all(color: isSelected ? Colors.purple : Colors.grey.shade300),
+        color: isSelected ? Colors.blue[50] : AppColor.whiteColor(context),
+        border: Border.all(color: isSelected ? Colors.blue : Colors.grey.shade300),
       ),
       child: Row(
         children: [
           CircleAvatar(
-            backgroundColor: Colors.purple[100],
-            child: Icon(Icons.person, color: Colors.purple[700]),
+            backgroundColor: Colors.blue[100],
+            child: Icon(Icons.person, color: Colors.blue[700]),
           ),
           const SizedBox(width: 8),
           Expanded(
@@ -161,7 +167,7 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 13,
-                    color: isSelected ? Colors.purple[700] : Colors.black87,
+                    color: isSelected ? Colors.blue[700] : Colors.black87,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -178,11 +184,35 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
   Widget _buildQuickStats() {
     return Row(
       children: [
-        Expanded(child: _statCard("الحضور", "95%", Icons.check, Colors.green, "هذا الشهر")),
+        Expanded(
+          child: _statCard(
+            AppLocalKay.checkin.tr(),
+            "95%",
+            Icons.check,
+            AppColor.secondAppColor(context),
+            AppLocalKay.this_month.tr(),
+          ),
+        ),
         const SizedBox(width: 10),
-        Expanded(child: _statCard("الدرجات", "88%", Icons.grade, Colors.blue, "المعدل العام")),
+        Expanded(
+          child: _statCard(
+            AppLocalKay.grades.tr(),
+            "88%",
+            Icons.grade,
+            AppColor.primaryColor(context),
+            AppLocalKay.gpas.tr(),
+          ),
+        ),
         const SizedBox(width: 10),
-        Expanded(child: _statCard("الواجبات", "3", Icons.assignment, Colors.orange, "معلقة")),
+        Expanded(
+          child: _statCard(
+            AppLocalKay.todostitle.tr(),
+            "3",
+            Icons.assignment,
+            AppColor.accentColor(context),
+            AppLocalKay.pending.tr(),
+          ),
+        ),
       ],
     );
   }
@@ -232,15 +262,12 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
             child: TabBar(
               labelColor: AppColor.whiteColor(context),
               unselectedLabelColor: Colors.black54,
-              indicator: BoxDecoration(
-                color: Colors.purple,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              tabs: const [
-                Tab(text: "الجدول"),
-                Tab(text: "الدرجات"),
-                Tab(text: "الحضور"),
-                Tab(text: "الواجبات"),
+              indicator: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(8)),
+              tabs: [
+                Tab(text: AppLocalKay.scheduls.tr()),
+                Tab(text: AppLocalKay.grades.tr()),
+                Tab(text: AppLocalKay.checkin.tr()),
+                Tab(text: AppLocalKay.todostitle.tr()),
               ],
             ),
           ),

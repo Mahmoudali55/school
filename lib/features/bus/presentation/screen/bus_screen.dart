@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/bus_Information_widget.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/bus_tracking_card.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/emergency_button.dart';
@@ -119,13 +121,13 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
 
   void _handleSafetyFeature(String feature) {
     switch (feature) {
-      case 'تنبيه الوصول':
+      case AppLocalKay.arrival_alert:
         _setArrivalAlert();
         break;
-      case 'مشاركة الموقع':
+      case AppLocalKay.share_location:
         _shareLocation();
         break;
-      case 'الاتصال العاجل':
+      case AppLocalKay.urgent_call:
         _showEmergencyDialog();
         break;
     }
@@ -191,7 +193,10 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
           slivers: [
             SliverToBoxAdapter(
               child: Center(
-                child: Text("الحافلة المدرسية", style: AppTextStyle.text16SDark(context)),
+                child: Text(
+                  AppLocalKay.bus_title.tr(),
+                  style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
+                ),
               ),
             ),
             SliverToBoxAdapter(

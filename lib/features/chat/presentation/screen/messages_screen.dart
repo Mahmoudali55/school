@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/chat/presentation/screen/single_message_screen.dart';
 
 class ChatsListScreen extends StatelessWidget {
@@ -19,7 +22,10 @@ class ChatsListScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         context,
-        title: Text("الرسائل"),
+        title: Text(
+          AppLocalKay.messages.tr(),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () => Navigator.pop(context),
@@ -32,7 +38,7 @@ class ChatsListScreen extends StatelessWidget {
           return ListTile(
             leading: CircleAvatar(child: Text(chats[index][0])),
             title: Text(chats[index]),
-            subtitle: Text("آخر رسالة..."),
+            subtitle: Text(AppLocalKay.last_message.tr(), style: TextStyle(fontSize: 12.sp)),
             onTap: () {
               Navigator.push(
                 context,

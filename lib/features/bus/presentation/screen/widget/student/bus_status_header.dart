@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class BusStatusHeader extends StatelessWidget {
   final Map<String, dynamic> busData;
@@ -12,10 +14,14 @@ class BusStatusHeader extends StatelessWidget {
         Container(
           padding: EdgeInsets.all(12.w),
           decoration: BoxDecoration(
-            color: const Color(0xFF4CAF50).withOpacity(0.1),
+            color: AppColor.secondAppColor(context).withOpacity(0.1),
             shape: BoxShape.circle,
           ),
-          child: Icon(Icons.directions_bus_rounded, color: const Color(0xFF4CAF50), size: 24.w),
+          child: Icon(
+            Icons.directions_bus_rounded,
+            color: AppColor.secondAppColor(context),
+            size: 24.w,
+          ),
         ),
         SizedBox(width: 12.w),
         Expanded(
@@ -24,19 +30,11 @@ class BusStatusHeader extends StatelessWidget {
             children: [
               Text(
                 "الحافلة ${busData['busNumber']}",
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.bodyMedium(context, color: const Color(0xFF1F2937)),
               ),
               Text(
                 busData['status'],
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: const Color(0xFF4CAF50),
-                  fontWeight: FontWeight.w600,
-                ),
+                style: AppTextStyle.bodyMedium(context, color: AppColor.secondAppColor(context)),
               ),
             ],
           ),
@@ -44,16 +42,12 @@ class BusStatusHeader extends StatelessWidget {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
           decoration: BoxDecoration(
-            color: const Color(0xFF2196F3).withOpacity(0.1),
+            color: AppColor.primaryColor(context).withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
             busData['estimatedTime'],
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: const Color(0xFF2196F3),
-              fontWeight: FontWeight.bold,
-            ),
+            style: AppTextStyle.bodyMedium(context, color: AppColor.primaryColor(context)),
           ),
         ),
       ],

@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class AdminBusTrackingScreen extends StatefulWidget {
   const AdminBusTrackingScreen({super.key});
@@ -150,7 +153,10 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
           slivers: [
             SliverToBoxAdapter(
               child: Center(
-                child: Text("الحافلة المدرسية", style: AppTextStyle.text16SDark(context)),
+                child: Text(
+                  AppLocalKay.bus_title.tr(),
+                  style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
+                ),
               ),
             ),
             // Buses Selector
@@ -206,30 +212,37 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: AppColor.whiteColor(context),
                     ),
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     "لوحة تحكم المدير - متابعة الأسطول",
-                    style: TextStyle(fontSize: 14.sp, color: Colors.white.withOpacity(0.9)),
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: AppColor.whiteColor(context).withOpacity(0.9),
+                    ),
                   ),
                 ],
               ),
               Container(
                 padding: EdgeInsets.all(12.w),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: AppColor.whiteColor(context).withOpacity(0.2),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.directions_bus_rounded, color: Colors.white, size: 24.w),
+                child: Icon(
+                  Icons.directions_bus_rounded,
+                  color: AppColor.whiteColor(context),
+                  size: 24.w,
+                ),
               ),
             ],
           ),
           SizedBox(height: 16.h),
           Text(
             "الجمعة، 15 نوفمبر 2024 - 08:30 ص",
-            style: TextStyle(fontSize: 14.sp, color: Colors.white.withOpacity(0.8)),
+            style: TextStyle(fontSize: 14.sp, color: AppColor.whiteColor(context).withOpacity(0.8)),
           ),
         ],
       ),
@@ -241,11 +254,11 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
       margin: EdgeInsets.all(16.w),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: AppColor.blackColor(context).withOpacity(0.1),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -259,7 +272,7 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
               Icon(Icons.directions_bus_rounded, color: Color(0xFF9C27B0), size: 20.w),
               SizedBox(width: 8.w),
               Text(
-                "اختر الحافلة للمتابعة",
+                AppLocalKay.select_bus.tr(),
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
@@ -290,7 +303,7 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
           Icon(
             Icons.directions_bus_rounded,
             size: 16.w,
-            color: isSelected ? Colors.white : busData['busColor'],
+            color: isSelected ? AppColor.whiteColor(context) : busData['busColor'],
           ),
           SizedBox(width: 6.w),
           Text(busNumber),
@@ -303,11 +316,11 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
           _selectedBusData = busData;
         });
       },
-      backgroundColor: Colors.white,
+      backgroundColor: AppColor.whiteColor(context),
       selectedColor: busData['busColor'],
       labelStyle: TextStyle(
         fontSize: 14.sp,
-        color: isSelected ? Colors.white : Color(0xFF6B7280),
+        color: isSelected ? AppColor.whiteColor(context) : Color(0xFF6B7280),
         fontWeight: FontWeight.w600,
       ),
       shape: RoundedRectangleBorder(
@@ -329,16 +342,40 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
         ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 20, offset: Offset(0, 10)),
+          BoxShadow(
+            color: AppColor.blackColor(context).withOpacity(0.3),
+            blurRadius: 20,
+            offset: Offset(0, 10),
+          ),
         ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildOverviewItem("4", "الحافلات", Icons.directions_bus_rounded, Color(0xFF10B981)),
-          _buildOverviewItem("120", "الطلاب", Icons.people_rounded, Color(0xFF3B82F6)),
-          _buildOverviewItem("94%", "الحضور", Icons.percent_rounded, Color(0xFFF59E0B)),
-          _buildOverviewItem("3/4", "نشطة", Icons.check_circle_rounded, Color(0xFFEC4899)),
+          _buildOverviewItem(
+            "4",
+            AppLocalKay.buses.tr(),
+            Icons.directions_bus_rounded,
+            Color(0xFF10B981),
+          ),
+          _buildOverviewItem(
+            "120",
+            AppLocalKay.stats_students.tr(),
+            Icons.people_rounded,
+            AppColor.primaryColor(context),
+          ),
+          _buildOverviewItem(
+            "94%",
+            AppLocalKay.checkin.tr(),
+            Icons.percent_rounded,
+            AppColor.accentColor(context),
+          ),
+          _buildOverviewItem(
+            "3/4",
+            AppLocalKay.user_management_active.tr(),
+            Icons.check_circle_rounded,
+            Color(0xFFEC4899),
+          ),
         ],
       ),
     );
@@ -360,7 +397,11 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
         SizedBox(height: 8.h),
         Text(
           value,
-          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.bold,
+            color: AppColor.whiteColor(context),
+          ),
         ),
         SizedBox(height: 4.h),
         Text(
@@ -376,10 +417,14 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
       margin: EdgeInsets.all(16.w),
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 20, offset: Offset(0, 10)),
+          BoxShadow(
+            color: AppColor.blackColor(context).withOpacity(0.1),
+            blurRadius: 20,
+            offset: Offset(0, 10),
+          ),
         ],
       ),
       child: Column(
@@ -483,7 +528,7 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
     return Container(
       height: 200.h,
       decoration: BoxDecoration(
-        color: Color(0xFFE8F5E8),
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: _selectedBusData['busColor'].withOpacity(0.3)),
       ),
@@ -569,11 +614,11 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
             child: Container(
               padding: EdgeInsets.all(10.w),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColor.whiteColor(context),
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: AppColor.blackColor(context).withOpacity(0.2),
                     blurRadius: 8,
                     offset: Offset(0, 4),
                   ),
@@ -597,27 +642,27 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
       children: [
         Expanded(
           child: _buildActionButton(
-            "اتصال بالسائق",
+            AppLocalKay.call_driver.tr(),
             Icons.phone_rounded,
-            Color(0xFF4CAF50),
+            AppColor.secondAppColor(context),
             _callDriver,
           ),
         ),
 
         Expanded(
           child: _buildActionButton(
-            "تحديث الموقع",
+            AppLocalKay.update_location.tr(),
             Icons.refresh_rounded,
-            Color(0xFF2196F3),
+            AppColor.primaryColor(context),
             _refreshLocation,
           ),
         ),
 
         Expanded(
           child: _buildActionButton(
-            "إرسال تنبيه",
+            AppLocalKay.send_alert.tr(),
             Icons.notifications_rounded,
-            Color(0xFFFF9800),
+            AppColor.accentColor(context),
             _sendAlert,
           ),
         ),
@@ -651,10 +696,14 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
       margin: EdgeInsets.all(16.w),
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: Offset(0, 5)),
+          BoxShadow(
+            color: AppColor.blackColor(context).withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
         ],
       ),
       child: Column(
@@ -664,7 +713,7 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "حالة جميع الحافلات",
+                AppLocalKay.all_buses.tr(),
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
@@ -795,17 +844,21 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
       margin: EdgeInsets.all(16.w),
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: Offset(0, 5)),
+          BoxShadow(
+            color: AppColor.blackColor(context).withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "تفاصيل الحافلة",
+            AppLocalKay.route_details.tr(),
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.bold,
@@ -822,30 +875,42 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
             childAspectRatio: 1.5,
             children: [
               _buildDetailItem(
-                "رقم الحافلة",
+                AppLocalKay.bus_number.tr(),
                 _selectedBusData['busNumber'],
                 Icons.directions_bus_rounded,
               ),
-              _buildDetailItem("السائق", _selectedBusData['driverName'], Icons.person_rounded),
-              _buildDetailItem("رقم الهاتف", _selectedBusData['driverPhone'], Icons.phone_rounded),
               _buildDetailItem(
-                "الموقع",
+                AppLocalKay.driver.tr(),
+                _selectedBusData['driverName'],
+                Icons.person_rounded,
+              ),
+              _buildDetailItem(
+                AppLocalKay.phone.tr(),
+                _selectedBusData['driverPhone'],
+                Icons.phone_rounded,
+              ),
+              _buildDetailItem(
+                AppLocalKay.current_location.tr(),
                 _selectedBusData['currentLocation'],
                 Icons.location_on_rounded,
               ),
-              _buildDetailItem("المحطة التالية", _selectedBusData['nextStop'], Icons.flag_rounded),
               _buildDetailItem(
-                "السعة",
+                AppLocalKay.next_stop.tr(),
+                _selectedBusData['nextStop'],
+                Icons.flag_rounded,
+              ),
+              _buildDetailItem(
+                AppLocalKay.capacity.tr(),
                 "${_selectedBusData['occupiedSeats']}/${_selectedBusData['capacity']}",
                 Icons.people_rounded,
               ),
               _buildDetailItem(
-                "الوقت المتوقع",
+                AppLocalKay.estimated_time.tr(),
                 _selectedBusData['estimatedTime'],
                 Icons.schedule_rounded,
               ),
               _buildDetailItem(
-                "المسافة",
+                AppLocalKay.distance.tr(),
                 _selectedBusData['distance'],
                 Icons.space_dashboard_rounded,
               ),
@@ -906,10 +971,14 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
       margin: EdgeInsets.all(16.w),
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: Offset(0, 5)),
+          BoxShadow(
+            color: AppColor.blackColor(context).withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
         ],
       ),
       child: Column(
@@ -920,7 +989,7 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
               Icon(Icons.manage_accounts_rounded, color: Color(0xFF9C27B0), size: 20.w),
               SizedBox(width: 8.w),
               Text(
-                "إدارة الأسطول",
+                AppLocalKay.buses_section.tr(),
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
@@ -939,25 +1008,25 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
             childAspectRatio: 1,
             children: [
               _buildManagementItem(
-                "تقرير الأداء",
+                AppLocalKay.performance_report.tr(),
                 "${_selectedBusData['attendanceRate']} حضور",
                 Icons.assessment_rounded,
-                Color(0xFF4CAF50),
+                AppColor.secondAppColor(context),
               ),
               _buildManagementItem(
-                "الحالة الفنية",
+                AppLocalKay.status.tr(),
                 _selectedBusData['maintenanceStatus'],
                 Icons.build_rounded,
-                Color(0xFFFF9800),
+                AppColor.accentColor(context),
               ),
               _buildManagementItem(
-                "مستوى الوقود",
+                AppLocalKay.fuel_level.tr(),
                 _selectedBusData['fuelLevel'],
                 Icons.local_gas_station_rounded,
-                Color(0xFF2196F3),
+                AppColor.primaryColor(context),
               ),
               _buildManagementItem(
-                "الطلاب على متن",
+                AppLocalKay.passengers_on_board.tr(),
                 _selectedBusData['studentsOnBoard'],
                 Icons.people_alt_rounded,
                 Color(0xFF9C27B0),
@@ -1015,10 +1084,14 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
       margin: EdgeInsets.all(16.w),
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: Offset(0, 5)),
+          BoxShadow(
+            color: AppColor.blackColor(context).withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 5),
+          ),
         ],
       ),
       child: Column(
@@ -1029,7 +1102,7 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
               Icon(Icons.security_rounded, color: Color(0xFF2196F3), size: 20.w),
               SizedBox(width: 8.w),
               Text(
-                "إدارة الطوارئ",
+                AppLocalKay.emergency_management.tr(),
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
@@ -1043,22 +1116,26 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
             children: [
               Expanded(
                 child: _buildSafetyFeature(
-                  "تنبيه عام",
+                  AppLocalKay.general_alert.tr(),
                   Icons.notifications_active_rounded,
-                  Color(0xFF4CAF50),
+                  AppColor.secondAppColor(context),
                 ),
               ),
               SizedBox(width: 12.w),
               Expanded(
                 child: _buildSafetyFeature(
-                  "تقرير حادث",
+                  AppLocalKay.incident_report.tr(),
                   Icons.report_problem_rounded,
-                  Color(0xFFF44336),
+                  AppColor.errorColor(context),
                 ),
               ),
               SizedBox(width: 12.w),
               Expanded(
-                child: _buildSafetyFeature(" الطوارئ", Icons.emergency_rounded, Color(0xFFFF9800)),
+                child: _buildSafetyFeature(
+                  AppLocalKay.safety_alert.tr(),
+                  Icons.emergency_rounded,
+                  AppColor.accentColor(context),
+                ),
               ),
             ],
           ),
@@ -1096,7 +1173,7 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
     return FloatingActionButton(
       onPressed: _showEmergencyDialog,
       backgroundColor: Color(0xFF9C27B0),
-      foregroundColor: Colors.white,
+      foregroundColor: AppColor.whiteColor(context),
       child: Icon(Icons.emergency_rounded, size: 24.w),
     );
   }

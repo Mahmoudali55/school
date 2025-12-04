@@ -1,7 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});
@@ -74,7 +77,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           },
         ),
         context,
-        title: const Text('جدول الحصص'),
+        title: Text(
+          AppLocalKay.schedules.tr(),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
+        ),
         actions: [
           IconButton(icon: const Icon(Icons.calendar_today), onPressed: _viewMonthlySchedule),
         ],
@@ -152,7 +158,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             Icon(Icons.event_available, size: 60.w, color: Colors.grey),
             SizedBox(height: 16.h),
             Text(
-              'لا توجد حصص لهذا اليوم',
+              AppLocalKay.no_classes_today.tr(),
               style: TextStyle(fontSize: 16.sp, color: Colors.grey),
             ),
           ],
@@ -192,9 +198,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             SizedBox(height: 4.h),
             Text(classItem['time']),
             SizedBox(height: 2.h),
-            Text('المعلم: ${classItem['teacher']}'),
+            Text('${AppLocalKay.teachers.tr()}:${classItem['teacher']}'),
             SizedBox(height: 2.h),
-            Text('القاعة: ${classItem['room']}'),
+            Text('${AppLocalKay.room.tr()}: ${classItem['room']}'),
           ],
         ),
         trailing: IconButton(
@@ -209,7 +215,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('الجدول الشهري'),
+        title: Text(
+          AppLocalKay.monthly_schedule.tr(),
+          style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
+        ),
         content: SizedBox(
           width: double.maxFinite,
           child: ListView.builder(
@@ -218,7 +227,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             itemBuilder: (context, index) {
               return ListTile(
                 title: Text(_days[index]),
-                subtitle: Text('${_schedule[_days[index]]?.length ?? 0} حصة'),
+                subtitle: Text(
+                  '${_schedule[_days[index]]?.length ?? 0} ${AppLocalKay.class_count.tr()}',
+                ),
                 trailing: const Icon(Icons.arrow_forward_ios),
                 onTap: () {
                   setState(() {

@@ -1,7 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/home/presentation/view/execution/assignment_detail_screen.dart';
 
 class AssignmentsScreen extends StatefulWidget {
@@ -56,7 +61,10 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
     return Scaffold(
       appBar: CustomAppBar(
         context,
-        title: const Text('الواجبات'),
+        title: Text(
+          AppLocalKay.tasks.tr(),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
@@ -137,7 +145,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
             Icon(Icons.assignment, size: 60.w, color: Colors.grey),
             SizedBox(height: 16.h),
             Text(
-              'لا توجد واجبات',
+              AppLocalKay.no_assignments.tr(),
               style: TextStyle(fontSize: 16.sp, color: Colors.grey),
             ),
           ],
@@ -159,15 +167,15 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
     IconData statusIcon = Icons.pending;
 
     switch (assignment['status']) {
-      case 'معلق':
+      case AppLocalKay.status_pending:
         statusColor = Colors.orange;
         statusIcon = Icons.pending;
         break;
-      case 'مسلم':
+      case AppLocalKay.status_submitted:
         statusColor = Colors.blue;
         statusIcon = Icons.check_circle;
         break;
-      case 'مصحح':
+      case AppLocalKay.status_graded:
         statusColor = Colors.green;
         statusIcon = Icons.grade;
         break;
@@ -238,25 +246,18 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'إنشاء واجب جديد',
+              AppLocalKay.create_new_assignment.tr(),
               style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16.h),
-            TextField(decoration: const InputDecoration(labelText: 'عنوان الواجب')),
+            CustomFormField(title: AppLocalKay.assignment_title.tr(), radius: 12),
             SizedBox(height: 16.h),
-            TextField(decoration: const InputDecoration(labelText: 'الوصف'), maxLines: 3),
+            CustomFormField(title: AppLocalKay.assignment_description.tr(), radius: 12),
             SizedBox(height: 16.h),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(const SnackBar(content: Text('تم إنشاء الواجب بنجاح')));
-                },
-                child: const Text('حفظ'),
-              ),
+            CustomButton(
+              text: AppLocalKay.save.tr(),
+              radius: 12,
+              onPressed: () => Navigator.pop(context),
             ),
           ],
         ),
@@ -268,22 +269,24 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('تسليم الواجب'),
-        content: const Text('هل أنت متأكد من تسليم هذا الواجب؟'),
+        title: Text(AppLocalKay.submit_assignment.tr(), style: AppTextStyle.bodyMedium(context)),
+        content: Text(
+          AppLocalKay.submit_confirmation.tr(),
+          style: AppTextStyle.bodyMedium(context),
+        ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              setState(() {
-                _pendingAssignments.remove(assignment);
-                _submittedAssignments.add(assignment);
-              });
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(const SnackBar(content: Text('تم تسليم الواجب بنجاح')));
-            },
-            child: const Text('تأكيد'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Expanded(
+                child: TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(AppLocalKay.dialog_delete_cancel.tr()),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(child: CustomButton(text: AppLocalKay.submit_assignment.tr(), radius: 12)),
+            ],
           ),
         ],
       ),

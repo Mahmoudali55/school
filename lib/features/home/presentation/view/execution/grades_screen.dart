@@ -1,7 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:share_plus/share_plus.dart';
 
 class GradesScreen extends StatefulWidget {
@@ -42,7 +45,10 @@ class _GradesScreenState extends State<GradesScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         context,
-        title: const Text('الدرجات'),
+        title: Text(
+          AppLocalKay.grades.tr(),
+          style: AppTextStyle.bodyLarge(context).copyWith(fontWeight: FontWeight.bold),
+        ),
         actions: [IconButton(icon: const Icon(Icons.share), onPressed: _shareGrades)],
       ),
       body: Column(
@@ -96,7 +102,7 @@ class _GradesScreenState extends State<GradesScreen> {
                   Column(
                     children: [
                       Text(
-                        'المعدل التراكمي',
+                        AppLocalKay.gpa.tr(),
                         style: TextStyle(color: AppColor.whiteColor(context), fontSize: 14.sp),
                       ),
                       Text(
@@ -112,7 +118,7 @@ class _GradesScreenState extends State<GradesScreen> {
                   Column(
                     children: [
                       Text(
-                        'التقدير',
+                        AppLocalKay.assessment.tr(),
                         style: TextStyle(color: AppColor.whiteColor(context), fontSize: 14.sp),
                       ),
                       Text(
@@ -140,7 +146,7 @@ class _GradesScreenState extends State<GradesScreen> {
                         Icon(Icons.grade, size: 60.w, color: Colors.grey),
                         SizedBox(height: 16.h),
                         Text(
-                          'لا توجد درجات لهذا الفصل',
+                          AppLocalKay.no_grades.tr(),
                           style: TextStyle(fontSize: 16.sp, color: Colors.grey),
                         ),
                       ],
@@ -180,7 +186,7 @@ class _GradesScreenState extends State<GradesScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 4.h),
-            Text('الدرجة: ${grade['grade']}/${grade['maxGrade']}'),
+            Text('${AppLocalKay.grade.tr()}: ${grade['grade']}/${grade['maxGrade']}'),
             SizedBox(height: 2.h),
             LinearProgressIndicator(
               value: grade['percentage'] / 100,

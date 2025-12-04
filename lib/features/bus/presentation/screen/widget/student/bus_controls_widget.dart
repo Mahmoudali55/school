@@ -1,5 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/control_button_widget.dart';
 
 class BusControls extends StatelessWidget {
@@ -22,27 +25,27 @@ class BusControls extends StatelessWidget {
       children: [
         Expanded(
           child: ControlButton(
-            text: "تحديث الموقع",
+            text: AppLocalKay.update_location.tr(),
             icon: Icons.refresh_rounded,
-            color: const Color(0xFF2196F3),
+            color: AppColor.primaryColor(context),
             onPressed: refreshLocation,
           ),
         ),
         SizedBox(width: 12.w),
         Expanded(
           child: ControlButton(
-            text: isBusMoving ? "إيقاف الحركة" : "تشغيل الحركة",
+            text: isBusMoving ? AppLocalKay.stop.tr() : AppLocalKay.start.tr(),
             icon: isBusMoving ? Icons.pause_rounded : Icons.play_arrow_rounded,
-            color: const Color(0xFFFF9800),
+            color: AppColor.accentColor(context),
             onPressed: toggleBusMovement,
           ),
         ),
         SizedBox(width: 12.w),
         Expanded(
           child: ControlButton(
-            text: "اتصال بالسائق",
+            text: AppLocalKay.call_driver.tr(),
             icon: Icons.phone_rounded,
-            color: const Color(0xFF4CAF50),
+            color: AppColor.secondAppColor(context),
             onPressed: callDriver,
           ),
         ),

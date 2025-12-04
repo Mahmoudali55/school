@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 
 class MapSection extends StatelessWidget {
   final List<Map<String, dynamic>> stops;
@@ -24,7 +25,7 @@ class MapSection extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFFE8F5E8),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFF4CAF50).withOpacity(0.3)),
+        border: Border.all(color: AppColor.secondAppColor(context).withOpacity(0.3)),
       ),
       child: Stack(
         children: [
@@ -35,7 +36,7 @@ class MapSection extends StatelessWidget {
             child: Container(
               height: 4.h,
               decoration: BoxDecoration(
-                color: const Color(0xFF4CAF50).withOpacity(0.5),
+                color: AppColor.secondAppColor(context).withOpacity(0.5),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -55,12 +56,12 @@ class MapSection extends StatelessWidget {
                     height: 16.w,
                     decoration: BoxDecoration(
                       color: stop['current']
-                          ? const Color(0xFF4CAF50)
+                          ? AppColor.secondAppColor(context)
                           : stop['passed']
-                          ? const Color(0xFF4CAF50).withOpacity(0.5)
+                          ? AppColor.secondAppColor(context).withOpacity(0.5)
                           : const Color(0xFF9CA3AF),
                       shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 2.w),
+                      border: Border.all(color: AppColor.secondAppColor(context), width: 2.w),
                     ),
                   ),
                   SizedBox(height: 8.h),
@@ -88,11 +89,11 @@ class MapSection extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.all(8.w),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColor.whiteColor(context),
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
+                          color: AppColor.blackColor(context).withOpacity(0.2),
                           blurRadius: 8,
                           offset: const Offset(0, 4),
                         ),
@@ -100,7 +101,7 @@ class MapSection extends StatelessWidget {
                     ),
                     child: Icon(
                       Icons.directions_bus_rounded,
-                      color: const Color(0xFF4CAF50),
+                      color: AppColor.secondAppColor(context),
                       size: 32.w,
                     ),
                   ),
