@@ -25,7 +25,7 @@ class GeneralSettingsSection extends StatelessWidget {
           SettingsTileWidget(
             icon: Icons.language,
             title: AppLocalKay.language.tr(),
-            onTap: () => _navigateToLanguageSettings(context),
+            onTap: () => showLanguageSheet(context),
           ),
           divider(),
           SettingsTileWidget(
@@ -49,10 +49,6 @@ class GeneralSettingsSection extends StatelessWidget {
   // دوال التنقل
   void _navigateToChangePassword(BuildContext context) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePasswordScreen()));
-  }
-
-  void _navigateToLanguageSettings(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => LanguageSettingsScreen()));
   }
 
   void _navigateToNotificationsSettings(BuildContext context) {

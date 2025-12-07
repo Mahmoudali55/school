@@ -1,10 +1,12 @@
 // lib/features/settings/presentation/screens/user_management_screen.dart
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class UserManagementScreen extends StatefulWidget {
   const UserManagementScreen({super.key});
@@ -38,7 +40,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
         ),
         context,
         title: Text(
-          'إدارة المستخدمين',
+          AppLocalKay.user_management_title.tr(),
           style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         elevation: 0,
@@ -80,9 +82,21 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildStatItem(_users.length.toString(), 'المستخدمين', AppColor.infoColor(context)),
-          _buildStatItem(activeUsers.toString(), 'نشطين', AppColor.successColor(context)),
-          _buildStatItem(teachers.toString(), 'معلمين', AppColor.warningColor(context)),
+          _buildStatItem(
+            _users.length.toString(),
+            AppLocalKay.users.tr(),
+            AppColor.infoColor(context),
+          ),
+          _buildStatItem(
+            activeUsers.toString(),
+            AppLocalKay.active_users.tr(),
+            AppColor.successColor(context),
+          ),
+          _buildStatItem(
+            teachers.toString(),
+            AppLocalKay.teachers.tr(),
+            AppColor.warningColor(context),
+          ),
           _buildStatItem(admins.toString(), 'إداريين', AppColor.purpleColor(context)),
         ],
       ),
@@ -149,11 +163,17 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
               icon: Icon(Icons.more_vert),
               onSelected: (value) => _handleUserAction(value, user, errorColor),
               itemBuilder: (BuildContext context) => [
-                PopupMenuItem(value: 'edit', child: Text('تعديل')),
-                PopupMenuItem(value: 'toggle', child: Text(user.isActive ? 'تعطيل' : 'تفعيل')),
+                PopupMenuItem(value: 'edit', child: Text(AppLocalKay.user_management_edit.tr())),
+                PopupMenuItem(
+                  value: 'toggle',
+                  child: Text(user.isActive ? AppLocalKay.disable.tr() : AppLocalKay.enable.tr()),
+                ),
                 PopupMenuItem(
                   value: 'delete',
-                  child: Text('حذف', style: TextStyle(color: errorColor)),
+                  child: Text(
+                    AppLocalKay.user_management_delete.tr(),
+                    style: TextStyle(color: errorColor),
+                  ),
                 ),
               ],
             ),
@@ -165,13 +185,13 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
 
   Color _getRoleColor(BuildContext context, String role) {
     switch (role) {
-      case 'مدير':
+      case AppLocalKay.admin:
         return AppColor.errorColor(context);
-      case 'نائب المدير':
+      case AppLocalKay.vice_manager:
         return AppColor.warningColor(context);
-      case 'معلم':
+      case AppLocalKay.teacher:
         return AppColor.infoColor(context);
-      case 'سكرتيرة':
+      case AppLocalKay.secretary:
         return AppColor.purpleColor(context);
       default:
         return AppColor.greyColor(context);
@@ -209,10 +229,13 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('حذف المستخدم'),
-          content: Text('هل أنت متأكد من أنك تريد حذف المستخدم ${user.name}؟'),
+          title: Text(AppLocalKay.delete_user_title.tr(), style: AppTextStyle.titleMedium(context)),
+          content: Text('${AppLocalKay.delete_user_message.tr()}${user.name}؟'),
           actions: [
-            CustomButton(onPressed: () => Navigator.of(context).pop(), text: 'إلغاء'),
+            CustomButton(
+              onPressed: () => Navigator.of(context).pop(),
+              text: AppLocalKay.cancel.tr(),
+            ),
             SizedBox(height: 16.w),
             CustomButton(
               color: AppColor.errorColor(context),
@@ -228,7 +251,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                   ),
                 );
               },
-              text: 'حذف',
+              text: AppLocalKay.delete.tr(),
             ),
           ],
         );

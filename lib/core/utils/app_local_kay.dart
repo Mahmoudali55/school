@@ -485,4 +485,109 @@ class AppLocalKay {
   static const String enter_phone = 'enter_phone';
   static const String position = 'position';
   static const String enter_position = 'enter_position';
+  static const String active_users = 'active_users';
+  static const String vice_manager = 'vice_manager';
+  static const String secretary = 'secretary';
+  static const String disable = 'disable';
+  static const String enable = 'enable';
+  static const String delete_user_title = 'delete_user_title';
+  static const String delete_user_message = 'delete_user_message';
+  static const String delete = 'delete';
+  static const String delete_success = 'delete_success';
+  static const String stats_admins = 'stats_admins';
+  static const String role = 'role';
+  static const String terms_last_update = 'terms_last_update';
+  static const String terms_read_warning = 'terms_read_warning';
+
+  static const String terms_section_1_title = 'terms_section_1_title';
+  static const String terms_section_1_content = 'terms_section_1_content';
+
+  static const String terms_section_2_title = 'terms_section_2_title';
+  static const String terms_section_2_content = 'terms_section_2_content';
+
+  static const String terms_section_3_title = 'terms_section_3_title';
+  static const String terms_section_3_content = 'terms_section_3_content';
+
+  static const String terms_section_4_title = 'terms_section_4_title';
+  static const String terms_section_4_content = 'terms_section_4_content';
+
+  static const String terms_section_5_title = 'terms_section_5_title';
+  static const String terms_section_5_content = 'terms_section_5_content';
+
+  static const String terms_section_6_title = 'terms_section_6_title';
+  static const String terms_section_6_content = 'terms_section_6_content';
+
+  static const String terms_section_7_title = 'terms_section_7_title';
+  static const String terms_section_7_content = 'terms_section_7_content';
+
+  static const String terms_section_8_title = 'terms_section_8_title';
+  static const String terms_section_8_content = 'terms_section_8_content';
+
+  static const String terms_section_9_title = 'terms_section_9_title';
+  static const String terms_section_9_content = 'terms_section_9_content';
+
+  static const String terms_section_10_title = 'terms_section_10_title';
+  static const String terms_section_10_content = 'terms_section_10_content';
+
+  static const String terms_section_11_title = 'terms_section_11_title';
+  static const String terms_section_11_content = 'terms_section_11_content';
+
+  static const String terms_important_note_title = 'terms_important_note_title';
+  static const String terms_important_note_content = 'terms_important_note_content';
+  static const String systemSettingsTitle = 'system_settings_title';
+
+  static const String academicYearCurrent = 'academic_year_current';
+
+  static const String backupAuto = 'backup_auto';
+  static const String backupAutoDesc = 'backup_auto_desc';
+
+  static const String backupFrequency = 'backup_frequency';
+  static const String backupFrequencyDaily = 'backup_frequency_daily';
+  static const String backupFrequencyWeekly = 'backup_frequency_weekly';
+  static const String backupFrequencyMonthly = 'backup_frequency_monthly';
+
+  static const String dataRetention = 'data_retention';
+  static const String dataRetention1y = 'data_retention_1y';
+  static const String dataRetention3y = 'data_retention_3y';
+  static const String dataRetention5y = 'data_retention_5y';
+  static const String dataRetentionForever = 'data_retention_forever';
+
+  static const String maintenanceMode = 'maintenance_mode';
+  static const String maintenanceModeDesc = 'maintenance_mode_desc';
+
+  static const String debugMode = 'debug_mode';
+  static const String debugModeDesc = 'debug_mode_desc';
+
+  static const String advancedSettings = 'advanced_settings';
+
+  static const String cleanSystem = 'clean_system';
+  static const String cleanSystemDesc = 'clean_system_desc';
+
+  static const String updateSystem = 'update_system';
+  static const String updateSystemDesc = 'update_system_desc';
+
+  static const String resetSystem = 'reset_system';
+  static const String resetSystemDesc = 'reset_system_desc';
+
+  static const String systemInfo = 'system_info';
+  static const String systemVersion = 'system_version';
+  static const String lastUpdate = 'last_update';
+  static const String databaseSize = 'database_size';
+  static const String storageSpace = 'storage_space';
+  static const String lastBackup = 'last_backup';
+
+  static const String saveSuccess = 'save_success';
+
+  static const String cleanSystemDialogTitle = 'clean_system_dialog_title';
+  static const String cleanSystemDialogText = 'clean_system_dialog_text';
+  static const String clean = 'clean';
+  static const String cleanSuccess = 'clean_success';
+
+  static const String updateSystemDialogTitle = 'update_system_dialog_title';
+  static const String updateSystemDialogText = 'update_system_dialog_text';
+
+  static const String resetSystemDialogTitle = 'reset_system_dialog_title';
+  static const String resetSystemDialogText = 'reset_system_dialog_text';
+  static const String reset = 'reset';
+  static const String resetSuccess = 'reset_success';
 }

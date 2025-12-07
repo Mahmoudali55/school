@@ -103,16 +103,16 @@ class _TeacherClassesBody extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('تعديل الملف الشخصي'),
-        content: const Text('هنا يمكن تعديل معلومات الملف الشخصي...'),
+        title: Text('تعديل الملف الشخصي'.tr()),
+        content: Text('هنا يمكن تعديل معلومات الملف الشخصي...'.tr()),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text('إلغاء'.tr())),
           ElevatedButton(
             onPressed: () {
               // TODO: تحديث معلومات المدرس
               Navigator.pop(context);
             },
-            child: const Text('حفظ'),
+            child: Text('حفظ'.tr()),
           ),
         ],
       ),
@@ -123,35 +123,35 @@ class _TeacherClassesBody extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('تصفية الفصول'),
+        title: Text('تصفية الفصول'.tr()),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              title: const Text('جميع الفصول'),
+              title: Text('جميع الفصول'.tr()),
               onTap: () {
                 context.read<TeacherClassesCubit>().clearFilter();
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              title: const Text('الصف العاشر'),
+              title: Text('الصف العاشر'.tr()),
               onTap: () {
-                context.read<TeacherClassesCubit>().filterClasses('العاشر');
+                context.read<TeacherClassesCubit>().filterClasses('العاشر'.tr());
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              title: const Text('الصف التاسع'),
+              title: Text('الصف التاسع'.tr()),
               onTap: () {
-                context.read<TeacherClassesCubit>().filterClasses('التاسع');
+                context.read<TeacherClassesCubit>().filterClasses('التاسع'.tr());
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              title: const Text('الصف الحادي عشر'),
+              title: Text('الصف الحادي عشر'.tr()),
               onTap: () {
-                context.read<TeacherClassesCubit>().filterClasses('الحادي عشر');
+                context.read<TeacherClassesCubit>().filterClasses('الحادي عشر'.tr());
                 Navigator.pop(context);
               },
             ),

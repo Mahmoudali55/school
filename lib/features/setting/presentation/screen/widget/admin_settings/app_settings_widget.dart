@@ -18,7 +18,7 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
     bool _notificationsEnabled = true;
     bool _darkModeEnabled = false;
     bool _biometricEnabled = false;
-
+    String _selectedLanguage = AppLocalKay.arabic.tr();
     String _selectedTheme = AppLocalKay.light.tr();
     return Column(
       children: [
@@ -27,23 +27,18 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
           child: ListTile(
             leading: Icon(Icons.language, color: AppColor.primaryColor(context)),
             title: Text(AppLocalKay.language.tr(), style: AppTextStyle.bodyLarge(context)),
-            subtitle: Text(
-              context.locale.languageCode == 'ar'
-                  ? AppLocalKay.arabic.tr()
-                  : AppLocalKay.english.tr(),
-            ),
+            subtitle: Text(_selectedLanguage),
             trailing: DropdownButton<String>(
-              value: context.locale.languageCode,
-              items: [
-                DropdownMenuItem(value: 'ar', child: Text(AppLocalKay.arabic.tr())),
-                DropdownMenuItem(value: 'en', child: Text(AppLocalKay.english.tr())),
-              ],
-              onChanged: (String? newValue) async {
-                if (newValue != null && newValue != context.locale.languageCode) {
-                  await context.setLocale(Locale(newValue));
-                }
+              value: _selectedLanguage,
+              items: [AppLocalKay.arabic.tr(), AppLocalKay.english.tr()]
+                  .map((String value) => DropdownMenuItem<String>(value: value, child: Text(value)))
+                  .toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedLanguage = newValue!;
+                });
               },
-              underline: const SizedBox(),
+              underline: SizedBox(),
             ),
           ),
         ),

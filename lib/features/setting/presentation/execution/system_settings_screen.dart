@@ -1,9 +1,11 @@
 // lib/features/settings/presentation/screens/system_settings_screen.dart
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/setting/presentation/screen/widget/admin_settings/setting_item_widget.dart';
 
 class SystemSettingsScreen extends StatefulWidget {
@@ -31,7 +33,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'إعدادات النظام',
+          AppLocalKay.systemSettingsTitle.tr(),
           style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
 
@@ -47,7 +49,10 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
             Card(
               child: ListTile(
                 leading: Icon(Icons.calendar_today, color: AppColor.primaryColor(context)),
-                title: Text('السنة الدراسية الحالية'),
+                title: Text(
+                  AppLocalKay.academicYearCurrent.tr(),
+                  style: AppTextStyle.bodyLarge(context),
+                ),
                 subtitle: Text(_academicYear),
                 trailing: DropdownButton<String>(
                   value: _academicYear,
@@ -72,8 +77,11 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
             Card(
               child: SwitchListTile(
                 secondary: Icon(Icons.backup, color: AppColor.primaryColor(context)),
-                title: Text('النسخ الاحتياطي التلقائي'),
-                subtitle: Text('نسخ البيانات تلقائياً بشكل دوري'),
+                title: Text(AppLocalKay.backupAuto.tr(), style: AppTextStyle.bodyLarge(context)),
+                subtitle: Text(
+                  AppLocalKay.backupAutoDesc.tr(),
+                  style: AppTextStyle.bodySmall(context),
+                ),
                 value: _autoBackup,
                 onChanged: (bool value) {
                   setState(() {
@@ -89,7 +97,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
               Card(
                 child: ListTile(
                   leading: Icon(Icons.schedule, color: AppColor.primaryColor(context)),
-                  title: Text('تردد النسخ الاحتياطي'),
+                  title: Text(AppLocalKay.ParentNotification),
                   subtitle: Text(_backupFrequency),
                   trailing: DropdownButton<String>(
                     value: _backupFrequency,
@@ -115,7 +123,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
             Card(
               child: ListTile(
                 leading: Icon(Icons.storage, color: AppColor.primaryColor(context)),
-                title: Text('فترة احتفاظ البيانات'),
+                title: Text(AppLocalKay.dataRetention.tr(), style: AppTextStyle.bodyLarge(context)),
                 subtitle: Text(_dataRetention),
                 trailing: DropdownButton<String>(
                   value: _dataRetention,
@@ -140,8 +148,14 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
             Card(
               child: SwitchListTile(
                 secondary: Icon(Icons.engineering, color: AppColor.primaryColor(context)),
-                title: Text('وضع الصيانة'),
-                subtitle: Text('إيقاف النظام للصيانة (للمشرفين فقط)'),
+                title: Text(
+                  AppLocalKay.maintenanceMode.tr(),
+                  style: AppTextStyle.bodyLarge(context),
+                ),
+                subtitle: Text(
+                  AppLocalKay.maintenanceModeDesc.tr(),
+                  style: AppTextStyle.bodySmall(context),
+                ),
                 value: _maintenanceMode,
                 onChanged: (bool value) {
                   setState(() {
@@ -156,8 +170,11 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
             Card(
               child: SwitchListTile(
                 secondary: Icon(Icons.bug_report, color: AppColor.primaryColor(context)),
-                title: Text('وضع التصحيح'),
-                subtitle: Text('تفعيل سجلات التصحيح للأخطاء'),
+                title: Text(AppLocalKay.debugMode.tr(), style: AppTextStyle.bodyLarge(context)),
+                subtitle: Text(
+                  AppLocalKay.debugModeDesc.tr(),
+                  style: AppTextStyle.bodySmall(context),
+                ),
                 value: _debugMode,
                 onChanged: (bool value) {
                   setState(() {
@@ -170,7 +187,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
 
             // إعدادات متقدمة
             Text(
-              'الإعدادات المتقدمة',
+              AppLocalKay.advancedSettings.tr(),
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
@@ -181,20 +198,20 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
 
             SettingItemWidget(
               icon: Icons.cleaning_services,
-              title: 'تنظيف النظام',
-              subtitle: 'حذف الملفات المؤقتة والبيانات غير المستخدمة',
+              title: AppLocalKay.cleanSystem.tr(),
+              subtitle: AppLocalKay.cleanSystemDesc.tr(),
               onTap: _cleanSystem,
             ),
             SettingItemWidget(
               icon: Icons.update,
-              title: 'تحديث النظام',
-              subtitle: 'التحقق من التحديثات وتثبيتها',
+              title: AppLocalKay.resetSystem.tr(),
+              subtitle: AppLocalKay.resetSystemDesc.tr(),
               onTap: _checkForUpdates,
             ),
             SettingItemWidget(
               icon: Icons.restore,
-              title: 'استعادة الإعدادات الافتراضية',
-              subtitle: 'إعادة تعيين جميع إعدادات النظام',
+              title: AppLocalKay.resetSystemDialogTitle.tr(),
+              subtitle: AppLocalKay.resetSystemDialogText.tr(),
               onTap: _resetSystemSettings,
             ),
             SizedBox(height: 32.h),
@@ -208,7 +225,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'معلومات النظام',
+                      AppLocalKay.systemInfo.tr(),
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
@@ -216,11 +233,11 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
                       ),
                     ),
                     SizedBox(height: 12.h),
-                    _buildSystemInfoItem('إصدار النظام', '2.1.0'),
-                    _buildSystemInfoItem('آخر تحديث', '2024-03-20'),
-                    _buildSystemInfoItem('حجم قاعدة البيانات', '245 MB'),
-                    _buildSystemInfoItem('مساحة التخزين', '1.2 GB / 5 GB'),
-                    _buildSystemInfoItem('آخر نسخ احتياطي', '2024-03-19 22:30'),
+                    _buildSystemInfoItem(AppLocalKay.systemVersion.tr(), '2.1.0'),
+                    _buildSystemInfoItem(AppLocalKay.lastUpdate.tr(), '2024-03-20'),
+                    _buildSystemInfoItem(AppLocalKay.databaseSize.tr(), '245 MB'),
+                    _buildSystemInfoItem(AppLocalKay.storageSpace.tr(), '1.2 GB / 5 GB'),
+                    _buildSystemInfoItem(AppLocalKay.lastBackup.tr(), '2024-03-19 22:30'),
                   ],
                 ),
               ),
@@ -238,7 +255,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
                 ),
                 child: Text(
-                  'حفظ إعدادات النظام',
+                  AppLocalKay.save.tr(),
                   style: TextStyle(fontSize: 16.sp, color: AppColor.whiteColor(context)),
                 ),
               ),

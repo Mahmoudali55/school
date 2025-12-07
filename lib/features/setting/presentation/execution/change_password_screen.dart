@@ -151,7 +151,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               SizedBox(height: 32.h),
 
               CustomButton(
-                text: 'تغيير كلمة المرور',
+                text: AppLocalKay.change_password.tr(),
                 radius: 16.r,
                 color: AppColor.primaryColor(context),
                 onPressed: _changePassword,

@@ -15,9 +15,9 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
   int selectedIndex = 0;
 
   final children = [
-    {"name": "أحمد محمد", "grade": "الصف العاشر"},
-    {"name": "سارة محمد", "grade": "الصف الثامن"},
-    {"name": "فاطمة محمد", "grade": "الصف السادس"},
+    {'name'.tr(): 'أحمد محمد'.tr(), 'grade'.tr(): 'الصف العاشر'.tr()},
+    {'name'.tr(): 'سارة محمد'.tr(), 'grade'.tr(): 'الصف الثامن'.tr()},
+    {'name'.tr(): 'فاطمة محمد'.tr(), 'grade'.tr(): 'الصف السادس'.tr()},
   ];
 
   @override
@@ -80,19 +80,22 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'أ. محمد أحمد',
+                  Text(
+                    'أ. محمد أحمد'.tr(),
                     style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 4),
-                  Text('ولي أمر الطالب', style: TextStyle(fontSize: 13, color: Colors.grey[600])),
+                  Text(
+                    'ولي أمر الطالب'.tr(),
+                    style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                  ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
                       Icon(Icons.phone, size: 14, color: Colors.grey[600]),
                       const SizedBox(width: 4),
                       Text(
-                        '+966 50 123 4567',
+                        '+966 50 123 4567'.tr(),
                         style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       ),
                     ],
@@ -133,7 +136,11 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
               final selected = selectedIndex == index;
               return GestureDetector(
                 onTap: () => setState(() => selectedIndex = index),
-                child: _childChip(name: c["name"]!, grade: c["grade"]!, isSelected: selected),
+                child: _childChip(
+                  name: c['name'.tr()]!,
+                  grade: c['grade'.tr()]!,
+                  isSelected: selected,
+                ),
               );
             },
           ),
@@ -187,7 +194,7 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
         Expanded(
           child: _statCard(
             AppLocalKay.checkin.tr(),
-            "95%",
+            '95%'.tr(),
             Icons.check,
             AppColor.secondAppColor(context),
             AppLocalKay.this_month.tr(),
@@ -197,7 +204,7 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
         Expanded(
           child: _statCard(
             AppLocalKay.grades.tr(),
-            "88%",
+            '88%'.tr(),
             Icons.grade,
             AppColor.primaryColor(context),
             AppLocalKay.gpas.tr(),
@@ -207,7 +214,7 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
         Expanded(
           child: _statCard(
             AppLocalKay.todostitle.tr(),
-            "3",
+            '3'.tr(),
             Icons.assignment,
             AppColor.accentColor(context),
             AppLocalKay.pending.tr(),
@@ -272,13 +279,13 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          const Expanded(
+          Expanded(
             child: TabBarView(
               children: [
-                Center(child: Text("📆 شاشة الجدول")),
-                Center(child: Text("📊 شاشة الدرجات")),
-                Center(child: Text("📁 شاشة الحضور")),
-                Center(child: Text("📝 شاشة الواجبات")),
+                Center(child: Text('📆 شاشة الجدول'.tr())),
+                Center(child: Text('📊 شاشة الدرجات'.tr())),
+                Center(child: Text('📁 شاشة الحضور'.tr())),
+                Center(child: Text('📝 شاشة الواجبات'.tr())),
               ],
             ),
           ),
