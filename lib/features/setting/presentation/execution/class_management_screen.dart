@@ -1,10 +1,12 @@
 // lib/features/settings/presentation/screens/class_management_screen.dart
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class ClassManagementScreen extends StatefulWidget {
   const ClassManagementScreen({super.key});
@@ -32,7 +34,7 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'إدارة الصفوف',
+          AppLocalKay.manage_classes.tr(),
           style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
 
@@ -77,9 +79,9 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildStatItem(totalClasses.toString(), 'الصفوف', Colors.blue),
-          _buildStatItem(totalStudents.toString(), 'الطلاب', Colors.green),
-          _buildStatItem('5', 'المعلمين', Colors.orange),
+          _buildStatItem(totalClasses.toString(), AppLocalKay.classes.tr(), Colors.blue),
+          _buildStatItem(totalStudents.toString(), AppLocalKay.students.tr(), Colors.green),
+          _buildStatItem('5', AppLocalKay.teachers.tr(), Colors.orange),
         ],
       ),
     );
@@ -195,12 +197,15 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('حذف الصف'),
+          title: Text(AppLocalKay.delete_class.tr(), style: AppTextStyle.bodyMedium(context)),
           content: Text(
-            'هل أنت متأكد من أنك تريد حذف ${schoolClass.grade} - ${schoolClass.section}؟',
+            '${AppLocalKay.delete_class_content.tr()}${schoolClass.grade} - ${schoolClass.section}؟',
           ),
           actions: [
-            TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('إلغاء')),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyMedium(context)),
+            ),
             TextButton(
               onPressed: () {
                 setState(() {
@@ -211,7 +216,10 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
                   SnackBar(content: Text('تم حذف الصف بنجاح'), backgroundColor: Colors.green),
                 );
               },
-              child: Text('حذف', style: TextStyle(color: Colors.red)),
+              child: Text(
+                AppLocalKay.dialog_delete_confirm.tr(),
+                style: TextStyle(color: Colors.red),
+              ),
             ),
           ],
         );
@@ -263,16 +271,21 @@ class _AddClassDialogState extends State<AddClassDialog> {
                 icon: const Icon(Icons.close),
               ),
             ),
-            Center(child: Text('إضافة صف جديد', style: AppTextStyle.formTitle20Style(context))),
+            Center(
+              child: Text(
+                AppLocalKay.add_class.tr(),
+                style: AppTextStyle.formTitle20Style(context),
+              ),
+            ),
             SizedBox(height: 16.h),
             CustomFormField(
               radius: 12.r,
               controller: _gradeController,
-              title: 'الصف',
+              title: AppLocalKay.class_added.tr(),
 
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'يرجى إدخال اسم الصف';
+                  return AppLocalKay.enter_student_count.tr();
                 }
                 return null;
               },
@@ -281,10 +294,10 @@ class _AddClassDialogState extends State<AddClassDialog> {
             CustomFormField(
               radius: 12.r,
               controller: _sectionController,
-              title: 'الشعبة',
+              title: AppLocalKay.section.tr(),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'يرجى إدخال الشعبة';
+                  return AppLocalKay.enter_section.tr();
                 }
                 return null;
               },
@@ -293,11 +306,11 @@ class _AddClassDialogState extends State<AddClassDialog> {
             CustomFormField(
               radius: 12.r,
               controller: _teacherController,
-              title: 'المعلم',
+              title: AppLocalKay.teacher.tr(),
 
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'يرجى إدخال اسم المعلم';
+                  return AppLocalKay.enter_teacher_name.tr();
                 }
                 return null;
               },
@@ -306,11 +319,11 @@ class _AddClassDialogState extends State<AddClassDialog> {
             CustomFormField(
               radius: 12.r,
               controller: _studentCountController,
-              title: 'عدد الطلاب',
+              title: AppLocalKay.student_count.tr(),
               keyboardType: TextInputType.number,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'يرجى إدخال عدد الطلاب';
+                  return AppLocalKay.enter_student_count.tr();
                 }
                 return null;
               },
@@ -321,7 +334,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
               children: [
                 Expanded(
                   child: CustomButton(
-                    text: 'إلغاء',
+                    text: AppLocalKay.cancel.tr(),
                     radius: 12.r,
                     onPressed: () => Navigator.of(context).pop(),
                   ),
@@ -342,7 +355,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                         Navigator.of(context).pop();
                       }
                     },
-                    text: 'إضافة',
+                    text: AppLocalKay.add.tr(),
                   ),
                 ),
               ],
@@ -396,7 +409,7 @@ class _EditClassDialogState extends State<EditClassDialog> {
               icon: const Icon(Icons.close),
             ),
           ),
-          Text('تعديل الصف', style: AppTextStyle.formTitle20Style(context)),
+          Text(AppLocalKay.edit_class.tr(), style: AppTextStyle.formTitle20Style(context)),
           Form(
             key: _formKey,
             child: Column(
@@ -405,11 +418,10 @@ class _EditClassDialogState extends State<EditClassDialog> {
                 CustomFormField(
                   radius: 12.r,
                   controller: _gradeController,
-                  title: 'الصف',
-
+                  title: AppLocalKay.classes_title.tr(),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'يرجى إدخال اسم الصف';
+                      return AppLocalKay.enter_class_name.tr();
                     }
                     return null;
                   },
@@ -418,11 +430,11 @@ class _EditClassDialogState extends State<EditClassDialog> {
                 CustomFormField(
                   radius: 12.r,
                   controller: _sectionController,
-                  title: 'الشعبة',
+                  title: AppLocalKay.section.tr(),
 
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'يرجى إدخال الشعبة';
+                      return AppLocalKay.enter_section.tr();
                     }
                     return null;
                   },
@@ -431,11 +443,11 @@ class _EditClassDialogState extends State<EditClassDialog> {
                 CustomFormField(
                   radius: 12.r,
                   controller: _teacherController,
-                  title: 'المعلم',
+                  title: AppLocalKay.teacher.tr(),
 
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'يرجى إدخال اسم المعلم';
+                      return AppLocalKay.enter_teacher_name.tr();
                     }
                     return null;
                   },
@@ -444,12 +456,12 @@ class _EditClassDialogState extends State<EditClassDialog> {
                 CustomFormField(
                   radius: 12.r,
                   controller: _studentCountController,
-                  title: 'عدد الطلاب',
+                  title: AppLocalKay.student_count.tr(),
 
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'يرجى إدخال عدد الطلاب';
+                      return AppLocalKay.enter_student_count.tr();
                     }
                     return null;
                   },
@@ -461,12 +473,12 @@ class _EditClassDialogState extends State<EditClassDialog> {
                     Expanded(
                       child: CustomButton(
                         onPressed: () => Navigator.of(context).pop(),
-                        text: 'إلغاء',
+                        text: AppLocalKay.cancel.tr(),
                       ),
                     ),
                     Expanded(
                       child: CustomButton(
-                        text: 'حفظ',
+                        text: AppLocalKay.save.tr(),
                         radius: 12.r,
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {

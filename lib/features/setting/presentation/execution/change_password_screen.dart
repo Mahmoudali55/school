@@ -1,4 +1,5 @@
 // lib/features/settings/presentation/screens/change_password_screen.dart
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
@@ -6,6 +7,7 @@ import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.da
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -33,7 +35,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'تغيير كلمة المرور',
+          AppLocalKay.change_password.tr(),
           style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
 
@@ -59,11 +61,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   },
                 ),
                 isPassword: _obscureCurrentPassword,
-                title: 'كلمة المرور الحالية',
+                title: AppLocalKay.current_password.tr(),
                 radius: 12.r,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى إدخال كلمة المرور الحالية';
+                    return AppLocalKay.enter_current_password.tr();
                   }
                   return null;
                 },
@@ -74,7 +76,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               CustomFormField(
                 controller: _newPasswordController,
                 isPassword: _obscureNewPassword,
-                title: 'كلمة المرور الجديدة',
+                title: AppLocalKay.new_password.tr(),
                 prefixIcon: Icon(Icons.lock_outline),
                 suffixIcon: IconButton(
                   icon: Icon(_obscureNewPassword ? Icons.visibility : Icons.visibility_off),
@@ -87,10 +89,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 radius: 12.r,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى إدخال كلمة المرور الجديدة';
+                    return AppLocalKay.enter_new_password.tr();
                   }
                   if (value.length < 6) {
-                    return 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
+                    return AppLocalKay.password_length.tr();
                   }
                   return null;
                 },
@@ -101,7 +103,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               CustomFormField(
                 controller: _confirmPasswordController,
                 isPassword: _obscureConfirmPassword,
-                title: 'تأكيد كلمة المرور الجديدة',
+                title: AppLocalKay.new_password.tr(),
                 prefixIcon: Icon(Icons.lock_reset),
                 suffixIcon: IconButton(
                   icon: Icon(_obscureConfirmPassword ? Icons.visibility : Icons.visibility_off),
@@ -114,10 +116,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 radius: 12.r,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى تأكيد كلمة المرور';
+                    return AppLocalKay.enter_new_password.tr();
                   }
                   if (value != _newPasswordController.text) {
-                    return 'كلمة المرور غير متطابقة';
+                    return AppLocalKay.password_not_match.tr();
                   }
                   return null;
                 },
@@ -131,7 +133,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'نصائح لأمان أفضل:',
+                      AppLocalKay.suggestions.tr(),
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
@@ -140,9 +142,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     ),
                     SizedBox(height: 8.h),
                     Text(
-                      '• استخدم مزيج من الأحرف والأرقام والرموز\n'
-                      '• تجنب استخدام كلمات مرور سهلة التخمين\n'
-                      '• غير كلمة المرور بشكل دوري',
+                      AppLocalKay.suggestions_content.tr(),
                       style: TextStyle(fontSize: 12.sp, color: Colors.blue[700]),
                     ),
                   ],

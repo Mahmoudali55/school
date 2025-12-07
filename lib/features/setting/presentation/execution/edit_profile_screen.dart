@@ -1,4 +1,5 @@
 // lib/features/settings/presentation/screens/edit_profile_screen.dart
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
@@ -6,6 +7,7 @@ import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.da
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -27,7 +29,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       appBar: CustomAppBar(
         context,
         title: Text(
-          'تعديل الملف الشخصي',
+          AppLocalKay.edit_profile.tr(),
           style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -75,12 +77,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               CustomFormField(
                 radius: 12.r,
                 controller: _nameController,
-                title: 'الاسم الكامل',
+                title: AppLocalKay.full_name.tr(),
                 prefixIcon: Icon(Icons.person),
 
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى إدخال الاسم الكامل';
+                    return AppLocalKay.enter_full_name.tr();
                   }
                   return null;
                 },
@@ -90,15 +92,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               // البريد الإلكتروني
               CustomFormField(
                 controller: _emailController,
-                title: 'البريد الإلكتروني',
+                title: AppLocalKay.email.tr(),
                 prefixIcon: Icon(Icons.email),
                 radius: 12.r,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى إدخال البريد الإلكتروني';
+                    return AppLocalKay.enter_email.tr();
                   }
                   if (!value.contains('@')) {
-                    return 'يرجى إدخال بريد إلكتروني صحيح';
+                    return AppLocalKay.enter_valid_email.tr();
                   }
                   return null;
                 },
@@ -109,12 +111,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               CustomFormField(
                 radius: 12.r,
                 controller: _phoneController,
-                title: 'رقم الهاتف',
+                title: AppLocalKay.phone.tr(),
                 prefixIcon: Icon(Icons.phone),
 
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى إدخال رقم الهاتف';
+                    return AppLocalKay.enter_phone.tr();
                   }
                   return null;
                 },
@@ -125,19 +127,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               CustomFormField(
                 radius: 12.r,
                 controller: _positionController,
-                title: 'المنصب',
+                title: AppLocalKay.position.tr(),
                 prefixIcon: Icon(Icons.work),
 
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى إدخال المنصب';
+                    return AppLocalKay.enter_position.tr();
                   }
                   return null;
                 },
               ),
               SizedBox(height: 32.h),
 
-              CustomButton(text: 'حفظ التغييرات', radius: 12.r),
+              CustomButton(
+                text: AppLocalKay.save_changes.tr(),
+                onPressed: _saveProfile,
+                radius: 12.r,
+              ),
             ],
           ),
         ),

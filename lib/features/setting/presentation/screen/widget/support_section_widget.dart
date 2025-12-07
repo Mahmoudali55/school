@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/setting/presentation/execution/contact_us_screen.dart';
 import 'package:my_template/features/setting/presentation/execution/terms_conditions_screen.dart';
 import 'package:my_template/features/setting/presentation/screen/widget/settings_tile_widget.dart';
@@ -14,7 +16,7 @@ class SupportSectionWidget extends StatelessWidget {
         children: [
           SettingsTileWidget(
             icon: Icons.help_outline,
-            title: "مساعدة",
+            title: AppLocalKay.help.tr(),
             onTap: () {
               _navigateTohelpSupport(context);
             },
@@ -22,7 +24,7 @@ class SupportSectionWidget extends StatelessWidget {
           divider(),
           SettingsTileWidget(
             icon: Icons.support_agent,
-            title: "اتصل بالدعم",
+            title: AppLocalKay.contact_us.tr(),
             onTap: () {
               _navigateToContactUs(context);
             },
@@ -30,7 +32,7 @@ class SupportSectionWidget extends StatelessWidget {
           divider(),
           SettingsTileWidget(
             icon: Icons.description,
-            title: "الشروط والأحكام",
+            title: AppLocalKay.terms.tr(),
             onTap: () {
               _navigateTermsConditionsScreen(context);
             },
@@ -38,7 +40,7 @@ class SupportSectionWidget extends StatelessWidget {
           divider(),
           SettingsTileWidget(
             icon: Icons.info,
-            title: "حول التطبيق",
+            title: AppLocalKay.about.tr(),
             onTap: () {
               _navigateToAboutApp(context);
             },

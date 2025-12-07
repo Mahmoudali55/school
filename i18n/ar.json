@@ -492,7 +492,51 @@
   "select_problem":"اختر نوع المشكلة التي تواجهها مع حافلة ",
   "emergency_alert":"إرسال تنبيه طوارئ لجميع الجهات المعنية؟",
   "alert_sent":"تم إرسال تنبيه الطوارئ",
-  "send_to_all":"إرسال للجميع"
+  "send_to_all":"إرسال للجميع",
+  "help":"مساعدة",
+  "contact_us":"اتصل بالدعم",
+  "are_you_sure":"هل أنت متأكد من أنك تريد تسجيل الخروج؟",
+  "about":"حول التطبيق",
+  "change_password":"تغيير كلمة المرور",
+  "current_password":"كلمة المرور الحالية",
+  "enter_current_password":"يرجى إدخال كلمة المرور الحالية",
+  "new_password":"كلمة المرور الجديدة",
+  "enter_new_password":"يرجى إدخال كلمة المرور الجديدة",
+  "password_length":"كلمة المرور يجب أن تكون 6 أحرف على الأقل",
+  "confirm_new_password":"تأكيد كلمة المرور الجديدة",
+  "enter_confirm_password":"يرجى تأكيد كلمة المرور",
+  "password_not_match":"كلمة المرور غير متطابقة",
+  "suggestions":"نصائح لأمان أفضل:",
+"suggestions_content": "• استخدم مزيج من الأحرف والأرقام والرموز\n• تجنب استخدام كلمات مرور سهلة التخمين\n• غير كلمة المرور بشكل دوري",
+"manage_classes":"إدارة الصفوف",
+"delete_class":"حذف الصف",
+"delete_class_content":" هل أنت متأكد من أنك تريد حذف ",
+"class_deleted":"تم حذف الصف بنجاح",
+"add_class":"إضافة صف جديد",
+"class":"الصف",
+"enter_class_name":"يرجى إدخال اسم الصف",
+"enter_teacher_name":"يرجى إدخال اسم المعلم",
+"section":"الشعبة",
+"enter_section":"'يرجى إدخال الشعبة",
+"student_count":"عدد الطلاب",
+"enter_student_count":"يرجى إدخال عدد الطلاب",
+"edit_class":"تعديل الصف",
+"class_sent":"تم الإرسال",
+"class_sent_content":" شكراً لتواصلك معنا. سنرد على رسالتك في أقرب وقت ممكن.",
+"ok":"حسناً",
+"edit_profile":"تعديل الملف الشخصي",
+"enter_full_name":"يرجى إدخال الاسم بالكامل",
+"enter_email":"يرجى إدخال البريد الألكتروني",
+"enter_valid_email":"يرجى إدخال بريد إلكتروني صحيح",
+"enter_phone":"يرجى إدخال رقم الهاتف",
+"position":"المنصب",
+"enter_position":"يرجى إدخال المنصب"
+
+
+
+
+
+
 
 
 

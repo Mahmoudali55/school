@@ -211,9 +211,9 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('تم الإرسال', style: AppTextStyle.titleMedium(context)),
+          title: Text(AppLocalKay.class_sent.tr(), style: AppTextStyle.titleMedium(context)),
           content: Text(
-            'شكراً لتواصلك معنا. سنرد على رسالتك في أقرب وقت ممكن.',
+            AppLocalKay.class_sent_content.tr(),
             style: AppTextStyle.bodyMedium(context),
           ),
           actions: [
@@ -222,7 +222,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                 Navigator.pop(context); // إغلاق الـ AlertDialog
                 Navigator.pop(context); // العودة للشاشة السابقة
               },
-              child: Text('حسناً', style: AppTextStyle.bodyMedium(context)),
+              child: Text(AppLocalKay.ok.tr(), style: AppTextStyle.bodyMedium(context)),
             ),
           ],
         ),

@@ -40,10 +40,13 @@ logout(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('تسجيل الخروج'),
-        content: Text('هل أنت متأكد من أنك تريد تسجيل الخروج؟'),
+        title: Text(AppLocalKay.logout.tr(), style: TextStyle(color: AppColor.errorColor(context))),
+        content: Text(AppLocalKay.are_you_sure.tr(), style: AppTextStyle.bodyLarge(context)),
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('إلغاء')),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyLarge(context)),
+          ),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
@@ -55,7 +58,10 @@ logout(BuildContext context) {
                 ),
               );
             },
-            child: Text('تسجيل الخروج', style: TextStyle(color: AppColor.errorColor(context))),
+            child: Text(
+              AppLocalKay.logout.tr(),
+              style: TextStyle(color: AppColor.errorColor(context)),
+            ),
           ),
         ],
       );
