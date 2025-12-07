@@ -201,7 +201,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
 
             // معلومات النظام
             Card(
-              color: Colors.grey[50],
+              color: AppColor.grey50Color(context),
               child: Padding(
                 padding: EdgeInsets.all(16.w),
                 child: Column(
@@ -239,7 +239,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
                 ),
                 child: Text(
                   'حفظ إعدادات النظام',
-                  style: TextStyle(fontSize: 16.sp, color: Colors.white),
+                  style: TextStyle(fontSize: 16.sp, color: AppColor.whiteColor(context)),
                 ),
               ),
             ),
@@ -257,7 +257,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
         children: [
           Text(
             title,
-            style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+            style: TextStyle(fontSize: 14.sp, color: AppColor.grey600Color(context)),
           ),
           Text(
             value,
@@ -270,7 +270,10 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
 
   void _saveSystemSettings() {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('تم حفظ إعدادات النظام بنجاح'), backgroundColor: Colors.green),
+      SnackBar(
+        content: Text('تم حفظ إعدادات النظام بنجاح'),
+        backgroundColor: AppColor.successColor(context),
+      ),
     );
     Navigator.pop(context);
   }
@@ -288,7 +291,10 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('تم تنظيف النظام بنجاح'), backgroundColor: Colors.green),
+                  SnackBar(
+                    content: Text('تم تنظيف النظام بنجاح'),
+                    backgroundColor: AppColor.successColor(context),
+                  ),
                 );
               },
               child: Text('تنظيف'),
@@ -308,7 +314,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.check_circle, color: Colors.green, size: 50.w),
+              Icon(Icons.check_circle, color: AppColor.successColor(context), size: 50.w),
               SizedBox(height: 16.h),
               Text('النظام محدث لأحدث إصدار (2.1.0)'),
             ],

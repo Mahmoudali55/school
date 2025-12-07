@@ -1,13 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
-import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
-import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/home/presentation/view/execution/assignment_detail_screen.dart';
+import 'package:my_template/features/home/presentation/view/execution/widget/assignment_card.dart';
+import 'package:my_template/features/home/presentation/view/execution/widget/assignment_tabs.dart';
+import 'package:my_template/features/home/presentation/view/execution/widget/create_assignment_sheet.dart';
+import 'package:my_template/features/home/presentation/view/execution/widget/submit_assignment_dialog.dart';
 
 class AssignmentsScreen extends StatefulWidget {
   const AssignmentsScreen({super.key});
@@ -74,44 +75,14 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
       ),
       body: Column(
         children: [
-          Container(
-            height: 50.h,
-            decoration: BoxDecoration(
-              color: Colors.grey[100],
-              borderRadius: BorderRadius.circular(12),
-            ),
-            margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-            child: Row(
-              children: List.generate(_tabs.length, (index) {
-                return Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _selectedTab = index;
-                      });
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: _selectedTab == index ? Colors.blue : Colors.transparent,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Center(
-                        child: Text(
-                          _tabs[index],
-                          style: TextStyle(
-                            color: _selectedTab == index
-                                ? AppColor.whiteColor(context)
-                                : Colors.grey,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14.sp,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              }),
-            ),
+          AssignmentTabs(
+            selectedTab: _selectedTab,
+            tabs: _tabs,
+            onTabChanged: (index) {
+              setState(() {
+                _selectedTab = index;
+              });
+            },
           ),
 
           Expanded(child: _buildTabContent()),
@@ -157,82 +128,13 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       itemCount: assignments.length,
       itemBuilder: (context, index) {
-        return _buildAssignmentItem(assignments[index], showActions);
+        return AssignmentCard(
+          assignment: assignments[index],
+          showActions: showActions,
+          onSubmit: _submitAssignment,
+          onViewDetails: _viewAssignmentDetails,
+        );
       },
-    );
-  }
-
-  Widget _buildAssignmentItem(Map<String, dynamic> assignment, bool showActions) {
-    Color statusColor = Colors.grey;
-    IconData statusIcon = Icons.pending;
-
-    switch (assignment['status']) {
-      case AppLocalKay.status_pending:
-        statusColor = Colors.orange;
-        statusIcon = Icons.pending;
-        break;
-      case AppLocalKay.status_submitted:
-        statusColor = Colors.blue;
-        statusIcon = Icons.check_circle;
-        break;
-      case AppLocalKay.status_graded:
-        statusColor = Colors.green;
-        statusIcon = Icons.grade;
-        break;
-    }
-
-    return Card(
-      margin: EdgeInsets.only(bottom: 12.h),
-      child: ListTile(
-        leading: Container(
-          width: 50.w,
-          height: 50.w,
-          decoration: BoxDecoration(
-            color: statusColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Icon(statusIcon, color: statusColor),
-        ),
-        title: Text(
-          assignment['title'],
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 4.h),
-            Text('${assignment['subject']}'),
-            SizedBox(height: 2.h),
-            Text(
-              assignment['dueDate'] ?? assignment['submittedDate'],
-              style: TextStyle(fontSize: 10.sp, color: Colors.grey),
-            ),
-            if (assignment['grade'] != null) ...[
-              SizedBox(height: 2.h),
-              Text(
-                'الدرجة: ${assignment['grade']}',
-                style: TextStyle(fontSize: 12.sp, color: Colors.green, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ],
-        ),
-        trailing: showActions
-            ? Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.upload),
-                    onPressed: () => _submitAssignment(assignment),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.info),
-                    onPressed: () => _viewAssignmentDetails(assignment),
-                  ),
-                ],
-              )
-            : null,
-        onTap: () => _viewAssignmentDetails(assignment),
-      ),
     );
   }
 
@@ -240,57 +142,12 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (context) => Container(
-        padding: EdgeInsets.all(16.w),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              AppLocalKay.create_new_assignment.tr(),
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 16.h),
-            CustomFormField(title: AppLocalKay.assignment_title.tr(), radius: 12),
-            SizedBox(height: 16.h),
-            CustomFormField(title: AppLocalKay.assignment_description.tr(), radius: 12),
-            SizedBox(height: 16.h),
-            CustomButton(
-              text: AppLocalKay.save.tr(),
-              radius: 12,
-              onPressed: () => Navigator.pop(context),
-            ),
-          ],
-        ),
-      ),
+      builder: (context) => const CreateAssignmentSheet(),
     );
   }
 
   void _submitAssignment(Map<String, dynamic> assignment) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(AppLocalKay.submit_assignment.tr(), style: AppTextStyle.bodyMedium(context)),
-        content: Text(
-          AppLocalKay.submit_confirmation.tr(),
-          style: AppTextStyle.bodyMedium(context),
-        ),
-        actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Expanded(
-                child: TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(AppLocalKay.dialog_delete_cancel.tr()),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(child: CustomButton(text: AppLocalKay.submit_assignment.tr(), radius: 12)),
-            ],
-          ),
-        ],
-      ),
-    );
+    showDialog(context: context, builder: (context) => const SubmitAssignmentDialog());
   }
 
   void _viewAssignmentDetails(Map<String, dynamic> assignment) {

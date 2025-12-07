@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/features/setting/presentation/execution/class_management_screen.dart';
 
 class ClassCardWidget extends StatelessWidget {
@@ -20,8 +21,8 @@ class ClassCardWidget extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 12.h),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: const Color(0xFF2E5BFF).withOpacity(0.1),
-          child: Icon(Icons.class_, color: const Color(0xFF2E5BFF)),
+          backgroundColor: AppColor.primaryColor(context).withOpacity(0.1),
+          child: Icon(Icons.class_, color: AppColor.primaryColor(context)),
         ),
         title: Text(
           '${schoolClass.grade} - ${schoolClass.section}',
@@ -39,7 +40,7 @@ class ClassCardWidget extends StatelessWidget {
           children: [
             IconButton(icon: Icon(Icons.edit), onPressed: onEdit),
             IconButton(
-              icon: Icon(Icons.delete, color: Colors.red),
+              icon: Icon(Icons.delete, color: AppColor.errorColor(context)),
               onPressed: onDelete,
             ),
           ],

@@ -440,7 +440,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
-            _selectedBusData['onBoard'] ? "في الحافلة" : "في الانتظار",
+            _selectedBusData['onBoard'] ? AppLocalKay.in_bus.tr() : AppLocalKay.waiting.tr(),
             style: TextStyle(
               fontSize: 12.sp,
               color: _selectedBusData['onBoard']
@@ -486,7 +486,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                 Icon(Icons.home_rounded, color: AppColor.secondAppColor(context), size: 24.w),
                 SizedBox(height: 4.h),
                 Text(
-                  "المنزل",
+                  AppLocalKay.home_address.tr(),
                   style: TextStyle(
                     fontSize: 10.sp,
                     color: const Color(0xFF6B7280),
@@ -505,7 +505,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                 Icon(Icons.school_rounded, color: AppColor.primaryColor(context), size: 24.w),
                 SizedBox(height: 4.h),
                 Text(
-                  "المدرسة",
+                  AppLocalKay.school.tr(),
                   style: TextStyle(
                     fontSize: 10.sp,
                     color: const Color(0xFF6B7280),
@@ -646,7 +646,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  "${_childrenBusData.length} أبناء",
+                  "${_childrenBusData.length} ${AppLocalKay.children.tr()}",
                   style: TextStyle(
                     fontSize: 12.sp,
                     color: AppColor.primaryColor(context),
@@ -732,7 +732,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
-                  childData['onBoard'] ? "في الحافلة" : "في الانتظار",
+                  childData['onBoard'] ? AppLocalKay.in_bus.tr() : AppLocalKay.waiting.tr(),
                   style: TextStyle(
                     fontSize: 9.sp,
                     color: childData['onBoard']
@@ -975,16 +975,19 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('اتصال بالسائق'),
-        content: Text('هل تريد الاتصال بالسائق ${_selectedBusData['driverName']}؟'),
+        title: Text(AppLocalKay.call_driver.tr(), style: AppTextStyle.bodyMedium(context)),
+        content: Text('${AppLocalKay.ConnectDriverHint.tr()}${_selectedBusData['driverName']}؟'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text('إلغاء')),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyMedium(context)),
+          ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               // تنفيذ الاتصال
             },
-            child: Text('اتصال'),
+            child: Text(AppLocalKay.Connect.tr(), style: AppTextStyle.bodyMedium(context)),
           ),
         ],
       ),
@@ -994,7 +997,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
   void _shareLocation() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('تم مشاركة موقع ${_selectedBusData['childName']}'),
+        content: Text('${AppLocalKay.share_location.tr()} ${_selectedBusData['childName']}'),
         backgroundColor: const Color(0xFF4CAF50),
       ),
     );
@@ -1004,22 +1007,29 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('تنبيه الوصول'),
-        content: Text('سيتم إشعارك قبل وصول ${_selectedBusData['childName']} بـ 10 دقائق'),
-        actions: [ElevatedButton(onPressed: () => Navigator.pop(context), child: Text('تم'))],
+        title: Text(AppLocalKay.arrival_alert.tr(), style: AppTextStyle.bodyMedium(context)),
+        content: Text(
+          '${AppLocalKay.alert_message.tr()}${_selectedBusData['childName']} بـ 10 دقائق',
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(AppLocalKay.confirm.tr(), style: AppTextStyle.bodyMedium(context)),
+          ),
+        ],
       ),
     );
   }
 
   void _handleSafetyFeature(String feature) {
     switch (feature) {
-      case 'تنبيه الوصول':
+      case AppLocalKay.arrival_alert:
         _setArrivalAlert();
         break;
-      case 'متابعة الرحلة':
+      case AppLocalKay.bus_tracker:
         _showTripHistory();
         break;
-      case 'الإبلاغ عن مشكلة':
+      case AppLocalKay.report_incident:
         _reportProblem();
         break;
     }
@@ -1028,7 +1038,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
   void _showTripHistory() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('فتح سجل رحلات ${_selectedBusData['childName']}'),
+        content: Text('  رحلات ${_selectedBusData['childName']}'),
         backgroundColor: AppColor.primaryColor(context),
       ),
     );
@@ -1038,21 +1048,27 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('الإبلاغ عن مشكلة'),
-        content: Text('اختر نوع المشكلة التي تواجهها مع حافلة ${_selectedBusData['childName']}'),
+        title: Text(AppLocalKay.report_incident.tr(), style: AppTextStyle.bodyMedium(context)),
+        content: Text('${AppLocalKay.select_problem.tr()}${_selectedBusData['childName']}'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text('إلغاء')),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyMedium(context)),
+          ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('تم الإبلاغ عن المشكلة'),
+                  content: Text(
+                    AppLocalKay.incident_report.tr(),
+                    style: AppTextStyle.bodyMedium(context),
+                  ),
                   backgroundColor: const Color(0xFF4CAF50),
                 ),
               );
             },
-            child: Text('إرسال'),
+            child: Text(AppLocalKay.send.tr(), style: AppTextStyle.bodyMedium(context)),
           ),
         ],
       ),
@@ -1067,21 +1083,30 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
           children: [
             Icon(Icons.emergency_rounded, color: Colors.red),
             SizedBox(width: 8.w),
-            Text('طوارئ'),
+            Text(AppLocalKay.emergency_management.tr(), style: AppTextStyle.bodyMedium(context)),
           ],
         ),
-        content: Text('إرسال تنبيه طوارئ لجميع الجهات المعنية؟'),
+        content: Text(AppLocalKay.emergency_alert.tr(), style: AppTextStyle.bodySmall(context)),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text('إلغاء')),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyMedium(context)),
+          ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('تم إرسال تنبيه الطوارئ'), backgroundColor: Colors.red),
+                SnackBar(
+                  content: Text(
+                    AppLocalKay.alert_sent.tr(),
+                    style: AppTextStyle.bodyMedium(context),
+                  ),
+                  backgroundColor: Colors.red,
+                ),
               );
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: Text('إرسال للجميع'),
+            child: Text(AppLocalKay.send_to_all.tr(), style: AppTextStyle.bodyMedium(context)),
           ),
         ],
       ),

@@ -423,4 +423,22 @@ class AppLocalKay {
   static const String activities = 'activities';
   static const String achievements = 'achievements';
   static const String personal_info = 'personal_info';
+  static const String pending_assignments = 'pending_assignments';
+  static const String home_address = 'home_address';
+  static const String alert_message = 'alert_message';
+  static const String bus_tracker = 'bus_tracker';
+  static const String track_your_children = 'track_your_children';
+  static const String school = 'school';
+  static const String waiting = 'waiting';
+  static const String on_the_way = 'on_the_way';
+  static const String present = 'present';
+  static const String child_ahmed = 'child_ahmed';
+  static const String child_mohamed = 'child_mohamed';
+  static const String child_ali = 'child_ali';
+  static const String child_abdallah = 'child_abdallah';
+  static const String child_youssef = 'child_youssef';
+  static const String select_problem = 'select_problem';
+  static const String emergency_alert = 'emergency_alert';
+  static const String alert_sent = 'alert_sent';
+  static const String send_to_all = 'send_to_all';
 }

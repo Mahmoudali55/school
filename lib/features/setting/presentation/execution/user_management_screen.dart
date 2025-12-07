@@ -74,16 +74,16 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.grey[50],
-        border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
+        color: AppColor.grey50Color(context),
+        border: Border(bottom: BorderSide(color: AppColor.grey300Color(context))),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildStatItem(_users.length.toString(), 'المستخدمين', Colors.blue),
-          _buildStatItem(activeUsers.toString(), 'نشطين', Colors.green),
-          _buildStatItem(teachers.toString(), 'معلمين', Colors.orange),
-          _buildStatItem(admins.toString(), 'إداريين', Colors.purple),
+          _buildStatItem(_users.length.toString(), 'المستخدمين', AppColor.infoColor(context)),
+          _buildStatItem(activeUsers.toString(), 'نشطين', AppColor.successColor(context)),
+          _buildStatItem(teachers.toString(), 'معلمين', AppColor.warningColor(context)),
+          _buildStatItem(admins.toString(), 'إداريين', AppColor.purpleColor(context)),
         ],
       ),
     );
@@ -106,7 +106,10 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
           ),
         ),
         SizedBox(height: 4.h),
-        Text(label, style: AppTextStyle.titleSmall(context).copyWith(color: Colors.grey)),
+        Text(
+          label,
+          style: AppTextStyle.titleSmall(context).copyWith(color: AppColor.greyColor(context)),
+        ),
       ],
     );
   }
@@ -116,7 +119,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
       margin: EdgeInsets.only(bottom: 12.h),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: _getRoleColor(user.role),
+          backgroundColor: _getRoleColor(context, user.role),
           child: Text(
             user.name.split(' ').first[0],
             style: AppTextStyle.bodyMedium(context).copyWith(color: AppColor.whiteColor(context)),
@@ -160,18 +163,18 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
     );
   }
 
-  Color _getRoleColor(String role) {
+  Color _getRoleColor(BuildContext context, String role) {
     switch (role) {
       case 'مدير':
-        return Colors.red;
+        return AppColor.errorColor(context);
       case 'نائب المدير':
-        return Colors.orange;
+        return AppColor.warningColor(context);
       case 'معلم':
-        return Colors.blue;
+        return AppColor.infoColor(context);
       case 'سكرتيرة':
-        return Colors.purple;
+        return AppColor.purpleColor(context);
       default:
-        return Colors.grey;
+        return AppColor.greyColor(context);
     }
   }
 

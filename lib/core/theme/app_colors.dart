@@ -254,6 +254,75 @@ class AppColor {
     return primaryColor(context, listen: listen);
   }
 
+  // =========== OTHER COLORS ===========
+  static Color purpleColor(BuildContext context, {bool listen = true}) {
+    return AppTheme.getByTheme(
+      context,
+      light: const Color(0xFF9C27B0),
+      dark: const Color(0xFFD05CE3),
+      listen: listen,
+    );
+  }
+
+  static Color transparentColor(BuildContext context, {bool listen = true}) {
+    return Colors.transparent;
+  }
+
+  // =========== GREY SHADES ===========
+  static Color grey50Color(BuildContext context, {bool listen = true}) {
+    return AppTheme.getByTheme(
+      context,
+      light: const Color(0xFFFAFAFA),
+      dark: const Color(0xFF1E293B),
+      listen: listen,
+    );
+  }
+
+  static Color grey100Color(BuildContext context, {bool listen = true}) {
+    return AppTheme.getByTheme(
+      context,
+      light: const Color(0xFFF5F5F5),
+      dark: const Color(0xFF334155),
+      listen: listen,
+    );
+  }
+
+  static Color grey200Color(BuildContext context, {bool listen = true}) {
+    return AppTheme.getByTheme(
+      context,
+      light: const Color(0xFFEEEEEE),
+      dark: const Color(0xFF475569),
+      listen: listen,
+    );
+  }
+
+  static Color grey300Color(BuildContext context, {bool listen = true}) {
+    return AppTheme.getByTheme(
+      context,
+      light: const Color(0xFFE0E0E0),
+      dark: const Color(0xFF64748B),
+      listen: listen,
+    );
+  }
+
+  static Color grey400Color(BuildContext context, {bool listen = true}) {
+    return AppTheme.getByTheme(
+      context,
+      light: const Color(0xFFBDBDBD),
+      dark: const Color(0xFF94A3B8),
+      listen: listen,
+    );
+  }
+
+  static Color grey600Color(BuildContext context, {bool listen = true}) {
+    return AppTheme.getByTheme(
+      context,
+      light: const Color(0xFF757575),
+      dark: const Color(0xFFCBD5E1),
+      listen: listen,
+    );
+  }
+
   // =========== NEW UTILITY METHODS ===========
 
   /// الحصول على لون بناءً على الوضع الحالي (اختصار)

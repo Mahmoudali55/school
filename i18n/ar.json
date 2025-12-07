@@ -442,7 +442,57 @@
   "info":"المعلومات",
   "activities":"النشاطات",
   "achievements":"الإنجازات",
-  "personal_info":"المعلومات الشخصية"
+  "personal_info":"المعلومات الشخصية",
+  "pending_assignments":"في الانتظار",
+  "home_address": "المنزل",
+
+  "alert_message":"سيتم إشعارك قبل وصول ",
+    "bus_tracker": "متتبع الحافلات",
+  "track_your_children": "تابع أبنائك في الوقت الفعلي",
+
+  "school": "المدرسة",
+  "waiting": "في الانتظار",
+  "on_the_way": "في الطريق",
+  "present": "حاضر",
+
+
+  "child_ahmed": "أحمد",
+  "child_layla": "ليلى",
+  "child_mohammed": "محمد",
+
+  "king_fahd_street": "شارِع الملك فهد",
+  "university_station": "محطة الجامعة",
+  "time_7_min": "7 دقائق",
+  "distance_12_km": "1.2 كم",
+  "speed_45": "45 كم/ساعة",
+  "capacity_40": "40 طالب",
+  "status_on_the_way": "في الطريق",
+  "status_2_min_ago": "منذ دقيقتين",
+  "school_elite_high": "مدرسة النخبة الثانوية",
+  "grade_10": "الصف العاشر",
+
+  "hay_salam": "حي السلام",
+  "city_market": "سوق المدينة",
+  "time_15_min": "15 دقيقة",
+  "distance_35_km": "3.5 كم",
+  "speed_35": "35 كم/ساعة",
+  "status_at_station": "في المحطة",
+  "status_5_min_ago": "منذ 5 دقائق",
+  "school_al_amal_primary": "مدرسة الأمل الابتدائية",
+  "grade_4": "الصف الرابع",
+
+  "hay_rawdah": "حي الروضة",
+  "zoo": "حديقة الحيوانات",
+  "time_22_min": "22 دقيقة",
+  "distance_58_km": "5.8 كم",
+  "capacity_30": "30 طالب",
+  "status_3_min_ago": "منذ 3 دقائق",
+  "school_future_middle": "مدرسة المستقبل المتوسطة",
+  "grade_7": "الصف السابع",
+  "select_problem":"اختر نوع المشكلة التي تواجهها مع حافلة ",
+  "emergency_alert":"إرسال تنبيه طوارئ لجميع الجهات المعنية؟",
+  "alert_sent":"تم إرسال تنبيه الطوارئ",
+  "send_to_all":"إرسال للجميع"
 
 
 

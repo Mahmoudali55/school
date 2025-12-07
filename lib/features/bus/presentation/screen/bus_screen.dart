@@ -90,7 +90,7 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('تم تحديث الموقع'), backgroundColor: Color(0xFF4CAF50)),
+      SnackBar(content: Text(AppLocalKay.update_location.tr()), backgroundColor: Color(0xFF4CAF50)),
     );
   }
 
@@ -109,11 +109,17 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('اتصال بالسائق'),
-        content: Text('هل تريد الاتصال بالسائق ${_busData['driverName']}؟'),
+        title: Text(AppLocalKay.call_driver.tr(), style: AppTextStyle.bodyMedium(context)),
+        content: Text('\ ${AppLocalKay.ConnectDriverHint.tr()}   ${_busData['driverName']}؟'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
-          ElevatedButton(onPressed: () => Navigator.pop(context), child: const Text('اتصال')),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyMedium(context)),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(AppLocalKay.Connect.tr(), style: AppTextStyle.bodyMedium(context)),
+          ),
         ],
       ),
     );
@@ -137,16 +143,21 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('تنبيه الوصول'),
+        title: Text(AppLocalKay.arrival_alert.tr()),
         content: const Text('سيتم إشعارك قبل وصول الحافلة بـ 5 دقائق'),
-        actions: [ElevatedButton(onPressed: () => Navigator.pop(context), child: const Text('تم'))],
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(AppLocalKay.confirm.tr()),
+          ),
+        ],
       ),
     );
   }
 
   void _shareLocation() {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('تم مشاركة موقع الحافلة'), backgroundColor: Color(0xFF4CAF50)),
+      SnackBar(content: Text(AppLocalKay.share_location.tr()), backgroundColor: Color(0xFF4CAF50)),
     );
   }
 
@@ -158,24 +169,30 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
           children: [
             const Icon(Icons.emergency_rounded, color: Colors.red),
             SizedBox(width: 8.w),
-            const Text('طوارئ'),
+            Text(AppLocalKay.emergency_management.tr(), style: AppTextStyle.bodyMedium(context)),
           ],
         ),
-        content: const Text('هل تريد إرسال تنبيه طوارئ؟'),
+        content: Text(AppLocalKay.emergency_alert.tr(), style: AppTextStyle.bodySmall(context)),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyMedium(context)),
+          ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('تم إرسال تنبيه الطوارئ'),
+                SnackBar(
+                  content: Text(
+                    AppLocalKay.alert_sent.tr(),
+                    style: AppTextStyle.bodyMedium(context),
+                  ),
                   backgroundColor: Colors.red,
                 ),
               );
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('إرسال'),
+            child: Text(AppLocalKay.send.tr(), style: TextStyle(color: Colors.white)),
           ),
         ],
       ),

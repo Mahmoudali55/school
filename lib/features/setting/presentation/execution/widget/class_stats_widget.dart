@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 
 class ClassStatsWidget extends StatelessWidget {
   final int totalClasses;
@@ -18,21 +19,21 @@ class ClassStatsWidget extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.grey[50],
-        border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
+        color: AppColor.grey50Color(context),
+        border: Border(bottom: BorderSide(color: AppColor.grey300Color(context))),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _statItem(totalClasses, "الصفوف", Colors.blue),
-          _statItem(totalStudents, "الطلاب", Colors.green),
-          _statItem(teacherCount, "المعلمين", Colors.orange),
+          _statItem(context, totalClasses, "الصفوف", AppColor.infoColor(context)),
+          _statItem(context, totalStudents, "الطلاب", AppColor.successColor(context)),
+          _statItem(context, teacherCount, "المعلمين", AppColor.warningColor(context)),
         ],
       ),
     );
   }
 
-  Widget _statItem(int value, String label, Color color) {
+  Widget _statItem(BuildContext context, int value, String label, Color color) {
     return Column(
       children: [
         Container(
@@ -49,7 +50,7 @@ class ClassStatsWidget extends StatelessWidget {
         SizedBox(height: 4.h),
         Text(
           label,
-          style: TextStyle(color: Colors.grey, fontSize: 10.sp),
+          style: TextStyle(color: AppColor.greyColor(context), fontSize: 10.sp),
         ),
       ],
     );
