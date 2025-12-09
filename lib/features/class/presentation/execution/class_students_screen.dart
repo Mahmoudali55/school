@@ -1,7 +1,12 @@
 // lib/features/classes/presentation/screens/class_students_screen.dart
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 import '../../data/model/school_class_model.dart';
 
@@ -35,34 +40,34 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
+        context,
         title: Text(
-          'طلاب ${widget.schoolClass.name}',
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          '${AppLocalKay.btn_students.tr()} ${widget.schoolClass.name}',
+          style: AppTextStyle.titleLarge(
+            context,
+            color: AppColor.blackColor(context),
+          ).copyWith(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: AppColor.whiteColor(context),
-        foregroundColor: Colors.black,
+
         elevation: 0,
-        actions: [IconButton(icon: Icon(Icons.person_add), onPressed: _addStudent)],
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: Column(
         children: [
           // شريط البحث
           Padding(
             padding: EdgeInsets.all(16.w),
-            child: TextField(
+            child: CustomFormField(
+              radius: 12.r,
               controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'ابحث عن طالب...',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25.r),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: Colors.grey[100],
-                contentPadding: EdgeInsets.symmetric(vertical: 12.h),
-              ),
+              hintText: context.locale.languageCode == 'ar'
+                  ? 'ابحث عن طالب...'
+                  : 'Search for a student...',
+              prefixIcon: Icon(Icons.search),
               onChanged: _onSearchChanged,
             ),
           ),
@@ -100,10 +105,10 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildStatItem(_students.length.toString(), 'الطلاب', Colors.blue),
-          _buildStatItem('5', 'حاضرون', Colors.green),
-          _buildStatItem('0', 'غائبون', Colors.red),
-          _buildStatItem('85%', 'الحضور', Colors.orange),
+          _buildStatItem(_students.length.toString(), AppLocalKay.btn_students.tr(), Colors.blue),
+          _buildStatItem('5', AppLocalKay.user_management_attendees.tr(), Colors.green),
+          _buildStatItem('0', AppLocalKay.user_management_absent.tr(), Colors.red),
+          _buildStatItem('85%', AppLocalKay.checkin.tr(), Colors.orange),
         ],
       ),
     );
@@ -147,20 +152,38 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('الرقم الأكاديمي: ${student.academicId}'),
-            Text('ولي الأمر: ${student.parentName}'),
+            Text(' ${AppLocalKay.academic_number.tr()}: ${student.academicId}'),
+            Text(' ${AppLocalKay.parent.tr()} ${student.parentName}'),
           ],
         ),
         trailing: PopupMenuButton<String>(
           icon: Icon(Icons.more_vert),
           onSelected: (value) => _handleStudentAction(value, student),
           itemBuilder: (BuildContext context) => [
-            PopupMenuItem(value: 'edit', child: Text('تعديل')),
-            PopupMenuItem(value: 'attendance', child: Text('سجل الحضور')),
-            PopupMenuItem(value: 'transfer', child: Text('نقل إلى فصل آخر')),
+            PopupMenuItem(
+              value: 'edit',
+              child: Text(
+                AppLocalKay.user_management_edit.tr(),
+                style: AppTextStyle.bodyMedium(context),
+              ),
+            ),
+            PopupMenuItem(
+              value: 'attendance',
+              child: Text(AppLocalKay.check_record.tr(), style: AppTextStyle.bodyMedium(context)),
+            ),
+            PopupMenuItem(
+              value: 'transfer',
+              child: Text(
+                AppLocalKay.next_class_desc.tr(),
+                style: AppTextStyle.bodyMedium(context),
+              ),
+            ),
             PopupMenuItem(
               value: 'delete',
-              child: Text('حذف', style: TextStyle(color: Colors.red)),
+              child: Text(
+                AppLocalKay.user_management_delete.tr(),
+                style: TextStyle(color: Colors.red),
+              ),
             ),
           ],
         ),
@@ -216,16 +239,22 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('نقل الطالب'),
-          content: Text('هل تريد نقل الطالب ${student.name} إلى فصل آخر؟'),
+          title: Text(AppLocalKay.student_transfer.tr(), style: AppTextStyle.bodyMedium(context)),
+          content: Text(
+            '${AppLocalKay.student_transfer_desc.tr()}${student.name} ${AppLocalKay.next_class_title.tr()}؟',
+            style: AppTextStyle.bodyMedium(context),
+          ),
           actions: [
-            TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('إلغاء')),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyMedium(context)),
+            ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 // TODO: تنفيذ نقل الطالب
               },
-              child: Text('نقل'),
+              child: Text(AppLocalKay.transfer.tr(), style: AppTextStyle.bodyMedium(context)),
             ),
           ],
         );
@@ -238,10 +267,16 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('حذف الطالب'),
-          content: Text('هل أنت متأكد من أنك تريد حذف الطالب ${student.name}؟'),
+          title: Text(AppLocalKay.delete_student.tr(), style: AppTextStyle.bodyMedium(context)),
+          content: Text(
+            '${AppLocalKay.delete_student_desc.tr()}${student.name}؟',
+            style: AppTextStyle.bodyMedium(context),
+          ),
           actions: [
-            TextButton(onPressed: () => Navigator.of(context).pop(), child: Text('إلغاء')),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyMedium(context)),
+            ),
             TextButton(
               onPressed: () {
                 setState(() {
@@ -253,7 +288,7 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
                   SnackBar(content: Text('تم حذف الطالب بنجاح'), backgroundColor: Colors.green),
                 );
               },
-              child: Text('حذف', style: TextStyle(color: Colors.red)),
+              child: Text(AppLocalKay.delete.tr(), style: TextStyle(color: Colors.red)),
             ),
           ],
         );

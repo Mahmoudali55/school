@@ -17,63 +17,45 @@ class LayoutScreen extends StatefulWidget {
 
 class _LayoutScreenState extends State<LayoutScreen> {
   int _currentIndex = 0;
-  late final List<NavItemData> _navItems;
 
   @override
-  void initState() {
-    super.initState();
-    _navItems = [
+  Widget build(BuildContext context) {
+    final List<NavItemData> _navItems = [
       NavItemData(
         label: AppLocalKay.home.tr(),
         icon: Icons.home_outlined,
         activeIcon: Icons.home_rounded,
-        screen: getScreen("home", widget.selectedUserType.title),
+        screen: getScreen("home", widget.selectedUserType.id),
       ),
       NavItemData(
         label: AppLocalKay.calendar.tr(),
         icon: Icons.calendar_today_outlined,
         activeIcon: Icons.calendar_today_rounded,
-        screen: getScreen("calendar", widget.selectedUserType.title),
+        screen: getScreen("calendar", widget.selectedUserType.id),
         showBadge: _showBadge("calendar"),
       ),
       NavItemData(
         label: AppLocalKay.classes.tr(),
         icon: Icons.class_outlined,
         activeIcon: Icons.class_rounded,
-        screen: getScreen("classes", widget.selectedUserType.title),
+        screen: getScreen("classes", widget.selectedUserType.id),
         showBadge: _showBadge("classes"),
       ),
       NavItemData(
         label: AppLocalKay.bus.tr(),
         icon: Icons.directions_bus_outlined,
         activeIcon: Icons.directions_bus_rounded,
-        screen: getScreen("bus", widget.selectedUserType.title),
+        screen: getScreen("bus", widget.selectedUserType.id),
         showBadge: _showBadge("bus"),
       ),
       NavItemData(
         label: AppLocalKay.settings.tr(),
         icon: Icons.settings_outlined,
         activeIcon: Icons.settings_rounded,
-        screen: getScreen("settings", widget.selectedUserType.title),
+        screen: getScreen("settings", widget.selectedUserType.id),
       ),
     ];
-  }
 
-  bool _showBadge(String tab) {
-    return tab == "bus" && widget.selectedUserType.title == AppLocalKay.parent.tr();
-  }
-
-  Color _getSelectedColor() {
-    final role = widget.selectedUserType.title;
-    if (role == AppLocalKay.student.tr()) return const Color(0xFF4CAF50);
-    if (role == AppLocalKay.parent.tr()) return const Color(0xFF2196F3);
-    if (role == AppLocalKay.teacher.tr()) return const Color(0xFFFF9800);
-    if (role == AppLocalKay.admin.tr()) return const Color(0xFF9C27B0);
-    return const Color(0xFF2E5BFF);
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.scaffoldColor(context),
       body: _navItems[_currentIndex].screen,
@@ -84,5 +66,18 @@ class _LayoutScreenState extends State<LayoutScreen> {
         selectedColor: _getSelectedColor(),
       ),
     );
+  }
+
+  bool _showBadge(String tab) {
+    return tab == "bus" && widget.selectedUserType.id == 'parent';
+  }
+
+  Color _getSelectedColor() {
+    final roleId = widget.selectedUserType.id;
+    if (roleId == 'student') return const Color(0xFF4CAF50);
+    if (roleId == 'parent') return const Color(0xFF2196F3);
+    if (roleId == 'teacher') return const Color(0xFFFF9800);
+    if (roleId == 'admin') return const Color(0xFF9C27B0);
+    return const Color(0xFF2E5BFF);
   }
 }

@@ -1,10 +1,12 @@
 // lib/features/settings/presentation/screens/security_settings_screen.dart
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/setting/presentation/execution/login_history_screen.dart';
 
 class SecuritySettingsScreen extends StatefulWidget {
@@ -28,7 +30,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
       appBar: CustomAppBar(
         context,
         title: Text(
-          'الإعدادات الأمنية',
+          AppLocalKay.security_settings.tr(),
           style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
@@ -36,7 +38,6 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         elevation: 0,
-        actions: [IconButton(icon: Icon(Icons.save), onPressed: _saveSecuritySettings)],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.w),
@@ -47,8 +48,14 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
             Card(
               child: SwitchListTile(
                 secondary: Icon(Icons.security, color: AppColor.primaryColor(context)),
-                title: Text('المصادقة الثنائية'),
-                subtitle: Text('تفعيل المصادقة الثنائية لتسجيل الدخول'),
+                title: Text(
+                  AppLocalKay.two_factor_auth.tr(),
+                  style: AppTextStyle.bodyLarge(context),
+                ),
+                subtitle: Text(
+                  AppLocalKay.two_factor_auth_sub.tr(),
+                  style: AppTextStyle.bodySmall(context),
+                ),
                 value: _twoFactorAuth,
                 onChanged: (bool value) {
                   setState(() {
@@ -63,8 +70,14 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
             Card(
               child: SwitchListTile(
                 secondary: Icon(Icons.fingerprint, color: AppColor.primaryColor(context)),
-                title: Text('المصادقة البيومترية'),
-                subtitle: Text('استخدام البصمة أو التعرف على الوجه'),
+                title: Text(
+                  AppLocalKay.biometric_auth.tr(),
+                  style: AppTextStyle.bodyLarge(context),
+                ),
+                subtitle: Text(
+                  AppLocalKay.biometric_auth_sub.tr(),
+                  style: AppTextStyle.bodySmall(context),
+                ),
                 value: _biometricAuth,
                 onChanged: (bool value) {
                   setState(() {
@@ -79,8 +92,11 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
             Card(
               child: SwitchListTile(
                 secondary: Icon(Icons.timer, color: AppColor.primaryColor(context)),
-                title: Text('تسجيل الخروج التلقائي'),
-                subtitle: Text('تسجيل الخروج بعد فترة من عدم النشاط'),
+                title: Text(AppLocalKay.auto_logout.tr(), style: AppTextStyle.bodyLarge(context)),
+                subtitle: Text(
+                  AppLocalKay.auto_logout_sub.tr(),
+                  style: AppTextStyle.bodySmall(context),
+                ),
                 value: _autoLogout,
                 onChanged: (bool value) {
                   setState(() {
@@ -96,14 +112,22 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
               Card(
                 child: ListTile(
                   leading: Icon(Icons.access_time, color: AppColor.primaryColor(context)),
-                  title: Text('مهلة الجلسة'),
-                  subtitle: Text('${_sessionTimeout} دقيقة'),
+                  title: Text(
+                    AppLocalKay.session_timeout.tr(),
+                    style: AppTextStyle.bodyLarge(context),
+                  ),
+                  subtitle: Text(
+                    '${_sessionTimeout} ${AppLocalKay.minutes.tr()}',
+                    style: AppTextStyle.bodySmall(context),
+                  ),
                   trailing: DropdownButton<int>(
                     value: _sessionTimeout,
                     items: [15, 30, 60, 120]
                         .map(
-                          (int value) =>
-                              DropdownMenuItem<int>(value: value, child: Text('$value دقيقة')),
+                          (int value) => DropdownMenuItem<int>(
+                            value: value,
+                            child: Text('$value ${AppLocalKay.minutes.tr()}'),
+                          ),
                         )
                         .toList(),
                     onChanged: (int? newValue) {
@@ -122,8 +146,11 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
             Card(
               child: SwitchListTile(
                 secondary: Icon(Icons.warning, color: AppColor.primaryColor(context)),
-                title: Text('تنبيهات تسجيل الدخول'),
-                subtitle: Text('إرسال تنبيه عند تسجيل الدخول من جهاز جديد'),
+                title: Text(AppLocalKay.login_alerts.tr(), style: AppTextStyle.bodyLarge(context)),
+                subtitle: Text(
+                  AppLocalKay.login_alerts_sub.tr(),
+                  style: AppTextStyle.bodySmall(context),
+                ),
                 value: _loginAlerts,
                 onChanged: (bool value) {
                   setState(() {
@@ -138,8 +165,14 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
             Card(
               child: SwitchListTile(
                 secondary: Icon(Icons.devices, color: AppColor.primaryColor(context)),
-                title: Text('إدارة الأجهزة'),
-                subtitle: Text('عرض وإدارة الأجهزة المتصلة بالحساب'),
+                title: Text(
+                  AppLocalKay.device_management.tr(),
+                  style: AppTextStyle.bodyLarge(context),
+                ),
+                subtitle: Text(
+                  AppLocalKay.device_management_sub.tr(),
+                  style: AppTextStyle.bodySmall(context),
+                ),
                 value: _deviceManagement,
                 onChanged: (bool value) {
                   setState(() {
@@ -152,7 +185,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
 
             // سجل الأمان
             Text(
-              'سجل الأمان',
+              AppLocalKay.login_history.tr(),
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
@@ -163,8 +196,11 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
             Card(
               child: ListTile(
                 leading: Icon(Icons.history, color: AppColor.primaryColor(context)),
-                title: Text('عرض سجل الدخول'),
-                subtitle: Text('عرض جميع محاولات الدخول إلى الحساب'),
+                title: Text(AppLocalKay.login_history.tr(), style: AppTextStyle.bodyLarge(context)),
+                subtitle: Text(
+                  AppLocalKay.login_history_sub.tr(),
+                  style: AppTextStyle.bodySmall(context),
+                ),
                 trailing: Icon(Icons.arrow_forward_ios, size: 16.w),
                 onTap: _showLoginHistory,
               ),
@@ -173,7 +209,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
 
             // زر الحفظ
             CustomButton(
-              text: 'حفظ الإعدادات الأمنية',
+              text: AppLocalKay.save_security_settings.tr(),
               onPressed: _saveSecuritySettings,
               radius: 12,
             ),
@@ -185,7 +221,10 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
 
   void _saveSecuritySettings() {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('تم حفظ الإعدادات الأمنية بنجاح'), backgroundColor: Colors.green),
+      SnackBar(
+        content: Text(AppLocalKay.settings_saved_success.tr()),
+        backgroundColor: Colors.green,
+      ),
     );
     Navigator.pop(context);
   }

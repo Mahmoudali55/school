@@ -20,14 +20,11 @@ class AdminSettingsScreen extends StatefulWidget {
 }
 
 class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
-  bool _notificationsEnabled = true;
-  bool _darkModeEnabled = false;
-  bool _biometricEnabled = false;
-  String _selectedLanguage = 'العربية';
-  String _selectedTheme = 'فاتح';
-
   @override
   Widget build(BuildContext context) {
+    String _selectedLanguage = context.locale.languageCode == 'ar'
+        ? AppLocalKay.arabic.tr()
+        : AppLocalKay.english.tr();
     return Scaffold(
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.w),
@@ -53,6 +50,30 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
 
               SectionTitleWidget(title: AppLocalKay.setting_school.tr()),
               SizedBox(height: 16.h),
+              Card(
+                child: ListTile(
+                  leading: Icon(Icons.language, color: AppColor.primaryColor(context)),
+                  title: Text(AppLocalKay.language.tr(), style: AppTextStyle.bodyLarge(context)),
+                  subtitle: Text(_selectedLanguage),
+                  trailing: DropdownButton<String>(
+                    value: _selectedLanguage,
+                    items: [AppLocalKay.arabic.tr(), AppLocalKay.english.tr()]
+                        .map(
+                          (String value) =>
+                              DropdownMenuItem<String>(value: value, child: Text(value)),
+                        )
+                        .toList(),
+                    onChanged: (String? newValue) {
+                      if (newValue == AppLocalKay.arabic.tr()) {
+                        context.setLocale(Locale('ar'));
+                      } else {
+                        context.setLocale(Locale('en'));
+                      }
+                    },
+                    underline: SizedBox(),
+                  ),
+                ),
+              ),
               SchoolSettingsWidget(),
               SizedBox(height: 24.h),
 

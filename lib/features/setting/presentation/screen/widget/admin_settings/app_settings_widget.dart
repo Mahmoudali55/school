@@ -16,32 +16,13 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
   @override
   Widget build(BuildContext context) {
     bool _notificationsEnabled = true;
-    bool _darkModeEnabled = false;
+
     bool _biometricEnabled = false;
-    String _selectedLanguage = AppLocalKay.arabic.tr();
+
     String _selectedTheme = AppLocalKay.light.tr();
     return Column(
       children: [
         // اللغة
-        Card(
-          child: ListTile(
-            leading: Icon(Icons.language, color: AppColor.primaryColor(context)),
-            title: Text(AppLocalKay.language.tr(), style: AppTextStyle.bodyLarge(context)),
-            subtitle: Text(_selectedLanguage),
-            trailing: DropdownButton<String>(
-              value: _selectedLanguage,
-              items: [AppLocalKay.arabic.tr(), AppLocalKay.english.tr()]
-                  .map((String value) => DropdownMenuItem<String>(value: value, child: Text(value)))
-                  .toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  _selectedLanguage = newValue!;
-                });
-              },
-              underline: SizedBox(),
-            ),
-          ),
-        ),
         SizedBox(height: 8.h),
 
         // المظهر

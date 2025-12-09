@@ -1,7 +1,11 @@
 // features/class/presentation/execution/class_schedule_screen.dart
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/school_class_model.dart';
 
 class ClassScheduleScreen extends StatefulWidget {
@@ -59,13 +63,19 @@ class _ClassScheduleScreenState extends State<ClassScheduleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
+        context,
         title: Text(
-          'جدول حصص ${widget.schoolClass.name}',
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          '${AppLocalKay.schedules.tr()}  ${widget.schoolClass.name}',
+          style: AppTextStyle.titleLarge(
+            context,
+            color: AppColor.blackColor(context),
+          ).copyWith(fontWeight: FontWeight.bold),
         ),
-        backgroundColor:  AppColor.whiteColor(context),
-        foregroundColor: Colors.black,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: AppColor.blackColor(context)),
+          onPressed: () => Navigator.pop(context),
+        ),
         elevation: 0,
       ),
       body: Column(
@@ -89,7 +99,7 @@ class _ClassScheduleScreenState extends State<ClassScheduleScreen> {
                     },
                     selectedColor: Colors.blue,
                     labelStyle: TextStyle(
-                      color: _selectedDay == index ?  AppColor.whiteColor(context) : Colors.black,
+                      color: _selectedDay == index ? AppColor.whiteColor(context) : Colors.black,
                       fontSize: 14.sp,
                     ),
                   ),
@@ -119,7 +129,7 @@ class _ClassScheduleScreenState extends State<ClassScheduleScreen> {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
 
-      color: isBreak ? Colors.orange.shade50 :  AppColor.whiteColor(context),
+      color: isBreak ? Colors.orange.shade50 : AppColor.whiteColor(context),
       child: Container(
         child: ListTile(
           leading: Container(

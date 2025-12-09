@@ -872,7 +872,7 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
             physics: NeverScrollableScrollPhysics(),
             crossAxisSpacing: 12.w,
             mainAxisSpacing: 12.h,
-            childAspectRatio: 1.5,
+            childAspectRatio: 1.3,
             children: [
               _buildDetailItem(
                 AppLocalKay.bus_number.tr(),

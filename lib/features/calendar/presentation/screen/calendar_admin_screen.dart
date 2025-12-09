@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class AdminCalendarScreen extends StatefulWidget {
   const AdminCalendarScreen({super.key});
@@ -12,8 +15,14 @@ class AdminCalendarScreen extends StatefulWidget {
 class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
   DateTime _selectedDate = DateTime.now();
   int _currentView = 0; // 0: شهري, 1: أسبوعي, 2: يومي
-  String _selectedFilter = "الكل"; // تصفية الأحداث
-  List<String> _filters = ["الكل", "فعاليات", "اجتماعات", "اختبارات", "عطلات"];
+  String _selectedFilter = AppLocalKay.filter_all.tr(); // تصفية الأحداث
+  List<String> _filters = [
+    AppLocalKay.filter_all.tr(),
+    AppLocalKay.school_events.tr(),
+    AppLocalKay.school_activities.tr(),
+    AppLocalKay.school_exams.tr(),
+    AppLocalKay.school_holidays.tr(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +43,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: _addNewEvent,
         backgroundColor: const Color(0xFF9C27B0),
-        child: Icon(Icons.add_rounded, color: Colors.white, size: 24.w),
+        child: Icon(Icons.add_rounded, color: AppColor.whiteColor(context), size: 24.w),
       ),
     );
   }
@@ -43,10 +52,10 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -59,7 +68,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "تقويم المدرسة",
+                AppLocalKay.school_calendar.tr(),
                 style: TextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.bold,
@@ -89,7 +98,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
   Widget _buildControlBar() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      color: Colors.white,
+      color: AppColor.whiteColor(context),
       child: Column(
         children: [
           // تصفية الأحداث
@@ -107,9 +116,9 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                   ),
                   child: Row(
                     children: [
-                      _buildViewButton("شهري", 0),
-                      _buildViewButton("أسبوعي", 1),
-                      _buildViewButton("يومي", 2),
+                      _buildViewButton(AppLocalKay.backupFrequencyDaily.tr(), 0),
+                      _buildViewButton(AppLocalKay.backupFrequencyWeekly.tr(), 1),
+                      _buildViewButton(AppLocalKay.backupFrequencyMonthly.tr(), 2),
                     ],
                   ),
                 ),
@@ -158,17 +167,20 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                     filter,
                     style: TextStyle(
                       fontSize: 12.sp,
-                      color: _selectedFilter == filter ? Colors.white : const Color(0xFF6B7280),
+                      color: _selectedFilter == filter
+                          ? AppColor.whiteColor(context)
+                          : const Color(0xFF6B7280),
                     ),
                   ),
                   selected: _selectedFilter == filter,
                   onSelected: (bool selected) {
                     setState(() {
-                      _selectedFilter = selected ? filter : "الكل";
+                      _selectedFilter = selected ? filter : AppLocalKay.filter_all.tr();
                     });
                   },
-                  backgroundColor: Colors.white,
+                  backgroundColor: AppColor.whiteColor(context),
                   selectedColor: const Color(0xFF9C27B0),
+                  checkmarkColor: AppColor.whiteColor(context),
                   side: BorderSide(
                     color: _selectedFilter == filter
                         ? const Color(0xFF9C27B0)
@@ -198,7 +210,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
               style: TextStyle(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w600,
-                color: isSelected ? Colors.white : const Color(0xFF6B7280),
+                color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF6B7280),
               ),
             ),
           ),
@@ -309,7 +321,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                   ? const Color(0xFF9C27B0)
                   : isToday
                   ? const Color(0xFF9C27B0).withOpacity(0.1)
-                  : Colors.white,
+                  : AppColor.whiteColor(context),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 color: isToday ? const Color(0xFF9C27B0) : Colors.transparent,
@@ -324,7 +336,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
-                    color: isSelected ? Colors.white : const Color(0xFF1F2937),
+                    color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF1F2937),
                   ),
                 ),
                 SizedBox(height: 2.h),
@@ -340,7 +352,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                               height: 4.w,
                               margin: EdgeInsets.symmetric(horizontal: 1.w),
                               decoration: BoxDecoration(
-                                color: isSelected ? Colors.white : event.color,
+                                color: isSelected ? AppColor.whiteColor(context) : event.color,
                                 shape: BoxShape.circle,
                               ),
                             ),
@@ -350,7 +362,9 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                           '+${dayEvents.length - 2}',
                           style: TextStyle(
                             fontSize: 8.sp,
-                            color: isSelected ? Colors.white : const Color(0xFF6B7280),
+                            color: isSelected
+                                ? AppColor.whiteColor(context)
+                                : const Color(0xFF6B7280),
                           ),
                         ),
                     ],
@@ -374,11 +388,11 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 4,
             offset: const Offset(0, 1),
           ),
@@ -391,7 +405,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "إحصائيات الشهر",
+                AppLocalKay.school_statistics.tr(),
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
@@ -420,25 +434,25 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildStatItem(
-                "اجتماعات",
+                AppLocalKay.school_events.tr(),
                 eventCounts["اجتماع"] ?? 0,
                 Color(0xFFF59E0B),
                 Icons.groups_rounded,
               ),
               _buildStatItem(
-                "فعاليات",
+                AppLocalKay.school_activities.tr(),
                 eventCounts["فعالية"] ?? 0,
                 Color(0xFF10B981),
                 Icons.celebration_rounded,
               ),
               _buildStatItem(
-                "اختبارات",
+                AppLocalKay.school_exams.tr(),
                 eventCounts["اختبار"] ?? 0,
                 Color(0xFFDC2626),
                 Icons.quiz_rounded,
               ),
               _buildStatItem(
-                "عطلات",
+                AppLocalKay.school_holidays.tr(),
                 eventCounts["عطلة"] ?? 0,
                 Color(0xFF7C3AED),
                 Icons.beach_access_rounded,
@@ -504,7 +518,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
             margin: EdgeInsets.only(bottom: 8.h),
             padding: EdgeInsets.all(12.w),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColor.whiteColor(context),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: isSelected
@@ -516,7 +530,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: AppColor.blackColor(context).withOpacity(0.05),
                   blurRadius: 4,
                   offset: const Offset(0, 1),
                 ),
@@ -616,11 +630,11 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 4,
             offset: const Offset(0, 1),
           ),
@@ -633,7 +647,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "جدول المدرسة هذا الأسبوع",
+                AppLocalKay.school_timetable.tr(),
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
@@ -767,11 +781,11 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 4,
             offset: const Offset(0, 1),
           ),
@@ -821,7 +835,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
               ),
               SizedBox(height: 2.h),
               Text(
-                "لهذا اليوم",
+                AppLocalKay.today_schedule.tr(),
                 style: TextStyle(fontSize: 11.sp, color: const Color(0xFF6B7280)),
               ),
             ],
@@ -836,11 +850,11 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 4,
             offset: const Offset(0, 1),
           ),
@@ -890,7 +904,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(
-                              "مهم",
+                              AppLocalKay.important.tr(),
                               style: TextStyle(
                                 fontSize: 9.sp,
                                 color: const Color(0xFFDC2626),
@@ -937,7 +951,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                     if (event.participants.isNotEmpty) ...[
                       SizedBox(height: 8.h),
                       Text(
-                        "المشاركون: ${event.participants.join('، ')}",
+                        "${AppLocalKay.participants.tr()} ${event.participants.join('، ')}",
                         style: TextStyle(fontSize: 11.sp, color: const Color(0xFF6B7280)),
                       ),
                     ],
@@ -960,7 +974,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
         Expanded(
           child: OutlinedButton.icon(
             icon: Icon(Icons.edit_rounded, size: 16.w),
-            label: Text("تعديل"),
+            label: Text(AppLocalKay.user_management_edit.tr()),
             onPressed: () => _editEvent(event),
             style: OutlinedButton.styleFrom(
               foregroundColor: const Color(0xFF9C27B0),
@@ -972,7 +986,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
         Expanded(
           child: OutlinedButton.icon(
             icon: Icon(Icons.notifications_none_rounded, size: 16.w),
-            label: Text("تذكير"),
+            label: Text(AppLocalKay.reminder.tr(), style: AppTextStyle.bodyMedium(context)),
             onPressed: () => _setReminder(event),
             style: OutlinedButton.styleFrom(
               foregroundColor: const Color(0xFF2196F3),
@@ -984,7 +998,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
         Expanded(
           child: OutlinedButton.icon(
             icon: Icon(Icons.share_rounded, size: 16.w),
-            label: Text("مشاركة"),
+            label: Text(AppLocalKay.share.tr(), style: AppTextStyle.bodyMedium(context)),
             onPressed: () => _shareEvent(event),
             style: OutlinedButton.styleFrom(
               foregroundColor: const Color(0xFF10B981),
@@ -1007,11 +1021,11 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 4,
             offset: const Offset(0, 1),
           ),
@@ -1021,7 +1035,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "ملخص اليوم",
+            AppLocalKay.summary_today.tr(),
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
@@ -1033,19 +1047,19 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildDailySummaryItem(
-                "إجمالي الأحداث",
+                AppLocalKay.total_events.tr(),
                 dailyEvents.length,
                 Icons.event_rounded,
                 Color(0xFF9C27B0),
               ),
               _buildDailySummaryItem(
-                "اجتماعات",
+                AppLocalKay.school_events.tr(),
                 eventCounts["اجتماع"] ?? 0,
                 Icons.groups_rounded,
                 Color(0xFFF59E0B),
               ),
               _buildDailySummaryItem(
-                "فعاليات",
+                AppLocalKay.school_activities.tr(),
                 eventCounts["فعالية"] ?? 0,
                 Icons.celebration_rounded,
                 Color(0xFF10B981),
@@ -1092,7 +1106,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "الأحداث القادمة",
+              AppLocalKay.upcoming_events.tr(),
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
@@ -1102,7 +1116,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
             TextButton(
               onPressed: () {},
               child: Text(
-                "عرض الكل",
+                AppLocalKay.show_all.tr(),
                 style: TextStyle(
                   fontSize: 12.sp,
                   color: const Color(0xFF9C27B0),
@@ -1131,11 +1145,11 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
       margin: EdgeInsets.only(bottom: 8.h),
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: AppColor.blackColor(context).withOpacity(0.03),
             blurRadius: 2,
             offset: const Offset(0, 1),
           ),
@@ -1209,7 +1223,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
           Icon(Icons.calendar_today_rounded, size: 48.w, color: const Color(0xFF9CA3AF)),
           SizedBox(height: 12.h),
           Text(
-            "لا توجد أحداث",
+            AppLocalKay.no_events.tr(),
             style: TextStyle(
               fontSize: 14.sp,
               color: const Color(0xFF6B7280),
@@ -1218,17 +1232,20 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
           ),
           SizedBox(height: 4.h),
           Text(
-            "لا توجد أحداث مخططة لهذا اليوم",
+            AppLocalKay.no_events_today.tr(),
             style: TextStyle(fontSize: 12.sp, color: const Color(0xFF9CA3AF)),
           ),
           SizedBox(height: 16.h),
           ElevatedButton.icon(
             icon: Icon(Icons.add_rounded, size: 16.w),
-            label: Text("إضافة حدث جديد"),
+            label: Text(
+              AppLocalKay.new_event.tr(),
+              style: AppTextStyle.bodyMedium(context, color: AppColor.whiteColor(context)),
+            ),
             onPressed: _addNewEvent,
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF9C27B0),
-              foregroundColor: Colors.white,
+              foregroundColor: AppColor.whiteColor(context),
             ),
           ),
         ],
@@ -1295,25 +1312,13 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
   }
 
   // دوال الإجراءات
-  void _addNewEvent() {
-    // تنفيذ إضافة حدث جديد
-    print('إضافة حدث جديد');
-  }
+  void _addNewEvent() {}
 
-  void _editEvent(AdminCalendarEvent event) {
-    // تنفيذ تعديل الحدث
-    print('تعديل الحدث: ${event.title}');
-  }
+  void _editEvent(AdminCalendarEvent event) {}
 
-  void _setReminder(AdminCalendarEvent event) {
-    // تنفيذ تعيين تذكير
-    print('تعيين تذكير للحدث: ${event.title}');
-  }
+  void _setReminder(AdminCalendarEvent event) {}
 
-  void _shareEvent(AdminCalendarEvent event) {
-    // تنفيذ مشاركة الحدث
-    print('مشاركة الحدث: ${event.title}');
-  }
+  void _shareEvent(AdminCalendarEvent event) {}
 
   // بيانات تجريبية للأحداث
   List<AdminCalendarEvent> _getEventsForDay(DateTime day) {

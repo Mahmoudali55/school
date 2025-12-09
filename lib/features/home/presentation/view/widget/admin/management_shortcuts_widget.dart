@@ -87,7 +87,7 @@ class ManagementShortcuts extends StatelessWidget {
             maxCrossAxisExtent: 140.w,
             mainAxisSpacing: 12.h,
             crossAxisSpacing: 12.w,
-            childAspectRatio: 1,
+            childAspectRatio: .85,
           ),
           itemCount: shortcuts.length,
           itemBuilder: (context, index) => GestureDetector(

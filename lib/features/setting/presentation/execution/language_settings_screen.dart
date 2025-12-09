@@ -5,7 +5,7 @@ import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
-void showLanguageSheet(BuildContext parentContext) {
+showLanguageSheet(BuildContext parentContext) {
   showModalBottomSheet(
     context: parentContext,
 
@@ -43,7 +43,7 @@ void showLanguageSheet(BuildContext parentContext) {
                   ),
                 ),
                 onTap: () {
-                  bottomSheetContext.setLocale(const Locale('en'));
+                  parentContext.setLocale(const Locale('en'));
                   HiveMethods.updateLang(const Locale('en'));
                   Navigator.pop(bottomSheetContext);
                 },
@@ -58,7 +58,7 @@ void showLanguageSheet(BuildContext parentContext) {
                   ),
                 ),
                 onTap: () {
-                  bottomSheetContext.setLocale(const Locale('ar'));
+                  parentContext.setLocale(const Locale('ar'));
                   HiveMethods.updateLang(const Locale('ar'));
                   Navigator.pop(bottomSheetContext);
                 },

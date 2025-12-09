@@ -1,6 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/Bus/presentation/screen/bus_screen.dart';
 import 'package:my_template/features/bus/presentation/screen/admin_bus_tracking_screen.dart';
 import 'package:my_template/features/bus/presentation/screen/parent_bus_Screen.dart';
@@ -20,53 +18,51 @@ import 'package:my_template/features/home/presentation/view/screen/teacher_home_
 import 'package:my_template/features/setting/presentation/screen/admin_settings_screen.dart';
 import 'package:my_template/features/setting/presentation/screen/student_settings_screen.dart';
 
-Widget getScreen(String tab, String selectedUserType) {
-  final role = selectedUserType;
-
-  // استخدام المفاتيح المترجمة بدل النصوص الثابتة
-  final parentRole = AppLocalKay.parent.tr();
-  final teacherRole = AppLocalKay.teacher.tr();
-  final adminRole = AppLocalKay.admin.tr();
+Widget getScreen(String tab, String userTypeId) {
+  // استخدام المعرفات الثابتة بدلاً من النصوص المترجمة
+  const parentId = 'parent';
+  const teacherId = 'teacher';
+  const adminId = 'admin';
 
   switch (tab) {
     case "home":
-      return role == parentRole
+      return userTypeId == parentId
           ? const HomeParentScreen()
-          : role == teacherRole
+          : userTypeId == teacherId
           ? const TeacherHomeScreen()
-          : role == adminRole
+          : userTypeId == adminId
           ? const AdminHomeScreen()
           : const HomeScreen();
     case "calendar":
-      return role == parentRole
+      return userTypeId == parentId
           ? const CalendarPatentScreen()
-          : role == teacherRole
+          : userTypeId == teacherId
           ? const CalendarTeacherScreen()
-          : role == adminRole
+          : userTypeId == adminId
           ? const AdminCalendarScreen()
           : const CalendarScreen();
     case "classes":
-      return role == parentRole
+      return userTypeId == parentId
           ? const ParentClassScreen()
-          : role == teacherRole
+          : userTypeId == teacherId
           ? const TeacherClassesScreen()
-          : role == adminRole
+          : userTypeId == adminId
           ? const AdminClassesScreen()
           : const StudentClassesScreen();
     case "bus":
-      return role == parentRole
+      return userTypeId == parentId
           ? const ParentBusTrackingScreen()
-          : role == teacherRole
+          : userTypeId == teacherId
           ? const TeacherBusTrackingScreen()
-          : role == adminRole
+          : userTypeId == adminId
           ? const AdminBusTrackingScreen()
           : const StudentBusTrackingScreen();
     case "settings":
-      return role == parentRole
+      return userTypeId == parentId
           ? const StudentSettingsScreen()
-          : role == teacherRole
+          : userTypeId == teacherId
           ? const StudentSettingsScreen()
-          : role == adminRole
+          : userTypeId == adminId
           ? const AdminSettingsScreen()
           : const StudentSettingsScreen();
     default:

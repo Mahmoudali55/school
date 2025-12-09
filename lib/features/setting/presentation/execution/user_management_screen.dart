@@ -44,7 +44,6 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
           style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         elevation: 0,
-        actions: [IconButton(icon: Icon(Icons.person_add), onPressed: _addNewUser)],
       ),
       body: Column(
         children: [

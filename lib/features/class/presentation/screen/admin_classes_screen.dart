@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/presentation/execution/add_edit_class_screen.dart';
 import 'package:my_template/features/class/presentation/execution/class_details_screen.dart';
 import 'package:my_template/features/class/presentation/execution/class_students_screen.dart';
@@ -75,7 +78,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
 
   List<SchoolClass> _filteredClasses = [];
   final TextEditingController _searchController = TextEditingController();
-  String _selectedFilter = 'الكل';
+  String _selectedFilter = AppLocalKay.filter_all.tr();
 
   @override
   void initState() {
@@ -90,7 +93,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
         child: Column(
           children: [
             Text(
-              'إدارة الفصول',
+              AppLocalKay.admin_classes_title.tr(),
               style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
             // شريط البحث والتصفية
@@ -129,19 +132,13 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
       child: Column(
         children: [
           // شريط البحث
-          TextField(
+          CustomFormField(
+            radius: 12.r,
             controller: _searchController,
-            decoration: InputDecoration(
-              hintText: 'ابحث عن فصل...',
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(25.r),
-                borderSide: BorderSide.none,
-              ),
-              filled: true,
-              fillColor: AppColor.whiteColor(context),
-              contentPadding: EdgeInsets.symmetric(vertical: 12.h),
-            ),
+            hintText: context.locale.languageCode == 'ar'
+                ? 'ابحث عن فصل...'
+                : 'Search for a class...',
+            prefixIcon: Icon(Icons.search),
             onChanged: _onSearchChanged,
           ),
           SizedBox(height: 12.h),
@@ -151,7 +148,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                _buildFilterChip('الكل', 'الكل'),
+                _buildFilterChip(AppLocalKay.all.tr(), AppLocalKay.all.tr()),
                 SizedBox(width: 8.w),
                 _buildFilterChip('الصف الأول', 'الأول'),
                 SizedBox(width: 8.w),
@@ -159,9 +156,12 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                 SizedBox(width: 8.w),
                 _buildFilterChip('الصف الثالث', 'الثالث'),
                 SizedBox(width: 8.w),
-                _buildFilterChip('ممتلئة', 'ممتلئة'),
+                _buildFilterChip(AppLocalKay.filter_full.tr(), AppLocalKay.filter_full.tr()),
                 SizedBox(width: 8.w),
-                _buildFilterChip('متاحة', 'متاحة'),
+                _buildFilterChip(
+                  AppLocalKay.filter_available.tr(),
+                  AppLocalKay.filter_available.tr(),
+                ),
               ],
             ),
           ),
@@ -208,14 +208,18 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildStatItem(_classes.length.toString(), 'الفصول', Colors.blue),
-          _buildStatItem(totalStudents.toString(), 'الطلاب', Colors.green),
+          _buildStatItem(_classes.length.toString(), AppLocalKay.classes.tr(), Colors.blue),
+          _buildStatItem(totalStudents.toString(), AppLocalKay.students.tr(), Colors.green),
           _buildStatItem(
             '${((totalStudents / totalCapacity) * 100).toStringAsFixed(1)}%',
-            'نسبة الملء',
+            AppLocalKay.stats_fill_rate.tr(),
             Colors.orange,
           ),
-          _buildStatItem('$availableClasses/$fullClasses', 'متاحة/ممتلئة', Colors.purple),
+          _buildStatItem(
+            '$availableClasses/$fullClasses',
+            AppLocalKay.stats_available_full.tr(),
+            Colors.purple,
+          ),
         ],
       ),
     );
@@ -282,10 +286,10 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                   ),
                   child: Text(
                     fillPercentage >= 90
-                        ? 'ممتلئة'
+                        ? AppLocalKay.filter_full.tr()
                         : fillPercentage >= 70
-                        ? 'شبه ممتلئة'
-                        : 'متاحة',
+                        ? AppLocalKay.class_status_almost_full.tr()
+                        : AppLocalKay.filter_available.tr(),
                     style: TextStyle(
                       fontSize: 10.sp,
                       color: statusColor,
@@ -303,7 +307,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                 Icon(Icons.person, size: 16.w, color: Colors.grey),
                 SizedBox(width: 8.w),
                 Text(
-                  'المعلم: ${schoolClass.teacher}',
+                  '${AppLocalKay.teacher.tr()}: ${schoolClass.teacher}',
                   style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
                 ),
               ],
@@ -315,7 +319,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                 Icon(Icons.room, size: 16.w, color: Colors.grey),
                 SizedBox(width: 8.w),
                 Text(
-                  'القاعة: ${schoolClass.room}',
+                  '${AppLocalKay.label_room.tr()}: ${schoolClass.room}',
                   style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
                 ),
               ],
@@ -342,7 +346,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'السعة',
+                      AppLocalKay.label_capacity.tr(),
                       style: TextStyle(fontSize: 12.sp, color: Colors.grey),
                     ),
                     Text(
@@ -367,40 +371,76 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
             Row(
               children: [
                 Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () => _viewClassDetails(schoolClass),
-                    icon: Icon(Icons.visibility, size: 16.w),
-                    label: Text('عرض', style: TextStyle(fontSize: 12.sp)),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: const Color(0xFF2E5BFF),
-                      side: BorderSide(color: const Color(0xFF2E5BFF)),
-                      padding: EdgeInsets.symmetric(vertical: 8.h),
+                  child: GestureDetector(
+                    onTap: () => _viewClassDetails(schoolClass),
+                    child: Card(
+                      elevation: 1,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.visibility,
+                              size: 16.w,
+                              color: AppColor.primaryColor(context),
+                            ),
+                            SizedBox(height: 4.h),
+                            Text(AppLocalKay.btn_view.tr(), style: TextStyle(fontSize: 12.sp)),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
+
                 SizedBox(width: 8.w),
                 Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () => _editClass(schoolClass),
-                    icon: Icon(Icons.edit, size: 16.w),
-                    label: Text('تعديل', style: TextStyle(fontSize: 12.sp)),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.orange,
-                      side: BorderSide(color: Colors.orange),
-                      padding: EdgeInsets.symmetric(vertical: 8.h),
+                  child: GestureDetector(
+                    onTap: () => _editClass(schoolClass),
+                    child: Card(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+                      elevation: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.edit, size: 16.w, color: AppColor.accentColor(context)),
+                            SizedBox(height: 4.h),
+                            Text(
+                              AppLocalKay.user_management_edit.tr(),
+                              style: TextStyle(fontSize: 12.sp),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
+
                 SizedBox(width: 8.w),
                 Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () => _manageStudents(schoolClass),
-                    icon: Icon(Icons.people, size: 16.w),
-                    label: Text('الطلاب', style: TextStyle(fontSize: 12.sp)),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.green,
-                      side: BorderSide(color: Colors.green),
-                      padding: EdgeInsets.symmetric(vertical: 8.h),
+                  child: GestureDetector(
+                    onTap: () => _manageStudents(schoolClass),
+                    child: Card(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+                      elevation: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.people, size: 16.w, color: AppColor.secondAppColor(context)),
+                            SizedBox(height: 4.h),
+                            Text(
+                              AppLocalKay.btn_manage_students.tr(),
+                              style: TextStyle(fontSize: 10.sp),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -420,7 +460,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
           Icon(Icons.class_, size: 80.w, color: Colors.grey.shade300),
           SizedBox(height: 16.h),
           Text(
-            'لا توجد فصول',
+            context.locale.languageCode == 'ar' ? 'لا توجد فصول' : 'No classes found',
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.bold,
@@ -429,7 +469,9 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
           ),
           SizedBox(height: 8.h),
           Text(
-            _searchController.text.isEmpty ? 'قم بإضافة فصل جديد للبدء' : 'لا توجد فصول تطابق بحثك',
+            _searchController.text.isEmpty
+                ? AppLocalKay.empty_subtitle_no_classes.tr()
+                : AppLocalKay.empty_subtitle_no_search.tr(),
             style: TextStyle(fontSize: 14.sp, color: Colors.grey.shade400),
           ),
           SizedBox(height: 24.h),
@@ -440,7 +482,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
               padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
             ),
             child: Text(
-              'إضافة فصل جديد',
+              AppLocalKay.btn_add_class.tr(),
               style: TextStyle(fontSize: 16.sp, color: AppColor.whiteColor(context)),
             ),
           ),
@@ -466,12 +508,12 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
     }
 
     // تطبيق التصفية
-    if (_selectedFilter != 'الكل') {
-      if (_selectedFilter == 'ممتلئة') {
+    if (_selectedFilter != AppLocalKay.all.tr()) {
+      if (_selectedFilter == AppLocalKay.filter_full.tr()) {
         filtered = filtered
             .where((classItem) => classItem.currentStudents >= classItem.capacity)
             .toList();
-      } else if (_selectedFilter == 'متاحة') {
+      } else if (_selectedFilter == AppLocalKay.filter_available.tr()) {
         filtered = filtered
             .where((classItem) => classItem.currentStudents < classItem.capacity)
             .toList();

@@ -1,8 +1,13 @@
 // lib/features/classes/presentation/screens/add_edit_class_screen.dart
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
+import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/school_class_model.dart';
 
 class AddEditClassScreen extends StatefulWidget {
@@ -43,15 +48,22 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
+        context,
         title: Text(
-          widget.schoolClass == null ? 'إضافة فصل جديد' : 'تعديل الفصل',
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          widget.schoolClass == null ? AppLocalKay.add_class.tr() : AppLocalKay.edit_class.tr(),
+          style: AppTextStyle.titleLarge(
+            context,
+            color: AppColor.blackColor(context),
+          ).copyWith(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: AppColor.whiteColor(context),
-        foregroundColor: Colors.black,
+
         elevation: 0,
-        actions: [IconButton(icon: Icon(Icons.save), onPressed: _saveClass)],
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.w),
@@ -63,10 +75,10 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
               CustomFormField(
                 controller: _nameController,
                 prefixIcon: Icon(Icons.class_),
-                title: 'اسم الفصل',
+                title: AppLocalKay.class_name.tr(),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى إدخال اسم الفصل';
+                    return AppLocalKay.enter_name.tr();
                   }
                   return null;
                 },
@@ -79,11 +91,11 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
                   Expanded(
                     child: CustomFormField(
                       controller: _gradeController,
-                      title: 'الصف',
+                      title: AppLocalKay.user_management_class.tr(),
                       prefixIcon: Icon(Icons.grade),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'يرجى إدخال الصف';
+                          return AppLocalKay.enter_class_name.tr();
                         }
                         return null;
                       },
@@ -93,11 +105,11 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
                   Expanded(
                     child: CustomFormField(
                       controller: _sectionController,
-                      title: 'الشعبة',
+                      title: AppLocalKay.section.tr(),
                       prefixIcon: Icon(Icons.category),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'يرجى إدخال الشعبة';
+                          return AppLocalKay.enter_section.tr();
                         }
                         return null;
                       },
@@ -114,12 +126,12 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
                     child: CustomFormField(
                       controller: _capacityController,
                       keyboardType: TextInputType.number,
-                      title: 'السعة',
+                      title: AppLocalKay.label_capacity.tr(),
 
                       prefixIcon: Icon(Icons.people),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'يرجى إدخال السعة';
+                          return AppLocalKay.enter_capacity.tr();
                         }
                         return null;
                       },
@@ -130,12 +142,12 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
                     child: CustomFormField(
                       controller: _currentStudentsController,
                       keyboardType: TextInputType.number,
-                      title: 'الطلاب الحاليين',
+                      title: AppLocalKay.current_students.tr(),
 
                       prefixIcon: Icon(Icons.person),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'يرجى إدخال عدد الطلاب';
+                          return AppLocalKay.enter_current_students.tr();
                         }
                         return null;
                       },
@@ -148,12 +160,12 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
               // المعلم
               CustomFormField(
                 controller: _teacherController,
-                title: 'المعلم',
+                title: AppLocalKay.teacher.tr(),
 
                 prefixIcon: Icon(Icons.person),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى إدخال اسم المعلم';
+                    return AppLocalKay.enter_teacher.tr();
                   }
                   return null;
                 },
@@ -163,12 +175,12 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
               // القاعة
               CustomFormField(
                 controller: _roomController,
-                title: 'القاعة',
+                title: AppLocalKay.label_room.tr(),
 
                 prefixIcon: Icon(Icons.room),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى إدخال رقم القاعة';
+                    return AppLocalKay.enter_room.tr();
                   }
                   return null;
                 },
@@ -178,12 +190,12 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
               // الجدول
               CustomFormField(
                 controller: _scheduleController,
-                title: 'الجدول',
+                title: AppLocalKay.label_schedule.tr(),
 
                 prefixIcon: Icon(Icons.schedule),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'يرجى إدخال الجدول';
+                    return AppLocalKay.enter_schedule.tr();
                   }
                   return null;
                 },
@@ -191,20 +203,13 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
               SizedBox(height: 32.h),
 
               // زر الحفظ
-              SizedBox(
-                width: double.infinity,
-                height: 50.h,
-                child: ElevatedButton(
-                  onPressed: _saveClass,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2E5BFF),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-                  ),
-                  child: Text(
-                    widget.schoolClass == null ? 'إضافة الفصل' : 'حفظ التغييرات',
-                    style: TextStyle(fontSize: 16.sp, color: AppColor.whiteColor(context)),
-                  ),
+              CustomButton(
+                radius: 12.r,
+                child: Text(
+                  widget.schoolClass == null ? AppLocalKay.add.tr() : AppLocalKay.save_changes.tr(),
+                  style: TextStyle(fontSize: 16.sp, color: AppColor.whiteColor(context)),
                 ),
+                onPressed: _saveClass,
               ),
             ],
           ),

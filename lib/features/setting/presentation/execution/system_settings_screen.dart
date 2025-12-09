@@ -38,7 +38,6 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
         ),
 
         elevation: 0,
-        actions: [IconButton(icon: Icon(Icons.save), onPressed: _saveSystemSettings)],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.w),

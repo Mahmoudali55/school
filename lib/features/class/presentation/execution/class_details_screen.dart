@@ -1,7 +1,11 @@
 // lib/features/classes/presentation/screens/class_details_screen.dart
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/presentation/execution/add_edit_class_screen.dart';
 import 'package:my_template/features/class/presentation/execution/class_reports_screen.dart';
 import 'package:my_template/features/class/presentation/execution/class_schedule_screen.dart';
@@ -19,13 +23,20 @@ class ClassDetailsScreen extends StatelessWidget {
     double fillPercentage = (schoolClass.currentStudents / schoolClass.capacity) * 100;
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
+        context,
         title: Text(
-          'تفاصيل الفصل',
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          AppLocalKay.class_details.tr(),
+          style: AppTextStyle.titleLarge(
+            context,
+            color: AppColor.blackColor(context),
+          ).copyWith(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: AppColor.whiteColor(context),
-        foregroundColor: Colors.black,
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -50,11 +61,19 @@ class ClassDetailsScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 16.h),
 
-                    _buildDetailItem('الصف', schoolClass.grade, Icons.grade),
-                    _buildDetailItem('الشعبة', schoolClass.section, Icons.category),
-                    _buildDetailItem('المعلم', schoolClass.teacher, Icons.person),
-                    _buildDetailItem('القاعة', schoolClass.room, Icons.room),
-                    _buildDetailItem('الجدول', schoolClass.schedule, Icons.schedule),
+                    _buildDetailItem(
+                      AppLocalKay.user_management_class.tr(),
+                      schoolClass.grade,
+                      Icons.grade,
+                    ),
+                    _buildDetailItem(AppLocalKay.section.tr(), schoolClass.section, Icons.category),
+                    _buildDetailItem(AppLocalKay.teacher.tr(), schoolClass.teacher, Icons.person),
+                    _buildDetailItem(AppLocalKay.label_room.tr(), schoolClass.room, Icons.room),
+                    _buildDetailItem(
+                      AppLocalKay.schedule.tr(),
+                      schoolClass.schedule,
+                      Icons.schedule,
+                    ),
 
                     SizedBox(height: 16.h),
 
@@ -71,7 +90,7 @@ class ClassDetailsScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'السعة',
+                                AppLocalKay.label_capacity.tr(),
                                 style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
                               ),
                               Text(
@@ -104,7 +123,7 @@ class ClassDetailsScreen extends StatelessWidget {
                           ),
                           SizedBox(height: 8.h),
                           Text(
-                            '${fillPercentage.toStringAsFixed(1)}% ممتلئ',
+                            '${fillPercentage.toStringAsFixed(1)}% ${AppLocalKay.stats_fill_rate.tr()}',
                             style: TextStyle(fontSize: 12.sp, color: Colors.grey),
                           ),
                         ],
@@ -116,9 +135,8 @@ class ClassDetailsScreen extends StatelessWidget {
             ),
             SizedBox(height: 24.h),
 
-            // إجراءات سريعة
             Text(
-              'الإجراءات السريعة',
+              AppLocalKay.quick_actions.tr(),
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
@@ -130,22 +148,28 @@ class ClassDetailsScreen extends StatelessWidget {
             GridView(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
+
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 12.w,
                 mainAxisSpacing: 12.h,
-                childAspectRatio: 1.5,
+                childAspectRatio: 1.2,
               ),
               children: [
-                _buildActionCard('إدارة الطلاب', Icons.people, Colors.blue, () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ClassStudentsScreen(schoolClass: schoolClass),
-                    ),
-                  );
-                }),
-                _buildActionCard('تعديل الفصل', Icons.edit, Colors.orange, () {
+                _buildActionCard(
+                  AppLocalKay.student_management.tr(),
+                  Icons.people,
+                  Colors.blue,
+                  () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ClassStudentsScreen(schoolClass: schoolClass),
+                      ),
+                    );
+                  },
+                ),
+                _buildActionCard(AppLocalKay.edit_class.tr(), Icons.edit, Colors.orange, () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -153,15 +177,20 @@ class ClassDetailsScreen extends StatelessWidget {
                     ),
                   );
                 }),
-                _buildActionCard('جدول الحصص', Icons.calendar_today, Colors.green, () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ClassScheduleScreen(schoolClass: schoolClass),
-                    ),
-                  );
-                }),
-                _buildActionCard('تقارير الفصل', Icons.analytics, Colors.purple, () {
+                _buildActionCard(
+                  AppLocalKay.schedules.tr(),
+                  Icons.calendar_today,
+                  Colors.green,
+                  () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ClassScheduleScreen(schoolClass: schoolClass),
+                      ),
+                    );
+                  },
+                ),
+                _buildActionCard(AppLocalKay.reports.tr(), Icons.analytics, Colors.purple, () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
