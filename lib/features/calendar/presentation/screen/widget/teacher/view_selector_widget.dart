@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/calendar/data/model/calendar_event_model.dart';
 
 class ViewSelectorWidget extends StatelessWidget {
@@ -19,9 +21,13 @@ class ViewSelectorWidget extends StatelessWidget {
       ),
       child: Row(
         children: [
-          _buildViewButton("شهري", CalendarView.monthly, context),
-          _buildViewButton("أسبوعي", CalendarView.weekly, context),
-          _buildViewButton("يومي", CalendarView.daily, context),
+          _buildViewButton(
+            AppLocalKay.backup_frequency_monthly.tr(),
+            CalendarView.monthly,
+            context,
+          ),
+          _buildViewButton(AppLocalKay.backup_frequency_weekly.tr(), CalendarView.weekly, context),
+          _buildViewButton(AppLocalKay.backup_frequency_daily.tr(), CalendarView.daily, context),
         ],
       ),
     );

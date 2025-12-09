@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class SafetyFeatures extends StatelessWidget {
   final Function(String) onFeatureTap;
@@ -9,9 +11,17 @@ class SafetyFeatures extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> features = [
-      {'title': 'تنبيه الوصول', 'icon': Icons.notifications_active_rounded, 'color': Colors.orange},
-      {'title': 'مشاركة الموقع', 'icon': Icons.share_rounded, 'color': Colors.blue},
-      {'title': 'الاتصال العاجل', 'icon': Icons.emergency_rounded, 'color': Colors.red},
+      {
+        'title': AppLocalKay.arrival_alert.tr(),
+        'icon': Icons.notifications_active_rounded,
+        'color': Colors.orange,
+      },
+      {'title': AppLocalKay.share_location.tr(), 'icon': Icons.share_rounded, 'color': Colors.blue},
+      {
+        'title': AppLocalKay.emergency_management.tr(),
+        'icon': Icons.emergency_rounded,
+        'color': Colors.red,
+      },
     ];
 
     return Container(

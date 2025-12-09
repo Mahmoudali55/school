@@ -719,4 +719,25 @@ class AppLocalKay {
 
   static const String consent_title = "consent_title";
   static const String consent_text = "consent_text";
+  static const String calendar_title = "calendar_title";
+  static const String backup_frequency_weekly = "backup_frequency_weekly";
+  static const String backup_frequency_daily = "backup_frequency_daily";
+  static const String backup_frequency_monthly = "backup_frequency_monthly";
+  static const String morning = "morning";
+  static const String evening = "evening";
+  static const String night = "night";
+  static const String follow_up = "follow_up";
+  static const String monthly_summary = "monthly_summary";
+  static const String daily_notes = "daily_notes";
+  static const String add_note = "add_note";
+  static const String no_events_this_week = "no_events_this_week";
+  static const String child_schedule = "child_schedule";
+  static const String event_title = "event_title";
+  static const String event_title_hint = "event_title_hint";
+  static const String event_description = "event_description";
+  static const String event_description_hint = "event_description_hint";
+  static const String select_date = "select_date";
+  static const String select_time = "select_time";
+  static const String event_date = "event_date";
+  static const String event_Color = "Event_Color";
 }

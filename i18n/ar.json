@@ -589,10 +589,10 @@
   "backup_auto": "النسخ الاحتياطي التلقائي",
   "backup_auto_desc": "نسخ البيانات تلقائياً بشكل دوري",
 
-  "backup_frequency": "تردد النسخ الاحتياطي",
-  "backup_frequency_daily": "يومي",
-  "backup_frequency_weekly": "أسبوعي",
-  "backup_frequency_monthly": "شهري",
+    "backup_frequency": "تردد النسخ الاحتياطي",
+    "backup_frequency_daily": "يومي",
+    "backup_frequency_weekly": "أسبوعي",
+    "backup_frequency_monthly": "شهري",
 
   "data_retention": "فترة احتفاظ البيانات",
   "data_retention_1y": "1 سنة",
@@ -769,15 +769,26 @@
 
     "consent_title": "موافقتك",
     "consent_text": "باستخدامك لهذا التطبيق، فإنك توافق على شروط وسياسة الخصوصية المذكورة أعلاه.",
-  "attendance_title": "حضور الطلاب",
-  "enter_job_number": "أدخل الرقم الوظيفي",
-  "scan_fingerprint": "امسح بصمتك",
-  "registration_success": "تم التسجيل بنجاح",
-  "attendance_success": "تم تسجيل الحضور",
-  "error_biometric": "فشلت المصادقة البيومترية",
-  "error_not_registered": "هذا الرقم الوظيفي غير مسجل على هذا الجهاز",
-  "register": "تسجيل",
-  "attendance": "تسجيل حضور"
+  "calendar_title":"التقويم الدراسي",
+  "morning":"الصباح",
+  "evening":"الظهيرة",
+  "night":"المساء",
+  "follow_up":"تقويم المتابعة",
+  "monthly_summary":"ملخص الشهر",
+  "daily_notes":"ملاحظات اليوم",
+  "add_note":"أضف ملاحظة حول اليوم...",
+  "no_events_this_week":"لا توجد أحداث هذا الأسبوع",
+  "child_schedule":"جدول الأبناء هذا الأسبوع",
+"event_title": "عنوان الحدث",
+"event_title_hint": "مثال: اجتماع أولياء الأمور",
+"event_description": "وصف الحدث",
+"event_description_hint": "مثال: اجتماع يوم الاثنين الساعة 10",
+"select_date": "اختر التاريخ",
+"select_time": "اختر الوقت",
+"event_date":"تاريخ الحدث",
+"Event_Color": "لون الحدث"
+
+
 
 
 

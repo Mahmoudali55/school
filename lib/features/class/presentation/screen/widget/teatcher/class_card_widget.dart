@@ -113,7 +113,7 @@ class ClassCardWidget extends StatelessWidget {
                 Expanded(
                   child: _buildActionButton(
                     text: AppLocalKay.students.tr(),
-                    icon: Icons.people,
+
                     onPressed: onStudentsPressed,
                   ),
                 ),
@@ -123,7 +123,7 @@ class ClassCardWidget extends StatelessWidget {
                 Expanded(
                   child: _buildActionButton(
                     text: AppLocalKay.todostitle.tr(),
-                    icon: Icons.assignment,
+
                     onPressed: onAssignmentsPressed,
                   ),
                 ),
@@ -133,7 +133,7 @@ class ClassCardWidget extends StatelessWidget {
                 Expanded(
                   child: _buildActionButton(
                     text: AppLocalKay.checkin.tr(),
-                    icon: Icons.class_,
+
                     onPressed: onAttendancePressed,
                   ),
                 ),
@@ -198,14 +198,10 @@ class ClassCardWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButton({
-    required String text,
-    required IconData icon,
-    required VoidCallback onPressed,
-  }) {
+  Widget _buildActionButton({required String text, required VoidCallback onPressed}) {
     return OutlinedButton.icon(
       onPressed: onPressed,
-      icon: Icon(icon, size: 14),
+
       label: Text(text, style: const TextStyle(fontSize: 10)),
       style: OutlinedButton.styleFrom(
         foregroundColor: Colors.green,

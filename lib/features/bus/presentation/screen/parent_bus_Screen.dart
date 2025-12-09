@@ -787,7 +787,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
             physics: const NeverScrollableScrollPhysics(),
             crossAxisSpacing: 12.w,
             mainAxisSpacing: 12.h,
-            childAspectRatio: 1.5,
+            childAspectRatio: 1.3,
             children: [
               _buildDetailItem(
                 AppLocalKay.bus_number.tr(),
@@ -940,7 +940,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
     return GestureDetector(
       onTap: () => _handleSafetyFeature(title),
       child: Container(
-        padding: EdgeInsets.all(16.w),
+        padding: EdgeInsets.all(10.w),
         decoration: BoxDecoration(
           color: color.withOpacity(0.1),
           borderRadius: BorderRadius.circular(12),

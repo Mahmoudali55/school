@@ -59,9 +59,9 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
     ];
 
     _busSchedule = [
-      {'period': 'الصباح', 'pickup': '6:30 ص', 'arrival': '7:30 ص'},
-      {'period': 'الظهيرة', 'pickup': '12:30 م', 'arrival': '1:30 م'},
-      {'period': 'المساء', 'pickup': '3:30 م', 'arrival': '4:30 م'},
+      {'period': AppLocalKay.morning.tr(), 'pickup': '6:30 ص', 'arrival': '7:30 ص'},
+      {'period': AppLocalKay.evening.tr(), 'pickup': '12:30 م', 'arrival': '1:30 م'},
+      {'period': AppLocalKay.night.tr(), 'pickup': '3:30 م', 'arrival': '4:30 م'},
     ];
   }
 

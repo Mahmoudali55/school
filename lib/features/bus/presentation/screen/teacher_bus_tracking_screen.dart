@@ -4,6 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/bus/data/model/quick_action_Item.dart';
+import 'package:my_template/features/bus/presentation/execution/connect_driver_screen.dart';
+import 'package:my_template/features/bus/presentation/execution/parent_notification_screen.dart';
+import 'package:my_template/features/bus/presentation/execution/report_bus_screen.dart';
+import 'package:my_template/features/bus/presentation/execution/route_screen.dart';
+import 'package:my_template/features/bus/presentation/execution/settings_screen.dart';
+import 'package:my_template/features/bus/presentation/execution/take_attendance_screen.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/admin/quick_overview_widget.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/teacher/bus_class_details_widget.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/teacher/classes_selector_widget.dart';
@@ -95,6 +102,39 @@ class _TeacherBusTrackingScreenState extends State<TeacherBusTrackingScreen>
   }
 
   void _showQuickActions(BuildContext context) {
+    final actions = [
+      QuickActionItem(
+        title: AppLocalKay.check_in.tr(),
+        icon: Icons.people_alt_rounded,
+        page: const TakeAttendanceScreen(),
+      ),
+      QuickActionItem(
+        title: AppLocalKay.ConnectDriver.tr(),
+        icon: Icons.phone_rounded,
+        page: const ConnectDriverPage(),
+      ),
+      QuickActionItem(
+        title: AppLocalKay.ParentNotification.tr(),
+        icon: Icons.notifications_rounded,
+        page: const ParentNotificationPage(),
+      ),
+      QuickActionItem(
+        title: AppLocalKay.reportS.tr(),
+        icon: Icons.assessment_rounded,
+        page: const ReportPage(),
+      ),
+      QuickActionItem(
+        title: AppLocalKay.route.tr(),
+        icon: Icons.travel_explore_rounded,
+        page: const RoutePage(),
+      ),
+      QuickActionItem(
+        title: AppLocalKay.settings.tr(),
+        icon: Icons.settings_rounded,
+        page: const SettingsPage(), // أنشئ صفحة الإعدادات أو استخدم صفحة موجودة
+      ),
+    ];
+
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -114,87 +154,37 @@ class _TeacherBusTrackingScreenState extends State<TeacherBusTrackingScreen>
               crossAxisCount: 3,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              children: [
-                _buildQuickActionBottomItem(
-                  AppLocalKay.check_in.tr(),
-                  Icons.people_alt_rounded,
-                  context,
-                ),
-                _buildQuickActionBottomItem(
-                  AppLocalKay.ConnectDriver.tr(),
-                  Icons.phone_rounded,
-                  context,
-                ),
-                _buildQuickActionBottomItem(
-                  AppLocalKay.ParentNotification.tr(),
-                  Icons.notifications_rounded,
-                  context,
-                ),
-                _buildQuickActionBottomItem(
-                  AppLocalKay.reportS.tr(),
-                  Icons.assessment_rounded,
-                  context,
-                ),
-                _buildQuickActionBottomItem(
-                  AppLocalKay.route.tr(),
-                  Icons.travel_explore_rounded,
-                  context,
-                ),
-                _buildQuickActionBottomItem(
-                  AppLocalKay.settings.tr(),
-                  Icons.settings_rounded,
-                  context,
-                ),
-              ],
+              children: actions.map((action) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context); // اغلق الـ BottomSheet
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => action.page));
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(16.w),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFF9800).withOpacity(0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(action.icon, color: const Color(0xFFFF9800)),
+                      ),
+                      SizedBox(height: 8.h),
+                      Text(
+                        action.title,
+                        style: TextStyle(fontSize: 12.sp),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
             ),
             SizedBox(height: 20.h),
           ],
         ),
       ),
     );
-  }
-
-  Widget _buildQuickActionBottomItem(String title, IconData icon, BuildContext context) {
-    return GestureDetector(
-      onTap: () => _handleQuickAction(title, context),
-      child: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.all(16.w),
-            decoration: BoxDecoration(
-              color: const Color(0xFFFF9800).withOpacity(0.1),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, color: const Color(0xFFFF9800)),
-          ),
-          SizedBox(height: 8.h),
-          Text(
-            title,
-            style: TextStyle(fontSize: 12.sp),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _handleQuickAction(String action, BuildContext context) {
-    final cubit = context.read<BusTrackingCubit>();
-    switch (action) {
-      case 'تسجيل حضور':
-        cubit.takeAttendance();
-        Navigator.pop(context);
-        break;
-      case 'اتصال سائق':
-        // TODO: تنفيذ الاتصال
-        Navigator.pop(context);
-        break;
-      case 'إشعار أولياء أمور':
-        // TODO: تنفيذ الإشعار
-        Navigator.pop(context);
-        break;
-      default:
-        Navigator.pop(context);
-    }
   }
 }

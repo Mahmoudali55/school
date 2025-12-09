@@ -57,11 +57,11 @@ class QuickStatsWidget extends StatelessWidget {
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(8),
         child: Column(
           children: [
             Icon(icon, color: color, size: 24),
-            const SizedBox(height: 8),
+            // const SizedBox(height: 8),
             Text(
               value,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: color),

@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
@@ -36,10 +39,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -52,12 +55,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "التقويم الدراسي",
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                AppLocalKay.calendar_title.tr(),
+                style: AppTextStyle.titleMedium(
+                  context,
+                  color: AppColor.blackColor(context),
+                ).copyWith(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 4.h),
               Text(
@@ -82,7 +84,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget _buildControlBar() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      color: Colors.white,
+      color: AppColor.whiteColor(context),
       child: Row(
         children: [
           Expanded(
@@ -94,9 +96,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ),
               child: Row(
                 children: [
-                  _buildViewButton("شهري", 0),
-                  _buildViewButton("أسبوعي", 1),
-                  _buildViewButton("يومي", 2),
+                  _buildViewButton(AppLocalKay.backup_frequency_monthly.tr(), 0),
+                  _buildViewButton(AppLocalKay.backup_frequency_weekly.tr(), 1),
+                  _buildViewButton(AppLocalKay.backup_frequency_daily.tr(), 2),
                 ],
               ),
             ),
@@ -146,7 +148,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               style: TextStyle(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w600,
-                color: isSelected ? Colors.white : const Color(0xFF6B7280),
+                color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF6B7280),
               ),
             ),
           ),
@@ -254,7 +256,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   ? const Color(0xFF4CAF50)
                   : isToday
                   ? const Color(0xFF4CAF50).withOpacity(0.1)
-                  : Colors.white,
+                  : AppColor.whiteColor(context),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 color: isToday ? const Color(0xFF4CAF50) : Colors.transparent,
@@ -269,7 +271,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
-                    color: isSelected ? Colors.white : const Color(0xFF1F2937),
+                    color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF1F2937),
                   ),
                 ),
                 SizedBox(height: 2.h),
@@ -285,7 +287,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                               height: 4.w,
                               margin: EdgeInsets.symmetric(horizontal: 1.w),
                               decoration: BoxDecoration(
-                                color: isSelected ? Colors.white : event.color,
+                                color: isSelected ? AppColor.whiteColor(context) : event.color,
                                 shape: BoxShape.circle,
                               ),
                             ),
@@ -295,7 +297,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                           '+${dayEvents.length - 2}',
                           style: TextStyle(
                             fontSize: 8.sp,
-                            color: isSelected ? Colors.white : const Color(0xFF6B7280),
+                            color: isSelected
+                                ? AppColor.whiteColor(context)
+                                : const Color(0xFF6B7280),
                           ),
                         ),
                     ],
@@ -337,7 +341,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             margin: EdgeInsets.only(bottom: 8.h),
             padding: EdgeInsets.all(12.w),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColor.whiteColor(context),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: isSelected
@@ -349,7 +353,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: AppColor.blackColor(context).withOpacity(0.05),
                   blurRadius: 4,
                   offset: const Offset(0, 1),
                 ),
@@ -440,11 +444,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
           Container(
             padding: EdgeInsets.all(16.w),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColor.whiteColor(context),
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: AppColor.blackColor(context).withOpacity(0.05),
                   blurRadius: 4,
                   offset: const Offset(0, 1),
                 ),
@@ -512,11 +516,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 4,
             offset: const Offset(0, 1),
           ),
@@ -598,7 +602,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "الأحداث القادمة",
+              AppLocalKay.upcoming_events.tr(),
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
@@ -606,7 +610,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ),
             ),
             Text(
-              "عرض الكل",
+              AppLocalKay.show_all.tr(),
               style: TextStyle(
                 fontSize: 12.sp,
                 color: const Color(0xFF4CAF50),
@@ -634,11 +638,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
       margin: EdgeInsets.only(bottom: 8.h),
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: AppColor.blackColor(context).withOpacity(0.03),
             blurRadius: 2,
             offset: const Offset(0, 1),
           ),
@@ -696,7 +700,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           Icon(Icons.event_available_rounded, size: 48.w, color: const Color(0xFF9CA3AF)),
           SizedBox(height: 12.h),
           Text(
-            "لا توجد أحداث",
+            AppLocalKay.no_events.tr(),
             style: TextStyle(
               fontSize: 14.sp,
               color: const Color(0xFF6B7280),
@@ -705,7 +709,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           ),
           SizedBox(height: 4.h),
           Text(
-            "لا توجد أحداث مخططة لهذا اليوم",
+            AppLocalKay.no_events_today.tr(),
             style: TextStyle(fontSize: 12.sp, color: const Color(0xFF9CA3AF)),
           ),
         ],

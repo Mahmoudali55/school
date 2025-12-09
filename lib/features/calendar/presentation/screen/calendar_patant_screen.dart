@@ -1,6 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class CalendarPatentScreen extends StatefulWidget {
   const CalendarPatentScreen({super.key});
@@ -38,10 +42,10 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -54,12 +58,8 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "تقويم المتابعة",
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                AppLocalKay.follow_up.tr(),
+                style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 4.h),
               Text(
@@ -84,7 +84,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
   Widget _buildControlBar() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-      color: Colors.white,
+      color: AppColor.whiteColor(context),
       child: Column(
         children: [
           // اختيار الطالب
@@ -102,9 +102,9 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                   ),
                   child: Row(
                     children: [
-                      _buildViewButton("شهري", 0),
-                      _buildViewButton("أسبوعي", 1),
-                      _buildViewButton("يومي", 2),
+                      _buildViewButton(AppLocalKay.backup_frequency_monthly.tr(), 0),
+                      _buildViewButton(AppLocalKay.backup_frequency_weekly.tr(), 1),
+                      _buildViewButton(AppLocalKay.backup_frequency_daily.tr(), 2),
                     ],
                   ),
                 ),
@@ -195,7 +195,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
               style: TextStyle(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w600,
-                color: isSelected ? Colors.white : const Color(0xFF6B7280),
+                color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF6B7280),
               ),
             ),
           ),
@@ -306,7 +306,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                   ? const Color(0xFF2196F3)
                   : isToday
                   ? const Color(0xFF2196F3).withOpacity(0.1)
-                  : Colors.white,
+                  : AppColor.whiteColor(context),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 color: isToday ? const Color(0xFF2196F3) : Colors.transparent,
@@ -321,7 +321,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
-                    color: isSelected ? Colors.white : const Color(0xFF1F2937),
+                    color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF1F2937),
                   ),
                 ),
                 SizedBox(height: 2.h),
@@ -337,7 +337,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                               height: 4.w,
                               margin: EdgeInsets.symmetric(horizontal: 1.w),
                               decoration: BoxDecoration(
-                                color: isSelected ? Colors.white : event.color,
+                                color: isSelected ? AppColor.whiteColor(context) : event.color,
                                 shape: BoxShape.circle,
                               ),
                             ),
@@ -347,7 +347,9 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                           '+${dayEvents.length - 2}',
                           style: TextStyle(
                             fontSize: 8.sp,
-                            color: isSelected ? Colors.white : const Color(0xFF6B7280),
+                            color: isSelected
+                                ? AppColor.whiteColor(context)
+                                : const Color(0xFF6B7280),
                           ),
                         ),
                     ],
@@ -371,11 +373,11 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 4,
             offset: const Offset(0, 1),
           ),
@@ -385,7 +387,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "ملخص الشهر",
+            AppLocalKay.monthly_summary.tr(),
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
@@ -396,9 +398,21 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildSummaryItem("امتحانات", eventCounts["امتحان"] ?? 0, Color(0xFFDC2626)),
-              _buildSummaryItem("فعاليات", eventCounts["فعالية"] ?? 0, Color(0xFF10B981)),
-              _buildSummaryItem("اجتماعات", eventCounts["اجتماع"] ?? 0, Color(0xFFF59E0B)),
+              _buildSummaryItem(
+                AppLocalKay.exams.tr(),
+                eventCounts["امتحان"] ?? 0,
+                Color(0xFFDC2626),
+              ),
+              _buildSummaryItem(
+                AppLocalKay.school_activities.tr(),
+                eventCounts["فعالية"] ?? 0,
+                Color(0xFF10B981),
+              ),
+              _buildSummaryItem(
+                AppLocalKay.meetings.tr(),
+                eventCounts["اجتماع"] ?? 0,
+                Color(0xFFF59E0B),
+              ),
             ],
           ),
         ],
@@ -455,7 +469,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
             margin: EdgeInsets.only(bottom: 8.h),
             padding: EdgeInsets.all(12.w),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColor.whiteColor(context),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: isSelected
@@ -467,7 +481,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: AppColor.blackColor(context).withOpacity(0.05),
                   blurRadius: 4,
                   offset: const Offset(0, 1),
                 ),
@@ -514,7 +528,11 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                                     color: event.color,
                                     shape: BoxShape.circle,
                                   ),
-                                  child: Icon(Icons.person_rounded, size: 8.w, color: Colors.white),
+                                  child: Icon(
+                                    Icons.person_rounded,
+                                    size: 8.w,
+                                    color: AppColor.whiteColor(context),
+                                  ),
                                 ),
                                 SizedBox(width: 8.w),
                                 Expanded(
@@ -568,11 +586,11 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 4,
             offset: const Offset(0, 1),
           ),
@@ -585,7 +603,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "جدول الأبناء هذا الأسبوع",
+                AppLocalKay.child_schedule.tr(),
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
@@ -734,7 +752,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
           Icon(Icons.event_busy_rounded, size: 16.w, color: const Color(0xFF9CA3AF)),
           SizedBox(width: 8.w),
           Text(
-            "لا توجد أحداث هذا الأسبوع",
+            AppLocalKay.no_events_this_week.tr(),
             style: TextStyle(fontSize: 12.sp, color: const Color(0xFF9CA3AF)),
           ),
         ],
@@ -770,11 +788,11 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 4,
             offset: const Offset(0, 1),
           ),
@@ -839,11 +857,11 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 4,
             offset: const Offset(0, 1),
           ),
@@ -960,7 +978,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
         Expanded(
           child: OutlinedButton.icon(
             icon: Icon(Icons.notifications_none_rounded, size: 16.w),
-            label: Text("تذكير"),
+            label: Text(AppLocalKay.reminder.tr(), style: AppTextStyle.bodyMedium(context)),
             onPressed: () {},
             style: OutlinedButton.styleFrom(
               foregroundColor: const Color(0xFF2196F3),
@@ -972,11 +990,11 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
         Expanded(
           child: ElevatedButton.icon(
             icon: Icon(Icons.share_rounded, size: 16.w),
-            label: Text("مشاركة"),
+            label: Text(AppLocalKay.share.tr(), style: AppTextStyle.bodyMedium(context)),
             onPressed: () {},
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF2196F3),
-              foregroundColor: Colors.white,
+              foregroundColor: AppColor.whiteColor(context),
             ),
           ),
         ),
@@ -988,11 +1006,11 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 4,
             offset: const Offset(0, 1),
           ),
@@ -1005,7 +1023,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "ملاحظات اليوم",
+                AppLocalKay.daily_notes.tr(),
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
@@ -1020,14 +1038,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
             ],
           ),
           SizedBox(height: 8.h),
-          TextField(
-            decoration: InputDecoration(
-              hintText: "أضف ملاحظة حول اليوم...",
-              hintStyle: TextStyle(fontSize: 12.sp, color: const Color(0xFF9CA3AF)),
-              border: InputBorder.none,
-            ),
-            maxLines: 3,
-          ),
+          CustomFormField(hintText: AppLocalKay.add_note.tr(), maxLines: 3, radius: 12.r),
         ],
       ),
     );
@@ -1043,7 +1054,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "الأحداث القادمة",
+              AppLocalKay.upcoming_events.tr(),
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
@@ -1051,7 +1062,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
               ),
             ),
             Text(
-              "عرض الكل",
+              AppLocalKay.show_all.tr(),
               style: TextStyle(
                 fontSize: 12.sp,
                 color: const Color(0xFF2196F3),
@@ -1079,11 +1090,11 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
       margin: EdgeInsets.only(bottom: 8.h),
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: AppColor.blackColor(context).withOpacity(0.03),
             blurRadius: 2,
             offset: const Offset(0, 1),
           ),
@@ -1156,7 +1167,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
           Icon(Icons.family_restroom_rounded, size: 48.w, color: const Color(0xFF9CA3AF)),
           SizedBox(height: 12.h),
           Text(
-            "لا توجد أحداث",
+            AppLocalKay.no_events.tr(),
             style: TextStyle(
               fontSize: 14.sp,
               color: const Color(0xFF6B7280),
@@ -1165,7 +1176,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
           ),
           SizedBox(height: 4.h),
           Text(
-            "لا توجد أحداث مخططة لهذا اليوم",
+            AppLocalKay.no_events_today.tr(),
             style: TextStyle(fontSize: 12.sp, color: const Color(0xFF9CA3AF)),
           ),
         ],

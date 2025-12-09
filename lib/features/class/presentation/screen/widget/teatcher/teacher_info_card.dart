@@ -5,9 +5,8 @@ import 'package:my_template/features/class/data/model/teacher_classes_models.dar
 
 class TeacherInfoCard extends StatelessWidget {
   final TeacherInfo teacherInfo;
-  final VoidCallback onEditPressed;
 
-  const TeacherInfoCard({super.key, required this.teacherInfo, required this.onEditPressed});
+  const TeacherInfoCard({super.key, required this.teacherInfo});
 
   @override
   Widget build(BuildContext context) {

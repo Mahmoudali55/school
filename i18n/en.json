@@ -716,19 +716,14 @@
 
     "section4_title": "4. Data Protection",
     "section4_content": "We apply multiple security measures to protect your information:\n\n• Data encryption during transfer and storage\n• Access control based on permissions\n• Regular security audits\n• Staff training on data protection",
-
     "section5_title": "5. User Rights",
     "section5_content": "You have the right to:\n\n• Access your personal data\n• Correct inaccurate information\n• Request deletion of your personal data\n• Object to data processing\n• Transfer your data to another system",
-
     "section6_title": "6. Cookies",
     "section6_content": "We use cookies to improve user experience and remember preferences. You can manage cookie settings through your browser.",
-
     "section7_title": "7. Policy Changes",
     "section7_content": "We may update this privacy policy from time to time. We will notify you of any significant changes through app notifications or email.",
-
     "section8_title": "8. Contact Us",
     "section8_content": "If you have any questions about this privacy policy, please contact us:\n\n• Email: privacy@school.edu\n• Phone: +966 123 456 789\n• Address: Riyadh, Al Olaya District",
-
     "consent_title": "Your Consent",
     "consent_text": "By using this app, you agree to the terms and privacy policy mentioned above.",
   "attendance_title": "Student Attendance",
@@ -739,5 +734,19 @@
   "error_biometric": "Biometric Authentication Failed",
   "error_not_registered": "This Job Number is not registered on this device",
   "register": "Register",
-  "attendance": "Check In"
+  "attendance": "Check In",
+  "follow_up":"Follow-up Calendar",
+"monthly_summary":"Monthly Summary",
+"daily_notes":"Daily Notes",
+"add_note":"Add a note about today...",
+"no_events_this_week":"No events this week",
+"child_schedule":"Children's schedule this week",
+"event_title": "Event Title",
+"event_title_hint": "Example: Parents' meeting",
+"event_description": "Event Description",
+"event_description_hint": "Example: Meeting on Monday at 10 AM",
+"select_date": "Select Date",
+"select_time": "Select Time",
+"event_date": "Event Date",
+"Event_Color": "Event Color"
 }

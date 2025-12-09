@@ -1,8 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/home/presentation/view/execution/create_assignment_screen.dart';
 
 import '../../../../data/model/teacher_classes_models.dart';
 import 'class_card_widget.dart';
@@ -39,137 +40,229 @@ class ClassesListWidget extends StatelessWidget {
         return ClassCardWidget(
           classInfo: classInfo,
           onStudentsPressed: () {
-            _showStudentsDialog(context, classInfo);
+            _showStudentsSheet(context, classInfo);
           },
           onAssignmentsPressed: () {
-            _showAssignmentsDialog(context, classInfo);
+            _showAssignmentsSheet(context, classInfo);
           },
           onAttendancePressed: () {
-            _showAttendanceDialog(context, classInfo);
+            _showAttendanceSheet(context, classInfo);
           },
         );
       },
     );
   }
 
-  void _showStudentsDialog(BuildContext context, ClassInfo classInfo) {
-    showDialog(
+  void _showStudentsSheet(BuildContext context, ClassInfo classInfo) {
+    showModalBottomSheet(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text('طلاب ${classInfo.className}'),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: classInfo.studentCount.clamp(0, 10),
-            itemBuilder: (context, index) {
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.blue[100],
-                  child: Text('${index + 1}'),
-                ),
-                title: Text('الطالب ${index + 1}'),
-                subtitle: const Text('درجة الحضور: 95%'),
-              );
-            },
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(AppLocalKay.dialog_delete_cancel.tr()),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text(
-              AppLocalKay.show_all.tr(),
-              style: AppTextStyle.bodyMedium(context, color: AppColor.whiteColor(context)),
-            ),
-          ),
-        ],
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-    );
-  }
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      height: 30,
+                      width: 30,
 
-  void _showAssignmentsDialog(BuildContext context, ClassInfo classInfo) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('واجبات ${classInfo.className}'),
-        content: SizedBox(
-          width: double.maxFinite,
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: classInfo.assignments,
-            itemBuilder: (context, index) {
-              return Card(
-                margin: const EdgeInsets.symmetric(vertical: 4),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.orange[100],
-                    child: Text('${index + 1}'),
-                  ),
-                  title: Text('الواجب ${index + 1}'),
-                  subtitle: const Text('موعد التسليم: ٢٠ نوفمبر'),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.download, size: 20),
-                    onPressed: () {},
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إغلاق')),
-          ElevatedButton(
-            onPressed: () {
-              // TODO: إضافة واجب جديد
-              Navigator.pop(context);
-            },
-            child: const Text('إضافة واجب'),
-          ),
-        ],
-      ),
-    );
-  }
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.black),
+                      ),
 
-  void _showAttendanceDialog(BuildContext context, ClassInfo classInfo) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('حضور ${classInfo.className}'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text('نسبة الحضور الحالية: 92%'),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                // TODO: تسجيل الحضور
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                minimumSize: const Size(double.infinity, 50),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [const Icon(Icons.close, color: Colors.black)],
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  Text('${AppLocalKay.students.tr()} ', style: AppTextStyle.titleLarge(context)),
+                  const Spacer(),
+                ],
               ),
-              child: const Text('تسجيل الحضور اليوم'),
-            ),
-            const SizedBox(height: 8),
-            OutlinedButton(
-              onPressed: () {
-                // TODO: عرض سجل الحضور
-                Navigator.pop(context);
-              },
-              style: OutlinedButton.styleFrom(minimumSize: const Size(double.infinity, 50)),
-              child: const Text('عرض سجل الحضور'),
-            ),
-          ],
-        ),
-        actions: [TextButton(onPressed: () => Navigator.pop(context), child: const Text('إغلاق'))],
+              const SizedBox(height: 16),
+
+              SizedBox(
+                height: 300,
+                child: ListView.builder(
+                  itemCount: classInfo.studentCount.clamp(0, 10),
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.blue[100],
+                        child: Text('${index + 1}'),
+                      ),
+                      title: Text('${AppLocalKay.student.tr()} '),
+                      subtitle: const Text('درجة الحضور: 95%'),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showAssignmentsSheet(BuildContext context, ClassInfo classInfo) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
+      builder: (context) {
+        return DraggableScrollableSheet(
+          expand: false,
+          initialChildSize: 0.7,
+          minChildSize: 0.4,
+          maxChildSize: 0.95,
+          builder: (context, scrollController) {
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: SafeArea(
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () => Navigator.pop(context),
+                          child: Container(
+                            height: 32,
+                            width: 32,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.black),
+                            ),
+                            child: const Icon(Icons.close, size: 18),
+                          ),
+                        ),
+                        const Spacer(),
+                        Text(AppLocalKay.tasks.tr(), style: AppTextStyle.titleLarge(context)),
+                        const Spacer(),
+                        const SizedBox(width: 32), // موازنة المكان
+                      ],
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // ---- List ----
+                    Expanded(
+                      child: ListView.builder(
+                        controller: scrollController,
+                        itemCount: classInfo.assignments,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.orange[100],
+                                child: Text('${index + 1}'),
+                              ),
+                              title: Text('الواجب ${index + 1}'),
+                              subtitle: const Text('موعد التسليم: ٢٠ نوفمبر'),
+                              trailing: IconButton(
+                                icon: const Icon(Icons.download),
+                                onPressed: () {},
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    // ---- Buttons ----
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => CreateAssignmentScreen()),
+                              );
+                            },
+                            text: AppLocalKay.create_new_assignment.tr(),
+                            radius: 12,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: CustomButton(
+                            text: AppLocalKay.cancel.tr(),
+                            radius: 12,
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showAttendanceSheet(BuildContext context, ClassInfo classInfo) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('حضور ${classInfo.className}', style: AppTextStyle.titleLarge(context)),
+              const SizedBox(height: 16),
+
+              const Text('نسبة الحضور الحالية: 92%'),
+              const SizedBox(height: 16),
+
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  minimumSize: const Size(double.infinity, 50),
+                ),
+                child: const Text('تسجيل الحضور اليوم'),
+              ),
+              const SizedBox(height: 8),
+
+              OutlinedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: OutlinedButton.styleFrom(minimumSize: const Size(double.infinity, 50)),
+                child: const Text('عرض سجل الحضور'),
+              ),
+
+              const SizedBox(height: 8),
+              TextButton(onPressed: () => Navigator.pop(context), child: const Text('إغلاق')),
+            ],
+          ),
+        );
+      },
     );
   }
 }

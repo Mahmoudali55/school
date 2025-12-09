@@ -5,7 +5,6 @@ import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.da
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
-import 'package:my_template/features/class/data/model/teacher_classes_models.dart';
 import 'package:my_template/features/class/presentation/cubit/teacher_classes_cubit.dart';
 import 'package:my_template/features/class/presentation/cubit/teacher_classes_state.dart';
 import 'package:my_template/features/class/presentation/screen/widget/teatcher/classes_list_widget.dart';
@@ -53,12 +52,7 @@ class _TeacherClassesBody extends StatelessWidget {
             child: Column(
               children: [
                 // Teacher Info Card
-                TeacherInfoCard(
-                  teacherInfo: state.teacherInfo,
-                  onEditPressed: () {
-                    _showEditProfileDialog(context, state.teacherInfo);
-                  },
-                ),
+                TeacherInfoCard(teacherInfo: state.teacherInfo),
 
                 const SizedBox(height: 20),
 
@@ -96,26 +90,6 @@ class _TeacherClassesBody extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  void _showEditProfileDialog(BuildContext context, TeacherInfo teacherInfo) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('تعديل الملف الشخصي'.tr()),
-        content: Text('هنا يمكن تعديل معلومات الملف الشخصي...'.tr()),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text('إلغاء'.tr())),
-          ElevatedButton(
-            onPressed: () {
-              // TODO: تحديث معلومات المدرس
-              Navigator.pop(context);
-            },
-            child: Text('حفظ'.tr()),
-          ),
-        ],
-      ),
     );
   }
 
