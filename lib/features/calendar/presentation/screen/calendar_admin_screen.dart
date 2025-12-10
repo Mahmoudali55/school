@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/calendar/presentation/execution/add_event_screen.dart';
 
 class AdminCalendarScreen extends StatefulWidget {
   const AdminCalendarScreen({super.key});
@@ -1312,7 +1313,12 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
   }
 
   // دوال الإجراءات
-  void _addNewEvent() {}
+  void _addNewEvent() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddEventScreen(color: Color(0xFF9C27B0))),
+    );
+  }
 
   void _editEvent(AdminCalendarEvent event) {}
 

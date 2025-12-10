@@ -9,8 +9,8 @@ import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
 class AddEventScreen extends StatefulWidget {
-  const AddEventScreen({super.key});
-
+  const AddEventScreen({super.key, required this.color});
+  final Color color;
   @override
   State<AddEventScreen> createState() => _AddEventScreenState();
 }
@@ -154,7 +154,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
 
             SizedBox(height: 100.h),
             CustomButton(
-              color: AppColor.accentColor(context),
+              color: widget.color,
               text: AppLocalKay.add.tr(),
               radius: 12.r,
               onPressed: () => Navigator.pop(context),

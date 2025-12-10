@@ -786,7 +786,13 @@
 "select_date": "اختر التاريخ",
 "select_time": "اختر الوقت",
 "event_date":"تاريخ الحدث",
-"Event_Color": "لون الحدث"
+"Event_Color": "لون الحدث",
+"notifications_bus":"إشعارات الباص",
+"notifications_bus_content":"تتبع حالة الباص وإشعارات الوصول والتأخير",
+"notifications_student":"إشعارات الطلاب",
+"notifications_student_content":"إرسال إشعارات لأولياء الأمور عند صعود أو نزول الطلاب",
+"driver_info":"معلومات السائق",
+"driver_info_content":"عرض معلومات الاتصال بالسائق"
 
 
 

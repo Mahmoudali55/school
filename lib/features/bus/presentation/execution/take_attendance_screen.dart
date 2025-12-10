@@ -14,13 +14,13 @@ class TakeAttendanceScreen extends StatefulWidget {
 }
 
 class _TakeAttendanceScreenState extends State<TakeAttendanceScreen> {
-  // قائمة الحضور: true = حاضر، false = غائب
   final List<bool> _attendance = List.generate(20, (_) => false);
 
   @override
   Widget build(BuildContext context) {
     return BasePageWidget(
       title: AppLocalKay.check_in.tr(),
+      isScrollable: false,
       child: Column(
         children: [
           Expanded(
@@ -43,7 +43,7 @@ class _TakeAttendanceScreenState extends State<TakeAttendanceScreen> {
                         ),
                       ),
                     ),
-                    title: Text('الطالب ${index + 1}'),
+                    title: Text('${AppLocalKay.student.tr()} ${index + 1}'),
                     trailing: Checkbox(
                       value: isPresent,
                       activeColor: Colors.green,
@@ -56,7 +56,9 @@ class _TakeAttendanceScreenState extends State<TakeAttendanceScreen> {
               },
             ),
           ),
+
           SizedBox(height: 12.h),
+
           CustomButton(
             radius: 12.r,
             color: AppColor.accentColor(context),

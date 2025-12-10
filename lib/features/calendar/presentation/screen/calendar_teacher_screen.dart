@@ -56,7 +56,10 @@ class CalendarTeacherScreen extends StatelessWidget {
   Widget _buildFloatingActionButton(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (_) => const AddEventScreen()));
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => AddEventScreen(color: AppColor.accentColor(context))),
+        );
       },
       backgroundColor: AppColor.accentColor(context),
       foregroundColor: AppColor.whiteColor(context),

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/bus/presentation/execution/widget/base_page_widget.dart';
 
-class ConnectDriverPage extends StatelessWidget {
-  const ConnectDriverPage({super.key});
+class ConnectDriverScreen extends StatelessWidget {
+  const ConnectDriverScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class ConnectDriverPage extends StatelessWidget {
           trailing: ElevatedButton.icon(
             onPressed: () {},
             icon: Icon(Icons.phone),
-            label: Text('اتصال'),
+            label: Text(AppLocalKay.Connect.tr()),
             style: ElevatedButton.styleFrom(backgroundColor: Color(0xFFFF9800)),
           ),
         ),

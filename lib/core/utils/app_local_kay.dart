@@ -740,4 +740,10 @@ class AppLocalKay {
   static const String select_time = "select_time";
   static const String event_date = "event_date";
   static const String event_Color = "Event_Color";
+  static const String notifications_bus = "notifications_bus";
+  static const String notifications_bus_content = "notifications_bus_content";
+  static const String notifications_student = "notifications_student";
+  static const String notifications_student_content = "notifications_student_content";
+  static const String driver_info = "driver_info";
+  static const String driver_info_content = "driver_info_content";
 }

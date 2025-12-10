@@ -209,6 +209,7 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
                   widget.schoolClass == null ? AppLocalKay.add.tr() : AppLocalKay.save_changes.tr(),
                   style: TextStyle(fontSize: 16.sp, color: AppColor.whiteColor(context)),
                 ),
+                color: Color(0xFF9C27B0),
                 onPressed: _saveClass,
               ),
             ],

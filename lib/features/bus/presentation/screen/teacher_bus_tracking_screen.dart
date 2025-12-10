@@ -111,27 +111,27 @@ class _TeacherBusTrackingScreenState extends State<TeacherBusTrackingScreen>
       QuickActionItem(
         title: AppLocalKay.ConnectDriver.tr(),
         icon: Icons.phone_rounded,
-        page: const ConnectDriverPage(),
+        page: const ConnectDriverScreen(),
       ),
       QuickActionItem(
         title: AppLocalKay.ParentNotification.tr(),
         icon: Icons.notifications_rounded,
-        page: const ParentNotificationPage(),
+        page: const ParentNotificationScreen(),
       ),
       QuickActionItem(
         title: AppLocalKay.reportS.tr(),
         icon: Icons.assessment_rounded,
-        page: const ReportPage(),
+        page: const ReportBusScreen(),
       ),
       QuickActionItem(
         title: AppLocalKay.route.tr(),
         icon: Icons.travel_explore_rounded,
-        page: const RoutePage(),
+        page: const RouteScreen(),
       ),
       QuickActionItem(
         title: AppLocalKay.settings.tr(),
         icon: Icons.settings_rounded,
-        page: const SettingsPage(), // أنشئ صفحة الإعدادات أو استخدم صفحة موجودة
+        page: const BusSettingsPage(), // أنشئ صفحة الإعدادات أو استخدم صفحة موجودة
       ),
     ];
 
