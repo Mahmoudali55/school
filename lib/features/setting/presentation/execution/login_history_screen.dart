@@ -57,7 +57,7 @@ class LoginHistoryScreen extends StatelessWidget {
       body: Column(
         children: [
           // إحصائيات
-          _buildStats(),
+          _buildStats(context),
 
           // قائمة سجل الدخول
           Expanded(
@@ -65,7 +65,7 @@ class LoginHistoryScreen extends StatelessWidget {
               padding: EdgeInsets.all(16.w),
               itemCount: _loginHistory.length,
               itemBuilder: (context, index) {
-                return _buildLoginRecord(_loginHistory[index]);
+                return _buildLoginRecord(context, _loginHistory[index]);
               },
             ),
           ),
@@ -74,7 +74,7 @@ class LoginHistoryScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStats() {
+  Widget _buildStats(BuildContext context) {
     final successfulLogins = _loginHistory.where((record) => record.successful).length;
     final failedLogins = _loginHistory.length - successfulLogins;
 
@@ -87,15 +87,15 @@ class LoginHistoryScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildStatItem(_loginHistory.length.toString(), 'محاولات الدخول', Colors.blue),
-          _buildStatItem(successfulLogins.toString(), 'ناجحة', Colors.green),
-          _buildStatItem(failedLogins.toString(), 'فاشلة', Colors.red),
+          _buildStatItem(context, _loginHistory.length.toString(), 'محاولات الدخول', Colors.blue),
+          _buildStatItem(context, successfulLogins.toString(), 'ناجحة', Colors.green),
+          _buildStatItem(context, failedLogins.toString(), 'فاشلة', Colors.red),
         ],
       ),
     );
   }
 
-  Widget _buildStatItem(String value, String label, Color color) {
+  Widget _buildStatItem(BuildContext context, String value, String label, Color color) {
     return Column(
       children: [
         Container(
@@ -105,20 +105,23 @@ class LoginHistoryScreen extends StatelessWidget {
           child: Center(
             child: Text(
               value,
-              style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold, color: color),
+              style: AppTextStyle.bodySmall(
+                context,
+                color: color,
+              ).copyWith(fontWeight: FontWeight.bold),
             ),
           ),
         ),
         SizedBox(height: 4.h),
         Text(
           label,
-          style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+          style: AppTextStyle.bodySmall(context, color: Colors.grey).copyWith(fontSize: 10.sp),
         ),
       ],
     );
   }
 
-  Widget _buildLoginRecord(LoginRecord record) {
+  Widget _buildLoginRecord(BuildContext context, LoginRecord record) {
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
@@ -130,7 +133,7 @@ class LoginHistoryScreen extends StatelessWidget {
         ),
         title: Text(
           record.device,
-          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+          style: AppTextStyle.headlineSmall(context).copyWith(fontWeight: FontWeight.w600),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,7 +142,7 @@ class LoginHistoryScreen extends StatelessWidget {
             Text(record.location),
             Text(
               _formatDate(record.timestamp),
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+              style: AppTextStyle.bodySmall(context, color: Colors.grey),
             ),
           ],
         ),
@@ -147,7 +150,10 @@ class LoginHistoryScreen extends StatelessWidget {
             ? null
             : Text(
                 'فاشل',
-                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                style: AppTextStyle.bodyMedium(
+                  context,
+                  color: Colors.red,
+                ).copyWith(fontWeight: FontWeight.bold),
               ),
       ),
     );

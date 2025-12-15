@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/setting/presentation/execution/class_management_screen.dart';
 
 class AddOrEditClassSheet extends StatefulWidget {
@@ -52,7 +53,7 @@ class _AddOrEditClassSheetState extends State<AddOrEditClassSheet> {
             ),
             Text(
               widget.schoolClass == null ? "إضافة صف" : "تعديل الصف",
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              style: AppTextStyle.headlineMedium(context).copyWith(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 12),
 
@@ -112,7 +113,7 @@ class _AddOrEditClassSheetState extends State<AddOrEditClassSheet> {
         ),
         child: Text(
           widget.schoolClass == null ? "إضافة" : "حفظ",
-          style: const TextStyle(color: Colors.white),
+          style: AppTextStyle.bodyMedium(context, color: Colors.white),
         ),
       ),
     );

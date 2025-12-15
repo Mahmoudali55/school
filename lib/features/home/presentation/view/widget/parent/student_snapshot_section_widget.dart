@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/home/presentation/view/widget/parent/snapshot_item.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -15,11 +16,9 @@ class StudentSnapshotWidget extends StatelessWidget {
       children: [
         Text(
           AppLocalKay.quick_snapshot.tr(),
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF1F2937),
-          ),
+          style: AppTextStyle.titleLarge(
+            context,
+          ).copyWith(fontSize: 18.sp, fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
         ),
         SizedBox(height: 16.h),
 
@@ -51,11 +50,10 @@ class StudentSnapshotWidget extends StatelessWidget {
                   percent: 0.98,
                   center: Text(
                     "98%",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12.sp,
+                    style: AppTextStyle.bodySmall(
+                      context,
                       color: const Color(0xFF10B981),
-                    ),
+                    ).copyWith(fontWeight: FontWeight.bold, fontSize: 12.sp),
                   ),
                   progressColor: const Color(0xFF10B981),
                   backgroundColor: const Color(0xFFD1FAE5),
@@ -75,20 +73,18 @@ class StudentSnapshotWidget extends StatelessWidget {
                     children: [
                       Text(
                         "العلوم",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12.sp,
+                        style: AppTextStyle.bodySmall(
+                          context,
                           color: const Color(0xFF2E5BFF),
-                        ),
+                        ).copyWith(fontWeight: FontWeight.w600, fontSize: 12.sp),
                       ),
                       SizedBox(height: 4.h),
                       Text(
                         "85/100",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14.sp,
+                        style: AppTextStyle.bodyMedium(
+                          context,
                           color: const Color(0xFF1F2937),
-                        ),
+                        ).copyWith(fontWeight: FontWeight.bold, fontSize: 14.sp),
                       ),
                     ],
                   ),
@@ -105,11 +101,10 @@ class StudentSnapshotWidget extends StatelessWidget {
                   ),
                   child: Text(
                     "ممتاز",
-                    style: TextStyle(
-                      fontSize: 12.sp,
+                    style: AppTextStyle.bodySmall(
+                      context,
                       color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    ).copyWith(fontSize: 12.sp, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class StatCardWidget extends StatelessWidget {
   final String title, value, subtitle;
@@ -44,23 +45,28 @@ class StatCardWidget extends StatelessWidget {
               ),
               Text(
                 value,
-                style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold, color: color),
+                style: AppTextStyle.headlineSmall(
+                  context,
+                  color: color,
+                ).copyWith(fontSize: 24.sp, fontWeight: FontWeight.bold),
               ),
             ],
           ),
           SizedBox(height: 12.h),
           Text(
             title,
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w600,
+            style: AppTextStyle.bodyMedium(
+              context,
               color: const Color(0xFF1F2937),
-            ),
+            ).copyWith(fontSize: 14.sp, fontWeight: FontWeight.w600),
           ),
           SizedBox(height: 4.h),
           Text(
             subtitle,
-            style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+            style: AppTextStyle.bodySmall(
+              context,
+              color: const Color(0xFF6B7280),
+            ).copyWith(fontSize: 12.sp),
           ),
         ],
       ),

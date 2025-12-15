@@ -792,7 +792,8 @@
 "notifications_student":"إشعارات الطلاب",
 "notifications_student_content":"إرسال إشعارات لأولياء الأمور عند صعود أو نزول الطلاب",
 "driver_info":"معلومات السائق",
-"driver_info_content":"عرض معلومات الاتصال بالسائق"
+"driver_info_content":"عرض معلومات الاتصال بالسائق",
+"class_name":"اسم الفصل"
 
 
 

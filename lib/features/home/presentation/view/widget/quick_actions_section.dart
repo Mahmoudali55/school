@@ -65,7 +65,10 @@ class QuickActionsSection extends StatelessWidget {
                 SizedBox(height: 8.h),
                 Text(
                   item.$1,
-                  style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600),
+                  style: AppTextStyle.labelSmall(
+                    context,
+                    color: AppColor.textColor(context),
+                  ).copyWith(fontWeight: FontWeight.w600),
                 ),
               ],
             );

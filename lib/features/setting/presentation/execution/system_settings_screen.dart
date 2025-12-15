@@ -187,11 +187,10 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
             // إعدادات متقدمة
             Text(
               AppLocalKay.advancedSettings.tr(),
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
+              style: AppTextStyle.headlineMedium(
+                context,
                 color: const Color(0xFF1F2937),
-              ),
+              ).copyWith(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16.h),
 
@@ -225,11 +224,10 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
                   children: [
                     Text(
                       AppLocalKay.systemInfo.tr(),
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
+                      style: AppTextStyle.headlineSmall(
+                        context,
                         color: const Color(0xFF1F2937),
-                      ),
+                      ).copyWith(fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 12.h),
                     _buildSystemInfoItem(AppLocalKay.systemVersion.tr(), '2.1.0'),
@@ -255,7 +253,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
                 ),
                 child: Text(
                   AppLocalKay.save.tr(),
-                  style: TextStyle(fontSize: 16.sp, color: AppColor.whiteColor(context)),
+                  style: AppTextStyle.bodyLarge(context, color: AppColor.whiteColor(context)),
                 ),
               ),
             ),
@@ -273,11 +271,11 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
         children: [
           Text(
             title,
-            style: TextStyle(fontSize: 14.sp, color: AppColor.grey600Color(context)),
+            style: AppTextStyle.bodyMedium(context, color: AppColor.grey600Color(context)),
           ),
           Text(
             value,
-            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+            style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.w500),
           ),
         ],
       ),
@@ -362,7 +360,10 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
                   ),
                 );
               },
-              child: Text('استعادة', style: TextStyle(color: AppColor.errorColor(context))),
+              child: Text(
+                'استعادة',
+                style: AppTextStyle.bodyMedium(context, color: AppColor.errorColor(context)),
+              ),
             ),
           ],
         );

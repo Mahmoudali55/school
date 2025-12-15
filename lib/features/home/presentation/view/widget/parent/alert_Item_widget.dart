@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class AlertItem extends StatelessWidget {
   final IconData icon;
@@ -58,11 +59,10 @@ class AlertItem extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14.sp,
+                      style: AppTextStyle.titleSmall(
+                        context,
                         color: const Color(0xFF1F2937),
-                      ),
+                      ).copyWith(fontWeight: FontWeight.w600),
                     ),
                     if (isUrgent)
                       Container(
@@ -73,11 +73,10 @@ class AlertItem extends StatelessWidget {
                         ),
                         child: Text(
                           "عاجل",
-                          style: TextStyle(
+                          style: AppTextStyle.labelSmall(
+                            context,
                             color: const Color(0xFFDC2626),
-                            fontSize: 8.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          ).copyWith(fontSize: 8.sp, fontWeight: FontWeight.bold),
                         ),
                       ),
                   ],
@@ -85,12 +84,15 @@ class AlertItem extends StatelessWidget {
                 SizedBox(height: 4.h),
                 Text(
                   description,
-                  style: TextStyle(color: const Color(0xFF6B7280), fontSize: 12.sp),
+                  style: AppTextStyle.bodySmall(context, color: const Color(0xFF6B7280)),
                 ),
                 SizedBox(height: 4.h),
                 Text(
                   time,
-                  style: TextStyle(color: const Color(0xFF9CA3AF), fontSize: 10.sp),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                    color: const Color(0xFF9CA3AF),
+                  ).copyWith(fontSize: 10.sp),
                 ),
               ],
             ),

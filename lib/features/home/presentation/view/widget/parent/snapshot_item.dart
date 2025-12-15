@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class SnapshotItem extends StatelessWidget {
   final String title;
@@ -13,11 +14,10 @@ class SnapshotItem extends StatelessWidget {
       children: [
         Text(
           title,
-          style: TextStyle(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.bold,
+          style: AppTextStyle.bodySmall(
+            context,
             color: const Color(0xFF6B7280),
-          ),
+          ).copyWith(fontSize: 12.sp, fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 8.h),
         child,

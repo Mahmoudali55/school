@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
 class FinancialStatusWidget extends StatelessWidget {
@@ -14,11 +15,10 @@ class FinancialStatusWidget extends StatelessWidget {
       children: [
         Text(
           AppLocalKay.fees.tr(),
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
+          style: AppTextStyle.headlineMedium(
+            context,
             color: const Color(0xFF1F2937),
-          ),
+          ).copyWith(fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 16.h),
         Container(
@@ -66,19 +66,18 @@ class FinancialStatusWidget extends StatelessWidget {
                                 children: [
                                   Text(
                                     AppLocalKay.fees_section.tr(),
-                                    style: TextStyle(
+                                    style: AppTextStyle.bodySmall(
+                                      context,
                                       color: const Color(0xFF6B7280),
-                                      fontSize: 12.sp,
                                     ),
                                   ),
                                   SizedBox(height: 4.h),
                                   Text(
                                     "2,000 ريال",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18.sp,
+                                    style: AppTextStyle.headlineMedium(
+                                      context,
                                       color: const Color(0xFF1F2937),
-                                    ),
+                                    ).copyWith(fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
@@ -103,11 +102,10 @@ class FinancialStatusWidget extends StatelessWidget {
                               SizedBox(width: 4.w),
                               Text(
                                 "الاستحقاق: 05/11",
-                                style: TextStyle(
+                                style: AppTextStyle.labelSmall(
+                                  context,
                                   color: const Color(0xFFDC2626),
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                ).copyWith(fontWeight: FontWeight.w600),
                               ),
                             ],
                           ),
@@ -126,7 +124,9 @@ class FinancialStatusWidget extends StatelessWidget {
                     ),
                     child: Text(
                       AppLocalKay.pay_now.tr(),
-                      style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                      style: AppTextStyle.labelMedium(
+                        context,
+                      ).copyWith(fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],

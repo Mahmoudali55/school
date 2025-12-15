@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
 class UpcomingTasksSection extends StatelessWidget {
@@ -20,7 +21,7 @@ class UpcomingTasksSection extends StatelessWidget {
       children: [
         Text(
           AppLocalKay.no_notifications.tr(),
-          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyle.headlineMedium(context).copyWith(fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 16.h),
         Column(
@@ -57,17 +58,19 @@ class UpcomingTasksSection extends StatelessWidget {
                       children: [
                         Text(
                           task.$1,
-                          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14.sp),
+                          style: AppTextStyle.titleSmall(
+                            context,
+                          ).copyWith(fontWeight: FontWeight.w600),
                         ),
                         SizedBox(height: 4.h),
                         Row(
                           children: [
                             Text(
                               task.$2,
-                              style: TextStyle(
+                              style: AppTextStyle.bodySmall(
+                                context,
                                 color: AppColor.primaryColor(context),
-                                fontSize: 11.sp,
-                              ),
+                              ).copyWith(fontSize: 11.sp),
                             ),
                             SizedBox(width: 8.w),
                             Icon(
@@ -78,7 +81,10 @@ class UpcomingTasksSection extends StatelessWidget {
                             SizedBox(width: 4.w),
                             Text(
                               task.$3,
-                              style: TextStyle(color: AppColor.greyColor(context), fontSize: 11.sp),
+                              style: AppTextStyle.bodySmall(
+                                context,
+                                color: AppColor.greyColor(context),
+                              ).copyWith(fontSize: 11.sp),
                             ),
                           ],
                         ),

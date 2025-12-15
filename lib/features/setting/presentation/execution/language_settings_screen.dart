@@ -30,7 +30,9 @@ showLanguageSheet(BuildContext parentContext) {
               const SizedBox(height: 10),
               Text(
                 AppLocalKay.language.tr(),
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: AppTextStyle.headlineMedium(
+                  bottomSheetContext,
+                ).copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
               ListTile(

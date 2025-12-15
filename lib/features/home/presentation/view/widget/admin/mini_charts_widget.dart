@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class MiniCharts extends StatelessWidget {
   const MiniCharts({super.key});
@@ -14,7 +15,9 @@ class MiniCharts extends StatelessWidget {
       children: [
         Text(
           AppLocalKay.quickAnalysis.tr(),
-          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyle.titleMedium(
+            context,
+          ).copyWith(fontSize: 16.sp, fontWeight: FontWeight.bold),
         ),
 
         SizedBox(height: 12.h),
@@ -34,7 +37,7 @@ class MiniCharts extends StatelessWidget {
                 width: 180.w,
                 child: ChartCard(
                   title: AppLocalKay.successDistribution.tr(),
-                  chart: _buildBarChart(),
+                  chart: _buildBarChart(context),
                 ),
               ),
             ],
@@ -58,7 +61,7 @@ class MiniCharts extends StatelessWidget {
     );
   }
 
-  Widget _buildBarChart() {
+  Widget _buildBarChart(BuildContext context) {
     return BarChart(
       BarChartData(
         maxY: 100,
@@ -74,7 +77,10 @@ class MiniCharts extends StatelessWidget {
               showTitles: true,
               getTitlesWidget: (value, meta) {
                 const labels = ["رياضيات", "عربية", "علوم", "إنجليزي"];
-                return Text(labels[value.toInt()], style: TextStyle(fontSize: 10.sp));
+                return Text(
+                  labels[value.toInt()],
+                  style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp),
+                );
               },
             ),
           ),
@@ -100,7 +106,9 @@ class ChartCard extends StatelessWidget {
           children: [
             Text(
               title,
-              style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+              style: AppTextStyle.bodySmall(
+                context,
+              ).copyWith(fontSize: 12.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8.h),
             SizedBox(height: 100.h, child: chart),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/profile/presentation/screen/widget/card_style.dart';
 
 class ActivityTile extends StatelessWidget {
@@ -25,11 +26,17 @@ class ActivityTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(item['title'].toString(), style: const TextStyle(fontWeight: FontWeight.w600)),
+                Text(
+                  item['title'].toString(),
+                  style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.w600),
+                ),
                 const SizedBox(height: 4),
                 Text(
                   item['time'].toString(),
-                  style: TextStyle(color: Colors.grey.shade600, fontSize: 13),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                    color: Colors.grey.shade600,
+                  ).copyWith(fontSize: 13),
                 ),
               ],
             ),

@@ -171,7 +171,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
                   value: 'delete',
                   child: Text(
                     AppLocalKay.user_management_delete.tr(),
-                    style: TextStyle(color: errorColor),
+                    style: AppTextStyle.bodyMedium(context, color: errorColor),
                   ),
                 ),
               ],

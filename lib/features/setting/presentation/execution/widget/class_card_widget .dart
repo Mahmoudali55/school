@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/setting/presentation/execution/class_management_screen.dart';
 
 class ClassCardWidget extends StatelessWidget {
@@ -26,7 +27,7 @@ class ClassCardWidget extends StatelessWidget {
         ),
         title: Text(
           '${schoolClass.grade} - ${schoolClass.section}',
-          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+          style: AppTextStyle.headlineSmall(context).copyWith(fontWeight: FontWeight.w600),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

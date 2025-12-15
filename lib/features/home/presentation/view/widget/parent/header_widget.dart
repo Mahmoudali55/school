@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/routes/routes_name.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/navigator_methods.dart';
 
@@ -30,15 +31,14 @@ class HeaderWidget extends StatelessWidget {
               children: [
                 Text(
                   AppLocalKay.welcome.tr(),
-                  style: TextStyle(fontSize: 16.sp, color: const Color(0xFF6B7280)),
+                  style: AppTextStyle.bodyLarge(context, color: const Color(0xFF6B7280)),
                 ),
                 Text(
                   parentName,
-                  style: TextStyle(
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.bold,
+                  style: AppTextStyle.displaySmall(
+                    context,
                     color: const Color(0xFF1F2937),
-                  ),
+                  ).copyWith(fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -67,11 +67,10 @@ class HeaderWidget extends StatelessWidget {
         SizedBox(height: 16.h),
         Text(
           AppLocalKay.select_student.tr(),
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.bold,
+          style: AppTextStyle.headlineSmall(
+            context,
             color: const Color(0xFF1F2937),
-          ),
+          ).copyWith(fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 8.h),
 
@@ -89,7 +88,7 @@ class HeaderWidget extends StatelessWidget {
           child: DropdownButtonFormField<String>(
             value: selectedStudent,
             decoration: InputDecoration(
-              labelStyle: TextStyle(color: const Color(0xFF6B7280), fontSize: 14.sp),
+              labelStyle: AppTextStyle.bodyMedium(context, color: const Color(0xFF6B7280)),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
                 borderSide: BorderSide.none,

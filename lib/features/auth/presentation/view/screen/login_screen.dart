@@ -19,10 +19,10 @@ import 'package:my_template/features/auth/presentation/view/cubit/auth_state.dar
 import 'package:my_template/features/select_interface/data/model/user_type_model.dart';
 
 class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key, required this.selectedUserType});
+  LoginScreen({super.key, this.selectedUserType});
 
   final _formKey = GlobalKey<FormState>();
-  final UserTypeModel selectedUserType;
+  final UserTypeModel? selectedUserType;
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +80,7 @@ class LoginScreen extends StatelessWidget {
                 ),
                 Gap(8.h),
                 Text(
-                  "${AppLocalKay.loginToContinue.tr()}${selectedUserType.title}",
+                  "${AppLocalKay.loginToContinue.tr()}${selectedUserType?.title ?? ""}",
                   style: TextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w400,

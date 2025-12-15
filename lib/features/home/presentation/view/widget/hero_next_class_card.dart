@@ -40,11 +40,10 @@ class HeroNextClassCard extends StatelessWidget {
 
           Text(
             "الرياضيات",
-            style: TextStyle(
-              fontSize: 24.sp,
-              fontWeight: FontWeight.bold,
+            style: AppTextStyle.headlineSmall(
+              context,
               color: AppColor.whiteColor(context),
-            ),
+            ).copyWith(fontSize: 24.sp, fontWeight: FontWeight.bold),
           ),
 
           SizedBox(height: 8.h),
@@ -55,7 +54,10 @@ class HeroNextClassCard extends StatelessWidget {
               SizedBox(width: 6.w),
               Text(
                 "١٠:٠٠ - ١٠:٤٥ صباحاً",
-                style: TextStyle(color: AppColor.whiteColor(context), fontSize: 14.sp),
+                style: AppTextStyle.bodyMedium(
+                  context,
+                  color: AppColor.whiteColor(context),
+                ).copyWith(fontSize: 14.sp),
               ),
             ],
           ),
@@ -68,7 +70,10 @@ class HeroNextClassCard extends StatelessWidget {
               SizedBox(width: 6.w),
               Text(
                 "أ. أحمد محمد",
-                style: TextStyle(color: AppColor.whiteColor(context), fontSize: 14.sp),
+                style: AppTextStyle.bodyMedium(
+                  context,
+                  color: AppColor.whiteColor(context),
+                ).copyWith(fontSize: 14.sp),
               ),
             ],
           ),
@@ -80,7 +85,9 @@ class HeroNextClassCard extends StatelessWidget {
             icon: Icon(Icons.video_call, size: 20.w),
             label: Text(
               "انضم إلى الحصة الافتراضية",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
+              style: AppTextStyle.bodyMedium(
+                context,
+              ).copyWith(fontWeight: FontWeight.bold, fontSize: 14.sp),
             ),
             style: ElevatedButton.styleFrom(
               foregroundColor: AppColor.primaryColor(context),

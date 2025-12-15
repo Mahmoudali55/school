@@ -40,7 +40,10 @@ logout(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text(AppLocalKay.logout.tr(), style: TextStyle(color: AppColor.errorColor(context))),
+        title: Text(
+          AppLocalKay.logout.tr(),
+          style: AppTextStyle.bodyMedium(context, color: AppColor.errorColor(context)),
+        ),
         content: Text(AppLocalKay.are_you_sure.tr(), style: AppTextStyle.bodyLarge(context)),
         actions: [
           TextButton(
@@ -50,7 +53,7 @@ logout(BuildContext context) {
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
-              // TODO: تنفيذ تسجيل الخروج
+
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('تم تسجيل الخروج بنجاح'),
@@ -60,7 +63,7 @@ logout(BuildContext context) {
             },
             child: Text(
               AppLocalKay.logout.tr(),
-              style: TextStyle(color: AppColor.errorColor(context)),
+              style: AppTextStyle.bodyMedium(context, color: AppColor.errorColor(context)),
             ),
           ),
         ],

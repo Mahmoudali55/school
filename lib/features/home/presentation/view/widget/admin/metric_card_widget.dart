@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/class/data/model/metric_card_model.dart';
 
 class MetricCardWidget extends StatelessWidget {
@@ -30,11 +31,16 @@ class MetricCardWidget extends StatelessWidget {
           Spacer(),
           Text(
             metric.value,
-            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+            style: AppTextStyle.titleLarge(
+              context,
+            ).copyWith(fontSize: 18.sp, fontWeight: FontWeight.bold),
           ),
           Text(
             metric.title,
-            style: TextStyle(fontSize: 10.sp, color: Colors.grey[700]),
+            style: AppTextStyle.bodySmall(
+              context,
+              color: Colors.grey[700],
+            ).copyWith(fontSize: 10.sp),
           ),
         ],
       ),

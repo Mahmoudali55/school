@@ -120,11 +120,10 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
             // أنواع التنبيهات
             Text(
               AppLocalKay.alert_types.tr(),
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
+              style: AppTextStyle.headlineMedium(
+                context,
                 color: const Color(0xFF1F2937),
-              ),
+              ).copyWith(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16.h),
 
@@ -227,11 +226,10 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
             // توقيت الإشعارات
             Text(
               AppLocalKay.notification_timing.tr(),
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
+              style: AppTextStyle.headlineMedium(
+                context,
                 color: const Color(0xFF1F2937),
-              ),
+              ).copyWith(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16.h),
             Card(
@@ -263,7 +261,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                 ),
                 child: Text(
                   AppLocalKay.save_notification_settings.tr(),
-                  style: TextStyle(fontSize: 16.sp, color: Colors.white),
+                  style: AppTextStyle.bodyLarge(context, color: Colors.white),
                 ),
               ),
             ),

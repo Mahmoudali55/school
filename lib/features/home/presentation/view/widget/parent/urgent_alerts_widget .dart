@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/home/presentation/view/widget/parent/alert_Item_widget.dart';
 
@@ -17,7 +18,7 @@ class UrgentAlertsWidget extends StatelessWidget {
           children: [
             Text(
               AppLocalKay.urgent_notifications.tr(),
-              style: TextStyle(
+              style: AppTextStyle.titleLarge(context).copyWith(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xFF1F2937),
@@ -31,11 +32,10 @@ class UrgentAlertsWidget extends StatelessWidget {
               ),
               child: Text(
                 "٢ جديد",
-                style: TextStyle(
+                style: AppTextStyle.bodySmall(
+                  context,
                   color: const Color(0xFFDC2626),
-                  fontSize: 10.sp,
-                  fontWeight: FontWeight.bold,
-                ),
+                ).copyWith(fontSize: 10.sp, fontWeight: FontWeight.bold),
               ),
             ),
           ],

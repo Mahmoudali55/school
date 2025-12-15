@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/class/data/model/alert_model.dart';
 
 class AlertItem extends StatelessWidget {
@@ -40,15 +41,23 @@ class AlertItem extends StatelessWidget {
               children: [
                 Text(
                   alert.title,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.bold, fontSize: 12.sp),
                 ),
                 Text(
                   alert.description,
-                  style: TextStyle(fontSize: 10.sp, color: Colors.grey[700]),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                    color: Colors.grey[700],
+                  ).copyWith(fontSize: 10.sp),
                 ),
                 Text(
                   alert.time,
-                  style: TextStyle(fontSize: 8.sp, color: Colors.grey[400]),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                    color: Colors.grey[400],
+                  ).copyWith(fontSize: 8.sp),
                 ),
               ],
             ),

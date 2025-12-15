@@ -104,11 +104,10 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
               children: [
                 Text(
                   'الأسئلة الشائعة',
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
+                  style: AppTextStyle.headlineMedium(
+                    context,
                     color: const Color(0xFF1F2937),
-                  ),
+                  ).copyWith(fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -151,7 +150,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
+              style: AppTextStyle.bodySmall(context).copyWith(fontWeight: FontWeight.w500),
             ),
           ],
         ),
@@ -168,14 +167,17 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
             leading: Icon(Icons.help_outline, color: AppColor.primaryColor(context)),
             title: Text(
               faqItem.question,
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600),
+              style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.w600),
             ),
             children: [
               Padding(
                 padding: EdgeInsets.all(16.w),
                 child: Text(
                   faqItem.answer,
-                  style: TextStyle(fontSize: 14.sp, color: Colors.grey[700], height: 1.5),
+                  style: AppTextStyle.bodyMedium(
+                    context,
+                    color: Colors.grey[700],
+                  ).copyWith(height: 1.5),
                 ),
               ),
             ],
@@ -194,16 +196,15 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           SizedBox(height: 16.h),
           Text(
             'لا توجد نتائج',
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
+            style: AppTextStyle.headlineMedium(
+              context,
               color: Colors.grey.shade500,
-            ),
+            ).copyWith(fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 8.h),
           Text(
             'لم نتمكن من العثور على أي سؤال يتطابق مع بحثك',
-            style: TextStyle(fontSize: 14.sp, color: Colors.grey.shade400),
+            style: AppTextStyle.bodyMedium(context, color: Colors.grey.shade400),
             textAlign: TextAlign.center,
           ),
         ],

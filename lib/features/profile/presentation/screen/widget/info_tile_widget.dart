@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/profile/presentation/screen/widget/card_style.dart';
 
 class InfoTile extends StatelessWidget {
@@ -14,9 +15,12 @@ class InfoTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       child: Row(
         children: [
-          Text(label, style: TextStyle(color: Colors.grey.shade700)),
+          Text(label, style: AppTextStyle.bodyMedium(context, color: Colors.grey.shade700)),
           const Spacer(),
-          Text(value, style: const TextStyle(fontWeight: FontWeight.w600)),
+          Text(
+            value,
+            style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.w600),
+          ),
         ],
       ),
     );

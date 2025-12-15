@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class ClassStatsWidget extends StatelessWidget {
   final int totalClasses;
@@ -43,14 +44,20 @@ class ClassStatsWidget extends StatelessWidget {
           child: Center(
             child: Text(
               value.toString(),
-              style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold, color: color),
+              style: AppTextStyle.bodySmall(
+                context,
+                color: color,
+              ).copyWith(fontWeight: FontWeight.bold),
             ),
           ),
         ),
         SizedBox(height: 4.h),
         Text(
           label,
-          style: TextStyle(color: AppColor.greyColor(context), fontSize: 10.sp),
+          style: AppTextStyle.bodySmall(
+            context,
+            color: AppColor.greyColor(context),
+          ).copyWith(fontSize: 10.sp),
         ),
       ],
     );

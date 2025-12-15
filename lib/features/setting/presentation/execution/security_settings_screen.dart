@@ -186,11 +186,10 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
             // سجل الأمان
             Text(
               AppLocalKay.login_history.tr(),
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
+              style: AppTextStyle.headlineMedium(
+                context,
                 color: const Color(0xFF1F2937),
-              ),
+              ).copyWith(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16.h),
             Card(

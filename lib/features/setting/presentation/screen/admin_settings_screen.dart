@@ -47,7 +47,6 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
               SizedBox(height: 16.h),
               AccountSettingsWidget(),
               SizedBox(height: 24.h),
-
               SectionTitleWidget(title: AppLocalKay.setting_school.tr()),
               SizedBox(height: 16.h),
               Card(
@@ -76,17 +75,14 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
               ),
               SchoolSettingsWidget(),
               SizedBox(height: 24.h),
-
               SectionTitleWidget(title: AppLocalKay.setting_app.tr()),
               SizedBox(height: 16.h),
               AppSettingsWidget(),
               SizedBox(height: 24.h),
-
               SectionTitleWidget(title: AppLocalKay.setting_info.tr()),
               SizedBox(height: 16.h),
               AppInfoWidget(),
               SizedBox(height: 32.h),
-
               ActionButtonsWidget(),
             ],
           ),

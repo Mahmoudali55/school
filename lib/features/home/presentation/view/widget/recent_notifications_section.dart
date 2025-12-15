@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/routes/routes_name.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/navigator_methods.dart';
 
@@ -25,13 +26,16 @@ class RecentNotificationsSection extends StatelessWidget {
           children: [
             Text(
               AppLocalKay.last_notifications.tr(),
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              style: AppTextStyle.headlineMedium(context).copyWith(fontWeight: FontWeight.bold),
             ),
             TextButton(
               onPressed: () {
                 NavigatorMethods.pushNamed(context, RoutesName.notificationsScreen);
               },
-              child: Text(AppLocalKay.show_all.tr(), style: TextStyle(color: Colors.green)),
+              child: Text(
+                AppLocalKay.show_all.tr(),
+                style: AppTextStyle.bodyMedium(context, color: Colors.green),
+              ),
             ),
           ],
         ),
@@ -69,17 +73,25 @@ class RecentNotificationsSection extends StatelessWidget {
                       children: [
                         Text(
                           item.$1,
-                          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14.sp),
+                          style: AppTextStyle.titleSmall(
+                            context,
+                          ).copyWith(fontWeight: FontWeight.w600),
                         ),
                         SizedBox(height: 4.h),
                         Text(
                           item.$2,
-                          style: TextStyle(color: AppColor.greyColor(context), fontSize: 12.sp),
+                          style: AppTextStyle.bodySmall(
+                            context,
+                            color: AppColor.greyColor(context),
+                          ),
                         ),
                         SizedBox(height: 4.h),
                         Text(
                           item.$3,
-                          style: TextStyle(color: AppColor.greyColor(context), fontSize: 10.sp),
+                          style: AppTextStyle.bodySmall(
+                            context,
+                            color: AppColor.greyColor(context),
+                          ).copyWith(fontSize: 10.sp),
                         ),
                       ],
                     ),

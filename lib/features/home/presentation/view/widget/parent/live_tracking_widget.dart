@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
 class LiveTrackingWidget extends StatelessWidget {
@@ -16,11 +17,10 @@ class LiveTrackingWidget extends StatelessWidget {
           children: [
             Text(
               AppLocalKay.real_time.tr(),
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
+              style: AppTextStyle.headlineMedium(
+                context,
                 color: const Color(0xFF1F2937),
-              ),
+              ).copyWith(fontWeight: FontWeight.bold),
             ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
@@ -42,11 +42,10 @@ class LiveTrackingWidget extends StatelessWidget {
                   SizedBox(width: 4.w),
                   Text(
                     AppLocalKay.user_management_status_active.tr(),
-                    style: TextStyle(
+                    style: AppTextStyle.bodySmall(
+                      context,
                       color: const Color(0xFF10B981),
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    ).copyWith(fontSize: 10.sp, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -95,16 +94,18 @@ class LiveTrackingWidget extends StatelessWidget {
                           children: [
                             Text(
                               "الحافلة على بعد ٧ دقائق",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.sp,
+                              style: AppTextStyle.headlineSmall(
+                                context,
                                 color: const Color(0xFF1F2937),
-                              ),
+                              ).copyWith(fontWeight: FontWeight.bold),
                             ),
                             SizedBox(height: 4.h),
                             Text(
                               "وصول متوقع: ٨:١٥ ص",
-                              style: TextStyle(color: const Color(0xFF6B7280), fontSize: 12.sp),
+                              style: AppTextStyle.bodySmall(
+                                context,
+                                color: const Color(0xFF6B7280),
+                              ),
                             ),
                           ],
                         ),
@@ -124,7 +125,7 @@ class LiveTrackingWidget extends StatelessWidget {
                             SizedBox(width: 4.w),
                             Text(
                               AppLocalKay.user_management_track.tr(),
-                              style: TextStyle(fontSize: 14.sp),
+                              style: AppTextStyle.bodyMedium(context),
                             ),
                           ],
                         ),
@@ -153,7 +154,10 @@ class LiveTrackingWidget extends StatelessWidget {
                               SizedBox(height: 8.h),
                               Text(
                                 AppLocalKay.route_map.tr(),
-                                style: TextStyle(color: const Color(0xFF6B7280), fontSize: 14.sp),
+                                style: AppTextStyle.bodyMedium(
+                                  context,
+                                  color: const Color(0xFF6B7280),
+                                ),
                               ),
                             ],
                           ),

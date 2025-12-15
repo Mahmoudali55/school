@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
 class ParentInfoSection extends StatelessWidget {
@@ -27,19 +28,27 @@ class ParentInfoSection extends StatelessWidget {
         children: [
           Text(
             AppLocalKay.personal_info.tr(),
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+            style: AppTextStyle.titleMedium(
+              context,
+            ).copyWith(fontSize: 16.sp, fontWeight: FontWeight.bold),
           ),
           12.verticalSpace,
-          ...info.map((i) => _row(i)).toList(),
+          ...info.map((i) => _row(context, i)).toList(),
         ],
       ),
     );
   }
 
-  Widget _row(Map i) => ListTile(
+  Widget _row(BuildContext context, Map i) => ListTile(
     contentPadding: EdgeInsets.zero,
     leading: Icon(i['icon'] as IconData, color: Colors.blue),
-    title: Text(i['label'] as String, style: TextStyle(fontSize: 12, color: Colors.grey)),
-    subtitle: Text(i['value'] as String, style: const TextStyle(fontSize: 14)),
+    title: Text(
+      i['label'] as String,
+      style: AppTextStyle.bodySmall(context, color: Colors.grey).copyWith(fontSize: 12),
+    ),
+    subtitle: Text(
+      i['value'] as String,
+      style: AppTextStyle.bodyMedium(context).copyWith(fontSize: 14),
+    ),
   );
 }

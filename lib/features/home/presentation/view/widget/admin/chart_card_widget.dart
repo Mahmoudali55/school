@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class ChartCard extends StatelessWidget {
   final String title;
@@ -28,7 +29,9 @@ class ChartCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600),
+            style: AppTextStyle.bodySmall(
+              context,
+            ).copyWith(fontSize: 12.sp, fontWeight: FontWeight.w600),
           ),
           SizedBox(height: 8.h),
           chart,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/layout/presentation/screen/widget/nav_Item_data_widget.dart';
 
 class BottomNavBar extends StatelessWidget {
@@ -40,8 +41,12 @@ class BottomNavBar extends StatelessWidget {
           unselectedItemColor: const Color(0xFF9CA3AF),
           selectedFontSize: 11.sp,
           unselectedFontSize: 10.sp,
-          selectedLabelStyle: TextStyle(fontWeight: FontWeight.w700, height: 1.5),
-          unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w500, height: 1.5),
+          selectedLabelStyle: AppTextStyle.bodySmall(
+            context,
+          ).copyWith(fontWeight: FontWeight.w700, height: 1.5),
+          unselectedLabelStyle: AppTextStyle.bodySmall(
+            context,
+          ).copyWith(fontWeight: FontWeight.w500, height: 1.5),
           elevation: 0,
           onTap: onTap,
           items: items.map((e) => _NavBarItem(item: e, selectedColor: selectedColor)).toList(),

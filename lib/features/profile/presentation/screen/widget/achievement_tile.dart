@@ -32,7 +32,10 @@ class AchievementTile extends StatelessWidget {
                   style: AppTextStyle.titleMedium(context, color: color),
                 ),
                 const SizedBox(height: 4),
-                Text(item['desc'].toString(), style: TextStyle(color: Colors.grey.shade600)),
+                Text(
+                  item['desc'].toString(),
+                  style: AppTextStyle.bodyMedium(context, color: Colors.grey.shade600),
+                ),
               ],
             ),
           ),

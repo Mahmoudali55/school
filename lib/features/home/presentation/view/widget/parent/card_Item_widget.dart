@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class CardItemWidget extends StatelessWidget {
   const CardItemWidget({super.key, required this.title, required this.subtitle});
@@ -31,12 +32,12 @@ class CardItemWidget extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
+                style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 4.h),
               Text(
                 subtitle,
-                style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                style: AppTextStyle.bodySmall(context, color: const Color(0xFF6B7280)),
               ),
             ],
           ),

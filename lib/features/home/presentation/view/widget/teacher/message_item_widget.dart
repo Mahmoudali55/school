@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/class/data/model/schedule_Item_model.dart';
 
 class MessageItemWidget extends StatelessWidget {
@@ -34,22 +35,27 @@ class MessageItemWidget extends StatelessWidget {
                   children: [
                     Text(
                       message.sender,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
+                      style: AppTextStyle.titleSmall(
+                        context,
                         color: const Color(0xFF1F2937),
-                      ),
+                      ).copyWith(fontSize: 14.sp, fontWeight: FontWeight.w600),
                     ),
                     Text(
                       message.time,
-                      style: TextStyle(fontSize: 10.sp, color: const Color(0xFF9CA3AF)),
+                      style: AppTextStyle.bodySmall(
+                        context,
+                        color: const Color(0xFF9CA3AF),
+                      ).copyWith(fontSize: 10.sp),
                     ),
                   ],
                 ),
                 SizedBox(height: 4.h),
                 Text(
                   message.preview,
-                  style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                    color: const Color(0xFF6B7280),
+                  ).copyWith(fontSize: 12.sp),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),

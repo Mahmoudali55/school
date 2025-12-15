@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
 class ProfileStatistics extends StatelessWidget {
@@ -16,22 +17,22 @@ class ProfileStatistics extends StatelessWidget {
       decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(14)),
       child: Row(
         children: [
-          Expanded(child: _statItem(AppLocalKay.checkin.tr(), '$attendance%')),
-          Expanded(child: _statItem(AppLocalKay.gpa.tr(), '$avg')),
-          Expanded(child: _statItem(AppLocalKay.level.tr(), 'ممتاز')),
+          Expanded(child: _statItem(context, AppLocalKay.checkin.tr(), '$attendance%')),
+          Expanded(child: _statItem(context, AppLocalKay.gpa.tr(), '$avg')),
+          Expanded(child: _statItem(context, AppLocalKay.level.tr(), 'ممتاز')),
         ],
       ),
     );
   }
 
-  Widget _statItem(String label, String value) {
+  Widget _statItem(BuildContext context, String label, String value) {
     return Column(
       children: [
         Text(
           value,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+          style: AppTextStyle.headlineSmall(context, color: Colors.blue).copyWith(fontSize: 20),
         ),
-        Text(label, style: const TextStyle(color: Colors.grey)),
+        Text(label, style: AppTextStyle.bodyMedium(context, color: Colors.grey)),
       ],
     );
   }

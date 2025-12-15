@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class NotificationItemWidget extends StatelessWidget {
   const NotificationItemWidget({
@@ -53,7 +54,7 @@ class NotificationItemWidget extends StatelessWidget {
             ),
             title: Text(
               title,
-              style: TextStyle(
+              style: AppTextStyle.bodyMedium(context).copyWith(
                 fontWeight: FontWeight.w600,
                 fontSize: 14.sp,
                 color: const Color(0xFF1F2937),
@@ -65,12 +66,18 @@ class NotificationItemWidget extends StatelessWidget {
                 SizedBox(height: 4.h),
                 Text(
                   message,
-                  style: TextStyle(color: const Color(0xFF6B7280), fontSize: 12.sp),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                    color: const Color(0xFF6B7280),
+                  ).copyWith(fontSize: 12.sp),
                 ),
                 SizedBox(height: 4.h),
                 Text(
                   time,
-                  style: TextStyle(color: const Color(0xFF9CA3AF), fontSize: 10.sp),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                    color: const Color(0xFF9CA3AF),
+                  ).copyWith(fontSize: 10.sp),
                 ),
               ],
             ),

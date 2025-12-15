@@ -48,12 +48,12 @@ class ClassManagementScreen extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add new class
-        },
-        child: Icon(Icons.add, size: 24.w),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     // Add new class
+      //   },
+      //   child: Icon(Icons.add, size: 24.w),
+      // ),
     );
   }
 

@@ -38,7 +38,7 @@ class HomeHeaderWidget extends StatelessWidget {
             children: [
               Text(
                 "مرحباً، $studentName",
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                style: AppTextStyle.headlineSmall(context).copyWith(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 4.h),
               Text(

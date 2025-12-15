@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/class/data/model/schedule_Item_model.dart';
 
 class ScheduleItemWidget extends StatelessWidget {
@@ -24,11 +25,10 @@ class ScheduleItemWidget extends StatelessWidget {
             ),
             child: Text(
               item.time,
-              style: TextStyle(
+              style: AppTextStyle.bodySmall(
+                context,
                 color: item.isCurrent ? Colors.white : const Color(0xFF6B7280),
-                fontSize: 12.sp,
-                fontWeight: FontWeight.bold,
-              ),
+              ).copyWith(fontSize: 12.sp, fontWeight: FontWeight.bold),
             ),
           ),
           SizedBox(width: 12.w),
@@ -38,11 +38,10 @@ class ScheduleItemWidget extends StatelessWidget {
               children: [
                 Text(
                   item.subject,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
+                  style: AppTextStyle.titleMedium(
+                    context,
                     color: const Color(0xFF1F2937),
-                  ),
+                  ).copyWith(fontSize: 16.sp, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 4.h),
                 Row(
@@ -51,14 +50,20 @@ class ScheduleItemWidget extends StatelessWidget {
                     SizedBox(width: 4.w),
                     Text(
                       item.classroom,
-                      style: TextStyle(color: const Color(0xFF6B7280), fontSize: 12.sp),
+                      style: AppTextStyle.bodySmall(
+                        context,
+                        color: const Color(0xFF6B7280),
+                      ).copyWith(fontSize: 12.sp),
                     ),
                     SizedBox(width: 12.w),
                     Icon(Icons.room, size: 14.w, color: const Color(0xFF6B7280)),
                     SizedBox(width: 4.w),
                     Text(
                       item.room,
-                      style: TextStyle(color: const Color(0xFF6B7280), fontSize: 12.sp),
+                      style: AppTextStyle.bodySmall(
+                        context,
+                        color: const Color(0xFF6B7280),
+                      ).copyWith(fontSize: 12.sp),
                     ),
                   ],
                 ),
@@ -74,7 +79,10 @@ class ScheduleItemWidget extends StatelessWidget {
               ),
               child: Text(
                 "الآن",
-                style: TextStyle(color: Colors.white, fontSize: 10.sp, fontWeight: FontWeight.bold),
+                style: AppTextStyle.bodySmall(
+                  context,
+                  color: Colors.white,
+                ).copyWith(fontSize: 10.sp, fontWeight: FontWeight.bold),
               ),
             ),
         ],

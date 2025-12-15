@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class SectionTitleWidget extends StatelessWidget {
   const SectionTitleWidget({super.key, required this.title});
@@ -9,11 +9,10 @@ class SectionTitleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: TextStyle(
-        fontSize: 18.sp,
-        fontWeight: FontWeight.bold,
+      style: AppTextStyle.headlineMedium(
+        context,
         color: const Color(0xFF1F2937),
-      ),
+      ).copyWith(fontWeight: FontWeight.bold),
     );
   }
 }

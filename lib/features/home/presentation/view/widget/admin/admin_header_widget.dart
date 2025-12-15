@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
 class AdminHeader extends StatelessWidget {
@@ -20,16 +21,18 @@ class AdminHeader extends StatelessWidget {
             children: [
               Text(
                 AppLocalKay.adminPanel.tr(),
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
+                style: AppTextStyle.headlineSmall(
+                  context,
                   color: const Color(0xFF1F2937),
-                ),
+                ).copyWith(fontSize: 20.sp, fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 4.h),
               Text(
                 "$name - $role",
-                style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                style: AppTextStyle.bodySmall(
+                  context,
+                  color: const Color(0xFF6B7280),
+                ).copyWith(fontSize: 12.sp),
               ),
             ],
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/setting/presentation/execution/edit_profile_screen.dart';
 
 class ProfileCardWidget extends StatelessWidget {
@@ -27,21 +28,20 @@ class ProfileCardWidget extends StatelessWidget {
                 children: [
                   Text(
                     'أحمد المدير',
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
+                    style: AppTextStyle.headlineMedium(
+                      context,
                       color: const Color(0xFF1F2937),
-                    ),
+                    ).copyWith(fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     'مدير المدرسة',
-                    style: TextStyle(fontSize: 14.sp, color: AppColor.hintColor(context)),
+                    style: AppTextStyle.bodyMedium(context, color: AppColor.hintColor(context)),
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     'admin@school.edu',
-                    style: TextStyle(fontSize: 14.sp, color: AppColor.hintColor(context)),
+                    style: AppTextStyle.bodyMedium(context, color: AppColor.hintColor(context)),
                   ),
                 ],
               ),
