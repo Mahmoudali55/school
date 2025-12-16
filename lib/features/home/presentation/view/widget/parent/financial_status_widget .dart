@@ -126,7 +126,7 @@ class FinancialStatusWidget extends StatelessWidget {
                       AppLocalKay.pay_now.tr(),
                       style: AppTextStyle.labelMedium(
                         context,
-                      ).copyWith(fontWeight: FontWeight.bold),
+                      ).copyWith(fontWeight: FontWeight.bold, color: AppColor.whiteColor(context)),
                     ),
                   ),
                 ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/features/home/presentation/view/widget/admin/admin_header_widget.dart'
     show AdminHeader;
 import 'package:my_template/features/home/presentation/view/widget/admin/alerts_and_activity_widget.dart';
@@ -25,15 +26,15 @@ class AdminHomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AdminHeader(name: adminName, role: adminRole),
-              SizedBox(height: 20.h),
+              Gap(20.h),
               MetricsDashboard(),
-              SizedBox(height: 20.h),
+              Gap(20.h),
               MiniCharts(),
-              SizedBox(height: 20.h),
+              Gap(20.h),
               AlertsAndActivity(),
-              SizedBox(height: 20.h),
+              Gap(20.h),
               ManagementShortcuts(),
-              SizedBox(height: 20.h),
+              Gap(20.h),
             ],
           ),
         ),

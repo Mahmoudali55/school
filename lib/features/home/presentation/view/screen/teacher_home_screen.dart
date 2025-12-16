@@ -6,9 +6,14 @@ import 'package:my_template/features/home/presentation/view/widget/teacher/quick
 import 'package:my_template/features/home/presentation/view/widget/teacher/recent_messages_widget.dart';
 import 'package:my_template/features/home/presentation/view/widget/teacher/schedule_widget.dart';
 
-class TeacherHomeScreen extends StatelessWidget {
+class TeacherHomeScreen extends StatefulWidget {
   const TeacherHomeScreen({super.key});
 
+  @override
+  State<TeacherHomeScreen> createState() => _TeacherHomeScreenState();
+}
+
+class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
   @override
   Widget build(BuildContext context) {
     String teacherName = "أ. أحمد محمد";
@@ -29,6 +34,8 @@ class TeacherHomeScreen extends StatelessWidget {
               ScheduleWidget(),
               SizedBox(height: 25.h),
               QuickActionsWidget(),
+              SizedBox(height: 25.h),
+
               SizedBox(height: 25.h),
               RecentMessagesWidget(),
               SizedBox(height: 30.h),

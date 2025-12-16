@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/images/app_images.dart';
 import 'package:my_template/core/routes/routes_name.dart';
-import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/utils/navigator_methods.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -24,7 +23,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.primaryColor(context),
       body: Center(
         child: Center(
           child: Column(

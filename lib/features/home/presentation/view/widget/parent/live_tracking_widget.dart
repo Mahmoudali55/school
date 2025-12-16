@@ -125,7 +125,7 @@ class LiveTrackingWidget extends StatelessWidget {
                             SizedBox(width: 4.w),
                             Text(
                               AppLocalKay.user_management_track.tr(),
-                              style: AppTextStyle.bodyMedium(context),
+                              style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.white),
                             ),
                           ],
                         ),

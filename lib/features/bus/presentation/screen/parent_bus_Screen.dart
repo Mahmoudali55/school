@@ -550,7 +550,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
 
   Widget _buildActionButton(String text, IconData icon, Color color, VoidCallback onPressed) {
     return Container(
-      padding: EdgeInsets.all(12.w),
+      padding: EdgeInsets.all(10.w),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
@@ -559,7 +559,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(icon, color: color, size: 18.w),
-          SizedBox(width: 8.w),
+          SizedBox(height: 10.w),
           Text(
             text,
             style: TextStyle(fontSize: 10.sp, color: color),
@@ -746,7 +746,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
             physics: const NeverScrollableScrollPhysics(),
             crossAxisSpacing: 12.w,
             mainAxisSpacing: 12.h,
-            childAspectRatio: 1.3,
+            childAspectRatio: 1.1,
             children: [
               _buildDetailItem(
                 AppLocalKay.bus_number.tr(),
@@ -793,7 +793,8 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xFFE5E7EB)),
       ),
-      child: Row(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             padding: EdgeInsets.all(6.w),
@@ -803,27 +804,21 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
             ),
             child: Icon(icon, size: 16.w, color: _selectedBusData['busColor']),
           ),
-          SizedBox(width: 8.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
-                ),
-                Text(
-                  value,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF1F2937),
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+          SizedBox(height: 8.w),
+          Text(
+            title,
+            style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+          ),
+          SizedBox(height: 8.w),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF1F2937),
             ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
@@ -899,7 +894,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
     return GestureDetector(
       onTap: () => _handleSafetyFeature(title),
       child: Container(
-        padding: EdgeInsets.all(10.w),
+        padding: EdgeInsets.all(15.w),
         decoration: BoxDecoration(
           color: color.withOpacity(0.1),
           borderRadius: BorderRadius.circular(12),
@@ -1058,14 +1053,17 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                 SnackBar(
                   content: Text(
                     AppLocalKay.alert_sent.tr(),
-                    style: AppTextStyle.bodyMedium(context),
+                    style: AppTextStyle.bodyMedium(context, color: AppColor.whiteColor(context)),
                   ),
                   backgroundColor: AppColor.errorColor(context),
                 ),
               );
             },
             style: ElevatedButton.styleFrom(backgroundColor: AppColor.errorColor(context)),
-            child: Text(AppLocalKay.send_to_all.tr(), style: AppTextStyle.bodyMedium(context)),
+            child: Text(
+              AppLocalKay.send_to_all.tr(),
+              style: AppTextStyle.bodyMedium(context, color: AppColor.whiteColor(context)),
+            ),
           ),
         ],
       ),

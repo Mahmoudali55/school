@@ -51,7 +51,7 @@ class BusClassDetailsWidget extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 crossAxisSpacing: 12.w,
                 mainAxisSpacing: 12.h,
-                childAspectRatio: 1.3,
+                childAspectRatio: 1.1,
                 children: [
                   _buildDetailItem("الفصل", busClass.className, Icons.class_rounded, busClass),
                   _buildDetailItem("المادة", busClass.subject, Icons.book_rounded, busClass),
@@ -103,37 +103,31 @@ class BusClassDetailsWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: const Color(0xFFE5E7EB)),
       ),
-      child: Row(
+      child: Column(
         children: [
           Container(
-            padding: EdgeInsets.all(6.w),
+            padding: EdgeInsets.all(8.w),
             decoration: BoxDecoration(
               color: busClass.classColor.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(icon, size: 16.w, color: busClass.classColor),
           ),
-          SizedBox(width: 8.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
-                ),
-                Text(
-                  value,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF1F2937),
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+          SizedBox(height: 10.h),
+          Text(
+            title,
+            style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+          ),
+
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF1F2937),
             ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
