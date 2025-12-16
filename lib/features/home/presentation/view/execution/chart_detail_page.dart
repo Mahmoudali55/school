@@ -1,9 +1,11 @@
 // features/reports/presentation/view/chart_detail_page.dart
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class ChartDetailPage extends StatefulWidget {
   final String chartTitle;
@@ -135,7 +137,7 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'الرسم البياني التفصيلي',
+              AppLocalKay.chartDetails.tr(),
               style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8.h),
@@ -442,7 +444,7 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
         },
       ),
       sectionsSpace: 4.r,
-      centerSpaceRadius: 80.r, // زيادة مساحة المركز
+      centerSpaceRadius: 80.r,
       sections: _getPieSections(),
     );
   }
@@ -450,7 +452,6 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
   List<PieChartSectionData> _getPieSections() {
     final data = _getChartData();
     final total = data.reduce((a, b) => a + b);
-
     return List.generate(data.length, (i) {
       final isTouched = i == _touchedIndex;
       final radius = isTouched ? 75.0 : 65.0;

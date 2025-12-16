@@ -793,7 +793,15 @@
 "notifications_student_content":"إرسال إشعارات لأولياء الأمور عند صعود أو نزول الطلاب",
 "driver_info":"معلومات السائق",
 "driver_info_content":"عرض معلومات الاتصال بالسائق",
-"class_name":"اسم الفصل"
+"class_name":"اسم الفصل",
+"this_week": "هذا الأسبوع",
+"this_quarter": "هذا الفصل",
+"this_year": "هذه السنة",
+"bar_chart": "شريطي",
+"line_chart": "خطي",
+"pie_chart": "دائري",
+"chart_details": "الرسم البياني التفصيلي",
+"detailed_stats": "الإحصائيات التفصيلية"
 
 
 

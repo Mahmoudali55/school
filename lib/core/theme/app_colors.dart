@@ -34,7 +34,7 @@ class AppColor {
       listen: listen,
     );
   }
-
+  
   /// SECONDARY CONTAINER
   static Color secondaryContainer(BuildContext context, {bool listen = true}) {
     return AppTheme.getByTheme(

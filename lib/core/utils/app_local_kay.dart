@@ -746,4 +746,13 @@ class AppLocalKay {
   static const String notifications_student_content = "notifications_student_content";
   static const String driver_info = "driver_info";
   static const String driver_info_content = "driver_info_content";
+  static const String thisWeek = 'this_week';
+  static const String thisMonth = 'this_month';
+  static const String thisQuarter = 'this_quarter';
+  static const String thisYear = 'this_year';
+  static const String barChart = 'bar_chart';
+  static const String lineChart = 'line_chart';
+  static const String pieChart = 'pie_chart';
+  static const String chartDetails = 'chart_details';
+  static const String detailedStats = 'detailed_stats';
 }

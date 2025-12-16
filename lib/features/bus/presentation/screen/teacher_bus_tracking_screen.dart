@@ -11,11 +11,11 @@ import 'package:my_template/features/bus/presentation/execution/report_bus_scree
 import 'package:my_template/features/bus/presentation/execution/route_screen.dart';
 import 'package:my_template/features/bus/presentation/execution/settings_screen.dart';
 import 'package:my_template/features/bus/presentation/execution/take_attendance_screen.dart';
-import 'package:my_template/features/bus/presentation/screen/widget/admin/quick_overview_widget.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/teacher/bus_class_details_widget.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/teacher/classes_selector_widget.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/teacher/field_trips_widget.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/teacher/main_tracking_card.dart';
+import 'package:my_template/features/bus/presentation/screen/widget/teacher/quick_overview_widget.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/teacher/students_on_bus_widget.dart';
 
 import '../cubit/bus_tracking_cubit.dart';
@@ -64,26 +64,17 @@ class _TeacherBusTrackingScreenState extends State<TeacherBusTrackingScreen>
           child: CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [
-              // App Bar
               SliverToBoxAdapter(
                 child: Center(
                   child: Text(AppLocalKay.bus_title.tr(), style: AppTextStyle.text16SDark(context)),
                 ),
               ),
-              // Classes Selector
               const SliverToBoxAdapter(child: ClassesSelectorWidget()),
-              // Quick Overview
               const SliverToBoxAdapter(child: QuickOverviewWidget()),
-              // Main Tracking Card
               SliverToBoxAdapter(child: MainTrackingCard(busAnimation: _busAnimation)),
-              // Students on Bus
               const SliverToBoxAdapter(child: StudentsOnBusWidget()),
-              // Bus & Class Details
               const SliverToBoxAdapter(child: BusClassDetailsWidget()),
-              // Field Trips
               const SliverToBoxAdapter(child: FieldTripsWidget()),
-
-              // Quick Actions
             ],
           ),
         ),
@@ -131,7 +122,7 @@ class _TeacherBusTrackingScreenState extends State<TeacherBusTrackingScreen>
       QuickActionItem(
         title: AppLocalKay.settings.tr(),
         icon: Icons.settings_rounded,
-        page: const BusSettingsPage(), // أنشئ صفحة الإعدادات أو استخدم صفحة موجودة
+        page: const BusSettingsPage(),
       ),
     ];
 

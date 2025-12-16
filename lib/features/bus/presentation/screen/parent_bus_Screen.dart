@@ -154,47 +154,6 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
     );
   }
 
-  Widget _buildHeaderBackground() {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [Color(0xFF2196F3), Color(0xFF1976D2), Color(0xFF0D47A1)],
-        ),
-      ),
-      child: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "متتبع الحافلات",
-                style: TextStyle(
-                  fontSize: 28.sp,
-                  fontWeight: FontWeight.bold,
-                  color: AppColor.whiteColor(context),
-                  height: 1.2,
-                ),
-              ),
-              SizedBox(height: 8.h),
-              Text(
-                "تابع أبنائك في الوقت الفعلي",
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: AppColor.whiteColor(context).withOpacity(0.9),
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildChildrenSelector() {
     return Container(
       margin: EdgeInsets.all(16.w),
@@ -1081,7 +1040,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
       builder: (context) => AlertDialog(
         title: Row(
           children: [
-            Icon(Icons.emergency_rounded, color: Colors.red),
+            Icon(Icons.emergency_rounded, color: AppColor.errorColor(context)),
             SizedBox(width: 8.w),
             Text(AppLocalKay.emergency_management.tr(), style: AppTextStyle.bodyMedium(context)),
           ],
@@ -1101,11 +1060,11 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                     AppLocalKay.alert_sent.tr(),
                     style: AppTextStyle.bodyMedium(context),
                   ),
-                  backgroundColor: Colors.red,
+                  backgroundColor: AppColor.errorColor(context),
                 ),
               );
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: AppColor.errorColor(context)),
             child: Text(AppLocalKay.send_to_all.tr(), style: AppTextStyle.bodyMedium(context)),
           ),
         ],

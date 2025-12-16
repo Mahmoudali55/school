@@ -60,5 +60,5 @@ class AppImages {
   static const String education = "assets/image/education.gif";
   static const String homework = "assets/image/homework.gif";
   static const String school = "assets/image/school.gif";
-  static const String schoolloge = "assets/image/school_loge.png";
+  static const String schoolLoge = "assets/image/school_loge.png";
 }

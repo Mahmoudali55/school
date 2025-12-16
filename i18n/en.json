@@ -748,5 +748,13 @@
 "select_date": "Select Date",
 "select_time": "Select Time",
 "event_date": "Event Date",
-"Event_Color": "Event Color"
+"Event_Color": "Event Color",
+"this_week": "This Week",
+  "this_quarter": "This Quarter",
+  "this_year": "This Year",
+  "bar_chart": "Bar",
+  "line_chart": "Line",
+  "pie_chart": "Pie",
+  "chart_details": "Chart Details",
+  "detailed_stats": "Detailed Statistics"
 }

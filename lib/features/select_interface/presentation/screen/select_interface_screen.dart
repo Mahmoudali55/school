@@ -39,7 +39,7 @@ class SelectInterfaceScreen extends StatelessWidget {
                 child: Container(
                   padding: EdgeInsets.all(14.w),
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(50)),
-                  child: Image.asset(AppImages.schoolloge, height: 80.h),
+                  child: Image.asset(AppImages.schoolLoge, height: 80.h),
                 ),
               ),
 

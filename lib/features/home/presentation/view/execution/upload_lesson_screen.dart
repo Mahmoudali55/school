@@ -81,6 +81,33 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                     return null;
                   },
                 ),
+                Text(
+                  AppLocalKay.select_section.tr(),
+                  style: AppTextStyle.formTitle20Style(context),
+                ),
+                // اختيار الصف
+                DropdownButtonFormField<String>(
+                  value: _selectedClass,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
+                    filled: true,
+                    fillColor: AppColor.textFormFillColor(context),
+                  ),
+                  items: classes.map((String classItem) {
+                    return DropdownMenuItem<String>(value: classItem, child: Text(classItem));
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedClass = newValue;
+                    });
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return AppLocalKay.user_management_select_class.tr();
+                    }
+                    return null;
+                  },
+                ),
 
                 Text(
                   AppLocalKay.user_management_class.tr(),
