@@ -40,7 +40,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
         context,
         title: Text(
           AppLocalKay.create_todo.tr(),
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         leading: IconButton(

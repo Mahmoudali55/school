@@ -182,11 +182,9 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
               SizedBox(width: 8.w),
               Text(
                 AppLocalKay.select_student.tr(),
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleMedium(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
             ],
           ),
@@ -227,8 +225,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
       },
       backgroundColor: AppColor.whiteColor(context),
       selectedColor: childData['busColor'],
-      labelStyle: TextStyle(
-        fontSize: 14.sp,
+      labelStyle: AppTextStyle.bodyMedium(context).copyWith(
         color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF6B7280),
         fontWeight: FontWeight.w600,
       ),
@@ -306,20 +303,16 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
         SizedBox(height: 8.h),
         Text(
           value,
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.bold,
-            color: AppColor.whiteColor(context),
-          ),
+          style: AppTextStyle.bodyLarge(
+            context,
+          ).copyWith(fontWeight: FontWeight.bold, color: AppColor.whiteColor(context)),
         ),
         SizedBox(height: 4.h),
         Text(
           label,
-          style: TextStyle(
-            fontSize: 11.sp,
-            color: const Color(0xFF94A3B8),
-            fontWeight: FontWeight.w500,
-          ),
+          style: AppTextStyle.bodySmall(
+            context,
+          ).copyWith(color: const Color(0xFF94A3B8), fontWeight: FontWeight.w500),
         ),
       ],
     );
@@ -376,15 +369,13 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
             children: [
               Text(
                 _selectedBusData['childName'],
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleLarge(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
               Text(
                 "${_selectedBusData['school']} - ${_selectedBusData['grade']}",
-                style: TextStyle(fontSize: 14.sp, color: const Color(0xFF6B7280)),
+                style: AppTextStyle.bodyMedium(context).copyWith(color: const Color(0xFF6B7280)),
               ),
             ],
           ),
@@ -400,8 +391,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
           ),
           child: Text(
             _selectedBusData['onBoard'] ? AppLocalKay.in_bus.tr() : AppLocalKay.waiting.tr(),
-            style: TextStyle(
-              fontSize: 12.sp,
+            style: AppTextStyle.bodySmall(context).copyWith(
               color: _selectedBusData['onBoard']
                   ? AppColor.secondAppColor(context)
                   : AppColor.accentColor(context),
@@ -446,7 +436,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                 SizedBox(height: 4.h),
                 Text(
                   AppLocalKay.home_address.tr(),
-                  style: TextStyle(
+                  style: AppTextStyle.bodySmall(context).copyWith(
                     fontSize: 10.sp,
                     color: const Color(0xFF6B7280),
                     fontWeight: FontWeight.w600,
@@ -465,7 +455,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                 SizedBox(height: 4.h),
                 Text(
                   AppLocalKay.school.tr(),
-                  style: TextStyle(
+                  style: AppTextStyle.bodySmall(context).copyWith(
                     fontSize: 10.sp,
                     color: const Color(0xFF6B7280),
                     fontWeight: FontWeight.w600,
@@ -562,7 +552,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
           SizedBox(height: 10.w),
           Text(
             text,
-            style: TextStyle(fontSize: 10.sp, color: color),
+            style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp, color: color),
           ),
         ],
       ),
@@ -592,11 +582,9 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
             children: [
               Text(
                 AppLocalKay.all_children.tr(),
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleLarge(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
@@ -606,11 +594,9 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                 ),
                 child: Text(
                   "${_childrenBusData.length} ${AppLocalKay.children.tr()}",
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: AppColor.primaryColor(context),
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(color: AppColor.primaryColor(context), fontWeight: FontWeight.w600),
                 ),
               ),
             ],
@@ -663,16 +649,16 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
               children: [
                 Text(
                   childData['childName'],
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF1F2937),
-                  ),
+                  style: AppTextStyle.bodyMedium(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
                 ),
                 SizedBox(height: 2.h),
                 Text(
                   "${childData['school']} • ${childData['estimatedTime']}",
-                  style: TextStyle(fontSize: 11.sp, color: const Color(0xFF6B7280)),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
                 ),
               ],
             ),
@@ -692,7 +678,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                 ),
                 child: Text(
                   childData['onBoard'] ? AppLocalKay.in_bus.tr() : AppLocalKay.waiting.tr(),
-                  style: TextStyle(
+                  style: AppTextStyle.bodySmall(context).copyWith(
                     fontSize: 9.sp,
                     color: childData['onBoard']
                         ? AppColor.secondAppColor(context)
@@ -704,7 +690,9 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
               SizedBox(height: 2.h),
               Text(
                 childData['attendance'],
-                style: TextStyle(fontSize: 10.sp, color: const Color(0xFF6B7280)),
+                style: AppTextStyle.bodySmall(
+                  context,
+                ).copyWith(fontSize: 10.sp, color: const Color(0xFF6B7280)),
               ),
             ],
           ),
@@ -733,11 +721,9 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
         children: [
           Text(
             AppLocalKay.route_details.tr(),
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF1F2937),
-            ),
+            style: AppTextStyle.titleLarge(
+              context,
+            ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
           ),
           SizedBox(height: 16.h),
           GridView.count(
@@ -849,11 +835,9 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
               SizedBox(width: 8.w),
               Text(
                 AppLocalKay.features.tr(),
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleLarge(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
             ],
           ),
@@ -906,7 +890,9 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
             SizedBox(height: 8.h),
             Text(
               title,
-              style: TextStyle(fontSize: 12.sp, color: color, fontWeight: FontWeight.w600),
+              style: AppTextStyle.bodySmall(
+                context,
+              ).copyWith(fontSize: 12.sp, color: color, fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ),
           ],

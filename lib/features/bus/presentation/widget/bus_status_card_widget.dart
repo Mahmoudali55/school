@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class BusStatusCardWidget extends StatelessWidget {
   const BusStatusCardWidget({super.key});
@@ -23,7 +24,7 @@ class BusStatusCardWidget extends StatelessWidget {
                     children: [
                       Text(
                         "الحافلة قادمة",
-                        style: TextStyle(
+                        style: AppTextStyle.titleLarge(context).copyWith(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
                           color: Colors.green,
@@ -31,7 +32,7 @@ class BusStatusCardWidget extends StatelessWidget {
                       ),
                       Text(
                         "متوقع الوصول خلال ٥ دقائق",
-                        style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+                        style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey[600]),
                       ),
                     ],
                   ),

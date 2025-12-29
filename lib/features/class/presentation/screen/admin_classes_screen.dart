@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/presentation/execution/add_edit_class_screen.dart';
 import 'package:my_template/features/class/presentation/execution/class_details_screen.dart';
@@ -94,7 +95,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
           children: [
             Text(
               AppLocalKay.admin_classes_title.tr(),
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
             ),
             // شريط البحث والتصفية
             _buildSearchAndFilter(),
@@ -183,9 +184,9 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
       backgroundColor: AppColor.whiteColor(context),
       selectedColor: const Color(0xFF9C27B0).withOpacity(0.1),
       checkmarkColor: const Color(0xFF9C27B0),
-      labelStyle: TextStyle(
-        color: _selectedFilter == value ? const Color(0xFF9C27B0) : Colors.grey[700],
-      ),
+      labelStyle: AppTextStyle.bodyMedium(
+        context,
+      ).copyWith(color: _selectedFilter == value ? const Color(0xFF9C27B0) : Colors.grey[700]),
     );
   }
 
@@ -235,14 +236,16 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
           child: Center(
             child: Text(
               value,
-              style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.bold, color: color),
+              style: AppTextStyle.bodySmall(
+                context,
+              ).copyWith(fontSize: 10.sp, fontWeight: FontWeight.bold, color: color),
             ),
           ),
         ),
         SizedBox(height: 4.h),
         Text(
           label,
-          style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+          style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp, color: Colors.grey),
         ),
       ],
     );
@@ -270,11 +273,9 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                 Expanded(
                   child: Text(
                     schoolClass.name,
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF1F2937),
-                    ),
+                    style: AppTextStyle.titleMedium(
+                      context,
+                    ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
                   ),
                 ),
                 Container(
@@ -290,11 +291,9 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                         : fillPercentage >= 70
                         ? AppLocalKay.class_status_almost_full.tr()
                         : AppLocalKay.filter_available.tr(),
-                    style: TextStyle(
-                      fontSize: 10.sp,
-                      color: statusColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: AppTextStyle.bodySmall(
+                      context,
+                    ).copyWith(fontSize: 10.sp, color: statusColor, fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
@@ -308,7 +307,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                 SizedBox(width: 8.w),
                 Text(
                   '${AppLocalKay.teacher.tr()}: ${schoolClass.teacher}',
-                  style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+                  style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey[600]),
                 ),
               ],
             ),
@@ -320,7 +319,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                 SizedBox(width: 8.w),
                 Text(
                   '${AppLocalKay.label_room.tr()}: ${schoolClass.room}',
-                  style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+                  style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey[600]),
                 ),
               ],
             ),
@@ -332,7 +331,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                 SizedBox(width: 8.w),
                 Text(
                   schoolClass.schedule,
-                  style: TextStyle(fontSize: 14.sp, color: Colors.grey[600]),
+                  style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey[600]),
                 ),
               ],
             ),
@@ -347,11 +346,11 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                   children: [
                     Text(
                       AppLocalKay.label_capacity.tr(),
-                      style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                      style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey),
                     ),
                     Text(
                       '${schoolClass.currentStudents}/${schoolClass.capacity} طالب',
-                      style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+                      style: AppTextStyle.bodySmall(context).copyWith(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -387,7 +386,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                               color: AppColor.primaryColor(context),
                             ),
                             SizedBox(height: 4.h),
-                            Text(AppLocalKay.btn_view.tr(), style: TextStyle(fontSize: 12.sp)),
+                            Text(AppLocalKay.btn_view.tr(), style: AppTextStyle.bodySmall(context)),
                           ],
                         ),
                       ),
@@ -411,7 +410,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                             SizedBox(height: 4.h),
                             Text(
                               AppLocalKay.user_management_edit.tr(),
-                              style: TextStyle(fontSize: 12.sp),
+                              style: AppTextStyle.bodySmall(context),
                             ),
                           ],
                         ),
@@ -436,7 +435,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                             SizedBox(height: 4.h),
                             Text(
                               AppLocalKay.btn_manage_students.tr(),
-                              style: TextStyle(fontSize: 10.sp),
+                              style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp),
                             ),
                           ],
                         ),
@@ -461,18 +460,16 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
           SizedBox(height: 16.h),
           Text(
             context.locale.languageCode == 'ar' ? 'لا توجد فصول' : 'No classes found',
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey.shade500,
-            ),
+            style: AppTextStyle.titleMedium(
+              context,
+            ).copyWith(fontWeight: FontWeight.bold, color: Colors.grey.shade500),
           ),
           SizedBox(height: 8.h),
           Text(
             _searchController.text.isEmpty
                 ? AppLocalKay.empty_subtitle_no_classes.tr()
                 : AppLocalKay.empty_subtitle_no_search.tr(),
-            style: TextStyle(fontSize: 14.sp, color: Colors.grey.shade400),
+            style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey.shade400),
           ),
           SizedBox(height: 24.h),
           ElevatedButton(
@@ -483,7 +480,9 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
             ),
             child: Text(
               AppLocalKay.btn_add_class.tr(),
-              style: TextStyle(fontSize: 16.sp, color: AppColor.whiteColor(context)),
+              style: AppTextStyle.titleMedium(
+                context,
+              ).copyWith(color: AppColor.whiteColor(context)),
             ),
           ),
         ],

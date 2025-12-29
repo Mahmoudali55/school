@@ -2,6 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../cubit/calendar_cubit.dart';
@@ -39,11 +41,11 @@ class MonthlyViewWidget extends StatelessWidget {
   Widget _buildTableCalendar(BuildContext context, CalendarState state) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withOpacity(0.05),
             blurRadius: 4,
             offset: const Offset(0, 1),
           ),
@@ -77,25 +79,19 @@ class MonthlyViewWidget extends StatelessWidget {
         headerStyle: HeaderStyle(
           formatButtonVisible: false,
           titleCentered: true,
-          titleTextStyle: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF1F2937),
-          ),
+          titleTextStyle: AppTextStyle.titleMedium(
+            context,
+          ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
           leftChevronIcon: Icon(Icons.chevron_right_rounded, color: const Color(0xFFFF9800)),
           rightChevronIcon: Icon(Icons.chevron_left_rounded, color: const Color(0xFFFF9800)),
         ),
         daysOfWeekStyle: DaysOfWeekStyle(
-          weekdayStyle: TextStyle(
-            fontSize: 12.sp,
-            color: const Color(0xFF6B7280),
-            fontWeight: FontWeight.w600,
-          ),
-          weekendStyle: TextStyle(
-            fontSize: 12.sp,
-            color: const Color(0xFFFF9800),
-            fontWeight: FontWeight.w600,
-          ),
+          weekdayStyle: AppTextStyle.bodySmall(
+            context,
+          ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF6B7280)),
+          weekendStyle: AppTextStyle.bodySmall(
+            context,
+          ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFFFF9800)),
         ),
         calendarBuilders: CalendarBuilders(
           markerBuilder: (context, date, events) {

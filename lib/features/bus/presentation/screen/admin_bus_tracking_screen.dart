@@ -209,19 +209,16 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
                 children: [
                   Text(
                     "إدارة الحافلات المدرسية",
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColor.whiteColor(context),
-                    ),
+                    style: AppTextStyle.titleLarge(
+                      context,
+                    ).copyWith(fontWeight: FontWeight.bold, color: AppColor.whiteColor(context)),
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     "لوحة تحكم المدير - متابعة الأسطول",
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: AppColor.whiteColor(context).withOpacity(0.9),
-                    ),
+                    style: AppTextStyle.bodyMedium(
+                      context,
+                    ).copyWith(color: AppColor.whiteColor(context).withOpacity(0.9)),
                   ),
                 ],
               ),
@@ -242,7 +239,9 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
           SizedBox(height: 16.h),
           Text(
             "الجمعة، 15 نوفمبر 2024 - 08:30 ص",
-            style: TextStyle(fontSize: 14.sp, color: AppColor.whiteColor(context).withOpacity(0.8)),
+            style: AppTextStyle.bodyMedium(
+              context,
+            ).copyWith(color: AppColor.whiteColor(context).withOpacity(0.8)),
           ),
         ],
       ),
@@ -273,11 +272,9 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
               SizedBox(width: 8.w),
               Text(
                 AppLocalKay.select_bus.tr(),
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleMedium(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: Color(0xFF1F2937)),
               ),
             ],
           ),
@@ -318,8 +315,7 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
       },
       backgroundColor: AppColor.whiteColor(context),
       selectedColor: busData['busColor'],
-      labelStyle: TextStyle(
-        fontSize: 14.sp,
+      labelStyle: AppTextStyle.bodyMedium(context).copyWith(
         color: isSelected ? AppColor.whiteColor(context) : Color(0xFF6B7280),
         fontWeight: FontWeight.w600,
       ),
@@ -397,16 +393,16 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
         SizedBox(height: 8.h),
         Text(
           value,
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.bold,
-            color: AppColor.whiteColor(context),
-          ),
+          style: AppTextStyle.titleMedium(
+            context,
+          ).copyWith(fontWeight: FontWeight.bold, color: AppColor.whiteColor(context)),
         ),
         SizedBox(height: 4.h),
         Text(
           label,
-          style: TextStyle(fontSize: 11.sp, color: Color(0xFF94A3B8), fontWeight: FontWeight.w500),
+          style: AppTextStyle.bodySmall(
+            context,
+          ).copyWith(fontSize: 11.sp, color: Color(0xFF94A3B8), fontWeight: FontWeight.w500),
         ),
       ],
     );
@@ -488,15 +484,13 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
             children: [
               Text(
                 "${_selectedBusData['busName']} - ${_selectedBusData['busNumber']}",
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleMedium(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: Color(0xFF1F2937)),
               ),
               Text(
                 "السائق: ${_selectedBusData['driverName']} • ${_selectedBusData['route']}",
-                style: TextStyle(fontSize: 14.sp, color: Color(0xFF6B7280)),
+                style: AppTextStyle.bodyMedium(context).copyWith(color: Color(0xFF6B7280)),
               ),
             ],
           ),
@@ -515,7 +509,9 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
               SizedBox(width: 4.w),
               Text(
                 _selectedBusData['status'],
-                style: TextStyle(fontSize: 12.sp, color: statusColor, fontWeight: FontWeight.bold),
+                style: AppTextStyle.bodySmall(
+                  context,
+                ).copyWith(color: statusColor, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -557,7 +553,7 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
                 SizedBox(height: 4.h),
                 Text(
                   "المدرسة",
-                  style: TextStyle(
+                  style: AppTextStyle.bodySmall(context).copyWith(
                     fontSize: 10.sp,
                     color: Color(0xFF6B7280),
                     fontWeight: FontWeight.w600,
@@ -576,7 +572,9 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
                 SizedBox(height: 4.h),
                 Text(
                   "المحطة 1",
-                  style: TextStyle(fontSize: 8.sp, color: Color(0xFF6B7280)),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontSize: 8.sp, color: Color(0xFF6B7280)),
                 ),
               ],
             ),
@@ -590,7 +588,9 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
                 SizedBox(height: 4.h),
                 Text(
                   "المحطة 2",
-                  style: TextStyle(fontSize: 8.sp, color: Color(0xFF6B7280)),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontSize: 8.sp, color: Color(0xFF6B7280)),
                 ),
               ],
             ),
@@ -684,7 +684,7 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
           SizedBox(width: 8.w),
           Text(
             text,
-            style: TextStyle(fontSize: 10.sp, color: color),
+            style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp, color: color),
           ),
         ],
       ),
@@ -714,11 +714,9 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
             children: [
               Text(
                 AppLocalKay.all_buses.tr(),
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleMedium(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: Color(0xFF1F2937)),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
@@ -728,11 +726,9 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
                 ),
                 child: Text(
                   "${_allBusesData.length} حافلات",
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: Color(0xFF9C27B0),
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(color: Color(0xFF9C27B0), fontWeight: FontWeight.w600),
                 ),
               ),
             ],
@@ -797,16 +793,16 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
               children: [
                 Text(
                   "${busData['busName']} - ${busData['busNumber']}",
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF1F2937),
-                  ),
+                  style: AppTextStyle.bodyMedium(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.w600, color: Color(0xFF1F2937)),
                 ),
                 SizedBox(height: 2.h),
                 Text(
                   "${busData['driverName']} • ${busData['currentLocation']}",
-                  style: TextStyle(fontSize: 11.sp, color: Color(0xFF6B7280)),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontSize: 11.sp, color: Color(0xFF6B7280)),
                 ),
               ],
             ),
@@ -824,13 +820,17 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
                 ),
                 child: Text(
                   busData['status'],
-                  style: TextStyle(fontSize: 9.sp, color: statusColor, fontWeight: FontWeight.w600),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontSize: 9.sp, color: statusColor, fontWeight: FontWeight.w600),
                 ),
               ),
               SizedBox(height: 2.h),
               Text(
                 busData['estimatedTime'],
-                style: TextStyle(fontSize: 10.sp, color: Color(0xFF6B7280)),
+                style: AppTextStyle.bodySmall(
+                  context,
+                ).copyWith(fontSize: 10.sp, color: Color(0xFF6B7280)),
               ),
             ],
           ),
@@ -859,11 +859,9 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
         children: [
           Text(
             AppLocalKay.route_details.tr(),
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF1F2937),
-            ),
+            style: AppTextStyle.titleMedium(
+              context,
+            ).copyWith(fontWeight: FontWeight.bold, color: Color(0xFF1F2937)),
           ),
           SizedBox(height: 16.h),
           GridView.count(
@@ -940,18 +938,13 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
             child: Icon(icon, size: 16.w, color: _selectedBusData['busColor']),
           ),
           SizedBox(height: 10.h),
-          Text(
-            title,
-            style: TextStyle(fontSize: 12.sp, color: Color(0xFF6B7280)),
-          ),
+          Text(title, style: AppTextStyle.bodySmall(context).copyWith(color: Color(0xFF6B7280))),
 
           Text(
             value,
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF1F2937),
-            ),
+            style: AppTextStyle.bodyMedium(
+              context,
+            ).copyWith(fontWeight: FontWeight.w600, color: Color(0xFF1F2937)),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -984,11 +977,9 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
               SizedBox(width: 8.w),
               Text(
                 AppLocalKay.buses_section.tr(),
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleMedium(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: Color(0xFF1F2937)),
               ),
             ],
           ),
@@ -1054,11 +1045,9 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
               Expanded(
                 child: Text(
                   title,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: Color(0xFF6B7280),
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(color: Color(0xFF6B7280), fontWeight: FontWeight.w600),
                 ),
               ),
             ],
@@ -1066,7 +1055,9 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
           SizedBox(height: 8.h),
           Text(
             value,
-            style: TextStyle(fontSize: 16.sp, color: color, fontWeight: FontWeight.bold),
+            style: AppTextStyle.titleMedium(
+              context,
+            ).copyWith(color: color, fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -1097,11 +1088,9 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
               SizedBox(width: 8.w),
               Text(
                 AppLocalKay.emergency_management.tr(),
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleMedium(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: Color(0xFF1F2937)),
               ),
             ],
           ),
@@ -1154,7 +1143,9 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
             SizedBox(height: 8.h),
             Text(
               title,
-              style: TextStyle(fontSize: 12.sp, color: color, fontWeight: FontWeight.w600),
+              style: AppTextStyle.bodySmall(
+                context,
+              ).copyWith(color: color, fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ),
           ],

@@ -192,7 +192,10 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
               );
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: Text(AppLocalKay.send.tr(), style: TextStyle(color: Colors.white)),
+            child: Text(
+              AppLocalKay.send.tr(),
+              style: AppTextStyle.bodyMedium(context, color: Colors.white),
+            ),
           ),
         ],
       ),

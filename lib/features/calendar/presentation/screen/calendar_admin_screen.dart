@@ -70,16 +70,14 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
             children: [
               Text(
                 AppLocalKay.school_calendar.tr(),
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.headlineLarge(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
               SizedBox(height: 4.h),
               Text(
                 _getFormattedDate(_selectedDate),
-                style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
               ),
             ],
           ),
@@ -166,8 +164,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                 child: FilterChip(
                   label: Text(
                     filter,
-                    style: TextStyle(
-                      fontSize: 12.sp,
+                    style: AppTextStyle.bodySmall(context).copyWith(
                       color: _selectedFilter == filter
                           ? AppColor.whiteColor(context)
                           : const Color(0xFF6B7280),
@@ -208,8 +205,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
           child: Center(
             child: Text(
               text,
-              style: TextStyle(
-                fontSize: 12.sp,
+              style: AppTextStyle.bodySmall(context).copyWith(
                 fontWeight: FontWeight.w600,
                 color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF6B7280),
               ),
@@ -266,11 +262,9 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                 child: Text(
                   day,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF9C27B0),
-                  ),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF9C27B0)),
                 ),
               ),
             ),
@@ -334,8 +328,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
               children: [
                 Text(
                   '$dayNumber',
-                  style: TextStyle(
-                    fontSize: 14.sp,
+                  style: AppTextStyle.bodyMedium(context).copyWith(
                     fontWeight: FontWeight.w600,
                     color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF1F2937),
                   ),
@@ -361,7 +354,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                       if (dayEvents.length > 2)
                         Text(
                           '+${dayEvents.length - 2}',
-                          style: TextStyle(
+                          style: AppTextStyle.bodySmall(context).copyWith(
                             fontSize: 8.sp,
                             color: isSelected
                                 ? AppColor.whiteColor(context)
@@ -407,11 +400,9 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
             children: [
               Text(
                 AppLocalKay.school_statistics.tr(),
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleMedium(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
@@ -421,7 +412,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                 ),
                 child: Text(
                   "${monthEvents.length} حدث",
-                  style: TextStyle(
+                  style: AppTextStyle.bodySmall(context).copyWith(
                     fontSize: 11.sp,
                     color: const Color(0xFF9C27B0),
                     fontWeight: FontWeight.w600,
@@ -479,12 +470,14 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
         SizedBox(height: 6.h),
         Text(
           '$count',
-          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: color),
+          style: AppTextStyle.bodyMedium(
+            context,
+          ).copyWith(fontWeight: FontWeight.bold, color: color),
         ),
         SizedBox(height: 2.h),
         Text(
           title,
-          style: TextStyle(fontSize: 10.sp, color: const Color(0xFF6B7280)),
+          style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
         ),
       ],
     );
@@ -546,16 +539,16 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                     children: [
                       Text(
                         _getDayName(day.weekday),
-                        style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                        style: AppTextStyle.bodySmall(
+                          context,
+                        ).copyWith(color: const Color(0xFF6B7280)),
                       ),
                       SizedBox(height: 2.h),
                       Text(
                         '${day.day}',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFF1F2937),
-                        ),
+                        style: AppTextStyle.bodyLarge(
+                          context,
+                        ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
                       ),
                     ],
                   ),
@@ -583,8 +576,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                                 Expanded(
                                   child: Text(
                                     event.title,
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
+                                    style: AppTextStyle.bodySmall(context).copyWith(
                                       color: const Color(0xFF1F2937),
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -594,7 +586,9 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                                 ),
                                 Text(
                                   event.time,
-                                  style: TextStyle(fontSize: 10.sp, color: const Color(0xFF6B7280)),
+                                  style: AppTextStyle.bodySmall(
+                                    context,
+                                  ).copyWith(fontSize: 10.sp, color: const Color(0xFF6B7280)),
                                 ),
                               ],
                             ),
@@ -649,11 +643,9 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
             children: [
               Text(
                 AppLocalKay.school_timetable.tr(),
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleMedium(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
@@ -663,7 +655,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                 ),
                 child: Text(
                   "الأسبوع ${_getWeekNumber(_selectedDate)}",
-                  style: TextStyle(
+                  style: AppTextStyle.bodySmall(context).copyWith(
                     fontSize: 11.sp,
                     color: const Color(0xFF9C27B0),
                     fontWeight: FontWeight.w600,
@@ -702,11 +694,9 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
               children: [
                 Text(
                   event.title,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF1F2937),
-                  ),
+                  style: AppTextStyle.bodyMedium(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
                 ),
                 SizedBox(height: 4.h),
                 Row(
@@ -715,14 +705,18 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                     SizedBox(width: 4.w),
                     Text(
                       "${event.date} • ${event.time}",
-                      style: TextStyle(fontSize: 11.sp, color: const Color(0xFF6B7280)),
+                      style: AppTextStyle.bodySmall(
+                        context,
+                      ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
                     ),
                     SizedBox(width: 12.w),
                     Icon(Icons.location_on_rounded, size: 12.w, color: const Color(0xFF6B7280)),
                     SizedBox(width: 4.w),
                     Text(
                       event.location,
-                      style: TextStyle(fontSize: 11.sp, color: const Color(0xFF6B7280)),
+                      style: AppTextStyle.bodySmall(
+                        context,
+                      ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
                     ),
                   ],
                 ),
@@ -730,7 +724,9 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                   SizedBox(height: 4.h),
                   Text(
                     event.description,
-                    style: TextStyle(fontSize: 11.sp, color: const Color(0xFF6B7280)),
+                    style: AppTextStyle.bodySmall(
+                      context,
+                    ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -746,7 +742,9 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
             ),
             child: Text(
               event.type,
-              style: TextStyle(fontSize: 10.sp, color: event.color, fontWeight: FontWeight.w600),
+              style: AppTextStyle.bodySmall(
+                context,
+              ).copyWith(fontSize: 10.sp, color: event.color, fontWeight: FontWeight.w600),
             ),
           ),
         ],
@@ -809,16 +807,14 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
               children: [
                 Text(
                   _getFormattedDate(_selectedDate),
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF1F2937),
-                  ),
+                  style: AppTextStyle.titleMedium(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
                 ),
                 SizedBox(height: 2.h),
                 Text(
                   _getDayName(_selectedDate.weekday),
-                  style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                  style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
                 ),
               ],
             ),
@@ -828,16 +824,16 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
             children: [
               Text(
                 "$eventCount حدث",
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: const Color(0xFF9C27B0),
-                  fontWeight: FontWeight.w600,
-                ),
+                style: AppTextStyle.bodyMedium(
+                  context,
+                ).copyWith(color: const Color(0xFF9C27B0), fontWeight: FontWeight.w600),
               ),
               SizedBox(height: 2.h),
               Text(
                 AppLocalKay.today_schedule.tr(),
-                style: TextStyle(fontSize: 11.sp, color: const Color(0xFF6B7280)),
+                style: AppTextStyle.bodySmall(
+                  context,
+                ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
               ),
             ],
           ),
@@ -889,7 +885,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                           ),
                           child: Text(
                             event.type,
-                            style: TextStyle(
+                            style: AppTextStyle.bodySmall(context).copyWith(
                               fontSize: 10.sp,
                               color: event.color,
                               fontWeight: FontWeight.w600,
@@ -906,7 +902,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                             ),
                             child: Text(
                               AppLocalKay.important.tr(),
-                              style: TextStyle(
+                              style: AppTextStyle.bodySmall(context).copyWith(
                                 fontSize: 9.sp,
                                 color: const Color(0xFFDC2626),
                                 fontWeight: FontWeight.w600,
@@ -918,11 +914,9 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                     SizedBox(height: 8.h),
                     Text(
                       event.title,
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF1F2937),
-                      ),
+                      style: AppTextStyle.titleMedium(
+                        context,
+                      ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
                     ),
                     SizedBox(height: 8.h),
                     Row(
@@ -931,14 +925,18 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                         SizedBox(width: 4.w),
                         Text(
                           event.time,
-                          style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                          style: AppTextStyle.bodySmall(
+                            context,
+                          ).copyWith(fontSize: 12.sp, color: const Color(0xFF6B7280)),
                         ),
                         SizedBox(width: 16.w),
                         Icon(Icons.location_on_rounded, size: 14.w, color: const Color(0xFF6B7280)),
                         SizedBox(width: 4.w),
                         Text(
                           event.location,
-                          style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                          style: AppTextStyle.bodySmall(
+                            context,
+                          ).copyWith(fontSize: 12.sp, color: const Color(0xFF6B7280)),
                         ),
                       ],
                     ),
@@ -946,14 +944,18 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                       SizedBox(height: 8.h),
                       Text(
                         event.description,
-                        style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                        style: AppTextStyle.bodySmall(
+                          context,
+                        ).copyWith(fontSize: 12.sp, color: const Color(0xFF6B7280)),
                       ),
                     ],
                     if (event.participants.isNotEmpty) ...[
                       SizedBox(height: 8.h),
                       Text(
                         "${AppLocalKay.participants.tr()} ${event.participants.join('، ')}",
-                        style: TextStyle(fontSize: 11.sp, color: const Color(0xFF6B7280)),
+                        style: AppTextStyle.bodySmall(
+                          context,
+                        ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
                       ),
                     ],
                   ],
@@ -1037,11 +1039,9 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
         children: [
           Text(
             AppLocalKay.summary_today.tr(),
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF1F2937),
-            ),
+            style: AppTextStyle.titleMedium(
+              context,
+            ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
           ),
           SizedBox(height: 12.h),
           Row(
@@ -1086,12 +1086,14 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
         SizedBox(height: 6.h),
         Text(
           '$count',
-          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: color),
+          style: AppTextStyle.bodyMedium(
+            context,
+          ).copyWith(fontWeight: FontWeight.bold, color: color),
         ),
         SizedBox(height: 2.h),
         Text(
           title,
-          style: TextStyle(fontSize: 10.sp, color: const Color(0xFF6B7280)),
+          style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
         ),
       ],
     );
@@ -1108,17 +1110,15 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
           children: [
             Text(
               AppLocalKay.upcoming_events.tr(),
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF1F2937),
-              ),
+              style: AppTextStyle.titleMedium(
+                context,
+              ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
             ),
             TextButton(
               onPressed: () {},
               child: Text(
                 AppLocalKay.show_all.tr(),
-                style: TextStyle(
+                style: AppTextStyle.bodySmall(context).copyWith(
                   fontSize: 12.sp,
                   color: const Color(0xFF9C27B0),
                   fontWeight: FontWeight.w600,
@@ -1178,18 +1178,16 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                       ),
                       child: Text(
                         event.type,
-                        style: TextStyle(
-                          fontSize: 9.sp,
-                          color: event.color,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: AppTextStyle.bodySmall(
+                          context,
+                        ).copyWith(fontSize: 9.sp, color: event.color, fontWeight: FontWeight.w600),
                       ),
                     ),
                     SizedBox(width: 8.w),
                     Expanded(
                       child: Text(
                         event.title,
-                        style: TextStyle(
+                        style: AppTextStyle.bodyMedium(context).copyWith(
                           fontSize: 13.sp,
                           fontWeight: FontWeight.w600,
                           color: const Color(0xFF1F2937),
@@ -1201,7 +1199,9 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                 SizedBox(height: 2.h),
                 Text(
                   "${event.date} • ${event.time}",
-                  style: TextStyle(fontSize: 11.sp, color: const Color(0xFF6B7280)),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
                 ),
               ],
             ),
@@ -1225,16 +1225,14 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
           SizedBox(height: 12.h),
           Text(
             AppLocalKay.no_events.tr(),
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: const Color(0xFF6B7280),
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppTextStyle.bodyMedium(
+              context,
+            ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF6B7280)),
           ),
           SizedBox(height: 4.h),
           Text(
             AppLocalKay.no_events_today.tr(),
-            style: TextStyle(fontSize: 12.sp, color: const Color(0xFF9CA3AF)),
+            style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF9CA3AF)),
           ),
           SizedBox(height: 16.h),
           ElevatedButton.icon(

@@ -82,12 +82,12 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
                 children: [
                   Text(
                     'أ. محمد أحمد'.tr(),
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                    style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     'ولي أمر الطالب'.tr(),
-                    style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+                    style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey[600]),
                   ),
                   const SizedBox(height: 4),
                   Row(
@@ -96,7 +96,7 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
                       const SizedBox(width: 4),
                       Text(
                         '+966 50 123 4567'.tr(),
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey[600]),
                       ),
                     ],
                   ),
@@ -121,7 +121,7 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
       children: [
         Text(
           AppLocalKay.select_child.tr(),
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
 
@@ -172,13 +172,15 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
                 Text(
                   name,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 13,
+                  style: AppTextStyle.bodySmall(context).copyWith(
                     color: isSelected ? Colors.blue[700] : Colors.black87,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(grade, style: TextStyle(fontSize: 11, color: Colors.grey[600])),
+                Text(
+                  grade,
+                  style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey[600]),
+                ),
               ],
             ),
           ),
@@ -243,11 +245,16 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
             const SizedBox(height: 6),
             Text(
               value,
-              style: TextStyle(color: color, fontSize: 18, fontWeight: FontWeight.bold),
+              style: AppTextStyle.titleMedium(
+                context,
+              ).copyWith(color: color, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
-            Text(title, style: const TextStyle(color: Colors.grey, fontSize: 11)),
-            Text(sub, style: const TextStyle(color: Colors.grey, fontSize: 10)),
+            Text(title, style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey)),
+            Text(
+              sub,
+              style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10, color: Colors.grey),
+            ),
           ],
         ),
       ),

@@ -27,7 +27,7 @@ class UpcomingTasksWidget extends StatelessWidget {
               children: [
                 Text(
                   AppLocalKay.upcoming.tr(),
-                  style: AppTextStyle.titleMedium(context, color: const Color(0xFF1F2937)),
+                  style: AppTextStyle.titleMedium(context).copyWith(color: const Color(0xFF1F2937)),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -35,7 +35,9 @@ class UpcomingTasksWidget extends StatelessWidget {
                   },
                   child: Text(
                     AppLocalKay.show_all.tr(),
-                    style: AppTextStyle.bodyMedium(context, color: AppColor.accentColor(context)),
+                    style: AppTextStyle.bodyMedium(
+                      context,
+                    ).copyWith(color: AppColor.accentColor(context)),
                   ),
                 ),
               ],
@@ -82,7 +84,7 @@ class UpcomingTasksWidget extends StatelessWidget {
           SizedBox(height: 8.h),
           Text(
             AppLocalKay.no_tasks.tr(),
-            style: AppTextStyle.bodyMedium(context, color: AppColor.greyColor(context)),
+            style: AppTextStyle.bodyMedium(context).copyWith(color: AppColor.greyColor(context)),
           ),
         ],
       ),

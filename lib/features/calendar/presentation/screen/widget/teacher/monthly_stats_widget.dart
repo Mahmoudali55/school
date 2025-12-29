@@ -38,7 +38,7 @@ class MonthlyStatsWidget extends StatelessWidget {
             children: [
               Text(
                 AppLocalKay.stats.tr(),
-                style: AppTextStyle.titleMedium(context, color: const Color(0xFF1F2937)),
+                style: AppTextStyle.titleMedium(context).copyWith(color: const Color(0xFF1F2937)),
               ),
               SizedBox(height: 16.h),
               Row(
@@ -83,9 +83,12 @@ class MonthlyStatsWidget extends StatelessWidget {
           child: Icon(icon, size: 18.w, color: color),
         ),
         SizedBox(height: 6.h),
-        Text('$count', style: AppTextStyle.titleMedium(context, color: color)),
+        Text('$count', style: AppTextStyle.titleMedium(context).copyWith(color: color)),
         SizedBox(height: 2.h),
-        Text(title, style: AppTextStyle.bodySmall(context, color: AppColor.greyColor(context))),
+        Text(
+          title,
+          style: AppTextStyle.bodySmall(context).copyWith(color: AppColor.greyColor(context)),
+        ),
       ],
     );
   }

@@ -64,7 +64,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               SizedBox(height: 4.h),
               Text(
                 _getFormattedDate(_selectedDate),
-                style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
               ),
             ],
           ),
@@ -145,8 +145,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           child: Center(
             child: Text(
               text,
-              style: TextStyle(
-                fontSize: 12.sp,
+              style: AppTextStyle.bodySmall(context).copyWith(
                 fontWeight: FontWeight.w600,
                 color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF6B7280),
               ),
@@ -200,11 +199,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 child: Text(
                   day,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF4CAF50),
-                  ),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF4CAF50)),
                 ),
               ),
             ),
@@ -268,8 +265,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               children: [
                 Text(
                   '$dayNumber',
-                  style: TextStyle(
-                    fontSize: 14.sp,
+                  style: AppTextStyle.bodyMedium(context).copyWith(
                     fontWeight: FontWeight.w600,
                     color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF1F2937),
                   ),
@@ -295,7 +291,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       if (dayEvents.length > 2)
                         Text(
                           '+${dayEvents.length - 2}',
-                          style: TextStyle(
+                          style: AppTextStyle.bodySmall(context).copyWith(
                             fontSize: 8.sp,
                             color: isSelected
                                 ? AppColor.whiteColor(context)
@@ -368,16 +364,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     children: [
                       Text(
                         _getDayName(day.weekday),
-                        style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                        style: AppTextStyle.bodySmall(
+                          context,
+                        ).copyWith(color: const Color(0xFF6B7280)),
                       ),
                       SizedBox(height: 2.h),
                       Text(
                         '${day.day}',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFF1F2937),
-                        ),
+                        style: AppTextStyle.bodyLarge(
+                          context,
+                        ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
                       ),
                     ],
                   ),
@@ -405,17 +401,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 Expanded(
                                   child: Text(
                                     event.title,
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: const Color(0xFF1F2937),
-                                    ),
+                                    style: AppTextStyle.bodySmall(
+                                      context,
+                                    ).copyWith(color: const Color(0xFF1F2937)),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                                 Text(
                                   event.time,
-                                  style: TextStyle(fontSize: 10.sp, color: const Color(0xFF6B7280)),
+                                  style: AppTextStyle.bodySmall(
+                                    context,
+                                  ).copyWith(fontSize: 10.sp, color: const Color(0xFF6B7280)),
                                 ),
                               ],
                             ),
@@ -475,27 +472,25 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     children: [
                       Text(
                         _getFormattedDate(_selectedDate),
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFF1F2937),
-                        ),
+                        style: AppTextStyle.titleMedium(
+                          context,
+                        ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
                       ),
                       SizedBox(height: 2.h),
                       Text(
                         _getDayName(_selectedDate.weekday),
-                        style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                        style: AppTextStyle.bodySmall(
+                          context,
+                        ).copyWith(color: const Color(0xFF6B7280)),
                       ),
                     ],
                   ),
                 ),
                 Text(
                   "${dailyEvents.length} حدث",
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: const Color(0xFF4CAF50),
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(color: const Color(0xFF4CAF50), fontWeight: FontWeight.w600),
                 ),
               ],
             ),
@@ -540,11 +535,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
               children: [
                 Text(
                   event.title,
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF1F2937),
-                  ),
+                  style: AppTextStyle.bodyMedium(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
                 ),
                 SizedBox(height: 4.h),
                 Row(
@@ -553,14 +546,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
                     SizedBox(width: 4.w),
                     Text(
                       event.time,
-                      style: TextStyle(fontSize: 11.sp, color: const Color(0xFF6B7280)),
+                      style: AppTextStyle.bodySmall(
+                        context,
+                      ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
                     ),
                     SizedBox(width: 12.w),
                     Icon(Icons.location_on_rounded, size: 12.w, color: const Color(0xFF6B7280)),
                     SizedBox(width: 4.w),
                     Text(
                       event.location,
-                      style: TextStyle(fontSize: 11.sp, color: const Color(0xFF6B7280)),
+                      style: AppTextStyle.bodySmall(
+                        context,
+                      ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
                     ),
                   ],
                 ),
@@ -568,7 +565,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   SizedBox(height: 4.h),
                   Text(
                     event.description,
-                    style: TextStyle(fontSize: 11.sp, color: const Color(0xFF6B7280)),
+                    style: AppTextStyle.bodySmall(
+                      context,
+                    ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -584,7 +583,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
             ),
             child: Text(
               event.type,
-              style: TextStyle(fontSize: 10.sp, color: event.color, fontWeight: FontWeight.w600),
+              style: AppTextStyle.bodySmall(
+                context,
+              ).copyWith(fontSize: 10.sp, color: event.color, fontWeight: FontWeight.w600),
             ),
           ),
         ],
@@ -603,19 +604,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
           children: [
             Text(
               AppLocalKay.upcoming_events.tr(),
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF1F2937),
-              ),
+              style: AppTextStyle.titleMedium(
+                context,
+              ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
             ),
             Text(
               AppLocalKay.show_all.tr(),
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: const Color(0xFF4CAF50),
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppTextStyle.bodySmall(
+                context,
+              ).copyWith(color: const Color(0xFF4CAF50), fontWeight: FontWeight.w600),
             ),
           ],
         ),
@@ -662,16 +659,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
               children: [
                 Text(
                   event.title,
-                  style: TextStyle(
-                    fontSize: 13.sp,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF1F2937),
-                  ),
+                  style: AppTextStyle.bodyMedium(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
                 ),
                 SizedBox(height: 2.h),
                 Text(
                   "${event.date} • ${event.time}",
-                  style: TextStyle(fontSize: 11.sp, color: const Color(0xFF6B7280)),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
                 ),
               ],
             ),
@@ -684,7 +681,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
             ),
             child: Text(
               event.type,
-              style: TextStyle(fontSize: 9.sp, color: event.color, fontWeight: FontWeight.w600),
+              style: AppTextStyle.bodySmall(
+                context,
+              ).copyWith(fontSize: 9.sp, color: event.color, fontWeight: FontWeight.w600),
             ),
           ),
         ],
@@ -701,16 +700,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
           SizedBox(height: 12.h),
           Text(
             AppLocalKay.no_events.tr(),
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: const Color(0xFF6B7280),
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppTextStyle.bodyMedium(
+              context,
+            ).copyWith(color: const Color(0xFF6B7280), fontWeight: FontWeight.w600),
           ),
           SizedBox(height: 4.h),
           Text(
             AppLocalKay.no_events_today.tr(),
-            style: TextStyle(fontSize: 12.sp, color: const Color(0xFF9CA3AF)),
+            style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF9CA3AF)),
           ),
         ],
       ),

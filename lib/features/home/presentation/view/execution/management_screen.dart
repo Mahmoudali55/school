@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class UserManagementSCreen extends StatelessWidget {
   UserManagementSCreen({super.key});
@@ -28,7 +29,7 @@ class UserManagementSCreen extends StatelessWidget {
               child: TextField(
                 decoration: InputDecoration(
                   hintText: 'ابحث عن مستخدم...',
-                  hintStyle: const TextStyle(color: Colors.grey),
+                  hintStyle: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey),
                   prefixIcon: const Icon(Icons.search, color: Colors.grey),
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -156,11 +157,13 @@ class TransportationManagementScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Expanded(child: _buildTransportStat('إجمالي الحافلات', '8', Colors.purple)),
+                Expanded(
+                  child: _buildTransportStat(context, 'إجمالي الحافلات', '8', Colors.purple),
+                ),
                 SizedBox(width: 12.w),
-                Expanded(child: _buildTransportStat('نشطة', '7', Colors.green)),
+                Expanded(child: _buildTransportStat(context, 'نشطة', '7', Colors.green)),
                 SizedBox(width: 12.w),
-                Expanded(child: _buildTransportStat('تحت الصيانة', '1', Colors.orange)),
+                Expanded(child: _buildTransportStat(context, 'تحت الصيانة', '1', Colors.orange)),
               ],
             ),
 
@@ -200,7 +203,9 @@ class TransportationManagementScreen extends StatelessWidget {
                         ),
                         child: Text(
                           bus['status']!,
-                          style: TextStyle(color: AppColor.whiteColor(context), fontSize: 12),
+                          style: AppTextStyle.bodySmall(
+                            context,
+                          ).copyWith(color: AppColor.whiteColor(context)),
                         ),
                       ),
                     ),
@@ -219,7 +224,7 @@ class TransportationManagementScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTransportStat(String title, String value, Color color) {
+  Widget _buildTransportStat(BuildContext context, String title, String value, Color color) {
     return Card(
       elevation: 2,
       child: Padding(
@@ -228,12 +233,14 @@ class TransportationManagementScreen extends StatelessWidget {
           children: [
             Text(
               value,
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold, color: color),
+              style: AppTextStyle.titleMedium(
+                context,
+              ).copyWith(fontWeight: FontWeight.bold, color: color),
             ),
             SizedBox(height: 4.h),
             Text(
               title,
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+              style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey),
               textAlign: TextAlign.center,
             ),
           ],
@@ -301,9 +308,9 @@ class FinancialSettingsScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildFinancialItem('الإيرادات', '٥٨,٤٠٠ ر.س', Colors.green),
-                        _buildFinancialItem('المصروفات', '٤٢,٣٠٠ ر.س', Colors.red),
-                        _buildFinancialItem('صافي الربح', '١٦,١٠٠ ر.س', Colors.blue),
+                        _buildFinancialItem(context, 'الإيرادات', '٥٨,٤٠٠ ر.س', Colors.green),
+                        _buildFinancialItem(context, 'المصروفات', '٤٢,٣٠٠ ر.س', Colors.red),
+                        _buildFinancialItem(context, 'صافي الربح', '١٦,١٠٠ ر.س', Colors.blue),
                       ],
                     ),
                     SizedBox(height: 16.h),
@@ -326,7 +333,7 @@ class FinancialSettingsScreen extends StatelessWidget {
                 children: [
                   Text(
                     'إدارة الرسوم',
-                    style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                    style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 12.h),
                   Expanded(
@@ -350,7 +357,7 @@ class FinancialSettingsScreen extends StatelessWidget {
                             subtitle: Text('${fee['amount']!} ر.س'),
                             trailing: Text(
                               fee['status']!,
-                              style: TextStyle(
+                              style: AppTextStyle.bodyMedium(context).copyWith(
                                 color: _getFeeStatusColor(fee['status']!),
                                 fontWeight: FontWeight.bold,
                               ),
@@ -369,17 +376,16 @@ class FinancialSettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFinancialItem(String title, String amount, Color color) {
+  Widget _buildFinancialItem(BuildContext context, String title, String amount, Color color) {
     return Column(
       children: [
-        Text(
-          title,
-          style: TextStyle(fontSize: 12.sp, color: Colors.grey),
-        ),
+        Text(title, style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey)),
         SizedBox(height: 4.h),
         Text(
           amount,
-          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: color),
+          style: AppTextStyle.bodyMedium(
+            context,
+          ).copyWith(fontWeight: FontWeight.bold, color: color),
         ),
       ],
     );
@@ -418,27 +424,28 @@ class GeneralSettingsScreen extends StatelessWidget {
         padding: EdgeInsets.all(16.w),
         child: ListView(
           children: [
-            _buildSettingsSection('إعدادات النظام', _systemSettings),
+            _buildSettingsSection(context, 'إعدادات النظام', _systemSettings),
             SizedBox(height: 20.h),
-            _buildSettingsSection('إعدادات المدرسة', _schoolSettings),
+            _buildSettingsSection(context, 'إعدادات المدرسة', _schoolSettings),
             SizedBox(height: 20.h),
-            _buildSettingsSection('إعدادات التواصل', _communicationSettings),
+            _buildSettingsSection(context, 'إعدادات التواصل', _communicationSettings),
             SizedBox(height: 20.h),
-            _buildSettingsSection('الأمان والخصوصية', _securitySettings),
+            _buildSettingsSection(context, 'الأمان والخصوصية', _securitySettings),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSettingsSection(String title, List<Map<String, dynamic>> settings) {
+  Widget _buildSettingsSection(
+    BuildContext context,
+    String title,
+    List<Map<String, dynamic>> settings,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-        ),
+        Text(title, style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold)),
         SizedBox(height: 12.h),
         Card(
           child: Column(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class BusStopItem extends StatelessWidget {
   const BusStopItem({
@@ -66,7 +67,7 @@ class BusStopItem extends StatelessWidget {
               children: [
                 Text(
                   name,
-                  style: TextStyle(
+                  style: AppTextStyle.bodyMedium(context).copyWith(
                     fontWeight: FontWeight.w600,
                     fontSize: 14.sp,
                     color: const Color(0xFF1F2937),
@@ -75,7 +76,9 @@ class BusStopItem extends StatelessWidget {
                 SizedBox(height: 4.h),
                 Text(
                   time,
-                  style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontSize: 12.sp, color: const Color(0xFF6B7280)),
                 ),
               ],
             ),
@@ -94,7 +97,7 @@ class BusStopItem extends StatelessWidget {
             ),
             child: Text(
               status,
-              style: TextStyle(
+              style: AppTextStyle.bodySmall(context).copyWith(
                 fontSize: 10.sp,
                 fontWeight: FontWeight.w600,
                 color: isCompleted

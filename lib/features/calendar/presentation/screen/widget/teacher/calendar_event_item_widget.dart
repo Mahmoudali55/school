@@ -39,19 +39,25 @@ class CalendarEventItemWidget extends StatelessWidget {
               children: [
                 Text(
                   task.title,
-                  style: AppTextStyle.bodyMedium(context, color: AppColor.blackColor(context)),
+                  style: AppTextStyle.bodyMedium(
+                    context,
+                  ).copyWith(color: AppColor.blackColor(context)),
                 ),
                 SizedBox(height: 2.h),
                 Row(
                   children: [
                     Text(
                       task.className,
-                      style: AppTextStyle.bodySmall(context, color: AppColor.accentColor(context)),
+                      style: AppTextStyle.bodySmall(
+                        context,
+                      ).copyWith(color: AppColor.accentColor(context)),
                     ),
                     SizedBox(width: 8.w),
                     Text(
                       "${_formatDate(task.date)} • ${task.formattedTime}",
-                      style: AppTextStyle.bodyMedium(context, color: AppColor.greyColor(context)),
+                      style: AppTextStyle.bodyMedium(
+                        context,
+                      ).copyWith(color: AppColor.greyColor(context)),
                     ),
                   ],
                 ),
@@ -64,7 +70,10 @@ class CalendarEventItemWidget extends StatelessWidget {
               color: task.color.withOpacity(0.1),
               borderRadius: BorderRadius.circular(4),
             ),
-            child: Text(task.typeName, style: AppTextStyle.bodySmall(context, color: task.color)),
+            child: Text(
+              task.typeName,
+              style: AppTextStyle.bodySmall(context).copyWith(color: task.color),
+            ),
           ),
         ],
       ),

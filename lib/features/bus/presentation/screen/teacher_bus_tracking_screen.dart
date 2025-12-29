@@ -136,10 +136,7 @@ class _TeacherBusTrackingScreenState extends State<TeacherBusTrackingScreen>
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              AppLocalKay.quick_actions.tr(),
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-            ),
+            Text(AppLocalKay.quick_actions.tr(), style: AppTextStyle.bodyMedium(context)),
             SizedBox(height: 20.h),
             GridView.count(
               crossAxisCount: 3,
@@ -164,7 +161,9 @@ class _TeacherBusTrackingScreenState extends State<TeacherBusTrackingScreen>
                       SizedBox(height: 8.h),
                       Text(
                         action.title,
-                        style: TextStyle(fontSize: 12.sp),
+                        style: AppTextStyle.bodySmall(
+                          context,
+                        ).copyWith(fontWeight: FontWeight.w500),
                         textAlign: TextAlign.center,
                       ),
                     ],

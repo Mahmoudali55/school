@@ -69,12 +69,16 @@ class DailyViewWidget extends StatelessWidget {
               children: [
                 Text(
                   _getFormattedDate(state.selectedDate),
-                  style: AppTextStyle.bodyMedium(context, color: AppColor.blackColor(context)),
+                  style: AppTextStyle.bodyMedium(
+                    context,
+                  ).copyWith(color: AppColor.blackColor(context)),
                 ),
                 SizedBox(height: 5.h),
                 Text(
                   _getDayName(state.selectedDate.weekday),
-                  style: AppTextStyle.bodyMedium(context, color: AppColor.greyColor(context)),
+                  style: AppTextStyle.bodyMedium(
+                    context,
+                  ).copyWith(color: AppColor.greyColor(context)),
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -86,12 +90,14 @@ class DailyViewWidget extends StatelessWidget {
             children: [
               Text(
                 "$eventCount حدث",
-                style: AppTextStyle.bodyMedium(context, color: AppColor.accentColor(context)),
+                style: AppTextStyle.bodyMedium(
+                  context,
+                ).copyWith(color: AppColor.accentColor(context)),
               ),
               SizedBox(height: 2.h),
               Text(
                 "${_getTeachingHours(state)} ساعة تدريس",
-                style: AppTextStyle.bodySmall(context, color: AppColor.greyColor(context)),
+                style: AppTextStyle.bodySmall(context).copyWith(color: AppColor.greyColor(context)),
               ),
             ],
           ),
@@ -155,7 +161,7 @@ class DailyViewWidget extends StatelessWidget {
         children: [
           Text(
             AppLocalKay.schedule_title.tr(),
-            style: AppTextStyle.titleMedium(context, color: Color(0xFF1F2937)),
+            style: AppTextStyle.titleMedium(context).copyWith(color: Color(0xFF1F2937)),
           ),
           SizedBox(height: 12.h),
           Column(children: dailyClasses.map((classEvent) => _buildClassItem(classEvent)).toList()),
@@ -185,7 +191,7 @@ class DailyViewWidget extends StatelessWidget {
           SizedBox(height: 4.h),
           Text(
             AppLocalKay.schedule_empty_title2.tr(),
-            style: AppTextStyle.bodyMedium(context, color: AppColor.greyColor(context)),
+            style: AppTextStyle.bodyMedium(context).copyWith(color: AppColor.greyColor(context)),
           ),
         ],
       ),

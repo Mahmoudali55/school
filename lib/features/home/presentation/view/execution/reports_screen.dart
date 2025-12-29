@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class ReportsScreen extends StatefulWidget {
   const ReportsScreen({super.key});
@@ -25,7 +26,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
         context,
         title: Text(
           'التقارير',
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
@@ -116,8 +117,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
         ),
         child: Text(
           title,
-          style: TextStyle(
-            fontSize: 14.sp,
+          style: AppTextStyle.bodyMedium(context).copyWith(
             color: _selectedTab == index ? AppColor.whiteColor(context) : Colors.black,
             fontWeight: FontWeight.bold,
           ),
@@ -152,7 +152,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
               children: [
                 Text(
                   'نسبة الحضور',
-                  style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                  style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 16.h),
                 Row(
@@ -178,7 +178,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
               children: [
                 Text(
                   'تفاصيل الحضور',
-                  style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                  style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 12.h),
                 ...List.generate(5, (index) => _buildStudentAttendanceItem(index)),
@@ -201,7 +201,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
               children: [
                 Text(
                   'تقرير السلوك',
-                  style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                  style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 16.h),
                 Row(
@@ -222,13 +222,13 @@ class _ReportsScreenState extends State<ReportsScreen> {
 
   Widget _buildPerformanceReport() {
     return Center(
-      child: Text('تقرير الأداء - قيد التطوير', style: TextStyle(fontSize: 16.sp)),
+      child: Text('تقرير الأداء - قيد التطوير', style: AppTextStyle.titleMedium(context)),
     );
   }
 
   Widget _buildAssignmentsReport() {
     return Center(
-      child: Text('تقرير الواجبات - قيد التطوير', style: TextStyle(fontSize: 16.sp)),
+      child: Text('تقرير الواجبات - قيد التطوير', style: AppTextStyle.titleMedium(context)),
     );
   }
 
@@ -246,12 +246,14 @@ class _ReportsScreenState extends State<ReportsScreen> {
           child: Center(
             child: Text(
               value,
-              style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: color),
+              style: AppTextStyle.bodyMedium(
+                context,
+              ).copyWith(fontWeight: FontWeight.bold, color: color),
             ),
           ),
         ),
         SizedBox(height: 8.h),
-        Text(label, style: TextStyle(fontSize: 12.sp)),
+        Text(label, style: AppTextStyle.bodySmall(context)),
       ],
     );
   }
@@ -279,7 +281,10 @@ class _ReportsScreenState extends State<ReportsScreen> {
         children: [
           CircleAvatar(
             backgroundColor: const Color(0xFF7C3AED).withOpacity(0.1),
-            child: Text('${index + 1}', style: TextStyle(color: const Color(0xFF7C3AED))),
+            child: Text(
+              '${index + 1}',
+              style: AppTextStyle.bodyMedium(context).copyWith(color: const Color(0xFF7C3AED)),
+            ),
           ),
           SizedBox(width: 12.w),
           Expanded(
@@ -288,23 +293,21 @@ class _ReportsScreenState extends State<ReportsScreen> {
               children: [
                 Text(
                   student['name'],
-                  style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                  style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 4.h),
                 Text(
                   'حضور: ${student['present']} | غياب: ${student['absent']} | تأخير: ${student['late']}',
-                  style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                  style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey),
                 ),
               ],
             ),
           ),
           Text(
             '${percentage.toStringAsFixed(1)}%',
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.bold,
-              color: _getPercentageColor(percentage),
-            ),
+            style: AppTextStyle.bodyMedium(
+              context,
+            ).copyWith(fontWeight: FontWeight.bold, color: _getPercentageColor(percentage)),
           ),
         ],
       ),

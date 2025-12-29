@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class BusTrackingStatusCardWidget extends StatelessWidget {
   const BusTrackingStatusCardWidget({
@@ -46,14 +47,16 @@ class BusTrackingStatusCardWidget extends StatelessWidget {
               SizedBox(width: 8.w),
               Text(
                 title,
-                style: TextStyle(color: const Color(0xFF6B7280), fontSize: 12.sp),
+                style: AppTextStyle.bodySmall(
+                  context,
+                ).copyWith(color: const Color(0xFF6B7280), fontSize: 12.sp),
               ),
             ],
           ),
           SizedBox(height: 8.h),
           Text(
             value,
-            style: TextStyle(
+            style: AppTextStyle.bodyLarge(context).copyWith(
               fontWeight: FontWeight.bold,
               fontSize: 16.sp,
               color: const Color(0xFF1F2937),

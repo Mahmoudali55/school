@@ -45,7 +45,9 @@ class StudentClassesScreen extends StatelessWidget {
             // Title
             Text(
               AppLocalKay.classes_section.tr(),
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+              style: AppTextStyle.titleLarge(
+                context,
+              ).copyWith(fontWeight: FontWeight.bold, color: Colors.blue),
             ),
 
             const SizedBox(height: 16),
@@ -149,11 +151,9 @@ class StudentClassesScreen extends StatelessWidget {
                 children: [
                   Text(
                     className,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
+                    style: AppTextStyle.titleMedium(
+                      context,
+                    ).copyWith(fontWeight: FontWeight.bold, color: Colors.black87),
                   ),
 
                   const SizedBox(height: 4),
@@ -162,7 +162,10 @@ class StudentClassesScreen extends StatelessWidget {
                     children: [
                       const Icon(Icons.person, size: 16, color: Colors.grey),
                       const SizedBox(width: 4),
-                      Text(teacherName, style: const TextStyle(color: Colors.grey, fontSize: 14)),
+                      Text(
+                        teacherName,
+                        style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey),
+                      ),
                     ],
                   ),
 
@@ -172,7 +175,10 @@ class StudentClassesScreen extends StatelessWidget {
                     children: [
                       const Icon(Icons.room, size: 16, color: Colors.grey),
                       const SizedBox(width: 4),
-                      Text(room, style: const TextStyle(color: Colors.grey, fontSize: 14)),
+                      Text(
+                        room,
+                        style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey),
+                      ),
                     ],
                   ),
 
@@ -182,7 +188,10 @@ class StudentClassesScreen extends StatelessWidget {
                     children: [
                       const Icon(Icons.access_time, size: 16, color: Colors.grey),
                       const SizedBox(width: 4),
-                      Text(time, style: const TextStyle(color: Colors.grey, fontSize: 14)),
+                      Text(
+                        time,
+                        style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey),
+                      ),
                     ],
                   ),
                 ],

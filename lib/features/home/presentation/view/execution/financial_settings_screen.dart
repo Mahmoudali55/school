@@ -29,7 +29,7 @@ class FinancialSettingsScreen extends StatelessWidget {
         padding: EdgeInsets.all(16.w),
         child: Column(
           children: [
-            _buildFinancialSummary(),
+            _buildFinancialSummary(context),
             SizedBox(height: 20.h),
             Expanded(
               child: DefaultTabController(
@@ -71,7 +71,7 @@ class FinancialSettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFinancialSummary() {
+  Widget _buildFinancialSummary(BuildContext context) {
     return Card(
       child: Padding(
         padding: EdgeInsets.all(16.w),
@@ -79,30 +79,40 @@ class FinancialSettingsScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _buildSummaryItem(
+              context,
               AppLocalKay.user_management_expenses.tr(),
-              '١٢٥,٠٠٠ ر.س',
+              '٥٢٥,٠٠٠ ر.س',
               Colors.green,
             ),
-            _buildSummaryItem(AppLocalKay.user_management_revenue.tr(), '٨٥,٠٠٠ ر.س', Colors.red),
-            _buildSummaryItem(AppLocalKay.user_management_net.tr(), '٤٠,٠٠٠ ر.س', Colors.blue),
+            _buildSummaryItem(
+              context,
+              AppLocalKay.user_management_revenue.tr(),
+              '٨٥,٠٠٠ ر.س',
+              Colors.red,
+            ),
+            _buildSummaryItem(
+              context,
+              AppLocalKay.user_management_net.tr(),
+              '٤٠,٠٠٠ ر.س',
+              Colors.blue,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSummaryItem(String title, String value, Color color) {
+  Widget _buildSummaryItem(BuildContext context, String title, String value, Color color) {
     return Column(
       children: [
         Text(
           value,
-          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: color),
+          style: AppTextStyle.bodyMedium(
+            context,
+          ).copyWith(fontWeight: FontWeight.bold, color: color),
         ),
         SizedBox(height: 4.h),
-        Text(
-          title,
-          style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
-        ),
+        Text(title, style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600)),
       ],
     );
   }
@@ -119,9 +129,9 @@ class FinancialSettingsScreen extends StatelessWidget {
           ),
           title: Text(
             'رسوم الفصل الدراسي ${index + 1}',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
+            style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
           ),
-          subtitle: Text('٢٠٠٠ ر.س - تنتهي في ٣٠/٠٦/٢٠٢٤', style: TextStyle(fontSize: 12.sp)),
+          subtitle: Text('٢٠٠٠ ر.س - تنتهي في ٣٠/٠٦/٢٠٢٤', style: AppTextStyle.bodySmall(context)),
           trailing: Icon(Icons.arrow_forward_ios, size: 16.w),
           onTap: () {},
         ),
@@ -141,11 +151,11 @@ class FinancialSettingsScreen extends StatelessWidget {
           ),
           title: Text(
             'مصروفات ${['مرتبات', 'صيانة', 'كهرباء', 'مياه', 'إنترنت'][index]}',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
+            style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
           ),
           subtitle: Text(
             '${[50000, 15000, 5000, 3000, 2000][index]} ر.س',
-            style: TextStyle(fontSize: 12.sp),
+            style: AppTextStyle.bodySmall(context),
           ),
           trailing: Icon(Icons.arrow_forward_ios, size: 16.w),
           onTap: () {},

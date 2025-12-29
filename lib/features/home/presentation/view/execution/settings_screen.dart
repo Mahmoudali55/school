@@ -18,7 +18,7 @@ class SettingsScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-         AppLocalKay.settings_title.tr(),
+          AppLocalKay.settings_title.tr(),
           style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -27,16 +27,16 @@ class SettingsScreen extends StatelessWidget {
         padding: EdgeInsets.all(16.w),
         children: [
           // Profile Section
-          _buildProfileSection(),
+          _buildProfileSection(context),
           SizedBox(height: 20.h),
           // Settings Sections
-          _buildSettingsSection(),
+          _buildSettingsSection(context),
         ],
       ),
     );
   }
 
-  Widget _buildProfileSection() {
+  Widget _buildProfileSection(BuildContext context) {
     return Card(
       child: Padding(
         padding: EdgeInsets.all(16.w),
@@ -54,17 +54,17 @@ class SettingsScreen extends StatelessWidget {
                 children: [
                   Text(
                     'مدير المدرسة',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
+                    style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     'أ. أحمد محمد',
-                    style: TextStyle(fontSize: 14.sp, color: Colors.grey.shade600),
+                    style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey.shade600),
                   ),
                   SizedBox(height: 4.h),
                   Text(
                     'admin@school.edu.sa',
-                    style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
+                    style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600),
                   ),
                 ],
               ),
@@ -81,36 +81,41 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSettingsSection() {
+  Widget _buildSettingsSection(BuildContext context) {
     return Column(
       children: [
-        _buildSettingsCategory('إعدادات المدرسة', Icons.school, [
+        _buildSettingsCategory(context, 'إعدادات المدرسة', Icons.school, [
           _buildSettingsItem('معلومات المدرسة', Icons.info, () {}),
           _buildSettingsItem('الشعار والهوية', Icons.color_lens, () {}),
           _buildSettingsItem('الفصول الدراسية', Icons.class_, () {}),
           _buildSettingsItem('الجدول الدراسي', Icons.schedule, () {}),
         ]),
         SizedBox(height: 20.h),
-        _buildSettingsCategory('إعدادات النظام', Icons.settings, [
+        _buildSettingsCategory(context, 'إعدادات النظام', Icons.settings, [
           _buildSettingsItem('الإشعارات', Icons.notifications, () {}),
           _buildSettingsItem('الخصوصية', Icons.security, () {}),
           _buildSettingsItem('النسخ الاحتياطي', Icons.backup, () {}),
           _buildSettingsItem('تحديث النظام', Icons.update, () {}),
         ]),
         SizedBox(height: 20.h),
-        _buildSettingsCategory('الدعم', Icons.help, [
+        _buildSettingsCategory(context, 'الدعم', Icons.help, [
           _buildSettingsItem('المساعدة', Icons.help_center, () {}),
           _buildSettingsItem('اتصل بنا', Icons.contact_support, () {}),
           _buildSettingsItem('شروط الاستخدام', Icons.description, () {}),
           _buildSettingsItem('سياسة الخصوصية', Icons.privacy_tip, () {}),
         ]),
         SizedBox(height: 20.h),
-        _buildLogoutButton(),
+        _buildLogoutButton(context),
       ],
     );
   }
 
-  Widget _buildSettingsCategory(String title, IconData icon, List<Widget> items) {
+  Widget _buildSettingsCategory(
+    BuildContext context,
+    String title,
+    IconData icon,
+    List<Widget> items,
+  ) {
     return Card(
       child: Padding(
         padding: EdgeInsets.all(16.w),
@@ -123,7 +128,7 @@ class SettingsScreen extends StatelessWidget {
                 SizedBox(width: 8.w),
                 Text(
                   title,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
+                  style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -145,14 +150,16 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLogoutButton() {
+  Widget _buildLogoutButton(BuildContext context) {
     return Card(
       color: Colors.red.shade50,
       child: ListTile(
         leading: Icon(Icons.logout, color: Colors.red, size: 20.w),
         title: Text(
           'تسجيل الخروج',
-          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+          style: AppTextStyle.bodyMedium(
+            context,
+          ).copyWith(color: Colors.red, fontWeight: FontWeight.bold),
         ),
         onTap: () {
           // Logout

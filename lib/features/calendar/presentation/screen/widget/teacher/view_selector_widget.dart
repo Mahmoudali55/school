@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/calendar/data/model/calendar_event_model.dart';
 
@@ -46,8 +47,7 @@ class ViewSelectorWidget extends StatelessWidget {
           child: Center(
             child: Text(
               text,
-              style: TextStyle(
-                fontSize: 12.sp,
+              style: AppTextStyle.bodySmall(context).copyWith(
                 fontWeight: FontWeight.w600,
                 color: isSelected ? AppColor.whiteColor(context) : AppColor.greyColor(context),
               ),

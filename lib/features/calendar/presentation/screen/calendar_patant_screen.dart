@@ -64,7 +64,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
               SizedBox(height: 4.h),
               Text(
                 _getFormattedDate(_selectedDate),
-                style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
               ),
             ],
           ),
@@ -152,11 +152,9 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
         child: DropdownButton<String>(
           value: _selectedStudent,
           icon: Icon(Icons.arrow_drop_down_rounded, color: const Color(0xFF2196F3)),
-          style: TextStyle(
-            fontSize: 14.sp,
-            color: const Color(0xFF1F2937),
-            fontWeight: FontWeight.w600,
-          ),
+          style: AppTextStyle.bodyMedium(
+            context,
+          ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
           onChanged: (String? newValue) {
             setState(() {
               _selectedStudent = newValue!;
@@ -192,8 +190,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
           child: Center(
             child: Text(
               text,
-              style: TextStyle(
-                fontSize: 12.sp,
+              style: AppTextStyle.bodySmall(context).copyWith(
                 fontWeight: FontWeight.w600,
                 color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF6B7280),
               ),
@@ -250,11 +247,9 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                 child: Text(
                   day,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF2196F3),
-                  ),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF2196F3)),
                 ),
               ),
             ),
@@ -318,8 +313,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
               children: [
                 Text(
                   '$dayNumber',
-                  style: TextStyle(
-                    fontSize: 14.sp,
+                  style: AppTextStyle.bodyMedium(context).copyWith(
                     fontWeight: FontWeight.w600,
                     color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF1F2937),
                   ),
@@ -345,7 +339,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                       if (dayEvents.length > 2)
                         Text(
                           '+${dayEvents.length - 2}',
-                          style: TextStyle(
+                          style: AppTextStyle.bodySmall(context).copyWith(
                             fontSize: 8.sp,
                             color: isSelected
                                 ? AppColor.whiteColor(context)
@@ -388,11 +382,9 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
         children: [
           Text(
             AppLocalKay.monthly_summary.tr(),
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF1F2937),
-            ),
+            style: AppTextStyle.titleMedium(
+              context,
+            ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
           ),
           SizedBox(height: 12.h),
           Row(
@@ -428,13 +420,15 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
           decoration: BoxDecoration(color: color.withOpacity(0.1), shape: BoxShape.circle),
           child: Text(
             '$count',
-            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold, color: color),
+            style: AppTextStyle.bodyMedium(
+              context,
+            ).copyWith(fontWeight: FontWeight.bold, color: color),
           ),
         ),
         SizedBox(height: 4.h),
         Text(
           title,
-          style: TextStyle(fontSize: 11.sp, color: const Color(0xFF6B7280)),
+          style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
         ),
       ],
     );
@@ -496,16 +490,16 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                     children: [
                       Text(
                         _getDayName(day.weekday),
-                        style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                        style: AppTextStyle.bodySmall(
+                          context,
+                        ).copyWith(color: const Color(0xFF6B7280)),
                       ),
                       SizedBox(height: 2.h),
                       Text(
                         '${day.day}',
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFF1F2937),
-                        ),
+                        style: AppTextStyle.bodyLarge(
+                          context,
+                        ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
                       ),
                     ],
                   ),
@@ -538,8 +532,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                                 Expanded(
                                   child: Text(
                                     event.title,
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
+                                    style: AppTextStyle.bodySmall(context).copyWith(
                                       color: const Color(0xFF1F2937),
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -549,7 +542,9 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                                 ),
                                 Text(
                                   event.time,
-                                  style: TextStyle(fontSize: 10.sp, color: const Color(0xFF6B7280)),
+                                  style: AppTextStyle.bodySmall(
+                                    context,
+                                  ).copyWith(fontSize: 10.sp, color: const Color(0xFF6B7280)),
                                 ),
                               ],
                             ),
@@ -567,7 +562,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                     ),
                     child: Text(
                       '+${dayEvents.length - 2}',
-                      style: TextStyle(
+                      style: AppTextStyle.bodySmall(context).copyWith(
                         fontSize: 10.sp,
                         color: const Color(0xFF2196F3),
                         fontWeight: FontWeight.w600,
@@ -604,11 +599,9 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
             children: [
               Text(
                 AppLocalKay.child_schedule.tr(),
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleMedium(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
@@ -618,7 +611,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                 ),
                 child: Text(
                   "3 أبناء",
-                  style: TextStyle(
+                  style: AppTextStyle.bodySmall(context).copyWith(
                     fontSize: 11.sp,
                     color: const Color(0xFF2196F3),
                     fontWeight: FontWeight.w600,
@@ -656,11 +649,9 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
               SizedBox(width: 8.w),
               Text(
                 studentName,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.bodyMedium(
+                  context,
+                ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
               ),
               SizedBox(width: 8.w),
               Container(
@@ -671,7 +662,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                 ),
                 child: Text(
                   "${studentEvents.length} حدث",
-                  style: TextStyle(
+                  style: AppTextStyle.bodySmall(context).copyWith(
                     fontSize: 10.sp,
                     color: const Color(0xFF10B981),
                     fontWeight: FontWeight.w600,
@@ -714,16 +705,16 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
               children: [
                 Text(
                   event.title,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF1F2937),
-                  ),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
                 ),
                 SizedBox(height: 2.h),
                 Text(
                   "${event.date} • ${event.time}",
-                  style: TextStyle(fontSize: 10.sp, color: const Color(0xFF6B7280)),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontSize: 10.sp, color: const Color(0xFF6B7280)),
                 ),
               ],
             ),
@@ -736,7 +727,9 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
             ),
             child: Text(
               event.type,
-              style: TextStyle(fontSize: 9.sp, color: event.color, fontWeight: FontWeight.w600),
+              style: AppTextStyle.bodySmall(
+                context,
+              ).copyWith(fontSize: 9.sp, color: event.color, fontWeight: FontWeight.w600),
             ),
           ),
         ],
@@ -753,7 +746,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
           SizedBox(width: 8.w),
           Text(
             AppLocalKay.no_events_this_week.tr(),
-            style: TextStyle(fontSize: 12.sp, color: const Color(0xFF9CA3AF)),
+            style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF9CA3AF)),
           ),
         ],
       ),
@@ -815,16 +808,14 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
               children: [
                 Text(
                   _getFormattedDate(_selectedDate),
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF1F2937),
-                  ),
+                  style: AppTextStyle.titleMedium(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
                 ),
                 SizedBox(height: 2.h),
                 Text(
                   _getDayName(_selectedDate.weekday),
-                  style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                  style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
                 ),
               ],
             ),
@@ -834,16 +825,16 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
             children: [
               Text(
                 "$eventCount حدث",
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  color: const Color(0xFF2196F3),
-                  fontWeight: FontWeight.w600,
-                ),
+                style: AppTextStyle.bodyMedium(
+                  context,
+                ).copyWith(color: const Color(0xFF2196F3), fontWeight: FontWeight.w600),
               ),
               SizedBox(height: 2.h),
               Text(
                 "لـ ${_students.length} أبناء",
-                style: TextStyle(fontSize: 11.sp, color: const Color(0xFF6B7280)),
+                style: AppTextStyle.bodySmall(
+                  context,
+                ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
               ),
             ],
           ),
@@ -902,22 +893,18 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                         SizedBox(width: 8.w),
                         Text(
                           event.student,
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xFF2196F3),
-                          ),
+                          style: AppTextStyle.bodySmall(
+                            context,
+                          ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF2196F3)),
                         ),
                       ],
                     ),
                     SizedBox(height: 8.h),
                     Text(
                       event.title,
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF1F2937),
-                      ),
+                      style: AppTextStyle.titleMedium(
+                        context,
+                      ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
                     ),
                     SizedBox(height: 8.h),
                     Row(
@@ -926,14 +913,18 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                         SizedBox(width: 4.w),
                         Text(
                           event.time,
-                          style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                          style: AppTextStyle.bodySmall(
+                            context,
+                          ).copyWith(color: const Color(0xFF6B7280)),
                         ),
                         SizedBox(width: 16.w),
                         Icon(Icons.location_on_rounded, size: 14.w, color: const Color(0xFF6B7280)),
                         SizedBox(width: 4.w),
                         Text(
                           event.location,
-                          style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                          style: AppTextStyle.bodySmall(
+                            context,
+                          ).copyWith(color: const Color(0xFF6B7280)),
                         ),
                       ],
                     ),
@@ -941,7 +932,9 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                       SizedBox(height: 8.h),
                       Text(
                         event.description,
-                        style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+                        style: AppTextStyle.bodySmall(
+                          context,
+                        ).copyWith(color: const Color(0xFF6B7280)),
                       ),
                     ],
                   ],
@@ -955,11 +948,9 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                 ),
                 child: Text(
                   event.type,
-                  style: TextStyle(
-                    fontSize: 10.sp,
-                    color: event.color,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontSize: 10.sp, color: event.color, fontWeight: FontWeight.w600),
                 ),
               ),
             ],
@@ -1024,11 +1015,9 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
             children: [
               Text(
                 AppLocalKay.daily_notes.tr(),
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleMedium(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
               IconButton(
                 icon: Icon(Icons.add_rounded, size: 20.w),
@@ -1055,19 +1044,15 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
           children: [
             Text(
               AppLocalKay.upcoming_events.tr(),
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF1F2937),
-              ),
+              style: AppTextStyle.titleMedium(
+                context,
+              ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
             ),
             Text(
               AppLocalKay.show_all.tr(),
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: const Color(0xFF2196F3),
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppTextStyle.bodySmall(
+                context,
+              ).copyWith(color: const Color(0xFF2196F3), fontWeight: FontWeight.w600),
             ),
           ],
         ),
@@ -1116,7 +1101,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                   children: [
                     Text(
                       event.student,
-                      style: TextStyle(
+                      style: AppTextStyle.bodySmall(context).copyWith(
                         fontSize: 11.sp,
                         color: const Color(0xFF2196F3),
                         fontWeight: FontWeight.w600,
@@ -1126,11 +1111,9 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                     Expanded(
                       child: Text(
                         event.title,
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xFF1F2937),
-                        ),
+                        style: AppTextStyle.bodyMedium(
+                          context,
+                        ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
                       ),
                     ),
                   ],
@@ -1138,7 +1121,9 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                 SizedBox(height: 2.h),
                 Text(
                   "${event.date} • ${event.time}",
-                  style: TextStyle(fontSize: 11.sp, color: const Color(0xFF6B7280)),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
                 ),
               ],
             ),
@@ -1151,7 +1136,9 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
             ),
             child: Text(
               event.type,
-              style: TextStyle(fontSize: 9.sp, color: event.color, fontWeight: FontWeight.w600),
+              style: AppTextStyle.bodySmall(
+                context,
+              ).copyWith(fontSize: 9.sp, color: event.color, fontWeight: FontWeight.w600),
             ),
           ),
         ],
@@ -1168,16 +1155,14 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
           SizedBox(height: 12.h),
           Text(
             AppLocalKay.no_events.tr(),
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: const Color(0xFF6B7280),
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppTextStyle.bodyMedium(
+              context,
+            ).copyWith(color: const Color(0xFF6B7280), fontWeight: FontWeight.w600),
           ),
           SizedBox(height: 4.h),
           Text(
             AppLocalKay.no_events_today.tr(),
-            style: TextStyle(fontSize: 12.sp, color: const Color(0xFF9CA3AF)),
+            style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF9CA3AF)),
           ),
         ],
       ),
