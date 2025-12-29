@@ -7,9 +7,9 @@ import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/presentation/cubit/teacher_classes_cubit.dart';
 import 'package:my_template/features/class/presentation/cubit/teacher_classes_state.dart';
-import 'package:my_template/features/class/presentation/screen/widget/teatcher/classes_list_widget.dart';
-import 'package:my_template/features/class/presentation/screen/widget/teatcher/quick_stats_widget.dart';
-import 'package:my_template/features/class/presentation/screen/widget/teatcher/teacher_info_card.dart';
+import 'package:my_template/features/class/presentation/screen/widget/teacher/teacher_classes_list.dart';
+import 'package:my_template/features/class/presentation/screen/widget/teacher/teacher_info_card.dart';
+import 'package:my_template/features/class/presentation/screen/widget/teacher/teacher_quick_stats.dart';
 
 class TeacherClassesScreen extends StatelessWidget {
   const TeacherClassesScreen({super.key});
@@ -44,24 +44,16 @@ class _TeacherClassesBody extends StatelessWidget {
       builder: (context, state) {
         return RefreshIndicator(
           onRefresh: () async {
-            // يمكن إضافة تجديد البيانات هنا
             await Future.delayed(const Duration(seconds: 1));
           },
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                // Teacher Info Card
                 TeacherInfoCard(teacherInfo: state.teacherInfo),
-
                 const SizedBox(height: 20),
-
-                // Quick Stats
-                QuickStatsWidget(stats: state.stats),
-
+                TeacherQuickStats(stats: state.stats),
                 const SizedBox(height: 20),
-
-                // Classes Header
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -80,11 +72,8 @@ class _TeacherClassesBody extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 16),
-
-                // Classes List
-                Expanded(child: ClassesListWidget(classes: state.filteredClasses)),
+                Expanded(child: TeacherClassesList(classes: state.filteredClasses)),
               ],
             ),
           ),
@@ -101,37 +90,27 @@ class _TeacherClassesBody extends StatelessWidget {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ListTile(
-              title: Text('جميع الفصول'.tr()),
-              onTap: () {
-                context.read<TeacherClassesCubit>().clearFilter();
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text('الصف العاشر'.tr()),
-              onTap: () {
-                context.read<TeacherClassesCubit>().filterClasses('العاشر'.tr());
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text('الصف التاسع'.tr()),
-              onTap: () {
-                context.read<TeacherClassesCubit>().filterClasses('التاسع'.tr());
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text('الصف الحادي عشر'.tr()),
-              onTap: () {
-                context.read<TeacherClassesCubit>().filterClasses('الحادي عشر'.tr());
-                Navigator.pop(context);
-              },
-            ),
+            _buildFilterOption(context, 'جميع الفصول'.tr(), null),
+            _buildFilterOption(context, 'الصف العاشر'.tr(), 'العاشر'.tr()),
+            _buildFilterOption(context, 'الصف التاسع'.tr(), 'التاسع'.tr()),
+            _buildFilterOption(context, 'الصف الحادي عشر'.tr(), 'الحادي عشر'.tr()),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildFilterOption(BuildContext context, String title, String? filter) {
+    return ListTile(
+      title: Text(title),
+      onTap: () {
+        if (filter == null) {
+          context.read<TeacherClassesCubit>().clearFilter();
+        } else {
+          context.read<TeacherClassesCubit>().filterClasses(filter);
+        }
+        Navigator.pop(context);
+      },
     );
   }
 }
