@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
 class CreateAssignmentSheet extends StatelessWidget {
@@ -17,7 +18,7 @@ class CreateAssignmentSheet extends StatelessWidget {
         children: [
           Text(
             AppLocalKay.create_new_assignment.tr(),
-            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+            style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 16.h),
           CustomFormField(title: AppLocalKay.assignment_title.tr(), radius: 12),

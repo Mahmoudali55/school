@@ -98,9 +98,8 @@ class _ClassScheduleScreenState extends State<ClassScheduleScreen> {
                       });
                     },
                     selectedColor: Colors.blue,
-                    labelStyle: TextStyle(
+                    labelStyle: AppTextStyle.titleSmall(context).copyWith(
                       color: _selectedDay == index ? AppColor.whiteColor(context) : Colors.black,
-                      fontSize: 14.sp,
                     ),
                   ),
                 );
@@ -153,8 +152,7 @@ class _ClassScheduleScreenState extends State<ClassScheduleScreen> {
           ),
           title: Text(
             period['subject'],
-            style: TextStyle(
-              fontSize: 16.sp,
+            style: AppTextStyle.titleMedium(context).copyWith(
               fontWeight: FontWeight.bold,
               color: isBreak ? Colors.orange : Colors.grey.shade800,
             ),
@@ -162,7 +160,7 @@ class _ClassScheduleScreenState extends State<ClassScheduleScreen> {
           subtitle: period['teacher'].isNotEmpty
               ? Text(
                   period['teacher'],
-                  style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
+                  style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600),
                 )
               : null,
           trailing: Column(
@@ -171,16 +169,16 @@ class _ClassScheduleScreenState extends State<ClassScheduleScreen> {
             children: [
               Text(
                 period['time'],
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey.shade700,
-                ),
+                style: AppTextStyle.bodySmall(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: Colors.grey.shade700),
               ),
               if (!isBreak)
                 Text(
                   '60 دقيقة',
-                  style: TextStyle(fontSize: 10.sp, color: Colors.grey.shade500),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontSize: 10.sp, color: Colors.grey.shade500),
                 ),
             ],
           ),

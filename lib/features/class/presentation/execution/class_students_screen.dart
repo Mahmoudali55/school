@@ -124,14 +124,16 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
           child: Center(
             child: Text(
               value,
-              style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.bold, color: color),
+              style: AppTextStyle.bodySmall(
+                context,
+              ).copyWith(fontSize: 10.sp, fontWeight: FontWeight.bold, color: color),
             ),
           ),
         ),
         SizedBox(height: 4.h),
         Text(
           label,
-          style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+          style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp, color: Colors.grey),
         ),
       ],
     );
@@ -145,10 +147,7 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
           backgroundColor: const Color(0xFF2E5BFF).withOpacity(0.1),
           child: Icon(Icons.person, color: const Color(0xFF2E5BFF)),
         ),
-        title: Text(
-          student.name,
-          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
-        ),
+        title: Text(student.name, style: AppTextStyle.headlineSmall(context)),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -182,7 +181,7 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
               value: 'delete',
               child: Text(
                 AppLocalKay.user_management_delete.tr(),
-                style: TextStyle(color: Colors.red),
+                style: AppTextStyle.bodyMedium(context, color: Colors.red),
               ),
             ),
           ],
@@ -288,7 +287,10 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
                   SnackBar(content: Text('تم حذف الطالب بنجاح'), backgroundColor: Colors.green),
                 );
               },
-              child: Text(AppLocalKay.delete.tr(), style: TextStyle(color: Colors.red)),
+              child: Text(
+                AppLocalKay.delete.tr(),
+                style: AppTextStyle.bodyMedium(context, color: Colors.red),
+              ),
             ),
           ],
         );

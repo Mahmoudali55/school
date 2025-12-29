@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
 class ChartDetailPage extends StatefulWidget {
@@ -39,7 +40,7 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
         ),
         title: Text(
           widget.chartTitle,
-          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -71,10 +72,7 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'الفترة:',
-                        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
-                      ),
+                      Text('الفترة:', style: AppTextStyle.titleSmall(context)),
                       SizedBox(height: 8.h),
                       DropdownButton<String>(
                         value: _selectedTimeRange,
@@ -99,10 +97,7 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'النوع:',
-                        style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
-                      ),
+                      Text('النوع:', style: AppTextStyle.titleSmall(context)),
                       SizedBox(height: 8.h),
                       DropdownButton<String>(
                         value: _selectedChartStyle,
@@ -138,12 +133,12 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
           children: [
             Text(
               AppLocalKay.chartDetails.tr(),
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+              style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8.h),
             Text(
               'بيانات ${widget.chartTitle} للفترة المحددة',
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
+              style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600),
             ),
             SizedBox(height: 16.h),
             // استخدام Container قابل للتمرير أفقيًا
@@ -185,7 +180,10 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
           getTooltipItem: (group, groupIndex, rod, rodIndex) {
             return BarTooltipItem(
               '${rod.toY.toInt()}%\n${_getBarTitles()[group.x.toInt()]}',
-              TextStyle(color: widget.chartColor, fontWeight: FontWeight.bold),
+              AppTextStyle.bodyMedium(
+                context,
+                color: widget.chartColor,
+              ).copyWith(fontWeight: FontWeight.bold),
             );
           },
         ),
@@ -205,11 +203,9 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
                     width: 80.w, // عرض ثابت لكل عنوان
                     child: Text(
                       _getBarTitles()[index],
-                      style: TextStyle(
-                        fontSize: 12.sp, // زيادة حجم الخط
-                        color: Colors.grey.shade700,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: AppTextStyle.bodySmall(
+                        context,
+                      ).copyWith(color: Colors.grey.shade700, fontWeight: FontWeight.w500),
                       textAlign: TextAlign.center,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -232,11 +228,9 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
                   padding: EdgeInsets.only(right: 8.w),
                   child: Text(
                     '${value.toInt()}%',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: Colors.grey.shade600,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: AppTextStyle.bodySmall(
+                      context,
+                    ).copyWith(color: Colors.grey.shade600, fontWeight: FontWeight.w500),
                   ),
                 );
               }
@@ -287,7 +281,6 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
 
   List<BarChartGroupData> _getBarData() {
     final data = _getChartData();
-    final titles = _getBarTitles();
 
     return List.generate(data.length, (index) {
       final isTouched = index == _touchedIndex;
@@ -324,7 +317,10 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
             return touchedSpots.map((touchedSpot) {
               return LineTooltipItem(
                 '${touchedSpot.y.toInt()}%',
-                TextStyle(color: widget.chartColor, fontWeight: FontWeight.bold),
+                AppTextStyle.bodyMedium(
+                  context,
+                  color: widget.chartColor,
+                ).copyWith(fontWeight: FontWeight.bold),
               );
             }).toList();
           },
@@ -343,11 +339,9 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
                   width: 80.w,
                   child: Text(
                     _getLineTitles()[index],
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: Colors.grey.shade700,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: AppTextStyle.bodySmall(
+                      context,
+                    ).copyWith(color: Colors.grey.shade700, fontWeight: FontWeight.w500),
                     textAlign: TextAlign.center,
                   ),
                 );
@@ -367,7 +361,7 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
                   padding: EdgeInsets.only(right: 8.w),
                   child: Text(
                     '${value.toInt()}%',
-                    style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
+                    style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600),
                   ),
                 );
               }
@@ -462,7 +456,7 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
         value: data[i],
         title: '${((data[i] / total) * 100).toStringAsFixed(1)}%',
         radius: radius.r,
-        titleStyle: TextStyle(
+        titleStyle: AppTextStyle.bodySmall(context).copyWith(
           fontSize: fontSize.sp,
           fontWeight: FontWeight.bold,
           color: AppColor.whiteColor(context),
@@ -477,7 +471,7 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
                 ),
                 child: Text(
                   _getPieTitles()[i],
-                  style: TextStyle(
+                  style: AppTextStyle.bodySmall(context).copyWith(
                     fontSize: 10.sp,
                     color: _getPieColors()[i % _getPieColors().length],
                     fontWeight: FontWeight.bold,
@@ -547,7 +541,7 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
           children: [
             Text(
               'الإحصائيات التفصيلية',
-              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+              style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16.h),
             Column(
@@ -584,25 +578,20 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  stat['title'] as String,
-                  style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
-                ),
+                Text(stat['title'] as String, style: AppTextStyle.titleSmall(context)),
                 SizedBox(height: 4.h),
                 Text(
                   stat['subtitle'] as String,
-                  style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
+                  style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600),
                 ),
               ],
             ),
           ),
           Text(
             stat['value'] as String,
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-              color: widget.chartColor,
-            ),
+            style: AppTextStyle.titleMedium(
+              context,
+            ).copyWith(fontWeight: FontWeight.bold, color: widget.chartColor),
           ),
         ],
       ),

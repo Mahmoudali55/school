@@ -91,7 +91,9 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
                           label: Text(classItem),
                           selected: selectedClasses.contains(classItem),
                           selectedColor: AppColor.primaryColor(context),
-                          labelStyle: TextStyle(color: AppColor.whiteColor(context)),
+                          labelStyle: AppTextStyle.bodyMedium(
+                            context,
+                          ).copyWith(color: AppColor.whiteColor(context)),
                           checkmarkColor: AppColor.whiteColor(context),
 
                           onSelected: (bool selected) {
@@ -148,7 +150,9 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
                     children: [
                       Text(
                         AppLocalKay.additional_options.tr(),
-                        style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                        style: AppTextStyle.titleMedium(
+                          context,
+                        ).copyWith(fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 12.h),
                       Row(

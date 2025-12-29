@@ -38,14 +38,14 @@ class ChatsListScreen extends StatelessWidget {
           return ListTile(
             leading: CircleAvatar(child: Text(chats[index][0])),
             title: Text(chats[index]),
-            subtitle: Text(AppLocalKay.last_message.tr(), style: TextStyle(fontSize: 12.sp)),
+            subtitle: Text(AppLocalKay.last_message.tr(), style: AppTextStyle.bodySmall(context)),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (_) => ChatScreen(chatWith: chats[index])),
               );
             },
-            trailing: Text("12:00AM", style: TextStyle(fontSize: 12.sp)),
+            trailing: Text("12:00AM", style: AppTextStyle.bodySmall(context)),
           );
         },
       ),

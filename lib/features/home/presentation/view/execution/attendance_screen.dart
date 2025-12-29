@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
 class AttendanceScreen extends StatefulWidget {
@@ -39,7 +40,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         context,
         title: Text(
           AppLocalKay.check_in.tr(),
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
@@ -156,12 +157,11 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       children: [
         Text(
           value,
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold, color: color),
+          style: AppTextStyle.headlineLarge(
+            context,
+          ).copyWith(fontWeight: FontWeight.bold, color: color),
         ),
-        Text(
-          title,
-          style: TextStyle(fontSize: 12.sp, color: Colors.grey),
-        ),
+        Text(title, style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey)),
       ],
     );
   }

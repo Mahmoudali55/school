@@ -77,7 +77,7 @@ class _GradesScreenState extends State<GradesScreen> {
                     ),
                     child: Text(
                       _terms[index],
-                      style: TextStyle(
+                      style: AppTextStyle.bodySmall(context).copyWith(
                         color: _selectedTerm == index ? AppColor.whiteColor(context) : Colors.grey,
                         fontWeight: FontWeight.bold,
                       ),
@@ -103,13 +103,14 @@ class _GradesScreenState extends State<GradesScreen> {
                     children: [
                       Text(
                         AppLocalKay.gpa.tr(),
-                        style: TextStyle(color: AppColor.whiteColor(context), fontSize: 14.sp),
+                        style: AppTextStyle.bodySmall(
+                          context,
+                        ).copyWith(color: AppColor.whiteColor(context), fontSize: 14.sp),
                       ),
                       Text(
                         average.toStringAsFixed(1),
-                        style: TextStyle(
+                        style: AppTextStyle.headlineLarge(context).copyWith(
                           color: AppColor.whiteColor(context),
-                          fontSize: 24.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -119,13 +120,14 @@ class _GradesScreenState extends State<GradesScreen> {
                     children: [
                       Text(
                         AppLocalKay.assessment.tr(),
-                        style: TextStyle(color: AppColor.whiteColor(context), fontSize: 14.sp),
+                        style: AppTextStyle.bodySmall(
+                          context,
+                        ).copyWith(color: AppColor.whiteColor(context), fontSize: 14.sp),
                       ),
                       Text(
                         _getGradeDescription(average),
-                        style: TextStyle(
+                        style: AppTextStyle.titleLarge(context).copyWith(
                           color: AppColor.whiteColor(context),
-                          fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -147,7 +149,7 @@ class _GradesScreenState extends State<GradesScreen> {
                         SizedBox(height: 16.h),
                         Text(
                           AppLocalKay.no_grades.tr(),
-                          style: TextStyle(fontSize: 16.sp, color: Colors.grey),
+                          style: AppTextStyle.titleMedium(context).copyWith(color: Colors.grey),
                         ),
                       ],
                     ),
@@ -180,7 +182,7 @@ class _GradesScreenState extends State<GradesScreen> {
         ),
         title: Text(
           grade['subject'],
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
+          style: AppTextStyle.titleSmall(context).copyWith(fontWeight: FontWeight.bold),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,11 +199,9 @@ class _GradesScreenState extends State<GradesScreen> {
         ),
         trailing: Text(
           '${grade['percentage']}%',
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.bold,
-            color: _getGradeColor(grade['percentage']),
-          ),
+          style: AppTextStyle.titleMedium(
+            context,
+          ).copyWith(fontWeight: FontWeight.bold, color: _getGradeColor(grade['percentage'])),
         ),
         onTap: () => _viewGradeDetails(grade),
       ),

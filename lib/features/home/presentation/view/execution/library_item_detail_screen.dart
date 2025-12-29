@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class LibraryItemDetailScreen extends StatelessWidget {
   final Map<String, dynamic> item;
@@ -35,7 +36,7 @@ class LibraryItemDetailScreen extends StatelessWidget {
             SizedBox(height: 16.h),
             Text(
               item['title'],
-              style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+              style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8.h),
             Text('النوع: ${item['type']}'),

@@ -134,11 +134,9 @@ class _ReportsPageState extends State<ReportsPage> {
       children: [
         Text(
           AppLocalKay.user_management_quick_report.tr(),
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.grey.shade800,
-          ),
+          style: AppTextStyle.titleLarge(
+            context,
+          ).copyWith(fontWeight: FontWeight.bold, color: Colors.grey.shade800),
         ),
         SizedBox(height: 16.h),
 
@@ -189,11 +187,9 @@ class _ReportsPageState extends State<ReportsPage> {
                 SizedBox(width: 8.w),
                 Text(
                   stat['trend'] as String,
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: Colors.green,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(color: Colors.green, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -203,16 +199,14 @@ class _ReportsPageState extends State<ReportsPage> {
               children: [
                 Text(
                   stat['value'] as String,
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey.shade800,
-                  ),
+                  style: AppTextStyle.headlineLarge(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.bold, color: Colors.grey.shade800),
                 ),
                 SizedBox(height: 4.h),
                 Text(
                   stat['title'] as String,
-                  style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
+                  style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600),
                 ),
               ],
             ),
@@ -228,11 +222,9 @@ class _ReportsPageState extends State<ReportsPage> {
       children: [
         Text(
           AppLocalKay.user_management_clear_reports.tr(),
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.grey.shade800,
-          ),
+          style: AppTextStyle.titleLarge(
+            context,
+          ).copyWith(fontWeight: FontWeight.bold, color: Colors.grey.shade800),
         ),
         SizedBox(height: 16.h),
 
@@ -259,7 +251,7 @@ class _ReportsPageState extends State<ReportsPage> {
                     SizedBox(width: 8.w),
                     Text(
                       AppLocalKay.user_management_report_type.tr(),
-                      style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+                      style: AppTextStyle.titleSmall(context),
                     ),
                   ],
                 ),
@@ -284,8 +276,7 @@ class _ReportsPageState extends State<ReportsPage> {
                         ),
                         child: Text(
                           type,
-                          style: TextStyle(
-                            fontSize: 12.sp,
+                          style: AppTextStyle.bodySmall(context).copyWith(
                             color: isSelected ? AppColor.whiteColor(context) : Colors.grey.shade700,
                             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                           ),
@@ -308,7 +299,7 @@ class _ReportsPageState extends State<ReportsPage> {
                         children: [
                           Text(
                             AppLocalKay.user_management_report_period.tr(),
-                            style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+                            style: AppTextStyle.titleSmall(context),
                           ),
                           SizedBox(height: 8.h),
                           Container(
@@ -348,14 +339,14 @@ class _ReportsPageState extends State<ReportsPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(' ', style: TextStyle(fontSize: 14.sp)),
+                          Text(' ', style: AppTextStyle.bodyMedium(context)),
                           SizedBox(height: 8.h),
                           ElevatedButton.icon(
                             onPressed: _exportReport,
                             icon: Icon(Icons.picture_as_pdf, size: 16.w),
                             label: Text(
                               AppLocalKay.user_management_export_pdf.tr(),
-                              style: TextStyle(fontSize: 12.sp),
+                              style: AppTextStyle.bodySmall(context),
                             ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue,
@@ -385,15 +376,13 @@ class _ReportsPageState extends State<ReportsPage> {
           children: [
             Text(
               AppLocalKay.user_management_no_reports.tr(),
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey.shade800,
-              ),
+              style: AppTextStyle.titleLarge(
+                context,
+              ).copyWith(fontWeight: FontWeight.bold, color: Colors.grey.shade800),
             ),
             TextButton(
               onPressed: () {},
-              child: Text(AppLocalKay.show_all.tr(), style: TextStyle(fontSize: 12.sp)),
+              child: Text(AppLocalKay.show_all.tr(), style: AppTextStyle.bodySmall(context)),
             ),
           ],
         ),
@@ -428,10 +417,7 @@ class _ReportsPageState extends State<ReportsPage> {
           ),
           child: Icon(report['icon'] as IconData, color: report['color'] as Color, size: 20.w),
         ),
-        title: Text(
-          report['title'] as String,
-          style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
-        ),
+        title: Text(report['title'] as String, style: AppTextStyle.titleSmall(context)),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -439,7 +425,9 @@ class _ReportsPageState extends State<ReportsPage> {
             SizedBox(height: 2.h),
             Text(
               report['date'] as String,
-              style: TextStyle(fontSize: 11.sp, color: Colors.grey.shade600),
+              style: AppTextStyle.bodySmall(
+                context,
+              ).copyWith(fontSize: 11.sp, color: Colors.grey.shade600),
             ),
           ],
         ),
@@ -455,7 +443,7 @@ class _ReportsPageState extends State<ReportsPage> {
               ),
               child: Text(
                 report['type'] as String,
-                style: TextStyle(
+                style: AppTextStyle.bodySmall(context).copyWith(
                   fontSize: 10.sp,
                   color: report['color'] as Color,
                   fontWeight: FontWeight.bold,
@@ -465,7 +453,7 @@ class _ReportsPageState extends State<ReportsPage> {
             SizedBox(height: 2.h),
             Text(
               report['status'] as String,
-              style: TextStyle(fontSize: 10.sp, color: Colors.green),
+              style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp, color: Colors.green),
             ),
           ],
         ),
@@ -482,11 +470,9 @@ class _ReportsPageState extends State<ReportsPage> {
       children: [
         Text(
           AppLocalKay.user_management_fees.tr(),
-          style: TextStyle(
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.grey.shade800,
-          ),
+          style: AppTextStyle.titleLarge(
+            context,
+          ).copyWith(fontWeight: FontWeight.bold, color: Colors.grey.shade800),
         ),
         SizedBox(height: 16.h),
 
@@ -578,11 +564,9 @@ class _ReportsPageState extends State<ReportsPage> {
 
               Text(
                 chart['title'] as String,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.grey.shade800,
-                ),
+                style: AppTextStyle.titleSmall(
+                  context,
+                ).copyWith(fontWeight: FontWeight.w500, color: Colors.grey.shade800),
               ),
 
               SizedBox(height: 8.h),
@@ -621,7 +605,7 @@ class _ReportsPageState extends State<ReportsPage> {
                 ),
                 child: Text(
                   AppLocalKay.user_management_view_chart.tr(),
-                  style: TextStyle(fontSize: 12.sp, color: chart['color'] as Color),
+                  style: AppTextStyle.bodySmall(context).copyWith(color: chart['color'] as Color),
                 ),
               ),
             ],

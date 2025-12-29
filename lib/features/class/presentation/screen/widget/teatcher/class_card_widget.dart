@@ -39,11 +39,9 @@ class ClassCardWidget extends StatelessWidget {
                 Expanded(
                   child: Text(
                     classInfo.className,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
+                    style: AppTextStyle.titleMedium(
+                      context,
+                    ).copyWith(fontWeight: FontWeight.bold, color: Colors.black87),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -57,11 +55,9 @@ class ClassCardWidget extends StatelessWidget {
                   ),
                   child: Text(
                     '${classInfo.studentCount} طالب',
-                    style: TextStyle(
-                      color: Colors.green[700],
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: AppTextStyle.bodySmall(
+                      context,
+                    ).copyWith(color: Colors.green[700], fontWeight: FontWeight.bold),
                   ),
                 ),
               ],
@@ -70,11 +66,11 @@ class ClassCardWidget extends StatelessWidget {
             const SizedBox(height: 12),
 
             // Class Details
-            _buildDetailRow(Icons.calendar_today, classInfo.schedule),
+            _buildDetailRow(context, Icons.calendar_today, classInfo.schedule),
             const SizedBox(height: 8),
-            _buildDetailRow(Icons.access_time, classInfo.time),
+            _buildDetailRow(context, Icons.access_time, classInfo.time),
             const SizedBox(height: 8),
-            _buildDetailRow(Icons.room, classInfo.room),
+            _buildDetailRow(context, Icons.room, classInfo.room),
 
             const SizedBox(height: 12),
 
@@ -115,6 +111,7 @@ class ClassCardWidget extends StatelessWidget {
                     text: AppLocalKay.students.tr(),
 
                     onPressed: onStudentsPressed,
+                    context: context,
                   ),
                 ),
 
@@ -125,6 +122,7 @@ class ClassCardWidget extends StatelessWidget {
                     text: AppLocalKay.todostitle.tr(),
 
                     onPressed: onAssignmentsPressed,
+                    context: context,
                   ),
                 ),
 
@@ -135,6 +133,7 @@ class ClassCardWidget extends StatelessWidget {
                     text: AppLocalKay.checkin.tr(),
 
                     onPressed: onAttendancePressed,
+                    context: context,
                   ),
                 ),
 
@@ -156,7 +155,7 @@ class ClassCardWidget extends StatelessWidget {
                           SizedBox(width: 8),
                           Text(
                             AppLocalKay.dialog_delete_confirm.tr(),
-                            style: TextStyle(color: Colors.red),
+                            style: AppTextStyle.bodyMedium(context, color: Colors.red),
                           ),
                         ],
                       ),
@@ -181,7 +180,7 @@ class ClassCardWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailRow(IconData icon, String text) {
+  Widget _buildDetailRow(BuildContext context, IconData icon, String text) {
     return Row(
       children: [
         Icon(icon, size: 16, color: Colors.grey[600]),
@@ -189,7 +188,7 @@ class ClassCardWidget extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: TextStyle(color: Colors.grey[600], fontSize: 14),
+            style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey[600]),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -198,11 +197,15 @@ class ClassCardWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButton({required String text, required VoidCallback onPressed}) {
+  Widget _buildActionButton({
+    required String text,
+    required VoidCallback onPressed,
+    required BuildContext context,
+  }) {
     return OutlinedButton.icon(
       onPressed: onPressed,
 
-      label: Text(text, style: const TextStyle(fontSize: 10)),
+      label: Text(text, style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10)),
       style: OutlinedButton.styleFrom(
         foregroundColor: Colors.green,
         side: BorderSide(color: Colors.green!),

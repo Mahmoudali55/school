@@ -113,18 +113,17 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       children: [
                         Text(
                           _days[index],
-                          style: TextStyle(
+                          style: AppTextStyle.bodySmall(context).copyWith(
                             color: _selectedDay == index
                                 ? AppColor.whiteColor(context)
                                 : Colors.grey,
                             fontWeight: FontWeight.bold,
-                            fontSize: 12.sp,
                           ),
                         ),
                         SizedBox(height: 4.h),
                         Text(
                           '${_schedule[_days[index]]?.length ?? 0}',
-                          style: TextStyle(
+                          style: AppTextStyle.bodySmall(context).copyWith(
                             color: _selectedDay == index
                                 ? AppColor.whiteColor(context)
                                 : Colors.grey,
@@ -159,7 +158,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             SizedBox(height: 16.h),
             Text(
               AppLocalKay.no_classes_today.tr(),
-              style: TextStyle(fontSize: 16.sp, color: Colors.grey),
+              style: AppTextStyle.titleMedium(context).copyWith(color: Colors.grey),
             ),
           ],
         ),
@@ -190,7 +189,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         ),
         title: Text(
           classItem['subject'],
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
+          style: AppTextStyle.titleSmall(context).copyWith(fontWeight: FontWeight.bold),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

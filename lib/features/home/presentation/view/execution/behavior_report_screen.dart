@@ -34,7 +34,7 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
         context,
         title: Text(
           AppLocalKay.behavior_report.tr(),
-          style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         leading: IconButton(

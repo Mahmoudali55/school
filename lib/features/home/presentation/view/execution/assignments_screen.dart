@@ -117,7 +117,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
             SizedBox(height: 16.h),
             Text(
               AppLocalKay.no_assignments.tr(),
-              style: TextStyle(fontSize: 16.sp, color: Colors.grey),
+              style: AppTextStyle.titleMedium(context).copyWith(color: Colors.grey),
             ),
           ],
         ),

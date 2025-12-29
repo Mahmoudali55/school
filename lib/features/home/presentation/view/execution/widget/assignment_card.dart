@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
 class AssignmentCard extends StatelessWidget {
@@ -50,7 +51,7 @@ class AssignmentCard extends StatelessWidget {
         ),
         title: Text(
           assignment['title'],
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
+          style: AppTextStyle.titleSmall(context).copyWith(fontWeight: FontWeight.bold),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,13 +61,15 @@ class AssignmentCard extends StatelessWidget {
             SizedBox(height: 2.h),
             Text(
               assignment['dueDate'] ?? assignment['submittedDate'],
-              style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+              style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp, color: Colors.grey),
             ),
             if (assignment['grade'] != null) ...[
               SizedBox(height: 2.h),
               Text(
                 'الدرجة: ${assignment['grade']}',
-                style: TextStyle(fontSize: 12.sp, color: Colors.green, fontWeight: FontWeight.bold),
+                style: AppTextStyle.bodySmall(
+                  context,
+                ).copyWith(color: Colors.green, fontWeight: FontWeight.bold),
               ),
             ],
           ],

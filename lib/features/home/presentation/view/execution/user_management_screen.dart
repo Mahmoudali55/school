@@ -36,7 +36,7 @@ class UserManagementScreen extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 itemCount: 10,
-                itemBuilder: (context, index) => _buildUserCard(index),
+                itemBuilder: (context, index) => _buildUserCard(context, index),
               ),
             ),
           ],
@@ -115,7 +115,7 @@ class UserManagementScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildUserCard(int index) {
+  Widget _buildUserCard(BuildContext context, int index) {
     return Card(
       margin: EdgeInsets.only(bottom: 12.h),
       child: ListTile(
@@ -126,9 +126,9 @@ class UserManagementScreen extends StatelessWidget {
         ),
         title: Text(
           'اسم المستخدم $index',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
+          style: AppTextStyle.titleSmall(context).copyWith(fontWeight: FontWeight.bold),
         ),
-        subtitle: Text('user$index@school.com', style: TextStyle(fontSize: 12.sp)),
+        subtitle: Text('user$index@school.com', style: AppTextStyle.bodySmall(context)),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

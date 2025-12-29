@@ -30,7 +30,7 @@ class TransportManagementScreen extends StatelessWidget {
         child: Column(
           children: [
             // Buses Overview
-            _buildBusesOverview(),
+            _buildBusesOverview(context),
             SizedBox(height: 20.h),
             // Buses List
             Expanded(child: _buildBusesList()),
@@ -46,7 +46,7 @@ class TransportManagementScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBusesOverview() {
+  Widget _buildBusesOverview(BuildContext context) {
     return Card(
       child: Padding(
         padding: EdgeInsets.all(16.w),
@@ -57,28 +57,33 @@ class TransportManagementScreen extends StatelessWidget {
               AppLocalKay.user_management_total_buses.tr(),
               '12',
               Icons.directions_bus,
+              context,
             ),
-            _buildOverviewItem(AppLocalKay.user_management_active.tr(), '10', Icons.check_circle),
-            _buildOverviewItem(AppLocalKay.user_management_maintenance.tr(), '2', Icons.build),
+            _buildOverviewItem(
+              AppLocalKay.user_management_active.tr(),
+              '10',
+              Icons.check_circle,
+              context,
+            ),
+            _buildOverviewItem(
+              AppLocalKay.user_management_maintenance.tr(),
+              '2',
+              Icons.build,
+              context,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildOverviewItem(String title, String value, IconData icon) {
+  Widget _buildOverviewItem(String title, String value, IconData icon, BuildContext context) {
     return Column(
       children: [
         Icon(icon, size: 30.w, color: Colors.blue),
         SizedBox(height: 8.h),
-        Text(
-          value,
-          style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          title,
-          style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
-        ),
+        Text(value, style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold)),
+        Text(title, style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600)),
       ],
     );
   }
@@ -103,7 +108,7 @@ class TransportManagementScreen extends StatelessWidget {
               children: [
                 Text(
                   'حافلة ${index + 1}',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.sp),
+                  style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
@@ -117,7 +122,7 @@ class TransportManagementScreen extends StatelessWidget {
                       SizedBox(width: 4.w),
                       Text(
                         AppLocalKay.user_management_active.tr(),
-                        style: TextStyle(fontSize: 12.sp, color: Colors.green),
+                        style: AppTextStyle.bodySmall(context).copyWith(color: Colors.green),
                       ),
                     ],
                   ),
@@ -129,7 +134,7 @@ class TransportManagementScreen extends StatelessWidget {
               children: [
                 Icon(Icons.confirmation_number, size: 16.w, color: Colors.grey),
                 SizedBox(width: 8.w),
-                Text('رقم الحافلة: BUS-00${index + 1}', style: TextStyle(fontSize: 12.sp)),
+                Text('رقم الحافلة: BUS-00${index + 1}', style: AppTextStyle.bodySmall(context)),
               ],
             ),
             SizedBox(height: 8.h),
@@ -137,7 +142,7 @@ class TransportManagementScreen extends StatelessWidget {
               children: [
                 Icon(Icons.person, size: 16.w, color: Colors.grey),
                 SizedBox(width: 8.w),
-                Text('السائق: محمد أحمد', style: TextStyle(fontSize: 12.sp)),
+                Text('السائق: محمد أحمد', style: AppTextStyle.bodySmall(context)),
               ],
             ),
             SizedBox(height: 8.h),
@@ -145,7 +150,7 @@ class TransportManagementScreen extends StatelessWidget {
               children: [
                 Icon(Icons.phone, size: 16.w, color: Colors.grey),
                 SizedBox(width: 8.w),
-                Text('رقم الهاتف: 05xxxxxxxx', style: TextStyle(fontSize: 12.sp)),
+                Text('رقم الهاتف: 05xxxxxxxx', style: AppTextStyle.bodySmall(context)),
               ],
             ),
             SizedBox(height: 8.h),
@@ -153,7 +158,7 @@ class TransportManagementScreen extends StatelessWidget {
               children: [
                 Icon(Icons.people, size: 16.w, color: Colors.grey),
                 SizedBox(width: 8.w),
-                Text('الطلاب: ٢٥/٣٠', style: TextStyle(fontSize: 12.sp)),
+                Text('الطلاب: ٢٥/٣٠', style: AppTextStyle.bodySmall(context)),
               ],
             ),
             SizedBox(height: 12.h),

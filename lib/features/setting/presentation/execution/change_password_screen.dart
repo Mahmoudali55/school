@@ -134,16 +134,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   children: [
                     Text(
                       AppLocalKay.suggestions.tr(),
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.blue[800],
-                      ),
+                      style: AppTextStyle.titleSmall(
+                        context,
+                      ).copyWith(fontWeight: FontWeight.bold, color: Colors.blue[800]),
                     ),
                     SizedBox(height: 8.h),
                     Text(
                       AppLocalKay.suggestions_content.tr(),
-                      style: TextStyle(fontSize: 12.sp, color: Colors.blue[700]),
+                      style: AppTextStyle.bodySmall(context).copyWith(color: Colors.blue[700]),
                     ),
                   ],
                 ),

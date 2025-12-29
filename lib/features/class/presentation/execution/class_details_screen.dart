@@ -53,11 +53,9 @@ class ClassDetailsScreen extends StatelessWidget {
                   children: [
                     Text(
                       schoolClass.name,
-                      style: TextStyle(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF1F2937),
-                      ),
+                      style: AppTextStyle.headlineLarge(
+                        context,
+                      ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
                     ),
                     SizedBox(height: 16.h),
 
@@ -65,14 +63,31 @@ class ClassDetailsScreen extends StatelessWidget {
                       AppLocalKay.user_management_class.tr(),
                       schoolClass.grade,
                       Icons.grade,
+                      context,
                     ),
-                    _buildDetailItem(AppLocalKay.section.tr(), schoolClass.section, Icons.category),
-                    _buildDetailItem(AppLocalKay.teacher.tr(), schoolClass.teacher, Icons.person),
-                    _buildDetailItem(AppLocalKay.label_room.tr(), schoolClass.room, Icons.room),
+                    _buildDetailItem(
+                      AppLocalKay.section.tr(),
+                      schoolClass.section,
+                      Icons.category,
+                      context,
+                    ),
+                    _buildDetailItem(
+                      AppLocalKay.teacher.tr(),
+                      schoolClass.teacher,
+                      Icons.person,
+                      context,
+                    ),
+                    _buildDetailItem(
+                      AppLocalKay.label_room.tr(),
+                      schoolClass.room,
+                      Icons.room,
+                      context,
+                    ),
                     _buildDetailItem(
                       AppLocalKay.schedule.tr(),
                       schoolClass.schedule,
                       Icons.schedule,
+                      context,
                     ),
 
                     SizedBox(height: 16.h),
@@ -91,12 +106,13 @@ class ClassDetailsScreen extends StatelessWidget {
                             children: [
                               Text(
                                 AppLocalKay.label_capacity.tr(),
-                                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                                style: AppTextStyle.titleMedium(
+                                  context,
+                                ).copyWith(fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 '${schoolClass.currentStudents}/${schoolClass.capacity}',
-                                style: TextStyle(
-                                  fontSize: 16.sp,
+                                style: AppTextStyle.titleMedium(context).copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: fillPercentage >= 90
                                       ? Colors.red
@@ -124,7 +140,7 @@ class ClassDetailsScreen extends StatelessWidget {
                           SizedBox(height: 8.h),
                           Text(
                             '${fillPercentage.toStringAsFixed(1)}% ${AppLocalKay.stats_fill_rate.tr()}',
-                            style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                            style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey),
                           ),
                         ],
                       ),
@@ -137,11 +153,9 @@ class ClassDetailsScreen extends StatelessWidget {
 
             Text(
               AppLocalKay.quick_actions.tr(),
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF1F2937),
-              ),
+              style: AppTextStyle.titleLarge(
+                context,
+              ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
             ),
             SizedBox(height: 16.h),
 
@@ -168,6 +182,7 @@ class ClassDetailsScreen extends StatelessWidget {
                       ),
                     );
                   },
+                  context,
                 ),
                 _buildActionCard(AppLocalKay.edit_class.tr(), Icons.edit, Colors.orange, () {
                   Navigator.push(
@@ -176,7 +191,7 @@ class ClassDetailsScreen extends StatelessWidget {
                       builder: (context) => AddEditClassScreen(schoolClass: schoolClass),
                     ),
                   );
-                }),
+                }, context),
                 _buildActionCard(
                   AppLocalKay.schedules.tr(),
                   Icons.calendar_today,
@@ -189,6 +204,7 @@ class ClassDetailsScreen extends StatelessWidget {
                       ),
                     );
                   },
+                  context,
                 ),
                 _buildActionCard(AppLocalKay.reports.tr(), Icons.analytics, Colors.purple, () {
                   Navigator.push(
@@ -197,7 +213,7 @@ class ClassDetailsScreen extends StatelessWidget {
                       builder: (context) => ClassReportsScreen(schoolClass: schoolClass),
                     ),
                   );
-                }),
+                }, context),
               ],
             ),
           ],
@@ -206,7 +222,7 @@ class ClassDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailItem(String label, String value, IconData icon) {
+  Widget _buildDetailItem(String label, String value, IconData icon, BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8.h),
       child: Row(
@@ -216,13 +232,10 @@ class ClassDetailsScreen extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                label,
-                style: TextStyle(fontSize: 12.sp, color: Colors.grey),
-              ),
+              Text(label, style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey)),
               Text(
                 value,
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+                style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.w500),
               ),
             ],
           ),
@@ -231,7 +244,13 @@ class ClassDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildActionCard(String title, IconData icon, Color color, VoidCallback onTap) {
+  Widget _buildActionCard(
+    String title,
+    IconData icon,
+    Color color,
+    VoidCallback onTap,
+    BuildContext context,
+  ) {
     return Card(
       child: InkWell(
         onTap: onTap,
@@ -246,7 +265,7 @@ class ClassDetailsScreen extends StatelessWidget {
               Text(
                 title,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+                style: AppTextStyle.titleSmall(context).copyWith(fontWeight: FontWeight.w500),
               ),
             ],
           ),

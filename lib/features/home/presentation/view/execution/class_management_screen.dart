@@ -42,7 +42,7 @@ class ClassManagementScreen extends StatelessWidget {
                   childAspectRatio: .865,
                 ),
                 itemCount: 8,
-                itemBuilder: (context, index) => _buildClassCard(index),
+                itemBuilder: (context, index) => _buildClassCard(index, context),
               ),
             ),
           ],
@@ -98,12 +98,14 @@ class ClassManagementScreen extends StatelessWidget {
         children: [
           Text(
             value,
-            style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold, color: color),
+            style: AppTextStyle.headlineLarge(
+              context,
+            ).copyWith(fontWeight: FontWeight.bold, color: color),
           ),
           SizedBox(height: 8.h),
           Text(
             title,
-            style: TextStyle(fontSize: 12.sp, color: AppColor.blackColor(context)),
+            style: AppTextStyle.bodySmall(context).copyWith(color: AppColor.blackColor(context)),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 8.h),
@@ -112,7 +114,7 @@ class ClassManagementScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildClassCard(int index) {
+  Widget _buildClassCard(int index, BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       elevation: 2,
@@ -126,7 +128,7 @@ class ClassManagementScreen extends StatelessWidget {
               children: [
                 Text(
                   'الصف ${index + 1}',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
+                  style: AppTextStyle.titleSmall(context).copyWith(fontWeight: FontWeight.bold),
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
@@ -136,7 +138,9 @@ class ClassManagementScreen extends StatelessWidget {
                   ),
                   child: Text(
                     'ممتلئ',
-                    style: TextStyle(fontSize: 10.sp, color: Colors.green),
+                    style: AppTextStyle.bodySmall(
+                      context,
+                    ).copyWith(fontSize: 10.sp, color: Colors.green),
                   ),
                 ),
               ],
@@ -144,11 +148,11 @@ class ClassManagementScreen extends StatelessWidget {
             SizedBox(height: 8.h),
             Text(
               'المعلم: أحمد محمد',
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
+              style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600),
             ),
             Text(
               'الطلاب: 30/30',
-              style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
+              style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600),
             ),
             SizedBox(height: 8.h),
             LinearProgressIndicator(

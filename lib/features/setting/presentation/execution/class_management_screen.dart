@@ -97,14 +97,16 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
           child: Center(
             child: Text(
               value,
-              style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold, color: color),
+              style: AppTextStyle.labelSmall(
+                context,
+              ).copyWith(fontWeight: FontWeight.bold, color: color),
             ),
           ),
         ),
         SizedBox(height: 4.h),
         Text(
           label,
-          style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+          style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp, color: Colors.grey),
         ),
       ],
     );
@@ -120,7 +122,7 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
         ),
         title: Text(
           '${schoolClass.grade} - ${schoolClass.section}',
-          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
+          style: AppTextStyle.headlineSmall(context),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,7 +220,7 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
               },
               child: Text(
                 AppLocalKay.dialog_delete_confirm.tr(),
-                style: TextStyle(color: Colors.red),
+                style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.red),
               ),
             ),
           ],

@@ -793,16 +793,14 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
           SizedBox(height: 8.w),
           Text(
             title,
-            style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
+            style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
           ),
           SizedBox(height: 8.w),
           Text(
             value,
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w600,
-              color: const Color(0xFF1F2937),
-            ),
+            style: AppTextStyle.titleSmall(
+              context,
+            ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

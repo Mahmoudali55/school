@@ -121,8 +121,10 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
               indicatorColor: AppColor.primaryColor(context),
               indicatorWeight: 3.0,
               indicatorSize: TabBarIndicatorSize.tab,
-              labelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
-              unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal, fontSize: 14.sp),
+              labelStyle: AppTextStyle.titleSmall(context).copyWith(fontWeight: FontWeight.bold),
+              unselectedLabelStyle: AppTextStyle.titleSmall(
+                context,
+              ).copyWith(fontWeight: FontWeight.normal),
               isScrollable: true,
               padding: EdgeInsets.symmetric(horizontal: 16.w),
               labelPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
@@ -163,7 +165,7 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
             SizedBox(height: 16.h),
             Text(
               'لا توجد عناصر في $category',
-              style: TextStyle(fontSize: 16.sp, color: Colors.grey.shade600),
+              style: AppTextStyle.titleMedium(context).copyWith(color: Colors.grey.shade600),
             ),
           ],
         ),
@@ -214,7 +216,7 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
         ),
         title: Text(
           item['title'],
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.sp),
+          style: AppTextStyle.titleSmall(context).copyWith(fontWeight: FontWeight.bold),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -224,7 +226,7 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
             SizedBox(height: 2.h),
             Text(
               item['size'],
-              style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+              style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp, color: Colors.grey),
             ),
           ],
         ),

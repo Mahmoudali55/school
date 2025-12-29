@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class ReportsScreen extends StatelessWidget {
   ReportsScreen({super.key});
@@ -35,11 +36,9 @@ class ReportsScreen extends StatelessWidget {
                         SizedBox(height: 8.h),
                         Text(
                           report['title']!,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: report['color'],
-                            fontSize: 14.sp,
-                          ),
+                          style: AppTextStyle.titleSmall(
+                            context,
+                          ).copyWith(fontWeight: FontWeight.bold, color: report['color']),
                           textAlign: TextAlign.center,
                         ),
                       ],
@@ -57,7 +56,7 @@ class ReportsScreen extends StatelessWidget {
                 children: [
                   Text(
                     'التقارير الحديثة',
-                    style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                    style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 12.h),
                   Expanded(

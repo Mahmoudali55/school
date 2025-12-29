@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 class AssignmentTabs extends StatelessWidget {
   final int selectedTab;
@@ -33,10 +34,9 @@ class AssignmentTabs extends StatelessWidget {
                 child: Center(
                   child: Text(
                     tabs[index],
-                    style: TextStyle(
+                    style: AppTextStyle.titleSmall(context).copyWith(
                       color: selectedTab == index ? AppColor.whiteColor(context) : Colors.grey,
                       fontWeight: FontWeight.bold,
-                      fontSize: 14.sp,
                     ),
                   ),
                 ),
