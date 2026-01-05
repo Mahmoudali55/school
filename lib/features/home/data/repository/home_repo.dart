@@ -48,7 +48,6 @@ class HomeRepo {
   }
 
   Future<TeacherHomeModel> getTeacherHomeData() async {
-    await Future.delayed(const Duration(milliseconds: 500));
     return TeacherHomeModel(
       userName: "أ. أحمد محمد",
       userRole: "معلم",
@@ -82,7 +81,6 @@ class HomeRepo {
   }
 
   Future<AdminHomeModel> getAdminHomeData() async {
-    await Future.delayed(const Duration(milliseconds: 500));
     return AdminHomeModel(
       userName: "أ. خالد حسن",
       userRole: "مدير",
@@ -119,7 +117,6 @@ class HomeRepo {
   }
 
   Future<ParentHomeModel> getParentHomeData() async {
-    await Future.delayed(const Duration(milliseconds: 500));
     return ParentHomeModel(
       userName: "أحمد محمد",
       userRole: "ولي أمر",
