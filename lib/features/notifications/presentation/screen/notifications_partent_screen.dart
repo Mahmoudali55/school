@@ -1,10 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/notifications/data/model/notification_model.dart';
+import 'package:my_template/features/notifications/presentation/cubit/notification_cubit.dart';
+import 'package:my_template/features/notifications/presentation/cubit/notification_state.dart';
 import 'package:my_template/features/notifications/presentation/screen/widget/notification_Item_widget.dart';
 import 'package:my_template/features/notifications/presentation/screen/widget/parent/notification_section_widget.dart';
 
@@ -18,7 +22,6 @@ class NotificationsParentScreen extends StatelessWidget {
       appBar: CustomAppBar(
         context,
         centerTitle: true,
-
         title: Text(
           AppLocalKay.notification.tr(),
           style: AppTextStyle.titleLarge(
@@ -32,101 +35,63 @@ class NotificationsParentScreen extends StatelessWidget {
           },
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              child: Column(
-                children: [
-                  // إشعارات اليوم
-                  NotificationSectionWidget(
-                    title: "اليوم",
-                    notifications: [
-                      NotificationItemWidget(
-                        icon: Icons.warning_amber_rounded,
-                        iconColor: Color(0xFFDC2626),
-                        iconBgColor: Color(0xFFFEF2F2),
-                        title: "غياب الطالب",
-                        message: "تم تسجيل غياب الطالب أحمد اليوم",
-                        time: "منذ ساعتين",
-                        isUrgent: true,
-                        isRead: false,
-                      ),
-                      NotificationItemWidget(
-                        icon: Icons.school,
-                        iconColor: Color(0xFF10B981),
-                        iconBgColor: Color(0xFFD1FAE5),
-                        title: "تسليم الواجب",
-                        message: "تم تسليم واجب الرياضيات بنجاح",
-                        time: "منذ ٤ ساعات",
-                        isUrgent: false,
-                        isRead: true,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 24.h),
+      body: BlocBuilder<NotificationCubit, NotificationState>(
+        builder: (context, state) {
+          if (state.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (state.error != null) {
+            return Center(child: Text(state.error!));
+          }
+          if (state.notifications.isEmpty) {
+            return const Center(child: Text("لا توجد إشعارات"));
+          }
 
-                  // إشعارات الأمس
-                  NotificationSectionWidget(
-                    title: "الأمس",
-                    notifications: [
-                      NotificationItemWidget(
-                        icon: Icons.assignment,
-                        iconColor: Color(0xFF2E5BFF),
-                        iconBgColor: Color(0xFFEFF6FF),
-                        title: "تقرير سلوكي",
-                        message: "تقرير سلوكي جديد للطالب أحمد",
-                        time: "منذ يوم",
-                        isUrgent: false,
-                        isRead: true,
-                      ),
-                      NotificationItemWidget(
-                        icon: Icons.celebration,
-                        iconColor: Color(0xFF7C3AED),
-                        iconBgColor: Color(0xFFF3E8FF),
-                        title: "فعالية المدرسة",
-                        message: "فعالية رياضية غداً في الساحة",
-                        time: "منذ يوم",
-                        isUrgent: false,
-                        isRead: true,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 24.h),
+          // Grouping notifications by category
+          final categories = ["اليوم", "الأمس", "هذا الأسبوع"];
+          final groupedNotifications = categories
+              .map((category) {
+                return {
+                  'category': category,
+                  'items': state.notifications.where((n) => n.category == category).toList(),
+                };
+              })
+              .where((group) => (group['items'] as List).isNotEmpty)
+              .toList();
 
-                  // إشعارات هذا الأسبوع
-                  NotificationSectionWidget(
-                    title: "هذا الأسبوع",
-                    notifications: [
-                      NotificationItemWidget(
-                        icon: Icons.payments,
-                        iconColor: Color(0xFFF59E0B),
-                        iconBgColor: Color(0xFFFFFBEB),
-                        title: "رسوم مدرسية",
-                        message: "آخر موعد لدفع الرسوم ٠٥/١١/٢٠٢٥",
-                        time: "منذ ٣ أيام",
-                        isUrgent: true,
-                        isRead: true,
-                      ),
-                      NotificationItemWidget(
-                        icon: Icons.event,
-                        iconColor: Color(0xFFEC4899),
-                        iconBgColor: Color(0xFFFCE7F3),
-                        title: "اجتماع أولياء الأمور",
-                        message: "سيتم عقد اجتماع أولياء الأمور الأسبوع القادم",
-                        time: "منذ ٤ أيام",
-                        isUrgent: false,
-                        isRead: true,
-                      ),
-                    ],
+          return Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                  child: Column(
+                    children: groupedNotifications.map((group) {
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: 24.h),
+                        child: NotificationSectionWidget(
+                          title: group['category'] as String,
+                          notifications: (group['items'] as List).map((n) {
+                            final item = n as NotificationModel;
+                            return NotificationItemWidget(
+                              icon: item.icon,
+                              iconColor: item.iconColor,
+                              iconBgColor: item.iconBgColor,
+                              title: item.title,
+                              message: item.message,
+                              time: item.time,
+                              isUrgent: item.isUrgent,
+                              isRead: item.isRead,
+                            );
+                          }).toList(),
+                        ),
+                      );
+                    }).toList(),
                   ),
-                  SizedBox(height: 30.h),
-                ],
+                ),
               ),
-            ),
-          ),
-        ],
+            ],
+          );
+        },
       ),
     );
   }

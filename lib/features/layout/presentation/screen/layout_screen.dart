@@ -11,6 +11,7 @@ import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/layout/presentation/screen/widget/bottom_nav_bar_screen.dart';
 import 'package:my_template/features/layout/presentation/screen/widget/get_screen_widget.dart';
 import 'package:my_template/features/layout/presentation/screen/widget/nav_Item_data_widget.dart';
+import 'package:my_template/features/notifications/presentation/cubit/notification_cubit.dart';
 import 'package:my_template/features/select_interface/data/model/user_type_model.dart';
 
 class LayoutScreen extends StatefulWidget {
@@ -72,6 +73,7 @@ class _LayoutScreenState extends State<LayoutScreen> {
           create: (context) => sl<CalendarCubit>()..getCalendarData(widget.selectedUserType.id),
         ),
         BlocProvider(create: (context) => sl<BusCubit>()..getBusData(widget.selectedUserType.id)),
+        BlocProvider(create: (context) => sl<NotificationCubit>()..loadNotifications()),
       ],
       child: Scaffold(
         backgroundColor: AppColor.scaffoldColor(context),

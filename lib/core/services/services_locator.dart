@@ -11,6 +11,8 @@ import 'package:my_template/features/class/data/repository/class_repo.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/home/data/repository/home_repo.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
+import 'package:my_template/features/notifications/data/repo/notification_repo.dart';
+import 'package:my_template/features/notifications/presentation/cubit/notification_cubit.dart';
 import 'package:my_template/features/on_boarding/data/repository/on_boarding_rep.dart';
 import 'package:my_template/features/on_boarding/presentation/view/cubit/on_boarding_cubit.dart';
 import 'package:my_template/features/select_interface/data/repo/user_type_repo.dart';

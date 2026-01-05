@@ -25,4 +25,7 @@ Future<void> initDependencies() async {
 
   sl.registerLazySingleton<BusRepo>(() => BusRepo());
   sl.registerFactory<BusCubit>(() => BusCubit(sl()));
+
+  sl.registerLazySingleton<NotificationRepo>(() => NotificationRepo());
+  sl.registerFactory<NotificationCubit>(() => NotificationCubit(sl()));
 }
