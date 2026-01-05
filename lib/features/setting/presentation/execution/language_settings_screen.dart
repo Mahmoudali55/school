@@ -1,9 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:my_template/core/cache/hive/hive_methods.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/setting/presentation/cubit/settings_cubit.dart';
 
 showLanguageSheet(BuildContext parentContext) {
   showModalBottomSheet(
@@ -46,7 +47,7 @@ showLanguageSheet(BuildContext parentContext) {
                 ),
                 onTap: () {
                   parentContext.setLocale(const Locale('en'));
-                  HiveMethods.updateLang(const Locale('en'));
+                  parentContext.read<SettingsCubit>().updateLanguage('en');
                   Navigator.pop(bottomSheetContext);
                 },
               ),
@@ -61,7 +62,7 @@ showLanguageSheet(BuildContext parentContext) {
                 ),
                 onTap: () {
                   parentContext.setLocale(const Locale('ar'));
-                  HiveMethods.updateLang(const Locale('ar'));
+                  parentContext.read<SettingsCubit>().updateLanguage('ar');
                   Navigator.pop(bottomSheetContext);
                 },
               ),

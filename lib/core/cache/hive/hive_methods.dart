@@ -41,4 +41,12 @@ class HiveMethods {
   static void updateThem(ThemeEnum theme) {
     _box.put('theme', theme);
   }
+
+  static bool getNotificationSetting(String key) {
+    return _box.get(key, defaultValue: true);
+  }
+
+  static void updateNotificationSetting(String key, bool value) {
+    _box.put(key, value);
+  }
 }
