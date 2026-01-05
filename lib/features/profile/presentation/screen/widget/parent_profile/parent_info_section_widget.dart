@@ -5,13 +5,9 @@ import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
 class ParentInfoSection extends StatelessWidget {
-  final info = [
-    {'label': 'الاسم', 'value': 'أحمد السعيد', 'icon': Icons.person},
-    {'label': 'البريد', 'value': 'ahmed@email.com', 'icon': Icons.email},
-    {'label': 'الهاتف', 'value': '+966 50 123 4567', 'icon': Icons.phone},
-    {'label': 'العنوان', 'value': 'الرياض - العليا', 'icon': Icons.location_on},
-    {'label': 'الهوية', 'value': '1234567890', 'icon': Icons.badge},
-  ];
+  final List<Map<String, dynamic>> infoData;
+
+  const ParentInfoSection({super.key, required this.infoData});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +17,7 @@ class ParentInfoSection extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(.05), blurRadius: 8)],
+        boxShadow: [BoxShadow(color: Colors.black.withAlpha((0.05 * 255).round()), blurRadius: 8)],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,7 +29,7 @@ class ParentInfoSection extends StatelessWidget {
             ).copyWith(fontSize: 16.sp, fontWeight: FontWeight.bold),
           ),
           12.verticalSpace,
-          ...info.map((i) => _row(context, i)).toList(),
+          ...infoData.map((i) => _row(context, i)).toList(),
         ],
       ),
     );

@@ -14,7 +14,10 @@ class ProfileTabBar extends StatelessWidget {
         color: AppColor.whiteColor(context),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
         boxShadow: [
-          BoxShadow(color: AppColor.blackColor(context).withOpacity(0.05), blurRadius: 10),
+          BoxShadow(
+            color: AppColor.blackColor(context).withAlpha((0.05 * 255).round()),
+            blurRadius: 10,
+          ),
         ],
       ),
       child: TabBar(

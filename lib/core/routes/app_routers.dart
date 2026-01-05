@@ -53,7 +53,12 @@ class AppRouters {
           ),
         );
       case RoutesName.profileScreen:
-        return MaterialPageRoute(builder: (_) => ProfileScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<ProfileCubit>()..loadStudentProfile(),
+            child: ProfileScreen(),
+          ),
+        );
       case RoutesName.digitalLibraryScreen:
         return MaterialPageRoute(builder: (_) => DigitalLibraryScreen());
       case RoutesName.assignmentsScreen:
@@ -63,7 +68,12 @@ class AppRouters {
       case RoutesName.gradesScreen:
         return MaterialPageRoute(builder: (_) => GradesScreen());
       case RoutesName.parentProfileScreen:
-        return MaterialPageRoute(builder: (_) => ParentProfileScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<ProfileCubit>()..loadParentProfile(),
+            child: ParentProfileScreen(),
+          ),
+        );
       case RoutesName.messagesScreen:
         return MaterialPageRoute(builder: (_) => ChatsListScreen());
       default:

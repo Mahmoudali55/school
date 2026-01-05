@@ -19,7 +19,7 @@ class AchievementTile extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 26,
-            backgroundColor: color.withOpacity(.15),
+            backgroundColor: color.withAlpha((0.15 * 255).round()),
             child: Icon(icon, color: color, size: 26),
           ),
           const Gap(16),
