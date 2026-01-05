@@ -692,31 +692,22 @@ class AppLocalKay {
   static const String privacy_policy = "title";
   static const String last_update = "last_update";
   static const String intro = "intro";
-
   static const String section1_title = "section1_title";
   static const String section1_content = "section1_content";
-
   static const String section2_title = "section2_title";
   static const String section2_content = "section2_content";
-
   static const String section3_title = "section3_title";
   static const String section3_content = "section3_content";
-
   static const String section4_title = "section4_title";
   static const String section4_content = "section4_content";
-
   static const String section5_title = "section5_title";
   static const String section5_content = "section5_content";
-
   static const String section6_title = "section6_title";
   static const String section6_content = "section6_content";
-
   static const String section7_title = "section7_title";
   static const String section7_content = "section7_content";
-
   static const String section8_title = "section8_title";
   static const String section8_content = "section8_content";
-
   static const String consent_title = "consent_title";
   static const String consent_text = "consent_text";
   static const String calendar_title = "calendar_title";

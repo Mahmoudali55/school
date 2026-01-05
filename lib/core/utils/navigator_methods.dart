@@ -8,7 +8,6 @@ class NavigatorMethods {
   }) {
     Navigator.pushNamed(context, routeName, arguments: arguments);
   }
-
   static void pushReplacementNamed(
     BuildContext context,
     String routeName, {
@@ -16,7 +15,6 @@ class NavigatorMethods {
   }) {
     Navigator.pushReplacementNamed(context, routeName, arguments: arguments);
   }
-
   static void pushNamedAndRemoveUntil(
     BuildContext context,
     String routeName, {

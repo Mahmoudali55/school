@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:my_template/features/home/data/models/home_models.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
+import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 import 'package:my_template/features/home/presentation/view/widget/admin/admin_header_widget.dart'
     show AdminHeader;
 import 'package:my_template/features/home/presentation/view/widget/admin/alerts_and_activity_widget.dart';
@@ -14,29 +18,38 @@ class AdminHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String adminName = "أ. أحمد محمد";
-    String adminRole = "مدير النظام";
-
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AdminHeader(name: adminName, role: adminRole),
-              Gap(20.h),
-              MetricsDashboard(),
-              Gap(20.h),
-              MiniCharts(),
-              Gap(20.h),
-              AlertsAndActivity(),
-              Gap(20.h),
-              ManagementShortcuts(),
-              Gap(20.h),
-            ],
-          ),
+        child: BlocBuilder<HomeCubit, HomeState>(
+          builder: (context, state) {
+            if (state is HomeLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is HomeLoaded) {
+              final adminData = state.data as AdminHomeModel;
+              return SingleChildScrollView(
+                padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AdminHeader(name: adminData.userName, role: adminData.userRole),
+                    Gap(20.h),
+                    MetricsDashboard(),
+                    Gap(20.h),
+                    MiniCharts(),
+                    Gap(20.h),
+                    AlertsAndActivity(),
+                    Gap(20.h),
+                    ManagementShortcuts(),
+                    Gap(20.h),
+                  ],
+                ),
+              );
+            } else if (state is HomeError) {
+              return Center(child: Text(state.message));
+            }
+            return const SizedBox.shrink();
+          },
         ),
       ),
     );

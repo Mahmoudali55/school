@@ -13,4 +13,7 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<InterfaceRepository>(() => InterfaceRepository());
   sl.registerLazySingleton<InterfaceCubit>(() => InterfaceCubit(repository: sl()));
   sl.registerLazySingleton<OnBoardingCubit>(() => OnBoardingCubit(repository: sl()));
+
+  sl.registerLazySingleton<HomeRepo>(() => HomeRepo());
+  sl.registerFactory<HomeCubit>(() => HomeCubit(sl()));
 }

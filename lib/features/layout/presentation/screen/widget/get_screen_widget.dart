@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_template/core/services/services_locator.dart';
 import 'package:my_template/features/Bus/presentation/screen/bus_screen.dart';
 import 'package:my_template/features/bus/presentation/screen/admin_bus_tracking_screen.dart';
 import 'package:my_template/features/bus/presentation/screen/parent_bus_Screen.dart';
@@ -11,6 +13,7 @@ import 'package:my_template/features/class/presentation/screen/admin_classes_scr
 import 'package:my_template/features/class/presentation/screen/parent_classes_screen.dart';
 import 'package:my_template/features/class/presentation/screen/student_classes_screen.dart';
 import 'package:my_template/features/class/presentation/screen/teacher_classes_screen.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/view/screen/admin_home_screen.dart';
 import 'package:my_template/features/home/presentation/view/screen/home_screen.dart';
 import 'package:my_template/features/home/presentation/view/screen/parent_home_screen.dart';
@@ -26,13 +29,16 @@ Widget getScreen(String tab, String userTypeId) {
 
   switch (tab) {
     case "home":
-      return userTypeId == parentId
-          ? const HomeParentScreen()
-          : userTypeId == teacherId
-          ? const TeacherHomeScreen()
-          : userTypeId == adminId
-          ? const AdminHomeScreen()
-          : const HomeScreen();
+      return BlocProvider(
+        create: (context) => sl<HomeCubit>()..getHomeData(userTypeId),
+        child: userTypeId == parentId
+            ? const HomeParentScreen()
+            : userTypeId == teacherId
+            ? const TeacherHomeScreen()
+            : userTypeId == adminId
+            ? const AdminHomeScreen()
+            : const HomeScreen(),
+      );
     case "calendar":
       return userTypeId == parentId
           ? const CalendarPatentScreen()
