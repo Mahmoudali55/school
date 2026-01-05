@@ -56,7 +56,7 @@ class RecentNotificationsSection extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColor.blackColor(context).withOpacity(0.05),
+                          color: AppColor.blackColor(context).withAlpha((0.05 * 255).round()),
                           blurRadius: 8,
                           offset: Offset(0, 2),
                         ),
@@ -67,7 +67,7 @@ class RecentNotificationsSection extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.all(8.w),
                           decoration: BoxDecoration(
-                            color: item.iconColor.withOpacity(0.15),
+                            color: item.iconColor.withAlpha((0.15 * 255).round()),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Icon(item.icon, color: item.iconColor, size: 20.w),

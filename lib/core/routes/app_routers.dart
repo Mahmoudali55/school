@@ -38,10 +38,20 @@ class AppRouters {
       case RoutesName.layoutScreen:
         return MaterialPageRoute(builder: (_) => LayoutScreen(selectedUserType: args));
       case RoutesName.notificationsScreen:
-        return MaterialPageRoute(builder: (_) => NotificationsScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<NotificationCubit>()..loadNotifications(),
+            child: NotificationsScreen(),
+          ),
+        );
 
       case RoutesName.notificationsParentScreen:
-        return MaterialPageRoute(builder: (_) => NotificationsParentScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<NotificationCubit>()..loadNotifications(),
+            child: NotificationsParentScreen(),
+          ),
+        );
       case RoutesName.profileScreen:
         return MaterialPageRoute(builder: (_) => ProfileScreen());
       case RoutesName.digitalLibraryScreen:

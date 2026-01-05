@@ -10,6 +10,7 @@ import 'package:my_template/features/home/presentation/view/execution/grades_scr
 import 'package:my_template/features/home/presentation/view/execution/schedule_screen.dart';
 import 'package:my_template/features/home/presentation/view/screen/home_screen.dart';
 import 'package:my_template/features/layout/presentation/screen/layout_screen.dart';
+import 'package:my_template/features/notifications/presentation/cubit/notification_cubit.dart';
 import 'package:my_template/features/notifications/presentation/screen/notifications_partent_screen.dart';
 import 'package:my_template/features/notifications/presentation/screen/notifications_screen.dart';
 import 'package:my_template/features/on_boarding/presentation/view/cubit/on_boarding_cubit.dart';
