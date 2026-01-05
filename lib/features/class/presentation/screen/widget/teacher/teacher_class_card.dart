@@ -1,9 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
-import 'package:my_template/features/class/presentation/cubit/teacher_classes_cubit.dart';
 import 'package:my_template/features/class/data/model/teacher_classes_models.dart';
 
 class TeacherClassCard extends StatelessWidget {
@@ -212,7 +210,7 @@ class TeacherClassCard extends StatelessWidget {
         _showDeleteDialog(context);
         break;
       case 'add_assignment':
-        context.read<TeacherClassesCubit>().addAssignment(classInfo.id);
+        // context.read<TeacherClassesCubit>().addAssignment(classInfo.id);
         break;
     }
   }
@@ -246,7 +244,7 @@ class TeacherClassCard extends StatelessWidget {
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
           ElevatedButton(
             onPressed: () {
-              context.read<TeacherClassesCubit>().deleteClass(classInfo.id);
+              // context.read<TeacherClassesCubit>().deleteClass(classInfo.id);
               Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),

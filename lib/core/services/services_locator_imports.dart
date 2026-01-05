@@ -16,4 +16,7 @@ Future<void> initDependencies() async {
 
   sl.registerLazySingleton<HomeRepo>(() => HomeRepo());
   sl.registerFactory<HomeCubit>(() => HomeCubit(sl()));
+
+  sl.registerLazySingleton<ClassRepo>(() => ClassRepo());
+  sl.registerFactory<ClassCubit>(() => ClassCubit(sl()));
 }

@@ -1,8 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/class/data/model/class_models.dart';
+import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
+import 'package:my_template/features/class/presentation/cubit/class_state.dart';
 import 'package:my_template/features/class/presentation/execution/add_edit_class_screen.dart';
 import 'package:my_template/features/class/presentation/execution/class_details_screen.dart';
 import 'package:my_template/features/class/presentation/execution/class_students_screen.dart';
@@ -79,55 +83,93 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
     ),
   ];
 
-  List<SchoolClass> _filteredClasses = [];
   final TextEditingController _searchController = TextEditingController();
   String _selectedFilter = AppLocalKay.all.tr();
 
   @override
   void initState() {
     super.initState();
-    _filteredClasses = _classes;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            const AdminClassesHeader(),
-            AdminClassesControlBar(
-              searchController: _searchController,
-              selectedFilter: _selectedFilter,
-              onSearchChanged: (query) => _applyFilters(),
-              onFilterSelected: (filter) {
-                setState(() {
-                  _selectedFilter = filter;
-                  _applyFilters();
-                });
-              },
-            ),
-            AdminClassesStats(classes: _classes),
-            Expanded(
-              child: _filteredClasses.isEmpty
-                  ? AdminClassesEmptyState(
-                      isSearch: _searchController.text.isNotEmpty,
-                      onAddClass: _addNewClass,
-                    )
-                  : ListView.builder(
-                      padding: EdgeInsets.all(16.w),
-                      itemCount: _filteredClasses.length,
-                      itemBuilder: (context, index) {
-                        return AdminClassCard(
-                          schoolClass: _filteredClasses[index],
-                          onViewDetails: () => _viewClassDetails(_filteredClasses[index]),
-                          onEdit: () => _editClass(_filteredClasses[index]),
-                          onManageStudents: () => _manageStudents(_filteredClasses[index]),
-                        );
-                      },
-                    ),
-            ),
-          ],
+        child: BlocBuilder<ClassCubit, ClassState>(
+          builder: (context, state) {
+            if (state is ClassLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is ClassError) {
+              return Center(child: Text(state.message));
+            } else if (state is ClassLoaded) {
+              final classes = state.classes.cast<AdminClassModel>();
+              return Column(
+                children: [
+                  const AdminClassesHeader(),
+                  AdminClassesControlBar(
+                    searchController: _searchController,
+                    selectedFilter: _selectedFilter,
+                    onSearchChanged: (query) => _applyFilters(),
+                    onFilterSelected: (filter) {
+                      setState(() {
+                        _selectedFilter = filter;
+                        _applyFilters();
+                      });
+                    },
+                  ),
+                  AdminClassesStats(
+                    classes: classes
+                        .map(
+                          (c) => SchoolClass(
+                            id: c.id,
+                            name: c.name,
+                            grade: c.grade,
+                            section: c.section,
+                            capacity: c.capacity,
+                            currentStudents: c.currentStudents,
+                            teacher: c.teacher,
+                            room: c.room,
+                            schedule: c.schedule,
+                          ),
+                        )
+                        .toList(),
+                  ),
+                  Expanded(
+                    child: classes.isEmpty
+                        ? AdminClassesEmptyState(
+                            isSearch: _searchController.text.isNotEmpty,
+                            onAddClass: _addNewClass,
+                          )
+                        : ListView.builder(
+                            padding: EdgeInsets.all(16.w),
+                            itemCount: classes.length,
+                            itemBuilder: (context, index) {
+                              final classItem = classes[index];
+                              final schoolClass = SchoolClass(
+                                id: classItem.id,
+                                name: classItem.name,
+                                grade: classItem.grade,
+                                section: classItem.section,
+                                capacity: classItem.capacity,
+                                currentStudents: classItem.currentStudents,
+                                teacher: classItem.teacher,
+                                room: classItem.room,
+                                schedule: classItem.schedule,
+                              );
+                              return AdminClassCard(
+                                schoolClass: schoolClass,
+                                onViewDetails: () => _viewClassDetails(schoolClass),
+                                onEdit: () => _editClass(schoolClass),
+                                onManageStudents: () => _manageStudents(schoolClass),
+                              );
+                            },
+                          ),
+                  ),
+                ],
+              );
+            }
+            return const SizedBox.shrink();
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -166,7 +208,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
     }
 
     setState(() {
-      _filteredClasses = filtered;
+      // Logic for filtering would go here if we were filtering local list
     });
   }
 
