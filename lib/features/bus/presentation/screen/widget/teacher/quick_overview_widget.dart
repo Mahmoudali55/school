@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_template/features/bus/presentation/cubit/bus_tracking_cubit.dart';
-import 'package:my_template/features/bus/presentation/cubit/bus_tracking_state.dart';
+import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
+import 'package:my_template/features/bus/presentation/cubit/bus_state.dart';
 
 class QuickOverviewWidget extends StatelessWidget {
   const QuickOverviewWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BusTrackingCubit, BusTrackingState>(
+    return BlocBuilder<BusCubit, BusState>(
       builder: (context, state) {
         return Container(
           margin: EdgeInsets.symmetric(horizontal: 16.w),

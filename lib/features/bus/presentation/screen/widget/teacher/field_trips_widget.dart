@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
-import 'package:my_template/features/bus/presentation/cubit/bus_tracking_cubit.dart';
-import 'package:my_template/features/bus/presentation/cubit/bus_tracking_state.dart';
+import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
+import 'package:my_template/features/bus/presentation/cubit/bus_state.dart';
 
 class FieldTripsWidget extends StatelessWidget {
   const FieldTripsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BusTrackingCubit, BusTrackingState>(
+    return BlocBuilder<BusCubit, BusState>(
       builder: (context, state) {
         return Container(
           margin: EdgeInsets.all(16.w),

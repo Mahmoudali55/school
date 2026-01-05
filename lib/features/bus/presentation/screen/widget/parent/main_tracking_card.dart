@@ -4,9 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/bus/data/model/bus_tracking_models.dart';
 
 class MainTrackingCard extends StatelessWidget {
-  final Map<String, dynamic> selectedBusData;
+  final BusClass selectedBusData;
   final Animation<double> busAnimation;
   final VoidCallback onCallDriver;
   final VoidCallback onShareLocation;
@@ -56,14 +57,10 @@ class MainTrackingCard extends StatelessWidget {
           width: 50.w,
           height: 50.w,
           decoration: BoxDecoration(
-            color: selectedBusData['busColor'].withOpacity(0.1),
+            color: selectedBusData.busColor.withOpacity(0.1),
             shape: BoxShape.circle,
           ),
-          child: Icon(
-            Icons.person_rounded,
-            color: selectedBusData['busColor'],
-            size: 24.w,
-          ),
+          child: Icon(Icons.person_rounded, color: selectedBusData.busColor, size: 24.w),
         ),
         SizedBox(width: 12.w),
         Expanded(
@@ -71,17 +68,14 @@ class MainTrackingCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                selectedBusData['childName'],
-                style: AppTextStyle.titleLarge(context).copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                selectedBusData.childName ?? "",
+                style: AppTextStyle.titleLarge(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
               Text(
-                "${selectedBusData['school']} - ${selectedBusData['grade']}",
-                style: AppTextStyle.bodyMedium(
-                  context,
-                ).copyWith(color: const Color(0xFF6B7280)),
+                "${selectedBusData.subject} - ${selectedBusData.className}",
+                style: AppTextStyle.bodyMedium(context).copyWith(color: const Color(0xFF6B7280)),
               ),
             ],
           ),
@@ -89,17 +83,17 @@ class MainTrackingCard extends StatelessWidget {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
           decoration: BoxDecoration(
-            color: selectedBusData['onBoard']
+            color: selectedBusData.status == 'في الطريق'
                 ? AppColor.secondAppColor(context).withOpacity(0.1)
                 : AppColor.accentColor(context).withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
-            selectedBusData['onBoard']
+            selectedBusData.status == 'في الطريق'
                 ? AppLocalKay.in_bus.tr()
                 : AppLocalKay.waiting.tr(),
             style: AppTextStyle.bodySmall(context).copyWith(
-              color: selectedBusData['onBoard']
+              color: selectedBusData.status == 'في الطريق'
                   ? AppColor.secondAppColor(context)
                   : AppColor.accentColor(context),
               fontWeight: FontWeight.bold,
@@ -116,7 +110,7 @@ class MainTrackingCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFFE8F5E8),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: selectedBusData['busColor'].withOpacity(0.3)),
+        border: Border.all(color: selectedBusData.busColor.withOpacity(0.3)),
       ),
       child: Stack(
         children: [
@@ -127,7 +121,7 @@ class MainTrackingCard extends StatelessWidget {
             child: Container(
               height: 4.h,
               decoration: BoxDecoration(
-                color: selectedBusData['busColor'].withOpacity(0.5),
+                color: selectedBusData.busColor.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -137,11 +131,7 @@ class MainTrackingCard extends StatelessWidget {
             top: 80.h,
             child: Column(
               children: [
-                Icon(
-                  Icons.home_rounded,
-                  color: AppColor.secondAppColor(context),
-                  size: 24.w,
-                ),
+                Icon(Icons.home_rounded, color: AppColor.secondAppColor(context), size: 24.w),
                 SizedBox(height: 4.h),
                 Text(
                   AppLocalKay.home_address.tr(),
@@ -159,11 +149,7 @@ class MainTrackingCard extends StatelessWidget {
             top: 80.h,
             child: Column(
               children: [
-                Icon(
-                  Icons.school_rounded,
-                  color: AppColor.primaryColor(context),
-                  size: 24.w,
-                ),
+                Icon(Icons.school_rounded, color: AppColor.primaryColor(context), size: 24.w),
                 SizedBox(height: 4.h),
                 Text(
                   AppLocalKay.school.tr(),
@@ -206,7 +192,7 @@ class MainTrackingCard extends StatelessWidget {
               ),
               child: Icon(
                 Icons.directions_bus_rounded,
-                color: selectedBusData['busColor'],
+                color: selectedBusData.busColor,
                 size: 32.w,
               ),
             ),
@@ -274,9 +260,7 @@ class MainTrackingCard extends StatelessWidget {
             SizedBox(height: 10.w),
             Text(
               text,
-              style: AppTextStyle.bodySmall(
-                context,
-              ).copyWith(fontSize: 10.sp, color: color),
+              style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp, color: color),
             ),
           ],
         ),

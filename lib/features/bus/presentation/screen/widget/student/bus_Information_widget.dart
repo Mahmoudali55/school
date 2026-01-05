@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/Info_row_widget.dart';
 
 class BusInformation extends StatelessWidget {
-  final Map<String, dynamic> busData;
+  final BusModel busData;
   const BusInformation({super.key, required this.busData});
 
   @override
@@ -33,13 +34,13 @@ class BusInformation extends StatelessWidget {
             style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 16.h),
-          InfoRow(label: AppLocalKay.driver.tr(), value: busData['driverName']),
-          InfoRow(label: AppLocalKay.phone.tr(), value: busData['driverPhone']),
-          InfoRow(label: AppLocalKay.current_location.tr(), value: busData['currentLocation']),
-          InfoRow(label: AppLocalKay.speed.tr(), value: busData['speed']),
+          InfoRow(label: AppLocalKay.driver.tr(), value: busData.driverName),
+          InfoRow(label: AppLocalKay.phone.tr(), value: busData.driverPhone),
+          InfoRow(label: AppLocalKay.current_location.tr(), value: busData.currentLocation),
+          InfoRow(label: AppLocalKay.speed.tr(), value: busData.speed),
           InfoRow(
             label: AppLocalKay.passengers.tr(),
-            value: "${busData['occupiedSeats']}/${busData['capacity']}",
+            value: "${busData.occupiedSeats}/${busData.capacity}",
           ),
         ],
       ),

@@ -1,8 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
+import 'package:my_template/features/bus/presentation/cubit/bus_state.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/bus_Information_widget.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/bus_tracking_card.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/emergency_button.dart';
@@ -23,46 +26,10 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
   late Animation<double> _busAnimation;
   bool _isBusMoving = true;
 
-  Map<String, dynamic> _busData = {};
-  List<Map<String, dynamic>> _stops = [];
-  List<Map<String, dynamic>> _busSchedule = [];
-
   @override
   void initState() {
     super.initState();
-    _initializeData();
     _initializeAnimations();
-  }
-
-  void _initializeData() {
-    _busData = {
-      'busNumber': 'BUS-2024',
-      'driverName': 'أحمد محمد',
-      'driverPhone': '+966500000000',
-      'currentLocation': 'شارع الملك فهد',
-      'nextStop': 'محطة الجامعة',
-      'estimatedTime': '7 دقائق',
-      'distance': '1.2 كم',
-      'speed': '45 كم/ساعة',
-      'capacity': '40 طالب',
-      'occupiedSeats': '32',
-      'status': 'في الطريق',
-      'lastUpdate': 'منذ دقيقتين',
-    };
-
-    _stops = [
-      {'name': 'المنزل', 'time': '6:30 ص', 'passed': true, 'current': false},
-      {'name': 'شارع التحلية', 'time': '6:45 ص', 'passed': true, 'current': false},
-      {'name': 'ميدان الملكة', 'time': '7:00 ص', 'passed': false, 'current': true},
-      {'name': 'محطة الجامعة', 'time': '7:15 ص', 'passed': false, 'current': false},
-      {'name': 'المدرسة', 'time': '7:30 ص', 'passed': false, 'current': false},
-    ];
-
-    _busSchedule = [
-      {'period': AppLocalKay.morning.tr(), 'pickup': '6:30 ص', 'arrival': '7:30 ص'},
-      {'period': AppLocalKay.evening.tr(), 'pickup': '12:30 م', 'arrival': '1:30 م'},
-      {'period': AppLocalKay.night.tr(), 'pickup': '3:30 م', 'arrival': '4:30 م'},
-    ];
   }
 
   void _initializeAnimations() {
@@ -83,14 +50,12 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
 
   // =========================== إجراءات ===========================
   void _refreshLocation() {
-    setState(() {
-      _busData['lastUpdate'] = 'الآن';
-      _busData['estimatedTime'] = '5 دقائق';
-      _busData['distance'] = '1.0 كم';
-    });
-
+    context.read<BusCubit>().getBusData('student');
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(AppLocalKay.update_location.tr()), backgroundColor: Color(0xFF4CAF50)),
+      SnackBar(
+        content: Text(AppLocalKay.update_location.tr()),
+        backgroundColor: const Color(0xFF4CAF50),
+      ),
     );
   }
 
@@ -105,12 +70,12 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
     });
   }
 
-  void _callDriver() {
+  void _callDriver(String driverName) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(AppLocalKay.call_driver.tr(), style: AppTextStyle.bodyMedium(context)),
-        content: Text('\ ${AppLocalKay.ConnectDriverHint.tr()}   ${_busData['driverName']}؟'),
+        content: Text('\ ${AppLocalKay.ConnectDriverHint.tr()}   $driverName؟'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -205,39 +170,67 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
   // =========================== Build ===========================
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFD),
-      body: SafeArea(
-        child: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            SliverToBoxAdapter(
-              child: Center(
-                child: Text(
-                  AppLocalKay.bus_title.tr(),
-                  style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
+    return BlocBuilder<BusCubit, BusState>(
+      builder: (context, state) {
+        if (state.isLoading) {
+          return const Scaffold(body: Center(child: CircularProgressIndicator()));
+        }
+
+        final selectedBus = state.selectedAdminBus;
+        if (selectedBus == null) {
+          return const Scaffold(body: Center(child: Text("لا توجد بيانات متاحة")));
+        }
+
+        // Mock stops and schedule for now as they are not in the model yet
+        final List<Map<String, dynamic>> stops = [
+          {'name': 'المنزل', 'time': '6:30 ص', 'passed': true, 'current': false},
+          {'name': 'شارع التحلية', 'time': '6:45 ص', 'passed': true, 'current': false},
+          {'name': 'ميدان الملكة', 'time': '7:00 ص', 'passed': false, 'current': true},
+          {'name': 'محطة الجامعة', 'time': '7:15 ص', 'passed': false, 'current': false},
+          {'name': 'المدرسة', 'time': '7:30 ص', 'passed': false, 'current': false},
+        ];
+
+        final List<Map<String, dynamic>> schedule = [
+          {'period': AppLocalKay.morning.tr(), 'pickup': '6:30 ص', 'arrival': '7:30 ص'},
+          {'period': AppLocalKay.evening.tr(), 'pickup': '12:30 م', 'arrival': '1:30 م'},
+          {'period': AppLocalKay.night.tr(), 'pickup': '3:30 م', 'arrival': '4:30 م'},
+        ];
+
+        return Scaffold(
+          backgroundColor: const Color(0xFFF8FAFD),
+          body: SafeArea(
+            child: CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Center(
+                    child: Text(
+                      AppLocalKay.bus_title.tr(),
+                      style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
-              ),
+                SliverToBoxAdapter(
+                  child: BusTrackingCard(
+                    busData: selectedBus, // This will need updating in the widget itself
+                    stops: stops,
+                    busAnimation: _busAnimation,
+                    isBusMoving: _isBusMoving,
+                    refreshLocation: _refreshLocation,
+                    toggleBusMovement: _toggleBusMovement,
+                    callDriver: () => _callDriver(selectedBus.driverName),
+                  ),
+                ),
+                SliverToBoxAdapter(child: RouteProgress(stops: stops)),
+                SliverToBoxAdapter(child: BusInformation(busData: selectedBus)),
+                SliverToBoxAdapter(child: ScheduleSection(schedule: schedule)),
+                SliverToBoxAdapter(child: SafetyFeatures(onFeatureTap: _handleSafetyFeature)),
+              ],
             ),
-            SliverToBoxAdapter(
-              child: BusTrackingCard(
-                busData: _busData,
-                stops: _stops,
-                busAnimation: _busAnimation,
-                isBusMoving: _isBusMoving,
-                refreshLocation: _refreshLocation,
-                toggleBusMovement: _toggleBusMovement,
-                callDriver: _callDriver,
-              ),
-            ),
-            SliverToBoxAdapter(child: RouteProgress(stops: _stops)),
-            SliverToBoxAdapter(child: BusInformation(busData: _busData)),
-            SliverToBoxAdapter(child: ScheduleSection(schedule: _busSchedule)),
-            SliverToBoxAdapter(child: SafetyFeatures(onFeatureTap: _handleSafetyFeature)),
-          ],
-        ),
-      ),
-      floatingActionButton: EmergencyButton(showDialogCallback: _showEmergencyDialog),
+          ),
+          floatingActionButton: EmergencyButton(showDialogCallback: () => _showEmergencyDialog()),
+        );
+      },
     );
   }
 }

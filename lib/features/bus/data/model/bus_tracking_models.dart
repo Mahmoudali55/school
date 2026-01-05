@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 
 class BusClass extends Equatable {
   final String id;
+  final String? childName;
   final String className;
   final String subject;
   final String totalStudents;
@@ -20,6 +21,7 @@ class BusClass extends Equatable {
 
   const BusClass({
     required this.id,
+    this.childName,
     required this.className,
     required this.subject,
     required this.totalStudents,
@@ -38,6 +40,7 @@ class BusClass extends Equatable {
   @override
   List<Object?> get props => [
     id,
+    childName,
     className,
     subject,
     totalStudents,
@@ -55,6 +58,7 @@ class BusClass extends Equatable {
 
   BusClass copyWith({
     String? id,
+    String? childName,
     String? className,
     String? subject,
     String? totalStudents,
@@ -71,6 +75,7 @@ class BusClass extends Equatable {
   }) {
     return BusClass(
       id: id ?? this.id,
+      childName: childName ?? this.childName,
       className: className ?? this.className,
       subject: subject ?? this.subject,
       totalStudents: totalStudents ?? this.totalStudents,

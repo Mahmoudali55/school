@@ -8,8 +8,8 @@ import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/bus/data/model/bus_tracking_models.dart';
-import 'package:my_template/features/bus/presentation/cubit/bus_tracking_cubit.dart';
-import 'package:my_template/features/bus/presentation/cubit/bus_tracking_state.dart';
+import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
+import 'package:my_template/features/bus/presentation/cubit/bus_state.dart';
 
 class MainTrackingCard extends StatelessWidget {
   final Animation<double> busAnimation;
@@ -18,7 +18,7 @@ class MainTrackingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BusTrackingCubit, BusTrackingState>(
+    return BlocBuilder<BusCubit, BusState>(
       builder: (context, state) {
         if (state.selectedClass == null) {
           return Container(
@@ -241,7 +241,7 @@ class MainTrackingCard extends StatelessWidget {
   }
 
   Widget _buildTrackingActions(BuildContext context) {
-    final cubit = context.read<BusTrackingCubit>();
+    final cubit = context.read<BusCubit>();
     return Row(
       children: [
         Expanded(
@@ -298,7 +298,7 @@ class MainTrackingCard extends StatelessWidget {
     );
   }
 
-  void _takeAttendance(BusTrackingCubit cubit, BuildContext context) {
+  void _takeAttendance(BusCubit cubit, BuildContext context) {
     cubit.takeAttendance();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

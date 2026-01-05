@@ -4,9 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
 
 class AdminAllBusesStatus extends StatelessWidget {
-  final List<Map<String, dynamic>> allBusesData;
+  final List<BusModel> allBusesData;
 
   const AdminAllBusesStatus({super.key, required this.allBusesData});
 
@@ -34,10 +35,9 @@ class AdminAllBusesStatus extends StatelessWidget {
             children: [
               Text(
                 AppLocalKay.all_buses.tr(),
-                style: AppTextStyle.titleMedium(context).copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleMedium(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
@@ -47,10 +47,9 @@ class AdminAllBusesStatus extends StatelessWidget {
                 ),
                 child: Text(
                   "${allBusesData.length} حافلات",
-                  style: AppTextStyle.bodySmall(context).copyWith(
-                    color: const Color(0xFF9C27B0),
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(color: const Color(0xFF9C27B0), fontWeight: FontWeight.w600),
                 ),
               ),
             ],
@@ -63,8 +62,7 @@ class AdminAllBusesStatus extends StatelessWidget {
               physics: const AlwaysScrollableScrollPhysics(),
               itemCount: allBusesData.length,
               separatorBuilder: (context, index) => SizedBox(height: 8.h),
-              itemBuilder: (context, index) =>
-                  _buildBusStatusItem(context, allBusesData[index]),
+              itemBuilder: (context, index) => _buildBusStatusItem(context, allBusesData[index]),
             ),
           ),
         ],
@@ -72,12 +70,9 @@ class AdminAllBusesStatus extends StatelessWidget {
     );
   }
 
-  Widget _buildBusStatusItem(
-    BuildContext context,
-    Map<String, dynamic> busData,
-  ) {
+  Widget _buildBusStatusItem(BuildContext context, BusModel busData) {
     Color statusColor;
-    switch (busData['status']) {
+    switch (busData.status) {
       case 'في الطريق':
         statusColor = const Color(0xFF4CAF50);
         break;
@@ -105,14 +100,10 @@ class AdminAllBusesStatus extends StatelessWidget {
             width: 36.w,
             height: 36.w,
             decoration: BoxDecoration(
-              color: busData['busColor'].withOpacity(0.1),
+              color: busData.busColor.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              Icons.directions_bus_rounded,
-              color: busData['busColor'],
-              size: 18.w,
-            ),
+            child: Icon(Icons.directions_bus_rounded, color: busData.busColor, size: 18.w),
           ),
           SizedBox(width: 8.w),
           // Bus Info
@@ -122,15 +113,14 @@ class AdminAllBusesStatus extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "${busData['busName']} - ${busData['busNumber']}",
-                  style: AppTextStyle.bodyMedium(context).copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF1F2937),
-                  ),
+                  "${busData.busName} - ${busData.busNumber}",
+                  style: AppTextStyle.bodyMedium(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
                 ),
                 SizedBox(height: 2.h),
                 Text(
-                  "${busData['driverName']} • ${busData['currentLocation']}",
+                  "${busData.driverName} • ${busData.currentLocation}",
                   style: AppTextStyle.bodySmall(
                     context,
                   ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
@@ -150,17 +140,15 @@ class AdminAllBusesStatus extends StatelessWidget {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
-                  busData['status'],
-                  style: AppTextStyle.bodySmall(context).copyWith(
-                    fontSize: 9.sp,
-                    color: statusColor,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  busData.status,
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontSize: 9.sp, color: statusColor, fontWeight: FontWeight.w600),
                 ),
               ),
               SizedBox(height: 2.h),
               Text(
-                busData['estimatedTime'],
+                busData.estimatedTime,
                 style: AppTextStyle.bodySmall(
                   context,
                 ).copyWith(fontSize: 10.sp, color: const Color(0xFF6B7280)),

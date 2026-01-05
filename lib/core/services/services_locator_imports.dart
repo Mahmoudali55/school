@@ -22,4 +22,7 @@ Future<void> initDependencies() async {
 
   sl.registerLazySingleton<CalendarRepo>(() => CalendarRepo());
   sl.registerFactory<CalendarCubit>(() => CalendarCubit(sl()));
+
+  sl.registerLazySingleton<BusRepo>(() => BusRepo());
+  sl.registerFactory<BusCubit>(() => BusCubit(sl()));
 }

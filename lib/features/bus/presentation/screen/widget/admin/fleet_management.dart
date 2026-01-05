@@ -4,9 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
 
 class FleetManagement extends StatelessWidget {
-  final Map<String, dynamic> selectedBusData;
+  final BusModel selectedBusData;
 
   const FleetManagement({super.key, required this.selectedBusData});
 
@@ -31,18 +32,13 @@ class FleetManagement extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
-                Icons.manage_accounts_rounded,
-                color: const Color(0xFF9C27B0),
-                size: 20.w,
-              ),
+              Icon(Icons.manage_accounts_rounded, color: const Color(0xFF9C27B0), size: 20.w),
               SizedBox(width: 8.w),
               Text(
                 AppLocalKay.buses_section.tr(),
-                style: AppTextStyle.titleMedium(context).copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleMedium(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
             ],
           ),
@@ -58,28 +54,28 @@ class FleetManagement extends StatelessWidget {
               _buildManagementItem(
                 context,
                 AppLocalKay.performance_report.tr(),
-                "${selectedBusData['attendanceRate']} حضور",
+                "${selectedBusData.attendanceRate} حضور",
                 Icons.assessment_rounded,
                 AppColor.secondAppColor(context),
               ),
               _buildManagementItem(
                 context,
                 AppLocalKay.status.tr(),
-                selectedBusData['maintenanceStatus'],
+                selectedBusData.maintenanceStatus,
                 Icons.build_rounded,
                 AppColor.accentColor(context),
               ),
               _buildManagementItem(
                 context,
                 AppLocalKay.fuel_level.tr(),
-                selectedBusData['fuelLevel'],
+                selectedBusData.fuelLevel,
                 Icons.local_gas_station_rounded,
                 AppColor.primaryColor(context),
               ),
               _buildManagementItem(
                 context,
                 AppLocalKay.passengers_on_board.tr(),
-                selectedBusData['studentsOnBoard'],
+                selectedBusData.studentsOnBoard,
                 Icons.people_alt_rounded,
                 const Color(0xFF9C27B0),
               ),
@@ -111,20 +107,16 @@ class FleetManagement extends StatelessWidget {
             children: [
               Container(
                 padding: EdgeInsets.all(4.w),
-                decoration: BoxDecoration(
-                  color: color.withOpacity(0.2),
-                  shape: BoxShape.circle,
-                ),
+                decoration: BoxDecoration(color: color.withOpacity(0.2), shape: BoxShape.circle),
                 child: Icon(icon, size: 16.w, color: color),
               ),
               SizedBox(width: 8.w),
               Expanded(
                 child: Text(
                   title,
-                  style: AppTextStyle.bodySmall(context).copyWith(
-                    color: const Color(0xFF6B7280),
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(color: const Color(0xFF6B7280), fontWeight: FontWeight.w600),
                 ),
               ),
             ],

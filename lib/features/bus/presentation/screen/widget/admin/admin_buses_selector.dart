@@ -4,18 +4,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
 
 class AdminBusesSelector extends StatelessWidget {
   final String selectedBus;
-  final List<String> buses;
-  final List<Map<String, dynamic>> allBusesData;
-  final Function(String, Map<String, dynamic>) onBusSelected;
+  final List<BusModel> buses;
+  final Function(String) onBusSelected;
 
   const AdminBusesSelector({
     super.key,
     required this.selectedBus,
     required this.buses,
-    required this.allBusesData,
     required this.onBusSelected,
   });
 
@@ -40,18 +39,13 @@ class AdminBusesSelector extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
-                Icons.directions_bus_rounded,
-                color: const Color(0xFF9C27B0),
-                size: 20.w,
-              ),
+              Icon(Icons.directions_bus_rounded, color: const Color(0xFF9C27B0), size: 20.w),
               SizedBox(width: 8.w),
               Text(
                 AppLocalKay.select_bus.tr(),
-                style: AppTextStyle.titleMedium(context).copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleMedium(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
             ],
           ),
@@ -66,11 +60,8 @@ class AdminBusesSelector extends StatelessWidget {
     );
   }
 
-  Widget _buildBusChip(BuildContext context, String busNumber) {
-    final isSelected = selectedBus == busNumber;
-    final busData = allBusesData.firstWhere(
-      (data) => data['busNumber'] == busNumber,
-    );
+  Widget _buildBusChip(BuildContext context, BusModel bus) {
+    final isSelected = selectedBus == bus.busNumber;
 
     return ChoiceChip(
       label: Row(
@@ -79,33 +70,27 @@ class AdminBusesSelector extends StatelessWidget {
           Icon(
             Icons.directions_bus_rounded,
             size: 16.w,
-            color: isSelected
-                ? AppColor.whiteColor(context)
-                : busData['busColor'],
+            color: isSelected ? AppColor.whiteColor(context) : bus.busColor,
           ),
           SizedBox(width: 6.w),
-          Text(busNumber),
+          Text(bus.busNumber),
         ],
       ),
       selected: isSelected,
       onSelected: (selected) {
         if (selected) {
-          onBusSelected(busNumber, busData);
+          onBusSelected(bus.busNumber);
         }
       },
       backgroundColor: AppColor.whiteColor(context),
-      selectedColor: busData['busColor'],
+      selectedColor: bus.busColor,
       labelStyle: AppTextStyle.bodyMedium(context).copyWith(
-        color: isSelected
-            ? AppColor.whiteColor(context)
-            : const Color(0xFF6B7280),
+        color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF6B7280),
         fontWeight: FontWeight.w600,
       ),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
-        side: BorderSide(
-          color: isSelected ? busData['busColor'] : const Color(0xFFE5E7EB),
-        ),
+        side: BorderSide(color: isSelected ? bus.busColor : const Color(0xFFE5E7EB)),
       ),
     );
   }

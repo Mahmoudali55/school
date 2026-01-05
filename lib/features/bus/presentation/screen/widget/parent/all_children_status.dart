@@ -4,9 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/bus/data/model/bus_tracking_models.dart';
 
 class AllChildrenStatus extends StatelessWidget {
-  final List<Map<String, dynamic>> childrenBusData;
+  final List<BusClass> childrenBusData;
 
   const AllChildrenStatus({super.key, required this.childrenBusData});
 
@@ -34,10 +35,9 @@ class AllChildrenStatus extends StatelessWidget {
             children: [
               Text(
                 AppLocalKay.all_children.tr(),
-                style: AppTextStyle.titleLarge(context).copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleLarge(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
@@ -47,10 +47,9 @@ class AllChildrenStatus extends StatelessWidget {
                 ),
                 child: Text(
                   "${childrenBusData.length} ${AppLocalKay.children.tr()}",
-                  style: AppTextStyle.bodySmall(context).copyWith(
-                    color: AppColor.primaryColor(context),
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(color: AppColor.primaryColor(context), fontWeight: FontWeight.w600),
                 ),
               ),
             ],
@@ -72,10 +71,7 @@ class AllChildrenStatus extends StatelessWidget {
     );
   }
 
-  Widget _buildChildStatusItem(
-    BuildContext context,
-    Map<String, dynamic> childData,
-  ) {
+  Widget _buildChildStatusItem(BuildContext context, BusClass childData) {
     return Container(
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
@@ -89,14 +85,10 @@ class AllChildrenStatus extends StatelessWidget {
             width: 36.w,
             height: 36.w,
             decoration: BoxDecoration(
-              color: childData['busColor'].withOpacity(0.1),
+              color: childData.busColor.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              Icons.person_rounded,
-              color: childData['busColor'],
-              size: 18.w,
-            ),
+            child: Icon(Icons.person_rounded, color: childData.busColor, size: 18.w),
           ),
           SizedBox(width: 8.w),
           Expanded(
@@ -105,15 +97,14 @@ class AllChildrenStatus extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  childData['childName'],
-                  style: AppTextStyle.bodyMedium(context).copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF1F2937),
-                  ),
+                  childData.childName ?? "",
+                  style: AppTextStyle.bodyMedium(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
                 ),
                 SizedBox(height: 2.h),
                 Text(
-                  "${childData['school']} • ${childData['estimatedTime']}",
+                  "${childData.subject} • ${childData.estimatedArrival}",
                   style: AppTextStyle.bodySmall(
                     context,
                   ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
@@ -128,18 +119,18 @@ class AllChildrenStatus extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
                 decoration: BoxDecoration(
-                  color: childData['onBoard']
+                  color: childData.status == 'في الطريق'
                       ? AppColor.secondAppColor(context).withOpacity(0.1)
                       : AppColor.accentColor(context).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
-                  childData['onBoard']
+                  childData.status == 'في الطريق'
                       ? AppLocalKay.in_bus.tr()
                       : AppLocalKay.waiting.tr(),
                   style: AppTextStyle.bodySmall(context).copyWith(
                     fontSize: 9.sp,
-                    color: childData['onBoard']
+                    color: childData.status == 'في الطريق'
                         ? AppColor.secondAppColor(context)
                         : AppColor.accentColor(context),
                     fontWeight: FontWeight.w600,
@@ -148,7 +139,7 @@ class AllChildrenStatus extends StatelessWidget {
               ),
               SizedBox(height: 2.h),
               Text(
-                childData['attendance'],
+                childData.status ?? "",
                 style: AppTextStyle.bodySmall(
                   context,
                 ).copyWith(fontSize: 10.sp, color: const Color(0xFF6B7280)),

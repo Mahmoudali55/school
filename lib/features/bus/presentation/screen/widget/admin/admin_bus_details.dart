@@ -4,9 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
 
 class AdminBusDetails extends StatelessWidget {
-  final Map<String, dynamic> selectedBusData;
+  final BusModel selectedBusData;
 
   const AdminBusDetails({super.key, required this.selectedBusData});
 
@@ -31,10 +32,9 @@ class AdminBusDetails extends StatelessWidget {
         children: [
           Text(
             AppLocalKay.route_details.tr(),
-            style: AppTextStyle.titleMedium(context).copyWith(
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF1F2937),
-            ),
+            style: AppTextStyle.titleMedium(
+              context,
+            ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
           ),
           SizedBox(height: 16.h),
           GridView.count(
@@ -48,49 +48,49 @@ class AdminBusDetails extends StatelessWidget {
               _buildDetailItem(
                 context,
                 AppLocalKay.bus_number.tr(),
-                selectedBusData['busNumber'],
+                selectedBusData.busNumber,
                 Icons.directions_bus_rounded,
               ),
               _buildDetailItem(
                 context,
                 AppLocalKay.driver.tr(),
-                selectedBusData['driverName'],
+                selectedBusData.driverName,
                 Icons.person_rounded,
               ),
               _buildDetailItem(
                 context,
                 AppLocalKay.phone.tr(),
-                selectedBusData['driverPhone'],
+                selectedBusData.driverPhone,
                 Icons.phone_rounded,
               ),
               _buildDetailItem(
                 context,
                 AppLocalKay.current_location.tr(),
-                selectedBusData['currentLocation'],
+                selectedBusData.currentLocation,
                 Icons.location_on_rounded,
               ),
               _buildDetailItem(
                 context,
                 AppLocalKay.next_stop.tr(),
-                selectedBusData['nextStop'],
+                selectedBusData.nextStop,
                 Icons.flag_rounded,
               ),
               _buildDetailItem(
                 context,
                 AppLocalKay.capacity.tr(),
-                "${selectedBusData['occupiedSeats']}/${selectedBusData['capacity']}",
+                "${selectedBusData.occupiedSeats}/${selectedBusData.capacity}",
                 Icons.people_rounded,
               ),
               _buildDetailItem(
                 context,
                 AppLocalKay.estimated_time.tr(),
-                selectedBusData['estimatedTime'],
+                selectedBusData.estimatedTime,
                 Icons.schedule_rounded,
               ),
               _buildDetailItem(
                 context,
                 AppLocalKay.distance.tr(),
-                selectedBusData['distance'],
+                selectedBusData.distance,
                 Icons.space_dashboard_rounded,
               ),
             ],
@@ -100,12 +100,7 @@ class AdminBusDetails extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailItem(
-    BuildContext context,
-    String title,
-    String value,
-    IconData icon,
-  ) {
+  Widget _buildDetailItem(BuildContext context, String title, String value, IconData icon) {
     return Container(
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
@@ -118,24 +113,21 @@ class AdminBusDetails extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(6.w),
             decoration: BoxDecoration(
-              color: selectedBusData['busColor'].withOpacity(0.1),
+              color: selectedBusData.busColor.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, size: 16.w, color: selectedBusData['busColor']),
+            child: Icon(icon, size: 16.w, color: selectedBusData.busColor),
           ),
           SizedBox(height: 10.h),
           Text(
             title,
-            style: AppTextStyle.bodySmall(
-              context,
-            ).copyWith(color: const Color(0xFF6B7280)),
+            style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
           ),
           Text(
             value,
-            style: AppTextStyle.bodyMedium(context).copyWith(
-              fontWeight: FontWeight.w600,
-              color: const Color(0xFF1F2937),
-            ),
+            style: AppTextStyle.bodyMedium(
+              context,
+            ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

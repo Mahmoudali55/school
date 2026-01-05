@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:my_template/features/bus/presentation/cubit/bus_tracking_cubit.dart';
+import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
 
 class QuickActionsWidget extends StatelessWidget {
   const QuickActionsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<BusTrackingCubit>();
+    final cubit = context.read<BusCubit>();
 
     return Container(
       margin: EdgeInsets.all(16.w),
@@ -116,7 +116,7 @@ class QuickActionsWidget extends StatelessWidget {
     );
   }
 
-  void _takeAttendance(BusTrackingCubit cubit, BuildContext context) {
+  void _takeAttendance(BusCubit cubit, BuildContext context) {
     cubit.takeAttendance();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

@@ -4,9 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
 
 class AdminMainTrackingCard extends StatelessWidget {
-  final Map<String, dynamic> selectedBusData;
+  final BusModel selectedBusData;
   final Animation<double> busAnimation;
   final VoidCallback onCallDriver;
   final VoidCallback onRefreshLocation;
@@ -56,7 +57,7 @@ class AdminMainTrackingCard extends StatelessWidget {
     Color statusColor;
     IconData statusIcon;
 
-    switch (selectedBusData['status']) {
+    switch (selectedBusData.status) {
       case 'في الطريق':
         statusColor = const Color(0xFF4CAF50);
         statusIcon = Icons.directions_bus_rounded;
@@ -81,14 +82,10 @@ class AdminMainTrackingCard extends StatelessWidget {
           width: 50.w,
           height: 50.w,
           decoration: BoxDecoration(
-            color: selectedBusData['busColor'].withOpacity(0.1),
+            color: selectedBusData.busColor.withOpacity(0.1),
             shape: BoxShape.circle,
           ),
-          child: Icon(
-            Icons.directions_bus_rounded,
-            color: selectedBusData['busColor'],
-            size: 24.w,
-          ),
+          child: Icon(Icons.directions_bus_rounded, color: selectedBusData.busColor, size: 24.w),
         ),
         SizedBox(width: 12.w),
         // Bus Info
@@ -97,17 +94,14 @@ class AdminMainTrackingCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "${selectedBusData['busName']} - ${selectedBusData['busNumber']}",
-                style: AppTextStyle.titleMedium(context).copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                "${selectedBusData.busName} - ${selectedBusData.busNumber}",
+                style: AppTextStyle.titleMedium(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
               Text(
-                "السائق: ${selectedBusData['driverName']} • ${selectedBusData['route']}",
-                style: AppTextStyle.bodyMedium(
-                  context,
-                ).copyWith(color: const Color(0xFF6B7280)),
+                "السائق: ${selectedBusData.driverName} • ${selectedBusData.route}",
+                style: AppTextStyle.bodyMedium(context).copyWith(color: const Color(0xFF6B7280)),
               ),
             ],
           ),
@@ -125,7 +119,7 @@ class AdminMainTrackingCard extends StatelessWidget {
               Icon(statusIcon, size: 14.w, color: statusColor),
               SizedBox(width: 4.w),
               Text(
-                selectedBusData['status'],
+                selectedBusData.status,
                 style: AppTextStyle.bodySmall(
                   context,
                 ).copyWith(color: statusColor, fontWeight: FontWeight.bold),
@@ -143,7 +137,7 @@ class AdminMainTrackingCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: selectedBusData['busColor'].withOpacity(0.3)),
+        border: Border.all(color: selectedBusData.busColor.withOpacity(0.3)),
       ),
       child: Stack(
         children: [
@@ -155,7 +149,7 @@ class AdminMainTrackingCard extends StatelessWidget {
             child: Container(
               height: 4.h,
               decoration: BoxDecoration(
-                color: selectedBusData['routeColor'].withOpacity(0.5),
+                color: selectedBusData.busColor.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -166,11 +160,7 @@ class AdminMainTrackingCard extends StatelessWidget {
             top: 80.h,
             child: Column(
               children: [
-                Icon(
-                  Icons.school_rounded,
-                  color: const Color(0xFF2196F3),
-                  size: 24.w,
-                ),
+                Icon(Icons.school_rounded, color: const Color(0xFF2196F3), size: 24.w),
                 SizedBox(height: 4.h),
                 Text(
                   "المدرسة",
@@ -189,11 +179,7 @@ class AdminMainTrackingCard extends StatelessWidget {
             top: 80.h,
             child: Column(
               children: [
-                Icon(
-                  Icons.location_on_rounded,
-                  color: const Color(0xFFFF9800),
-                  size: 20.w,
-                ),
+                Icon(Icons.location_on_rounded, color: const Color(0xFFFF9800), size: 20.w),
                 SizedBox(height: 4.h),
                 Text(
                   "المحطة 1",
@@ -209,11 +195,7 @@ class AdminMainTrackingCard extends StatelessWidget {
             top: 80.h,
             child: Column(
               children: [
-                Icon(
-                  Icons.location_on_rounded,
-                  color: const Color(0xFFFF9800),
-                  size: 20.w,
-                ),
+                Icon(Icons.location_on_rounded, color: const Color(0xFFFF9800), size: 20.w),
                 SizedBox(height: 4.h),
                 Text(
                   "المحطة 2",
@@ -255,7 +237,7 @@ class AdminMainTrackingCard extends StatelessWidget {
               ),
               child: Icon(
                 Icons.directions_bus_rounded,
-                color: selectedBusData['busColor'],
+                color: selectedBusData.busColor,
                 size: 32.w,
               ),
             ),
@@ -322,9 +304,7 @@ class AdminMainTrackingCard extends StatelessWidget {
             SizedBox(width: 8.w),
             Text(
               text,
-              style: AppTextStyle.bodySmall(
-                context,
-              ).copyWith(fontSize: 10.sp, color: color),
+              style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp, color: color),
             ),
           ],
         ),
