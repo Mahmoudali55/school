@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_template/features/class/data/model/class_models.dart';
 import 'package:my_template/features/class/data/repository/class_repo.dart';
+
 import 'class_state.dart';
 
 class ClassCubit extends Cubit<ClassState> {
@@ -8,23 +10,24 @@ class ClassCubit extends Cubit<ClassState> {
   ClassCubit(this._classRepo) : super(ClassInitial());
 
   Future<void> getClassData(String userTypeId) async {
-    emit(ClassLoading());
+    if (state is! ClassLoaded) {
+      emit(ClassLoading());
+    }
     try {
+      List<ClassModel> data;
       if (userTypeId == 'student') {
-        final data = await _classRepo.getStudentClasses();
-        emit(ClassLoaded(data));
+        data = await _classRepo.getStudentClasses();
       } else if (userTypeId == 'teacher') {
-        final data = await _classRepo.getTeacherClasses();
-        emit(ClassLoaded(data));
+        data = await _classRepo.getTeacherClasses();
       } else if (userTypeId == 'admin') {
-        final data = await _classRepo.getAdminClasses();
-        emit(ClassLoaded(data));
+        data = await _classRepo.getAdminClasses();
       } else if (userTypeId == 'parent') {
-        final data = await _classRepo.getParentStudentClasses();
-        emit(ClassLoaded(data));
+        data = await _classRepo.getParentStudentClasses();
       } else {
         emit(const ClassError("Unknown user type"));
+        return;
       }
+      emit(ClassLoaded(data));
     } catch (e) {
       emit(ClassError(e.toString()));
     }

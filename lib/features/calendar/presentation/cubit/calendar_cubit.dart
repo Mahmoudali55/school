@@ -1,79 +1,41 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/features/calendar/data/model/calendar_event_model.dart';
+import 'package:my_template/features/calendar/data/repo/calendar_repo.dart';
 
 import 'calendar_state.dart';
 
 class CalendarCubit extends Cubit<CalendarState> {
-  CalendarCubit()
+  final CalendarRepo _calendarRepo;
+
+  CalendarCubit(this._calendarRepo)
     : super(
         CalendarState(
           selectedDate: DateTime.now(),
           currentView: CalendarView.monthly,
-          classes: _dummyClasses,
-          events: _dummyEvents,
-          selectedClass: _dummyClasses.first,
+          classes: const [],
+          events: const [],
         ),
       );
 
-  static final List<ClassInfo> _dummyClasses = [
-    ClassInfo(id: '1', name: 'الصف العاشر', grade: 'العاشر', specialization: 'علمي'),
-    ClassInfo(id: '2', name: 'الصف التاسع', grade: 'التاسع', specialization: 'أدبي'),
-    ClassInfo(id: '3', name: 'الصف الحادي عشر', grade: 'الحادي عشر', specialization: 'علمي'),
-  ];
-
-  static final List<TeacherCalendarEvent> _dummyEvents = [
-    TeacherCalendarEvent(
-      id: '1',
-      title: 'حصّة الرياضيات',
-      date: DateTime.now(),
-      startTime: const TimeOfDay(hour: 8, minute: 0),
-      endTime: const TimeOfDay(hour: 8, minute: 45),
-      type: EventType.classEvent,
-      location: 'القاعة ١٠١',
-      description: 'الوحدة الثالثة - الجبر',
-      className: 'الصف العاشر - علمي',
-      subject: 'الرياضيات',
-    ),
-    TeacherCalendarEvent(
-      id: '2',
-      title: 'اجتماع المدرسين',
-      date: DateTime.now().add(const Duration(days: 1)),
-      startTime: const TimeOfDay(hour: 10, minute: 0),
-      endTime: const TimeOfDay(hour: 11, minute: 0),
-      type: EventType.meeting,
-      location: 'قاعة الاجتماعات',
-      description: 'مناقشة الخطط الدراسية',
-      className: 'جميع الصفوف',
-      subject: 'اجتماع',
-    ),
-    TeacherCalendarEvent(
-      id: '3',
-      title: 'تصحيح أوراق الامتحان',
-      date: DateTime.now().add(const Duration(days: 2)),
-      startTime: const TimeOfDay(hour: 13, minute: 0),
-      endTime: const TimeOfDay(hour: 15, minute: 0),
-      type: EventType.correction,
-      location: 'غرفة المدرسين',
-      description: 'تصحيح امتحان منتصف الفصل',
-      className: 'الصف العاشر - علمي',
-      subject: 'الرياضيات',
-      status: 'متأخر',
-    ),
-    TeacherCalendarEvent(
-      id: '4',
-      title: 'تحضير درس العلوم',
-      date: DateTime.now().add(const Duration(days: 3)),
-      startTime: const TimeOfDay(hour: 16, minute: 0),
-      endTime: const TimeOfDay(hour: 17, minute: 0),
-      type: EventType.preparation,
-      location: 'المنزل',
-      description: 'تحضير تجربة التفاعلات الكيميائية',
-      className: 'الصف التاسع - أدبي',
-      subject: 'العلوم',
-      status: 'مكتمل',
-    ),
-  ];
+  Future<void> getCalendarData(String userTypeId) async {
+    if (state.classes.isEmpty && state.events.isEmpty) {
+      emit(state.copyWith(isLoading: true));
+    }
+    try {
+      final classes = await _calendarRepo.getClasses(userTypeId);
+      final events = await _calendarRepo.getEvents(userTypeId);
+      emit(
+        state.copyWith(
+          classes: classes,
+          events: events,
+          selectedClass: state.selectedClass ?? (classes.isNotEmpty ? classes.first : null),
+          isLoading: false,
+        ),
+      );
+    } catch (e) {
+      emit(state.copyWith(error: e.toString(), isLoading: false));
+    }
+  }
 
   void changeDate(DateTime date) {
     emit(state.copyWith(selectedDate: date));

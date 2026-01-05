@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/services/services_locator.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/calendar/presentation/cubit/calendar_cubit.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/layout/presentation/screen/widget/bottom_nav_bar_screen.dart';
@@ -65,6 +66,9 @@ class _LayoutScreenState extends State<LayoutScreen> {
         BlocProvider(create: (context) => sl<HomeCubit>()..getHomeData(widget.selectedUserType.id)),
         BlocProvider(
           create: (context) => sl<ClassCubit>()..getClassData(widget.selectedUserType.id),
+        ),
+        BlocProvider(
+          create: (context) => sl<CalendarCubit>()..getCalendarData(widget.selectedUserType.id),
         ),
       ],
       child: Scaffold(

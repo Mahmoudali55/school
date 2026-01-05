@@ -17,30 +17,33 @@ class CalendarTeacherScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CalendarCubit(),
-      child: Scaffold(
-        backgroundColor: AppColor.whiteColor(context),
-        body: SafeArea(
-          child: Column(
-            children: [
-              // رأس الصفحة
-              const CalendarHeaderWidget(),
-              // اختيار الصف وشريط التحكم
-              const ControlBarWidget(),
-              // عرض التقويم
-              Expanded(child: _buildCalendarContent()),
-            ],
-          ),
+    return Scaffold(
+      backgroundColor: AppColor.whiteColor(context),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // رأس الصفحة
+            const CalendarHeaderWidget(),
+            // اختيار الصف وشريط التحكم
+            const ControlBarWidget(),
+            // عرض التقويم
+            Expanded(child: _buildCalendarContent()),
+          ],
         ),
-        floatingActionButton: _buildFloatingActionButton(context),
       ),
+      floatingActionButton: _buildFloatingActionButton(context),
     );
   }
 
   Widget _buildCalendarContent() {
     return BlocBuilder<CalendarCubit, CalendarState>(
       builder: (context, state) {
+        if (state.isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (state.error != null) {
+          return Center(child: Text(state.error!));
+        }
         switch (state.currentView) {
           case CalendarView.monthly:
             return const MonthlyViewWidget();

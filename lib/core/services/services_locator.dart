@@ -3,6 +3,8 @@ import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:my_template/features/auth/data/repository/auth_repo.dart';
 import 'package:my_template/features/auth/presentation/view/cubit/auth_cubit.dart';
+import 'package:my_template/features/calendar/data/repo/calendar_repo.dart';
+import 'package:my_template/features/calendar/presentation/cubit/calendar_cubit.dart';
 import 'package:my_template/features/class/data/repository/class_repo.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/home/data/repository/home_repo.dart';
