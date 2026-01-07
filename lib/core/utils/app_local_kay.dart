@@ -746,4 +746,37 @@ class AppLocalKay {
   static const String pieChart = 'pie_chart';
   static const String chartDetails = 'chart_details';
   static const String detailedStats = 'detailed_stats';
+
+  // Face Recognition Attendance
+  static const String face_recognition_attendance = 'face_recognition_attendance';
+  static const String register_student_faces = 'register_student_faces';
+  static const String start_scanning = 'start_scanning';
+  static const String stop_scanning = 'stop_scanning';
+  static const String scanning_faces = 'scanning_faces';
+  static const String face_detected = 'face_detected';
+  static const String student_recognized = 'student_recognized';
+  static const String unknown_face = 'unknown_face';
+  static const String register_face = 'register_face';
+  static const String capture_face = 'capture_face';
+  static const String face_registered_successfully = 'face_registered_successfully';
+  static const String camera_permission_required = 'camera_permission_required';
+  static const String grant_camera_permission = 'grant_camera_permission';
+  static const String no_face_detected = 'no_face_detected';
+  static const String position_face_in_frame = 'position_face_in_frame';
+  static const String hold_still = 'hold_still';
+  static const String recognition_confidence = 'recognition_confidence';
+  static const String auto_detected = 'auto_detected';
+  static const String manually_marked = 'manually_marked';
+  static const String not_detected = 'not_detected';
+  static const String scan_mode = 'scan_mode';
+  static const String single_scan = 'single_scan';
+  static const String continuous_scan = 'continuous_scan';
+  static const String switch_to_manual = 'switch_to_manual';
+  static const String face_registration = 'face_registration';
+  static const String select_student_to_register = 'select_student_to_register';
+  static const String students_registered = 'students_registered';
+  static const String students_not_registered = 'students_not_registered';
+  static const String re_register_face = 're_register_face';
+  static const String delete_face_registration = 'delete_face_registration';
+  static const String face_registration_deleted = 'face_registration_deleted';
 }

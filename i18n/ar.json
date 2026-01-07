@@ -801,38 +801,36 @@
 "line_chart": "خطي",
 "pie_chart": "دائري",
 "chart_details": "الرسم البياني التفصيلي",
-"detailed_stats": "الإحصائيات التفصيلية"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+"detailed_stats": "الإحصائيات التفصيلية",
+"face_recognition_attendance": "تسجيل الحضور بالتعرف على الوجه",
+"register_student_faces": "تسجيل وجوه الطلاب",
+"start_scanning": "بدء المسح",
+"stop_scanning": "إيقاف المسح",
+"scanning_faces": "جاري مسح الوجوه...",
+"face_detected": "تم اكتشاف وجه",
+"student_recognized": "تم التعرف على الطالب",
+"unknown_face": "وجه غير معروف",
+"register_face": "تسجيل الوجه",
+"capture_face": "التقاط الوجه",
+"face_registered_successfully": "تم تسجيل الوجه بنجاح",
+"camera_permission_required": "يتطلب إذن الكاميرا",
+"grant_camera_permission": "منح إذن الكاميرا",
+"no_face_detected": "لم يتم اكتشاف وجه",
+"position_face_in_frame": "ضع الوجه في الإطار",
+"hold_still": "ابق ثابتاً",
+"recognition_confidence": "دقة التعرف",
+"auto_detected": "تم الكشف تلقائياً",
+"manually_marked": "تم التحديد يدوياً",
+"not_detected": "لم يتم الكشف",
+"scan_mode": "وضع المسح",
+"single_scan": "مسح واحد",
+"continuous_scan": "مسح مستمر",
+"switch_to_manual": "التبديل إلى اليدوي",
+"face_registration": "تسجيل الوجه",
+"select_student_to_register": "اختر طالباً لتسجيل وجهه",
+"students_registered": "الطلاب المسجلون",
+"students_not_registered": "الطلاب غير المسجلين",
+"re_register_face": "إعادة تسجيل الوجه",
+"delete_face_registration": "حذف تسجيل الوجه",
+"face_registration_deleted": "تم حذف تسجيل الوجه"
 }

@@ -1,11 +1,17 @@
 // lib/features/classes/presentation/screens/class_details_screen.dart
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/services/services_locator.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/attendance/cubit/attendance_cubit.dart';
+import 'package:my_template/features/attendance/cubit/face_recognition_cubit.dart';
+import 'package:my_template/features/attendance/view/face_recognition_attendance_screen.dart';
+import 'package:my_template/features/attendance/view/student_face_registration_screen.dart';
 import 'package:my_template/features/class/presentation/execution/add_edit_class_screen.dart';
 import 'package:my_template/features/class/presentation/execution/class_reports_screen.dart';
 import 'package:my_template/features/class/presentation/execution/class_schedule_screen.dart';
@@ -214,6 +220,61 @@ class ClassDetailsScreen extends StatelessWidget {
                     ),
                   );
                 }, context),
+                _buildActionCard(
+                  AppLocalKay.register_student_faces.tr(),
+                  Icons.face_retouching_natural,
+                  Colors.teal,
+                  () {
+                    // TODO: Replace with actual students list from cubit
+                    final students = [
+                      {'id': '1', 'name': 'أحمد محمد'},
+                      {'id': '2', 'name': 'فاطمة علي'},
+                    ];
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider(
+                          create: (context) => sl<FaceRecognitionCubit>(),
+                          child: StudentFaceRegistrationScreen(
+                            classId: schoolClass.id,
+                            className: schoolClass.name,
+                            students: students,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  context,
+                ),
+                _buildActionCard(
+                  AppLocalKay.face_recognition_attendance.tr(),
+                  Icons.camera_front,
+                  Colors.indigo,
+                  () {
+                    // TODO: Replace with actual students list from cubit
+                    final students = [
+                      {'id': '1', 'name': 'أحمد محمد'},
+                      {'id': '2', 'name': 'فاطمة علي'},
+                    ];
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MultiBlocProvider(
+                          providers: [
+                            BlocProvider(create: (context) => sl<FaceRecognitionCubit>()),
+                            BlocProvider(create: (context) => sl<AttendanceCubit>()),
+                          ],
+                          child: FaceRecognitionAttendanceScreen(
+                            classId: schoolClass.id,
+                            className: schoolClass.name,
+                            students: students,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  context,
+                ),
               ],
             ),
           ],
