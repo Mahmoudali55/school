@@ -787,5 +787,14 @@
   "students_not_registered": "Unregistered Students",
   "re_register_face": "Re-register Face",
   "delete_face_registration": "Delete Face Registration",
-  "face_registration_deleted": "Face registration deleted"
+  "face_registration_deleted": "Face registration deleted",
+"manual_attendance_disabled": "Manual attendance is disabled. Please use face recognition to verify.",
+"delete_face_title": "Delete Face Registration",
+"delete_face_confirm_message": "Are you sure you want to delete this student's face registration? The student will disappear from this list after deletion.",
+"face_not_recognized_retry": "Face not recognized. Please ensure registration or try again.",
+"attendance_marked_success": "Attendance Marked ✓",
+"no_registered_students_for_face": "No students registered for face recognition",
+"verify_face": "Verify Face",
+"face_recognition_success":"(Face recognized successfully)"
+
 }

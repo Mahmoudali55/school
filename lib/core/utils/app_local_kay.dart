@@ -779,4 +779,12 @@ class AppLocalKay {
   static const String re_register_face = 're_register_face';
   static const String delete_face_registration = 'delete_face_registration';
   static const String face_registration_deleted = 'face_registration_deleted';
+  static const String manual_attendance_disabled = 'manual_attendance_disabled';
+  static const String delete_face_title = 'delete_face_title';
+  static const String delete_face_confirm_message = 'delete_face_confirm_message';
+  static const String face_not_recognized_retry = 'face_not_recognized_retry';
+  static const String attendance_marked_success = 'attendance_marked_success';
+  static const String no_registered_students_for_face = 'no_registered_students_for_face';
+  static const String verify_face = 'verify_face';
+  static const String face_recognition_success = 'face_recognition_success';
 }

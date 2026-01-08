@@ -832,5 +832,14 @@
 "students_not_registered": "الطلاب غير المسجلين",
 "re_register_face": "إعادة تسجيل الوجه",
 "delete_face_registration": "حذف تسجيل الوجه",
-"face_registration_deleted": "تم حذف تسجيل الوجه"
+"face_registration_deleted": "تم حذف تسجيل الوجه",
+"manual_attendance_disabled": "التحضير اليدوي معطل. يرجى استخدام بصمة الوجه للتحقق.",
+"delete_face_title": "حذف بصمة الوجه",
+
+"face_not_recognized_retry": "لم يتم التعرف على الوجه. يرجى التأكد من التسجيل أو المحاولة مرة أخرى.",
+"attendance_marked_success": "تم التحضير ✓",
+"no_registered_students_for_face": "لا يوجد طلاب مسجلين للتعرف على الوجه",
+"verify_face": "تحقق من الوجه",
+"face_recognition_success":"(تم التحقق بنجاح)",
+"delete_face_confirm_message":"هل أنت متأكد من رغبتك في حذف بصمة الوجه لهذا الطالب؟ سيختفي الطالب من هذه القائمة بعد الحذف."
 }

@@ -147,7 +147,7 @@ class _FaceRecognitionAttendanceScreenState extends State<FaceRecognitionAttenda
     if (isPresent) {
       // Show validation message for manual presence
       CommonMethods.showToast(
-        message: "التحضير اليدوي معطل. يرجى استخدام بصمة الوجه للتحقق.",
+        message: AppLocalKay.manual_attendance_disabled.tr(),
         seconds: 5,
         type: ToastType.error,
       );
@@ -169,12 +169,10 @@ class _FaceRecognitionAttendanceScreenState extends State<FaceRecognitionAttenda
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("حذف بصمة الوجه"),
-        content: const Text(
-          "هل أنت متأكد من رغبتك في حذف بصمة الوجه لهذا الطالب؟ سيختفي الطالب من هذه القائمة بعد الحذف.",
-        ),
+        title: Text(AppLocalKay.delete_face_title.tr()),
+        content: Text(AppLocalKay.delete_face_confirm_message.tr()),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("إلغاء")),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(AppLocalKay.cancel.tr())),
           TextButton(
             onPressed: () async {
               Navigator.pop(context);
@@ -182,7 +180,7 @@ class _FaceRecognitionAttendanceScreenState extends State<FaceRecognitionAttenda
               await cubit.deleteStudentFace(studentId);
               _loadRegisteredStudents(); // Refresh the list
             },
-            child: const Text("حذف", style: TextStyle(color: Colors.red)),
+            child: Text(AppLocalKay.delete.tr(), style: TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -274,8 +272,7 @@ class _FaceRecognitionAttendanceScreenState extends State<FaceRecognitionAttenda
                 // We just let the timer trigger the next attempt silently.
                 if (!isContinuousMode) {
                   CommonMethods.showToast(
-                    message:
-                        "لم يتم التعرف على الوجه. يرجى التأكد من التسجيل أو المحاولة مرة أخرى.",
+                    message: AppLocalKay.face_not_recognized_retry.tr(),
                     seconds: 5,
                     type: ToastType.error,
                   );
@@ -451,7 +448,7 @@ class _FaceRecognitionAttendanceScreenState extends State<FaceRecognitionAttenda
                       ),
                       SizedBox(height: 8.h),
                       Text(
-                        "تم التحضير ✓",
+                        AppLocalKay.attendance_marked_success.tr(),
                         style: AppTextStyle.titleMedium(context).copyWith(
                           color: Colors.white,
                           shadows: [const Shadow(color: Colors.black, blurRadius: 8)],
@@ -528,7 +525,10 @@ class _FaceRecognitionAttendanceScreenState extends State<FaceRecognitionAttenda
           children: [
             const Icon(Icons.face_retouching_off, size: 64, color: Colors.grey),
             SizedBox(height: 16.h),
-            Text("لا يوجد طلاب مسجلين للتعرف على الوجه", style: AppTextStyle.bodyMedium(context)),
+            Text(
+              AppLocalKay.no_registered_students_for_face.tr(),
+              style: AppTextStyle.bodyMedium(context),
+            ),
           ],
         ),
       );
@@ -662,8 +662,8 @@ class _FaceRecognitionAttendanceScreenState extends State<FaceRecognitionAttenda
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const TextSpan(
-                        text: '(تم التحقق بنجاح)',
+                      TextSpan(
+                        text: AppLocalKay.face_recognition_success.tr(),
                         style: TextStyle(
                           color: Colors.blue,
                           fontSize: 10,
@@ -688,7 +688,7 @@ class _FaceRecognitionAttendanceScreenState extends State<FaceRecognitionAttenda
                     }
                     _performRecognition(targetStudentId: studentId);
                   },
-                  tooltip: "تحقق من الوجه",
+                  tooltip: AppLocalKay.verify_face.tr(),
                 ),
               // Switch allows toggling, but manual check-in is still guarded in _toggleStudentAttendance
               Switch(
