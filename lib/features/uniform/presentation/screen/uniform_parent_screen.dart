@@ -1,7 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 import '../../../../core/utils/app_local_kay.dart';
 import '../../data/model/uniform_model.dart';
@@ -33,7 +39,7 @@ class UniformParentScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildSizeInputSection(context),
-                  const SizedBox(height: 24),
+                  const Gap(24),
                   _buildOrderHistorySection(context, state.orders),
                 ],
               ),
@@ -68,35 +74,19 @@ class UniformParentScreen extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const Gap(8),
             Text(
               AppLocalKay.measurements_hint.tr(),
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey),
             ),
-            const SizedBox(height: 16),
+            const Gap(16),
             _buildInputField(context, AppLocalKay.height.tr(), Icons.height),
-            const SizedBox(height: 12),
+            const Gap(12),
             _buildInputField(context, AppLocalKay.weight.tr(), Icons.monitor_weight),
-            const SizedBox(height: 12),
+            const Gap(12),
             _buildInputField(context, AppLocalKay.typical_size.tr(), Icons.format_size),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text(AppLocalKay.size_saved_success.tr())));
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                ),
-                child: Text(AppLocalKay.update_sizes.tr()),
-              ),
-            ),
+            const Gap(20),
+            CustomButton(text: AppLocalKay.save.tr(), onPressed: () {}, radius: 12.r),
           ],
         ),
       ),
@@ -104,14 +94,11 @@ class UniformParentScreen extends StatelessWidget {
   }
 
   Widget _buildInputField(BuildContext context, String label, IconData icon) {
-    return TextField(
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-        filled: true,
-        fillColor: Colors.grey[50],
-      ),
+    return CustomFormField(
+      title: label,
+      prefixIcon: Icon(icon),
+
+      fillColor: Colors.grey[50],
       keyboardType: label.contains('Size') ? TextInputType.text : TextInputType.number,
     );
   }
@@ -124,7 +111,7 @@ class UniformParentScreen extends StatelessWidget {
           AppLocalKay.uniform_orders.tr(),
           style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
-        const SizedBox(height: 12),
+        const Gap(12),
         if (orders.isEmpty)
           const Center(
             child: Padding(padding: EdgeInsets.all(20), child: Text("No orders found")),
@@ -134,7 +121,7 @@ class UniformParentScreen extends StatelessWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: orders.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 12),
+            separatorBuilder: (context, index) => const Gap(12),
             itemBuilder: (context, index) {
               final order = orders[index];
               return _buildOrderCard(context, order);
@@ -145,7 +132,7 @@ class UniformParentScreen extends StatelessWidget {
   }
 
   Widget _buildOrderCard(BuildContext context, UniformOrder order) {
-    final statusColor = _getStatusColor(order.status);
+    final statusColor = _getStatusColor(order.status, context);
     final statusText = _getStatusText(context, order.status);
 
     return Card(
@@ -153,15 +140,21 @@ class UniformParentScreen extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ExpansionTile(
         title: Text('${AppLocalKay.order_status.tr()}: $statusText'),
-        subtitle: Text('ID: ${order.id} | ${order.orderDate.toString().split(' ')[0]}'),
+        subtitle: Text(
+          'ID: ${order.id} | ${order.orderDate.toString().split(' ')[0]}',
+          style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey.shade600),
+        ),
         leading: Icon(Icons.shopping_bag, color: statusColor),
         children: order.items.map((item) {
           return ListTile(
             title: Text(item.name),
-            subtitle: Text('${AppLocalKay.category.tr()}: ${item.category} | Size: ${item.size}'),
+            subtitle: Text(
+              '${AppLocalKay.category.tr()}: ${item.category} | Size: ${item.size}',
+              style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey.shade600),
+            ),
             trailing: Text(
               '${item.price} SAR',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
             ),
           );
         }).toList(),
@@ -169,23 +162,23 @@ class UniformParentScreen extends StatelessWidget {
     );
   }
 
-  Color _getStatusColor(UniformOrderStatus status) {
+  Color _getStatusColor(UniformOrderStatus status, BuildContext context) {
     switch (status) {
       case UniformOrderStatus.pending:
-        return Colors.orange;
+        return AppColor.accentColor(context);
       case UniformOrderStatus.preparing:
-        return Colors.blue;
+        return AppColor.infoColor(context);
       case UniformOrderStatus.ready:
-        return Colors.green;
+        return AppColor.successColor(context);
       case UniformOrderStatus.delivered:
-        return Colors.grey;
+        return AppColor.grey400Color(context);
     }
   }
 
   String _getStatusText(BuildContext context, UniformOrderStatus status) {
     switch (status) {
       case UniformOrderStatus.pending:
-        return AppLocalKay.todo_notification.tr(); // Fallback or add new key
+        return AppLocalKay.todo_notification.tr();
       case UniformOrderStatus.preparing:
         return AppLocalKay.preparing.tr();
       case UniformOrderStatus.ready:

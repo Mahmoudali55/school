@@ -2,6 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 
 import '../../../../core/utils/app_local_kay.dart';
 import '../../data/model/uniform_model.dart';
@@ -39,7 +41,9 @@ class UniformAdminScreen extends StatelessWidget {
 
   Widget _buildOrdersList(BuildContext context, List<UniformOrder> orders) {
     if (orders.isEmpty) {
-      return const Center(child: Text("No incoming orders"));
+      return const Center(
+        child: Text("No incoming orders", style: TextStyle(fontWeight: FontWeight.bold)),
+      );
     }
 
     return ListView.builder(
@@ -66,7 +70,12 @@ class UniformAdminScreen extends StatelessWidget {
                     _buildStatusChip(context, order.status),
                   ],
                 ),
-                Text(order.studentGrade, style: TextStyle(color: Colors.grey[600])),
+                Text(
+                  order.studentGrade,
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.w500, color: AppColor.grey600Color(context)),
+                ),
                 const Divider(height: 24),
                 ...order.items.map(
                   (item) => Padding(
@@ -77,7 +86,9 @@ class UniformAdminScreen extends StatelessWidget {
                         Text('${item.name} (${item.size})'),
                         Text(
                           '${item.price} SAR',
-                          style: const TextStyle(fontWeight: FontWeight.w500),
+                          style: AppTextStyle.bodyMedium(
+                            context,
+                          ).copyWith(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -89,7 +100,7 @@ class UniformAdminScreen extends StatelessWidget {
                   children: [
                     Text(
                       '${AppLocalKay.order_status.tr()}:',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
                     ),
                     _buildStatusDropdown(context, order),
                   ],
@@ -107,19 +118,19 @@ class UniformAdminScreen extends StatelessWidget {
     String text;
     switch (status) {
       case UniformOrderStatus.pending:
-        color = Colors.orange;
-        text = 'Pending';
+        color = AppColor.accentColor(context);
+        text = AppLocalKay.pending.tr();
         break;
       case UniformOrderStatus.preparing:
-        color = Colors.blue;
+        color = AppColor.infoColor(context);
         text = AppLocalKay.preparing.tr();
         break;
       case UniformOrderStatus.ready:
-        color = Colors.green;
+        color = AppColor.successColor(context);
         text = AppLocalKay.ready_for_pickup.tr();
         break;
       case UniformOrderStatus.delivered:
-        color = Colors.grey;
+        color = AppColor.grey400Color(context);
         text = AppLocalKay.delivered.tr();
         break;
     }
@@ -133,7 +144,7 @@ class UniformAdminScreen extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 12),
+        style: AppTextStyle.bodySmall(context).copyWith(color: color, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -156,7 +167,7 @@ class UniformAdminScreen extends StatelessWidget {
   String _getStatusString(BuildContext context, UniformOrderStatus status) {
     switch (status) {
       case UniformOrderStatus.pending:
-        return 'Pending';
+        return AppLocalKay.pending.tr();
       case UniformOrderStatus.preparing:
         return AppLocalKay.preparing.tr();
       case UniformOrderStatus.ready:
