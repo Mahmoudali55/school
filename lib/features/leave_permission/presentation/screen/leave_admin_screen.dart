@@ -71,8 +71,6 @@ class LeaveAdminScreen extends StatelessWidget {
   }
 
   Widget _buildAdminLeaveCard(BuildContext context, LeaveRequest request) {
-    final statusColor = _getStatusColor(request.status, context);
-
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       elevation: 2,

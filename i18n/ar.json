@@ -360,6 +360,8 @@
   "grade": "الدرجة",
   "status_pending": "معلق",
   "status_submitted": "مسلم",
+  "status_approved": "موافق",
+  "status_rejected": "مرفوض",
   "status_graded": "مصحح",
   "schedules": "جدول الحصص",
   "days": ["الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"],

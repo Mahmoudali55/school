@@ -845,5 +845,7 @@
   "new_leave_request": "New Leave Request",
   "submit_request": "Submit Request",
   "no_leave_requests": "No leave requests currently",
-  "requests": "Requests"
+  "requests": "Requests",
+  "status_approved": "Approved",
+  "status_rejected": "Rejected"
 }
