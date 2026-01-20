@@ -859,6 +859,27 @@
   "refresh_location": "جارٍ تحديث موقع {{name}}...",
   "point":"نقطة",
   "student_special_level":"مستوى الطالب المتميز",
-  "next_level":"نقطة للمستوى التالي"
+  "next_level":"نقطة للمستوى التالي",
 
+  "school_uniform": "الزي المدرسي",
+  "uniform_orders": "طلبات الزي",
+  "student_sizes": "مقاسات الطالب",
+  "input_sizes": "إدخال المقاسات",
+  "height": "الطول (سم)",
+  "weight": "الوزن (كجم)",
+  "typical_size": "المقاس المعتاد",
+  "update_sizes": "تحديث المقاسات",
+  "place_uniform_order": "طلب زي جديد",
+  "order_status": "حالة الطلب",
+  "preparing": "قيد التحضير",
+  "ready_for_pickup": "جاهز للاستلام",
+  "delivered": "تم التسليم",
+  "size_chart": "جدول المقاسات",
+  "measurements_hint": "يرجى إدخال المقاسات بدقة لضمان ملاءمة الزي",
+  "category": "الفئة",
+  "item_name": "القطعة",
+  "price": "السعر",
+  "new_uniform_request": "طلب زي جديد",
+  "request_uniform": "اطلب الآن",
+  "size_saved_success": "تم حفظ المقاسات بنجاح"
 }

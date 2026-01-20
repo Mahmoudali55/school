@@ -806,4 +806,25 @@ class AppLocalKay {
   static const String point = 'point';
   static const String student_special_level = 'student_special_level';
   static const String next_level = 'next_level';
+  static const String school_uniform = 'school_uniform';
+  static const String uniform_orders = 'uniform_orders';
+  static const String student_sizes = 'student_sizes';
+  static const String input_sizes = 'input_sizes';
+  static const String height = 'height';
+  static const String weight = 'weight';
+  static const String typical_size = 'typical_size';
+  static const String update_sizes = 'update_sizes';
+  static const String place_uniform_order = 'place_uniform_order';
+  static const String order_status = 'order_status';
+  static const String preparing = 'preparing';
+  static const String ready_for_pickup = 'ready_for_pickup';
+  static const String delivered = 'delivered';
+  static const String size_chart = 'size_chart';
+  static const String measurements_hint = 'measurements_hint';
+  static const String category = 'category';
+  static const String item_name = 'item_name';
+  static const String price = 'price';
+  static const String new_uniform_request = 'new_uniform_request';
+  static const String request_uniform = 'request_uniform';
+  static const String size_saved_success = 'size_saved_success';
 }

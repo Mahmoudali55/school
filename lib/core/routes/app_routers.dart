@@ -76,6 +76,20 @@ class AppRouters {
         );
       case RoutesName.messagesScreen:
         return MaterialPageRoute(builder: (_) => ChatsListScreen());
+      case RoutesName.uniformParentScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<UniformCubit>()..loadParentData(args as String),
+            child: const UniformParentScreen(),
+          ),
+        );
+      case RoutesName.uniformAdminScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<UniformCubit>()..loadAdminData(),
+            child: const UniformAdminScreen(),
+          ),
+        );
       default:
         return null;
     }

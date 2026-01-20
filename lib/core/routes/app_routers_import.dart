@@ -21,6 +21,9 @@ import 'package:my_template/features/profile/presentation/screen/profile_screen.
 import 'package:my_template/features/select_interface/data/model/user_type_model.dart';
 import 'package:my_template/features/select_interface/presentation/cubit/select_interface_cubit.dart';
 import 'package:my_template/features/select_interface/presentation/screen/select_interface_screen.dart';
+import 'package:my_template/features/uniform/presentation/cubit/uniform_cubit.dart';
+import 'package:my_template/features/uniform/presentation/screen/uniform_admin_screen.dart';
+import 'package:my_template/features/uniform/presentation/screen/uniform_parent_screen.dart';
 
 import '../../features/auth/presentation/view/cubit/auth_cubit.dart';
 import '../../features/splash/presentation/view/screen/splash_screen.dart' show SplashScreen;

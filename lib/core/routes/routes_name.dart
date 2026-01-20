@@ -17,4 +17,6 @@ class RoutesName {
   static const String gradesScreen = 'gradesScreen';
   static const String parentProfileScreen = 'parentProfileScreen';
   static const String messagesScreen = 'MessagesScreen';
+  static const String uniformParentScreen = 'uniformParentScreen';
+  static const String uniformAdminScreen = 'uniformAdminScreen';
 }

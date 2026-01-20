@@ -27,6 +27,8 @@ import 'package:my_template/features/select_interface/data/repo/user_type_repo.d
 import 'package:my_template/features/select_interface/presentation/cubit/select_interface_cubit.dart';
 import 'package:my_template/features/setting/data/repo/settings_repo.dart';
 import 'package:my_template/features/setting/presentation/cubit/settings_cubit.dart';
+import 'package:my_template/features/uniform/data/repo/uniform_repo.dart';
+import 'package:my_template/features/uniform/presentation/cubit/uniform_cubit.dart';
 
 import '../network/api_consumer.dart';
 import '../network/app_interceptors.dart';
