@@ -163,6 +163,30 @@ class MainTrackingCard extends StatelessWidget {
             ),
           ),
           _buildAnimatedBus(context),
+          Positioned(
+            bottom: 12.h,
+            right: 12.w,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.r),
+                boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.map_outlined, size: 14.w, color: AppColor.primaryColor(context)),
+                  SizedBox(width: 4.w),
+                  Text(
+                    "عرض الخريطة الحية",
+                    style: AppTextStyle.bodySmall(
+                      context,
+                    ).copyWith(color: AppColor.primaryColor(context), fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );

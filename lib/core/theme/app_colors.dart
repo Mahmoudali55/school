@@ -34,7 +34,7 @@ class AppColor {
       listen: listen,
     );
   }
-  
+
   /// SECONDARY CONTAINER
   static Color secondaryContainer(BuildContext context, {bool listen = true}) {
     return AppTheme.getByTheme(
@@ -198,6 +198,15 @@ class AppColor {
       context,
       light: Colors.white,
       dark: const Color(0xFF1E293B),
+      listen: listen,
+    );
+  }
+
+  static Color levelColor(BuildContext context, {bool listen = true}) {
+    return AppTheme.getByTheme(
+      context,
+      light: Color(0xFF8B5CF6),
+      dark: Color(0xFF8B5CF6),
       listen: listen,
     );
   }

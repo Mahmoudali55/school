@@ -11,7 +11,14 @@ class HomeModel {
     required this.userRole,
     required this.quickActions,
     this.notifications,
+    this.points = 0,
+    this.level = 1,
+    this.badges = const [],
   });
+
+  final int points;
+  final int level;
+  final List<String> badges;
 }
 
 class HomeQuickAction {
@@ -47,6 +54,9 @@ class StudentHomeModel extends HomeModel {
     required super.userRole,
     required super.quickActions,
     super.notifications,
+    super.points,
+    super.level,
+    super.badges,
     required this.classInfo,
     this.nextClass,
     this.tasks,
@@ -80,6 +90,9 @@ class ParentHomeModel extends HomeModel {
     required super.userRole,
     required super.quickActions,
     super.notifications,
+    super.points,
+    super.level,
+    super.badges,
     required this.students,
     required this.selectedStudent,
   });
@@ -96,6 +109,9 @@ class TeacherHomeModel extends HomeModel {
     required super.userRole,
     required super.quickActions,
     super.notifications,
+    super.points,
+    super.level,
+    super.badges,
     required this.subjects,
     required this.stats,
     this.schedule,
@@ -120,6 +136,9 @@ class AdminHomeModel extends HomeModel {
     required super.userRole,
     required super.quickActions,
     super.notifications,
+    super.points,
+    super.level,
+    super.badges,
     required this.metrics,
     this.alerts,
   });

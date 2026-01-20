@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -143,7 +144,7 @@ class _StudentFaceRegistrationScreenState extends State<StudentFaceRegistrationS
           margin: EdgeInsets.all(16.w),
           padding: EdgeInsets.all(16.w),
           decoration: BoxDecoration(
-            color: AppColor.primaryColor(context).withOpacity(0.1),
+            color: AppColor.primaryColor(context).withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12.r),
           ),
           child: Row(
@@ -152,12 +153,12 @@ class _StudentFaceRegistrationScreenState extends State<StudentFaceRegistrationS
               _buildStat(
                 AppLocalKay.students_registered.tr(),
                 '${registered.length}',
-                Colors.green,
+                AppColor.secondAppColor(context),
               ),
               _buildStat(
                 AppLocalKay.students_not_registered.tr(),
                 '${notRegistered.length}',
-                Colors.orange,
+                AppColor.accentColor(context),
               ),
             ],
           ),
@@ -219,15 +220,15 @@ class _StudentFaceRegistrationScreenState extends State<StudentFaceRegistrationS
 
     return Card(
       margin: EdgeInsets.only(bottom: 12.h),
-      color: isSelected ? AppColor.primaryColor(context).withOpacity(0.1) : null,
+      color: isSelected ? AppColor.primaryColor(context).withValues(alpha: 0.1) : null,
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: isRegistered
-              ? Colors.green.withOpacity(0.1)
-              : Colors.orange.withOpacity(0.1),
+              ? AppColor.secondAppColor(context).withValues(alpha: 0.1)
+              : AppColor.accentColor(context).withValues(alpha: 0.1),
           child: Icon(
             isRegistered ? Icons.check_circle : Icons.face,
-            color: isRegistered ? Colors.green : Colors.orange,
+            color: isRegistered ? AppColor.secondAppColor(context) : AppColor.accentColor(context),
           ),
         ),
         title: Text(name),
@@ -238,7 +239,7 @@ class _StudentFaceRegistrationScreenState extends State<StudentFaceRegistrationS
         ),
         trailing: isRegistered
             ? IconButton(
-                icon: const Icon(Icons.delete, color: Colors.red),
+                icon: Icon(Icons.delete, color: AppColor.errorColor(context)),
                 onPressed: () => _deleteRegistration(id),
               )
             : ElevatedButton.icon(
@@ -250,7 +251,7 @@ class _StudentFaceRegistrationScreenState extends State<StudentFaceRegistrationS
                 label: Text(AppLocalKay.register_face.tr()),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColor.primaryColor(context),
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppColor.whiteColor(context),
                 ),
               ),
       ),
@@ -279,7 +280,7 @@ class _StudentFaceRegistrationScreenState extends State<StudentFaceRegistrationS
             margin: EdgeInsets.symmetric(horizontal: 16.w),
             padding: EdgeInsets.all(16.w),
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.7),
+              color: AppColor.blackColor(context).withValues(alpha: 0.7),
               borderRadius: BorderRadius.circular(12.r),
             ),
             child: Column(
@@ -288,13 +289,15 @@ class _StudentFaceRegistrationScreenState extends State<StudentFaceRegistrationS
                   selectedStudentName ?? '',
                   style: AppTextStyle.titleLarge(
                     context,
-                  ).copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                  ).copyWith(color: AppColor.whiteColor(context), fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 8.h),
                 Text(
                   AppLocalKay.position_face_in_frame.tr(),
-                  style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.white70),
+                  style: AppTextStyle.bodyMedium(
+                    context,
+                  ).copyWith(color: AppColor.whiteColor(context)),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -308,7 +311,7 @@ class _StudentFaceRegistrationScreenState extends State<StudentFaceRegistrationS
             width: 250.w,
             height: 300.h,
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.green, width: 3),
+              border: Border.all(color: AppColor.secondAppColor(context), width: 3),
               borderRadius: BorderRadius.circular(150.r),
             ),
           ),
@@ -331,7 +334,7 @@ class _StudentFaceRegistrationScreenState extends State<StudentFaceRegistrationS
                   });
                   cubit.disposeResources();
                 },
-                backgroundColor: Colors.red,
+                backgroundColor: AppColor.errorColor(context),
                 child: const Icon(Icons.close),
               ),
 
@@ -341,10 +344,13 @@ class _StudentFaceRegistrationScreenState extends State<StudentFaceRegistrationS
                 onPressed: state is FaceRecognitionProcessing ? null : _captureAndRegister,
                 backgroundColor: AppColor.primaryColor(context),
                 icon: state is FaceRecognitionProcessing
-                    ? const SizedBox(
+                    ? SizedBox(
                         width: 20,
                         height: 20,
-                        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+                        child: CircularProgressIndicator(
+                          color: AppColor.whiteColor(context),
+                          strokeWidth: 2,
+                        ),
                       )
                     : const Icon(Icons.camera),
                 label: Text(AppLocalKay.capture_face.tr()),
@@ -365,7 +371,10 @@ class _StudentFaceRegistrationScreenState extends State<StudentFaceRegistrationS
             context,
           ).copyWith(fontWeight: FontWeight.bold, color: color),
         ),
-        Text(title, style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey)),
+        Text(
+          title,
+          style: AppTextStyle.bodySmall(context).copyWith(color: AppColor.hintColor(context)),
+        ),
       ],
     );
   }
@@ -377,13 +386,16 @@ class _StudentFaceRegistrationScreenState extends State<StudentFaceRegistrationS
         title: Text(AppLocalKay.delete_face_registration.tr()),
         content: Text(AppLocalKay.delete_user_message.tr()),
         actions: [
-          TextButton(
+          CustomButton(
             onPressed: () => Navigator.pop(context, false),
             child: Text(AppLocalKay.cancel.tr()),
           ),
-          TextButton(
+          CustomButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text(AppLocalKay.delete.tr(), style: const TextStyle(color: Colors.red)),
+            child: Text(
+              AppLocalKay.delete.tr(),
+              style: TextStyle(color: AppColor.errorColor(context)),
+            ),
           ),
         ],
       ),
@@ -401,7 +413,7 @@ class _StudentFaceRegistrationScreenState extends State<StudentFaceRegistrationS
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(AppLocalKay.face_registration_deleted.tr()),
-            backgroundColor: Colors.green,
+            backgroundColor: AppColor.secondAppColor(context),
           ),
         );
       }

@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
@@ -59,7 +58,7 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
 
         final selectedBusData = state.selectedAdminBus;
         if (selectedBusData == null) {
-          return const Scaffold(body: Center(child: Text("لا توجد حافلات")));
+          return Scaffold(body: Center(child: Text(AppLocalKay.no_buses.tr())));
         }
 
         return Scaffold(
@@ -76,7 +75,6 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
                     ),
                   ),
                 ),
-                // Buses Selector
                 SliverToBoxAdapter(
                   child: AdminBusesSelector(
                     selectedBus: selectedBusData.busNumber,
@@ -86,11 +84,7 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
                     },
                   ),
                 ),
-
-                // Quick Overview
                 const SliverToBoxAdapter(child: AdminQuickOverview()),
-
-                // Main Tracking Card
                 SliverToBoxAdapter(
                   child: AdminMainTrackingCard(
                     selectedBusData: selectedBusData,
@@ -100,17 +94,9 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
                     onSendAlert: () => _sendAlert(selectedBusData),
                   ),
                 ),
-
-                // All Buses Status
                 SliverToBoxAdapter(child: AdminAllBusesStatus(allBusesData: state.buses)),
-
-                // Bus Details
                 SliverToBoxAdapter(child: AdminBusDetails(selectedBusData: selectedBusData)),
-
-                // Fleet Management
                 SliverToBoxAdapter(child: FleetManagement(selectedBusData: selectedBusData)),
-
-                // Safety & Alerts
                 SliverToBoxAdapter(
                   child: AdminSafetyAlerts(
                     onFeatureTap: (feature) => _handleSafetyFeature(feature, selectedBusData),
@@ -119,29 +105,26 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
               ],
             ),
           ),
-
-          // Emergency Button
           floatingActionButton: AdminEmergencyButton(onPressed: _showEmergencyDialog),
         );
       },
     );
   }
 
-  // Action methods
+  // Action Methods
   void _callDriver(dynamic busData) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('اتصال بالسائق'),
-        content: Text('هل تريد الاتصال بالسائق ${busData.driverName}؟'),
+        title: Text(AppLocalKay.call_driver.tr(), style: AppTextStyle.bodyMedium(context)),
+        content: Text('${AppLocalKay.ConnectDriverHint.tr()} ${busData.driverName}?'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(AppLocalKay.cancel.tr())),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
-              // تنفيذ الاتصال
             },
-            child: const Text('اتصال'),
+            child: Text(AppLocalKay.Connect.tr()),
           ),
         ],
       ),
@@ -151,7 +134,7 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
   void _refreshLocation(dynamic busData) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('جارٍ تحديث موقع ${busData.busName}'),
+        content: Text('${AppLocalKay.refresh_location.tr()} ${busData.busName}'),
         backgroundColor: const Color(0xFF2196F3),
       ),
     );
@@ -161,21 +144,21 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('إرسال تنبيه'),
-        content: Text('إرسال تنبيه لسائق ${busData.busName}'),
+        title: Text(AppLocalKay.send_alert.tr(), style: AppTextStyle.bodyMedium(context)),
+        content: Text('${AppLocalKay.driver_name.tr().replaceAll('{{name}}', busData.busName)}'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(AppLocalKay.cancel.tr())),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('تم إرسال التنبيه بنجاح'),
-                  backgroundColor: Color(0xFF4CAF50),
+                SnackBar(
+                  content: Text(AppLocalKay.alert_sent_success.tr()),
+                  backgroundColor: const Color(0xFF4CAF50),
                 ),
               );
             },
-            child: const Text('إرسال'),
+            child: Text(AppLocalKay.send.tr()),
           ),
         ],
       ),
@@ -200,21 +183,21 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('تنبيه عام'),
-        content: const Text('إرسال تنبيه عام لجميع الحافلات'),
+        title: Text(AppLocalKay.safety_general_alert.tr()),
+        content: Text(AppLocalKay.emergency_content.tr()),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(AppLocalKay.cancel.tr())),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('تم إرسال التنبيه العام'),
-                  backgroundColor: Color(0xFF4CAF50),
+                SnackBar(
+                  content: Text(AppLocalKay.general_alert_sent.tr()),
+                  backgroundColor: const Color(0xFF4CAF50),
                 ),
               );
             },
-            child: const Text('إرسال للجميع'),
+            child: Text(AppLocalKay.emergency_send_all.tr()),
           ),
         ],
       ),
@@ -225,21 +208,21 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('تقرير حادث'),
-        content: Text('الإبلاغ عن حادث لحافلة ${busData.busName}'),
+        title: Text(AppLocalKay.safety_accident_report.tr()),
+        content: Text('${AppLocalKay.bus_name.tr().replaceAll('{{name}}', busData.busName)}'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(AppLocalKay.cancel.tr())),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('تم الإبلاغ عن الحادث'),
-                  backgroundColor: Color(0xFFF44336),
+                SnackBar(
+                  content: Text(AppLocalKay.accident_reported.tr()),
+                  backgroundColor: const Color(0xFFF44336),
                 ),
               );
             },
-            child: const Text('إبلاغ'),
+            child: Text(AppLocalKay.send.tr()),
           ),
         ],
       ),
@@ -250,16 +233,15 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('اتصال طوارئ'),
-        content: Text('الاتصال بجهات الطوارئ لحافلة ${busData.busName}'),
+        title: Text(AppLocalKay.safety_emergency_call.tr()),
+        content: Text('${AppLocalKay.bus_name.tr().replaceAll('{{name}}', busData.busName)}'),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(AppLocalKay.cancel.tr())),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
-              // تنفيذ الاتصال بالطوارئ
             },
-            child: const Text('اتصال'),
+            child: Text(AppLocalKay.call.tr()),
           ),
         ],
       ),
@@ -270,28 +252,22 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Row(
-          children: [
-            const Icon(Icons.emergency_rounded, color: Colors.red),
-            SizedBox(width: 8.w),
-            const Text('طوارئ - جميع الحافلات'),
-          ],
-        ),
-        content: const Text('إرسال تنبيه طوارئ لجميع الحافلات والجهات المعنية؟'),
+        title: Text(AppLocalKay.emergency_all_buses.tr()),
+        content: Text(AppLocalKay.emergency_content.tr()),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('إلغاء')),
+          TextButton(onPressed: () => Navigator.pop(context), child: Text(AppLocalKay.cancel.tr())),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('تم إرسال تنبيه الطوارئ لجميع الحافلات'),
+                SnackBar(
+                  content: Text(AppLocalKay.general_alert_sent.tr()),
                   backgroundColor: Colors.red,
                 ),
               );
             },
+            child: Text(AppLocalKay.emergency_send_all.tr()),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            child: const Text('إرسال للجميع'),
           ),
         ],
       ),

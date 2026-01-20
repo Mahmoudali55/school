@@ -787,4 +787,23 @@ class AppLocalKay {
   static const String no_registered_students_for_face = 'no_registered_students_for_face';
   static const String verify_face = 'verify_face';
   static const String face_recognition_success = 'face_recognition_success';
+  static const String call = 'call';
+  static const String no_buses = 'no_buses';
+  static const String emergency_all_buses = 'emergency_all_buses';
+  static const String emergency_content = 'emergency_content';
+  static const String emergency_send_all = 'emergency_send_all';
+  // Safety / Alerts
+  static const String safety_general_alert = 'safety_general_alert';
+  static const String safety_accident_report = 'safety_accident_report';
+  static const String safety_emergency_call = 'safety_emergency_call';
+  static const String alert_sent_success = 'alert_sent_success';
+  static const String general_alert_sent = 'general_alert_sent';
+  static const String accident_reported = 'accident_reported';
+  static const String driver_name = 'driver_name';
+  static const String bus_name = 'bus_name';
+  static const String refresh_location = 'refresh_location';
+  static const String face_recognition_failed = 'face_recognition_failed';
+  static const String point = 'point';
+  static const String student_special_level = 'student_special_level';
+  static const String next_level = 'next_level';
 }

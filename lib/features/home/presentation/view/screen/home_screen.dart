@@ -8,6 +8,7 @@ import 'package:my_template/features/home/presentation/view/widget/hero_next_cla
 import 'package:my_template/features/home/presentation/view/widget/home_header_widget.dart';
 import 'package:my_template/features/home/presentation/view/widget/quick_actions_section.dart';
 import 'package:my_template/features/home/presentation/view/widget/recent_notifications_section.dart';
+import 'package:my_template/features/home/presentation/view/widget/student/gamification_banner.dart';
 import 'package:my_template/features/home/presentation/view/widget/upcoming_tasks_section.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -31,6 +32,12 @@ class HomeScreen extends StatelessWidget {
                     HomeHeaderWidget(
                       studentName: studentData.userName,
                       classInfo: studentData.classInfo,
+                    ),
+                    SizedBox(height: 25.h),
+                    GamificationBanner(
+                      points: studentData.points,
+                      level: studentData.level,
+                      badges: studentData.badges,
                     ),
                     SizedBox(height: 25.h),
                     const HeroNextClassCard(),

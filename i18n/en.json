@@ -795,6 +795,23 @@
 "attendance_marked_success": "Attendance Marked ✓",
 "no_registered_students_for_face": "No students registered for face recognition",
 "verify_face": "Verify Face",
-"face_recognition_success":"(Face recognized successfully)"
+"face_recognition_success":"(Face recognized successfully)",
+ "bus_title": "Bus Tracking",
 
+  "no_buses": "No buses available",
+  "emergency_all_buses": "Emergency - All Buses",
+  "emergency_content": "Send emergency alert to all buses and concerned authorities?",
+  "emergency_send_all": "Send to All",
+  "safety_general_alert": "General Alert",
+  "safety_accident_report": "Accident Report",
+  "safety_emergency_call": "Emergency Call",
+  "alert_sent_success": "Alert sent successfully",
+  "general_alert_sent": "General alert sent",
+  "accident_reported": "Accident reported",
+  "driver_name": "Driver: {{name}}",
+  "bus_name": "Bus: {{name}}",
+  "refresh_location": "Refreshing location of {{name}}...",
+  "point":"Point",
+  "student_special_level":"Student Special Level",
+  "next_level":"Next Level"
 }

@@ -94,22 +94,25 @@ class ClassManagementScreen extends StatelessWidget {
     return Card(
       color: AppColor.whiteColor(context),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-      child: Column(
-        children: [
-          Text(
-            value,
-            style: AppTextStyle.headlineLarge(
-              context,
-            ).copyWith(fontWeight: FontWeight.bold, color: color),
-          ),
-          SizedBox(height: 8.h),
-          Text(
-            title,
-            style: AppTextStyle.bodySmall(context).copyWith(color: AppColor.blackColor(context)),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 8.h),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Text(
+              value,
+              style: AppTextStyle.headlineLarge(
+                context,
+              ).copyWith(fontWeight: FontWeight.bold, color: color),
+            ),
+            SizedBox(height: 8.h),
+            Text(
+              title,
+              style: AppTextStyle.bodySmall(context).copyWith(color: AppColor.blackColor(context)),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 8.h),
+          ],
+        ),
       ),
     );
   }
@@ -160,28 +163,13 @@ class ClassManagementScreen extends StatelessWidget {
               backgroundColor: Colors.grey.shade200,
               valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
             ),
-            SizedBox(height: 8.h),
+            SizedBox(height: 28.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                IconButton(
-                  icon: Icon(Icons.visibility, size: 18.w),
-                  onPressed: () {
-                    // View class details
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.edit, size: 18.w),
-                  onPressed: () {
-                    // Edit class
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.schedule, size: 18.w),
-                  onPressed: () {
-                    // View schedule
-                  },
-                ),
+                Icon(Icons.visibility, size: 18.w),
+                Icon(Icons.edit, size: 18.w),
+                Icon(Icons.schedule, size: 18.w),
               ],
             ),
           ],

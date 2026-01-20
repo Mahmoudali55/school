@@ -64,49 +64,33 @@ class UserManagementScreen extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: SizedBox(
-                height: 48.h,
-                child: DropdownButtonFormField(
-                  decoration: InputDecoration(
-                    labelText: AppLocalKay.user_management_type_label.tr(),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r)),
-                    filled: true,
-                    fillColor: AppColor.textFormFillColor(context),
-                  ),
-                  items:
-                      [
-                        AppLocalKay.user_management_type_all.tr(),
-                        AppLocalKay.user_management_type_teacher.tr(),
-                        AppLocalKay.user_management_type_student.tr(),
-                        AppLocalKay.user_management_type_admin.tr(),
-                      ].map((String value) {
-                        return DropdownMenuItem(value: value, child: Text(value));
-                      }).toList(),
-                  onChanged: (value) {},
-                ),
+              child: AppDropdown<String>(
+                label: AppLocalKay.user_management_type_label.tr(),
+                items: [
+                  AppLocalKay.user_management_type_all.tr(),
+                  AppLocalKay.user_management_type_teacher.tr(),
+                  AppLocalKay.user_management_type_student.tr(),
+                  AppLocalKay.user_management_type_admin.tr(),
+                ],
+                itemLabel: (item) => item,
+                onChanged: (value) {
+                  // cubit.changeUserType(value);
+                },
               ),
             ),
             SizedBox(width: 12.w),
             Expanded(
-              child: SizedBox(
-                height: 48.h,
-                child: DropdownButtonFormField(
-                  decoration: InputDecoration(
-                    labelText: AppLocalKay.user_management_status_label.tr(),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r)),
-                    filled: true,
-                    fillColor: AppColor.textFormFillColor(context),
-                  ),
-                  items:
-                      [
-                        AppLocalKay.user_management_status_all.tr(),
-                        AppLocalKay.user_management_status_active.tr(),
-                        AppLocalKay.user_management_status_inactive.tr(),
-                      ].map((String value) {
-                        return DropdownMenuItem(value: value, child: Text(value));
-                      }).toList(),
-                  onChanged: (value) {},
-                ),
+              child: AppDropdown<String>(
+                label: AppLocalKay.user_management_status_label.tr(),
+                items: [
+                  AppLocalKay.user_management_status_all.tr(),
+                  AppLocalKay.user_management_status_active.tr(),
+                  AppLocalKay.user_management_status_inactive.tr(),
+                ],
+                itemLabel: (item) => item,
+                onChanged: (value) {
+                  // cubit.changeStatus(value);
+                },
               ),
             ),
           ],
@@ -147,6 +131,49 @@ class UserManagementScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class AppDropdown<T> extends StatelessWidget {
+  final String label;
+  final T? value;
+  final List<T> items;
+  final String Function(T) itemLabel;
+  final void Function(T?) onChanged;
+
+  const AppDropdown({
+    super.key,
+    required this.label,
+    required this.items,
+    required this.itemLabel,
+    required this.onChanged,
+    this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<T>(
+      isExpanded: true, // ⭐ مهم جدًا
+      value: value,
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r)),
+        filled: true,
+        fillColor: AppColor.textFormFillColor(context),
+      ),
+      items: items
+          .map(
+            (item) => DropdownMenuItem<T>(
+              value: item,
+              child: SizedBox(
+                width: double.infinity,
+                child: Text(itemLabel(item), maxLines: 1, overflow: TextOverflow.ellipsis),
+              ),
+            ),
+          )
+          .toList(),
+      onChanged: onChanged,
     );
   }
 }

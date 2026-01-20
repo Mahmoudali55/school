@@ -841,5 +841,24 @@
 "no_registered_students_for_face": "لا يوجد طلاب مسجلين للتعرف على الوجه",
 "verify_face": "تحقق من الوجه",
 "face_recognition_success":"(تم التحقق بنجاح)",
-"delete_face_confirm_message":"هل أنت متأكد من رغبتك في حذف بصمة الوجه لهذا الطالب؟ سيختفي الطالب من هذه القائمة بعد الحذف."
+"delete_face_confirm_message":"هل أنت متأكد من رغبتك في حذف بصمة الوجه لهذا الطالب؟ سيختفي الطالب من هذه القائمة بعد الحذف.",
+"bus_title": "تتبع الحافلات",
+  "call": "اتصال",
+  "no_buses": "لا توجد حافلات",
+  "emergency_all_buses": "طوارئ - جميع الحافلات",
+  "emergency_content": "إرسال تنبيه طوارئ لجميع الحافلات والجهات المعنية؟",
+  "emergency_send_all": "إرسال للجميع",
+  "safety_general_alert": "تنبيه عام",
+  "safety_accident_report": "تقرير حادث",
+  "safety_emergency_call": "اتصال الطوارئ",
+  "alert_sent_success": "تم إرسال التنبيه بنجاح",
+  "general_alert_sent": "تم إرسال التنبيه العام",
+  "accident_reported": "تم الإبلاغ عن الحادث",
+  "driver_name": "السائق: {{name}}",
+  "bus_name": "الحافلة: {{name}}",
+  "refresh_location": "جارٍ تحديث موقع {{name}}...",
+  "point":"نقطة",
+  "student_special_level":"مستوى الطالب المتميز",
+  "next_level":"نقطة للمستوى التالي"
+
 }

@@ -46,7 +46,6 @@ class StudentSettingsScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 20),
                   SupportSectionWidget(),
                   const SizedBox(height: 20),
