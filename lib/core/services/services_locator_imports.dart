@@ -38,6 +38,9 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<UniformRepo>(() => UniformRepo());
   sl.registerFactory<UniformCubit>(() => UniformCubit(sl()));
 
+  sl.registerLazySingleton<LeaveRepo>(() => LeaveRepo());
+  sl.registerFactory<LeaveCubit>(() => LeaveCubit(sl()));
+
   // Face Recognition & Attendance Services
   sl.registerLazySingleton<FaceDetectionService>(() => FaceDetectionService());
   sl.registerLazySingleton<CameraService>(() => CameraService());

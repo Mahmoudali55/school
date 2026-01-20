@@ -834,5 +834,16 @@
   "price": "Price",
   "new_uniform_request": "New Uniform Request",
   "request_uniform": "Request Now",
-  "size_saved_success": "Sizes saved successfully"
+  "size_saved_success": "Sizes saved successfully",
+  "student_leave": "Student Leave",
+  "leave_requests": "Leave Requests",
+  "request_leave": "Request Leave",
+  "leave_reason": "Leave Reason",
+  "start_time": "Departure Time",
+  "end_time": "Return Time (Optional)",
+  "leave_date": "Leave Date",
+  "new_leave_request": "New Leave Request",
+  "submit_request": "Submit Request",
+  "no_leave_requests": "No leave requests currently",
+  "requests": "Requests"
 }

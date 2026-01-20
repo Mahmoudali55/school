@@ -881,5 +881,16 @@
   "price": "السعر",
   "new_uniform_request": "طلب زي جديد",
   "request_uniform": "اطلب الآن",
-  "size_saved_success": "تم حفظ المقاسات بنجاح"
+  "size_saved_success": "تم حفظ المقاسات بنجاح",
+  "student_leave": "استئذان الطالب",
+  "leave_requests": "طلبات الاستئذان",
+  "request_leave": "طلب استئذان",
+  "leave_reason": "سبب الاستئذان",
+  "start_time": "وقت الخروج",
+  "end_time": "وقت العودة (اختياري)",
+  "leave_date": "تاريخ الاستئذان",
+  "new_leave_request": "طلب استئذان جديد",
+  "submit_request": "تقديم الطلب",
+  "no_leave_requests": "لا توجد طلبات استئذان حالياً",
+  "requests": "الطلبات"
 }

@@ -66,6 +66,13 @@ class ManagementShortcuts extends StatelessWidget {
       color: Colors.teal,
       onTap: (context) => Navigator.pushNamed(context, RoutesName.uniformAdminScreen),
     ),
+    ManagementShortcut(
+      title: AppLocalKay.student_leave.tr(),
+      description: AppLocalKay.leave_requests.tr(),
+      icon: Icons.exit_to_app,
+      color: Colors.indigo,
+      onTap: (context) => Navigator.pushNamed(context, RoutesName.leaveAdminScreen),
+    ),
   ];
 
   ManagementShortcuts({super.key});

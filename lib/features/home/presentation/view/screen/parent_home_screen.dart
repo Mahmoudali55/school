@@ -4,11 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/features/home/data/models/home_models.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
-import 'package:my_template/features/home/presentation/view/widget/parent/financial_status_widget%20.dart';
 import 'package:my_template/features/home/presentation/view/widget/parent/header_widget.dart';
 import 'package:my_template/features/home/presentation/view/widget/parent/live_tracking_widget.dart';
+import 'package:my_template/features/home/presentation/view/widget/parent/requests_section_widget.dart';
 import 'package:my_template/features/home/presentation/view/widget/parent/student_snapshot_section_widget.dart';
-import 'package:my_template/features/home/presentation/view/widget/parent/uniform_status_widget.dart';
 import 'package:my_template/features/home/presentation/view/widget/parent/urgent_alerts_widget%20.dart';
 import 'package:my_template/features/home/presentation/view/widget/student/gamification_banner.dart';
 
@@ -47,9 +46,7 @@ class HomeParentScreen extends StatelessWidget {
                     SizedBox(height: 25.h),
                     const LiveTrackingWidget(),
                     SizedBox(height: 25.h),
-                    const FinancialStatusWidget(),
-                    SizedBox(height: 25.h),
-                    UniformStatusWidget(studentId: parentData.selectedStudent),
+                    RequestsSectionWidget(studentId: parentData.selectedStudent),
                     SizedBox(height: 25.h),
                     const UrgentAlertsWidget(),
                     SizedBox(height: 30.h),

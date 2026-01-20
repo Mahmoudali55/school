@@ -90,6 +90,20 @@ class AppRouters {
             child: const UniformAdminScreen(),
           ),
         );
+      case RoutesName.leaveParentScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<LeaveCubit>()..fetchStudentLeaves(args as String),
+            child: LeaveParentScreen(studentId: args as String),
+          ),
+        );
+      case RoutesName.leaveAdminScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<LeaveCubit>()..fetchAllLeaves(),
+            child: const LeaveAdminScreen(),
+          ),
+        );
       default:
         return null;
     }

@@ -827,4 +827,17 @@ class AppLocalKay {
   static const String new_uniform_request = 'new_uniform_request';
   static const String request_uniform = 'request_uniform';
   static const String size_saved_success = 'size_saved_success';
+  static const String student_leave = 'student_leave';
+  static const String leave_requests = 'leave_requests';
+  static const String request_leave = 'request_leave';
+  static const String leave_reason = 'leave_reason';
+  static const String start_time = 'start_time';
+  static const String end_time = 'end_time';
+  static const String leave_date = 'leave_date';
+  static const String status_approved = 'status_approved';
+  static const String status_rejected = 'status_rejected';
+  static const String new_leave_request = 'new_leave_request';
+  static const String submit_request = 'submit_request';
+  static const String no_leave_requests = 'no_leave_requests';
+  static const String requests = 'requests';
 }

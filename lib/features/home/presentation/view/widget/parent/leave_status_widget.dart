@@ -6,9 +6,9 @@ import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
-class UniformStatusWidget extends StatelessWidget {
+class LeaveStatusWidget extends StatelessWidget {
   final String? studentId;
-  const UniformStatusWidget({super.key, this.studentId});
+  const LeaveStatusWidget({super.key, this.studentId});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class UniformStatusWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          AppLocalKay.school_uniform.tr(),
+          AppLocalKay.student_leave.tr(),
           style: AppTextStyle.headlineMedium(
             context,
             color: const Color(0xFF1F2937),
@@ -52,12 +52,12 @@ class UniformStatusWidget extends StatelessWidget {
                             Container(
                               padding: EdgeInsets.all(6.w),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFEFF6FF),
+                                color: const Color(0xFFFFF7ED),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Icon(
-                                Icons.checkroom,
-                                color: const Color(0xFF2E5BFF),
+                                Icons.exit_to_app,
+                                color: const Color(0xFFEA580C),
                                 size: 20.w,
                               ),
                             ),
@@ -67,7 +67,7 @@ class UniformStatusWidget extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    AppLocalKay.student_sizes.tr(),
+                                    AppLocalKay.new_leave_request.tr(),
                                     style: AppTextStyle.bodySmall(
                                       context,
                                       color: const Color(0xFF6B7280),
@@ -75,7 +75,7 @@ class UniformStatusWidget extends StatelessWidget {
                                   ),
                                   SizedBox(height: 4.h),
                                   Text(
-                                    AppLocalKay.input_sizes.tr(),
+                                    AppLocalKay.request_leave.tr(),
                                     style: AppTextStyle.bodyMedium(
                                       context,
                                       color: const Color(0xFF1F2937),
@@ -94,18 +94,18 @@ class UniformStatusWidget extends StatelessWidget {
                     onPressed: () {
                       Navigator.pushNamed(
                         context,
-                        RoutesName.uniformParentScreen,
+                        RoutesName.leaveParentScreen,
                         arguments: studentId,
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF2E5BFF),
+                      backgroundColor: const Color(0xFFEA580C),
                       padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                       elevation: 0,
                     ),
                     child: Text(
-                      AppLocalKay.request_uniform.tr(),
+                      AppLocalKay.request_leave.tr(),
                       style: AppTextStyle.labelMedium(
                         context,
                       ).copyWith(fontWeight: FontWeight.bold, color: AppColor.whiteColor(context)),

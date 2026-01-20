@@ -19,4 +19,6 @@ class RoutesName {
   static const String messagesScreen = 'MessagesScreen';
   static const String uniformParentScreen = 'uniformParentScreen';
   static const String uniformAdminScreen = 'uniformAdminScreen';
+  static const String leaveParentScreen = 'leaveParentScreen';
+  static const String leaveAdminScreen = 'leaveAdminScreen';
 }
