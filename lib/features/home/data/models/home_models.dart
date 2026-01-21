@@ -80,10 +80,18 @@ class UpcomingTask {
   UpcomingTask({required this.title, required this.subject, required this.dueDate});
 }
 
+class StudentMiniInfo {
+  final String name;
+  final String grade;
+  final String? school;
+
+  StudentMiniInfo({required this.name, required this.grade, this.school});
+}
+
 // Parent Specific
 class ParentHomeModel extends HomeModel {
-  final List<String> students;
-  final String selectedStudent;
+  final List<StudentMiniInfo> students;
+  final StudentMiniInfo selectedStudent;
 
   ParentHomeModel({
     required super.userName,

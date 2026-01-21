@@ -1,15 +1,18 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/routes/routes_name.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/home/data/models/home_models.dart';
 
 class RequestsSectionWidget extends StatelessWidget {
-  final String? studentId;
-  const RequestsSectionWidget({super.key, this.studentId});
-
+  final StudentMiniInfo? selectedStudent;
+  final List<StudentMiniInfo> students;
+  const RequestsSectionWidget({super.key, this.selectedStudent, this.students = const []});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -19,58 +22,185 @@ class RequestsSectionWidget extends StatelessWidget {
           AppLocalKay.requests.tr(),
           style: AppTextStyle.headlineMedium(
             context,
-            color: const Color(0xFF1F2937),
+            color: AppColor.blackColor(context),
           ).copyWith(fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 16.h),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        Gap(16.h),
+        Column(
           children: [
-            Expanded(
-              child: _buildRequestCard(
-                context,
-                title: AppLocalKay.fees.tr(),
-                subtitle: "2,000 ريال",
-                icon: Icons.payments,
-                color: const Color(0xFFDC2626),
-                onTap: () {
-                  // Navigate to fees details or pay
-                },
-              ),
-            ),
-            SizedBox(width: 12.w),
-            Expanded(
-              child: _buildRequestCard(
-                context,
-                title: AppLocalKay.school_uniform.tr(),
-                subtitle: AppLocalKay.request_uniform.tr(),
-                icon: Icons.checkroom,
-                color: const Color(0xFF2E5BFF),
-                onTap: () {
-                  Navigator.pushNamed(
+            Row(
+              children: [
+                Expanded(
+                  child: _buildRequestCard(
                     context,
-                    RoutesName.uniformParentScreen,
-                    arguments: studentId,
-                  );
-                },
-              ),
+                    title: AppLocalKay.fees.tr(),
+                    subtitle: "2,000 ريال",
+                    icon: Icons.payments,
+                    color: AppColor.errorColor(context),
+                    onTap: () {},
+                  ),
+                ),
+                Gap(12.w),
+                Expanded(
+                  child: _buildRequestCard(
+                    context,
+                    title: AppLocalKay.school_uniform.tr(),
+                    subtitle: AppLocalKay.request_uniform.tr(),
+                    icon: Icons.checkroom,
+                    color: AppColor.primaryColor(context),
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        RoutesName.uniformParentScreen,
+                        arguments: selectedStudent?.name,
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-            SizedBox(width: 12.w),
-            Expanded(
-              child: _buildRequestCard(
-                context,
-                title: AppLocalKay.student_leave.tr(),
-                subtitle: AppLocalKay.request_leave.tr(),
-                icon: Icons.exit_to_app,
-                color: const Color(0xFFEA580C),
-                onTap: () {
-                  Navigator.pushNamed(context, RoutesName.leaveParentScreen, arguments: studentId);
-                },
-              ),
+            Gap(12.h),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildRequestCard(
+                    context,
+                    title: AppLocalKay.student_leave.tr(),
+                    subtitle: AppLocalKay.request_leave.tr(),
+                    icon: Icons.exit_to_app,
+                    color: AppColor.errorColor(context),
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        RoutesName.leaveParentScreen,
+                        arguments: selectedStudent?.name,
+                      );
+                    },
+                  ),
+                ),
+                Gap(12.w),
+                Expanded(
+                  child: _buildRequestCard(
+                    context,
+                    title: AppLocalKay.student_call.tr(),
+                    subtitle: AppLocalKay.i_am_arriving.tr(),
+                    icon: Icons.record_voice_over,
+                    color: AppColor.successColor(context),
+                    onTap: () {
+                      _showArrivingConfirmation(context);
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
         ),
       ],
+    );
+  }
+
+  void _showArrivingConfirmation(BuildContext context) {
+    final String displayNames = students.isNotEmpty
+        ? students.map((s) => "${s.name} (${s.grade})").join(" - ")
+        : (selectedStudent?.name ?? '');
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: false,
+      isDismissible: false,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (dialogContext) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Column(
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              ),
+              Text(AppLocalKay.student_call.tr(), style: AppTextStyle.headlineMedium(context)),
+              const Gap(12),
+              Text("${AppLocalKay.i_am_arriving.tr()}:", style: AppTextStyle.bodyMedium(context)),
+              const Gap(10),
+              Expanded(
+                child: ListView(
+                  children: students
+                      .map(
+                        (s) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 6),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.check_circle,
+                                color: AppColor.successColor(context),
+                                size: 18,
+                              ),
+                              const Gap(10),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      s.name,
+                                      style: AppTextStyle.bodyMedium(
+                                        context,
+                                      ).copyWith(fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      "${s.grade}${s.school != null ? ' - ${s.school}' : ''}",
+                                      style: AppTextStyle.labelSmall(
+                                        context,
+                                        color: AppColor.grey600Color(context),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+
+              const Gap(10),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomButton(
+                      text: AppLocalKay.cancel.tr(),
+                      radius: 12,
+                      color: AppColor.errorColor(context),
+                      onPressed: () => Navigator.pop(dialogContext),
+                    ),
+                  ),
+                  const Gap(12),
+                  Expanded(
+                    child: CustomButton(
+                      text: AppLocalKay.i_am_arriving.tr(),
+                      radius: 12,
+                      onPressed: () => Navigator.pop(dialogContext),
+                    ),
+                  ),
+                  const Gap(12),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -107,7 +237,7 @@ class RequestsSectionWidget extends StatelessWidget {
               ),
               child: Icon(icon, color: color, size: 24.w),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
             Text(
               title,
               textAlign: TextAlign.center,
@@ -115,10 +245,10 @@ class RequestsSectionWidget extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: AppTextStyle.bodySmall(
                 context,
-                color: const Color(0xFF1F2937),
+                color: AppColor.blackColor(context),
               ).copyWith(fontWeight: FontWeight.bold, fontSize: 10.sp),
             ),
-            SizedBox(height: 4.h),
+            Gap(4.h),
             Text(
               subtitle,
               textAlign: TextAlign.center,
@@ -126,7 +256,7 @@ class RequestsSectionWidget extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: AppTextStyle.labelSmall(
                 context,
-                color: Colors.grey[600],
+                color: AppColor.grey400Color(context),
               ).copyWith(fontSize: 8.sp),
             ),
           ],

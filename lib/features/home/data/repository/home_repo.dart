@@ -117,11 +117,15 @@ class HomeRepo {
   }
 
   Future<ParentHomeModel> getParentHomeData() async {
+    final students = [
+      StudentMiniInfo(name: "أحمد", grade: "الصف الرابع", school: "المدرسة الابتدائية"),
+      StudentMiniInfo(name: "ليلى", grade: "الصف الثامن", school: "المدرسة المتوسطة"),
+    ];
     return ParentHomeModel(
       userName: "أحمد محمد",
       userRole: "ولي أمر",
-      students: ["أحمد", "ليلى"],
-      selectedStudent: "أحمد",
+      students: students,
+      selectedStudent: students[0],
       quickActions: [
         HomeQuickAction(
           title: "تتبع الحافلة",

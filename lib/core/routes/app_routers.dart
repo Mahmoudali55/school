@@ -104,6 +104,13 @@ class AppRouters {
             child: const LeaveAdminScreen(),
           ),
         );
+      case RoutesName.pickupAdminScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<PickUpCubit>()..getPickUpRequests(),
+            child: const PickUpAdminScreen(),
+          ),
+        );
       default:
         return null;
     }

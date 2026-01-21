@@ -46,7 +46,10 @@ class HomeParentScreen extends StatelessWidget {
                     SizedBox(height: 25.h),
                     const LiveTrackingWidget(),
                     SizedBox(height: 25.h),
-                    RequestsSectionWidget(studentId: parentData.selectedStudent),
+                    RequestsSectionWidget(
+                      selectedStudent: parentData.selectedStudent,
+                      students: parentData.students,
+                    ),
                     SizedBox(height: 25.h),
                     const UrgentAlertsWidget(),
                     SizedBox(height: 30.h),

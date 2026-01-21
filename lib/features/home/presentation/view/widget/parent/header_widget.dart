@@ -5,11 +5,12 @@ import 'package:my_template/core/routes/routes_name.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/navigator_methods.dart';
+import 'package:my_template/features/home/data/models/home_models.dart';
 
 class HeaderWidget extends StatelessWidget {
   final String parentName;
-  final List<String> students;
-  final String selectedStudent;
+  final List<StudentMiniInfo> students;
+  final StudentMiniInfo selectedStudent;
 
   const HeaderWidget({
     super.key,
@@ -85,7 +86,7 @@ class HeaderWidget extends StatelessWidget {
               ),
             ],
           ),
-          child: DropdownButtonFormField<String>(
+          child: DropdownButtonFormField<StudentMiniInfo>(
             value: selectedStudent,
             decoration: InputDecoration(
               labelStyle: AppTextStyle.bodyMedium(context, color: const Color(0xFF6B7280)),
@@ -99,7 +100,7 @@ class HeaderWidget extends StatelessWidget {
               prefixIcon: const Icon(Icons.person_outline, color: Color(0xFF2E5BFF)),
             ),
             items: students
-                .map((student) => DropdownMenuItem(value: student, child: Text(student)))
+                .map((student) => DropdownMenuItem(value: student, child: Text(student.name)))
                 .toList(),
             onChanged: (value) {},
           ),

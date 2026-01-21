@@ -840,4 +840,13 @@ class AppLocalKay {
   static const String submit_request = 'submit_request';
   static const String no_leave_requests = 'no_leave_requests';
   static const String requests = 'requests';
+  static const String student_call = 'student_call';
+  static const String i_am_arriving = 'i_am_arriving';
+  static const String arrival_signal_sent = 'arrival_signal_sent';
+  static const String prepare_student = 'prepare_student';
+  static const String student_ready_at_gate = 'student_ready_at_gate';
+  static const String pick_up_requests = 'pick_up_requests';
+  static const String status_preparing = 'status_preparing';
+  static const String status_ready = 'status_ready';
+  static const String status_picked_up = 'status_picked_up';
 }

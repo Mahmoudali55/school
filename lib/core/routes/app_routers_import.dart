@@ -18,6 +18,8 @@ import 'package:my_template/features/notifications/presentation/screen/notificat
 import 'package:my_template/features/notifications/presentation/screen/notifications_screen.dart';
 import 'package:my_template/features/on_boarding/presentation/view/cubit/on_boarding_cubit.dart';
 import 'package:my_template/features/on_boarding/presentation/view/screen/on_boarding_screen.dart';
+import 'package:my_template/features/pickup/presentation/cubit/pickup_cubit.dart';
+import 'package:my_template/features/pickup/presentation/screen/pickup_admin_screen.dart';
 import 'package:my_template/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:my_template/features/profile/presentation/screen/parent_profile_screen.dart';
 import 'package:my_template/features/profile/presentation/screen/profile_screen.dart';

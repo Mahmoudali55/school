@@ -894,5 +894,15 @@
   "new_leave_request": "طلب استئذان جديد",
   "submit_request": "تقديم الطلب",
   "no_leave_requests": "لا توجد طلبات استئذان حالياً",
-  "requests": "الطلبات"
+  "requests": "الطلبات",
+  "student_call": "النداء الآلي",
+  "i_am_arriving": "قرب الوصول",
+  "arrival_signal_sent": "تم إرسال إشارة الوصول للمدرسة",
+  "prepare_student": "تجهيز الطالب",
+  "student_ready_at_gate": "الطالب جاهز عند البوابة",
+  "pick_up_requests": "طلبات الاستلام",
+  "status_preparing": "جاري التجهيز",
+  "status_ready": "جاهز للاستلام",
+  "status_picked_up": "تم الاستلام"
+
 }

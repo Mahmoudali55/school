@@ -847,5 +847,14 @@
   "no_leave_requests": "No leave requests currently",
   "requests": "Requests",
   "status_approved": "Approved",
-  "status_rejected": "Rejected"
+  "status_rejected": "Rejected",
+  "student_call": "Automated Call",
+  "i_am_arriving": "I am Arriving",
+  "arrival_signal_sent": "Arrival signal sent to school",
+  "prepare_student": "Prepare Student",
+  "student_ready_at_gate": "Student Ready at Gate",
+  "pick_up_requests": "Pick-up Requests",
+  "status_preparing": "Preparing",
+  "status_ready": "Ready at Gate",
+  "status_picked_up": "Picked Up"
 }
