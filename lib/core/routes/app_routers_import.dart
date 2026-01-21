@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/routes/routes_name.dart';
-import 'package:my_template/features/auth/presentation/view/screen/forget_password_screen.dart';
 import 'package:my_template/features/auth/presentation/view/screen/login_screen.dart';
 import 'package:my_template/features/auth/presentation/view/screen/register_screen.dart';
 import 'package:my_template/features/chat/presentation/screen/messages_screen.dart';
@@ -24,9 +23,6 @@ import 'package:my_template/features/pickup/presentation/screen/pickup_admin_scr
 import 'package:my_template/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:my_template/features/profile/presentation/screen/parent_profile_screen.dart';
 import 'package:my_template/features/profile/presentation/screen/profile_screen.dart';
-import 'package:my_template/features/select_interface/data/model/user_type_model.dart';
-import 'package:my_template/features/select_interface/presentation/cubit/select_interface_cubit.dart';
-import 'package:my_template/features/select_interface/presentation/screen/select_interface_screen.dart';
 import 'package:my_template/features/uniform/presentation/cubit/uniform_cubit.dart';
 import 'package:my_template/features/uniform/presentation/screen/uniform_admin_screen.dart';
 import 'package:my_template/features/uniform/presentation/screen/uniform_parent_screen.dart';

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class LoginRequestModel extends Equatable {
-  final String grantType;
+  final dynamic grantType;
   final String username;
   final String password;
 

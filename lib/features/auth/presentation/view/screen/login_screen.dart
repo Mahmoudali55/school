@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,15 +40,17 @@ class LoginScreen extends StatelessWidget {
             BlocConsumer<AuthCubit, AuthState>(
               listener: (context, state) {
                 if (state.loginStatus.isSuccess) {
-                  // CommonMethods.showToast(
-                  //   message: state.loginStatus.data?.message ?? "Login success",
-                  // );
-                  NavigatorMethods.pushNamed(context, RoutesName.homeScreen);
+                  NavigatorMethods.pushNamed(
+                    context,
+                    RoutesName.layoutScreen,
+                    arguments: cubit.state.loginStatus.data?.type ?? "",
+                  );
                 }
                 if (state.loginStatus.isFailure) {
-                  log(state.loginStatus.error?.toString() ?? "Login error");
-                  final error = state.loginStatus.error ?? "Login failed";
-                  CommonMethods.showToast(message: error, type: ToastType.error);
+                  CommonMethods.showToast(
+                    message: state.loginStatus.error ?? "Register failed",
+                    type: ToastType.error,
+                  );
                 }
               },
               builder: (context, state) {
@@ -66,14 +66,14 @@ class LoginScreen extends StatelessWidget {
                       ),
                       Gap(16.h),
                       CustomFormField(
-                        controller: cubit.mobileController,
+                        controller: cubit.usernameLoginController,
                         title: AppLocalKay.email.tr(),
                         prefixIcon: Icon(Icons.email_outlined),
                         validator: (value) => value!.isEmpty ? AppLocalKay.enterEmail.tr() : null,
                       ),
                       Gap(16.h),
                       CustomFormField(
-                        controller: cubit.passwordController,
+                        controller: cubit.passwordLoginController,
                         title: AppLocalKay.password.tr(),
                         prefixIcon: Icon(Icons.lock_outline),
                         isPassword: true,
@@ -155,10 +155,9 @@ class LoginScreen extends StatelessWidget {
       text: AppLocalKay.login.tr(),
       cubitState: cubit.state.loginStatus,
       onPressed: () {
-        NavigatorMethods.pushNamed(context, RoutesName.layoutScreen);
-        // if (_formKey.currentState!.validate()) {
-        //   cubit.login(context: context);
-        // }
+        if (_formKey.currentState!.validate()) {
+          cubit.login(context);
+        }
       },
     );
   }

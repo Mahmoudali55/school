@@ -38,12 +38,11 @@ class ServerFailure extends Failure {
 
       // If we got a JSON map with a "message" or "Message" field, return it immediately
       if (map != null) {
-        if (map['message'] is String) {
-          return ServerFailure(map['message'] as String);
-        }
-        if (map['Message'] is String) {
-          return ServerFailure(map['Message'] as String);
-        }
+        if (map['message'] is String) return ServerFailure(map['message'] as String);
+        if (map['Message'] is String) return ServerFailure(map['Message'] as String);
+        if (map['error'] is String) return ServerFailure(map['error'] as String);
+        if (map['error_description'] is String)
+          return ServerFailure(map['error_description'] as String);
       }
 
       // Otherwise fall back based on DioException type
@@ -71,16 +70,14 @@ class ServerFailure extends Failure {
     }
   }
 
-  /// Handle different status codes, but always prefer the server‑sent "message" if available.
   factory ServerFailure.fromResponse(int? statusCode, dynamic response) {
     try {
       if (response is Map<String, dynamic>) {
-        if (response['message'] is String) {
-          return ServerFailure(response['message'] as String);
-        }
-        if (response['Message'] is String) {
-          return ServerFailure(response['Message'] as String);
-        }
+        if (response['message'] is String) return ServerFailure(response['message'] as String);
+        if (response['Message'] is String) return ServerFailure(response['Message'] as String);
+        if (response['error'] is String) return ServerFailure(response['error'] as String);
+        if (response['error_description'] is String)
+          return ServerFailure(response['error_description'] as String);
       }
 
       switch (statusCode) {
@@ -121,18 +118,23 @@ Future<Either<Failure, T>> handleDioRequest<T>({required Future<T> Function() re
   }
 }
 
-/// Helper to grab "message" from raw response data for logging.
 String? _extractServerMessage(dynamic rawData) {
   try {
     if (rawData is Map<String, dynamic>) {
       if (rawData['message'] is String) return rawData['message'] as String;
       if (rawData['Message'] is String) return rawData['Message'] as String;
+      // Also handle "error" field often returned by OAuth servers
+      if (rawData['error'] is String) return rawData['error'] as String;
+      // Some servers might return "error_description"
+      if (rawData['error_description'] is String) return rawData['error_description'] as String;
     }
     if (rawData is String) {
       final decoded = jsonDecode(rawData);
       if (decoded is Map<String, dynamic>) {
         if (decoded['message'] is String) return decoded['message'] as String;
         if (decoded['Message'] is String) return decoded['Message'] as String;
+        if (decoded['error'] is String) return decoded['error'] as String;
+        if (decoded['error_description'] is String) return decoded['error_description'] as String;
       }
     }
   } catch (_) {}

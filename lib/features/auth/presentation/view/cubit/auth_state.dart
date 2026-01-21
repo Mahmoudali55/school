@@ -1,12 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/auth/data/model/registration_response_model.dart';
+import 'package:my_template/features/auth/data/model/user_login_model.dart';
 
 class AuthState extends Equatable {
   final bool rememberMe;
 
   /// Auth
-  final StatusState<RegistrationResponse> loginStatus;
+  final StatusState<UserLoginModel> loginStatus;
   final StatusState<RegistrationResponse> registerStatus;
 
   /// Password validation
@@ -42,7 +43,7 @@ class AuthState extends Equatable {
 
   AuthState copyWith({
     bool? rememberMe,
-    StatusState<RegistrationResponse>? loginStatus,
+    StatusState<UserLoginModel>? loginStatus,
     StatusState<RegistrationResponse>? registerStatus,
 
     bool? hasUpperCase,

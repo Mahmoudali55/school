@@ -8,7 +8,8 @@ class AuthCubit extends Cubit<AuthState> {
   final AuthRepo authRepo;
   AuthCubit(this.authRepo) : super(const AuthState());
 
-  final TextEditingController mobileController = TextEditingController();
+  final TextEditingController usernameLoginController = TextEditingController();
+  final TextEditingController passwordLoginController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController accountTypeController = TextEditingController();
 
@@ -97,6 +98,25 @@ class AuthCubit extends Cubit<AuthState> {
       },
       (success) {
         emit(state.copyWith(registerStatus: StatusState.success(success)));
+      },
+    );
+  }
+
+  Future<void> login(BuildContext context) async {
+    emit(state.copyWith(loginStatus: StatusState.loading()));
+
+    final result = await authRepo.login(
+      username: usernameLoginController.text,
+      password: passwordLoginController.text,
+    );
+
+    result.fold(
+      (error) {
+        final errorMessage = error.errMessage;
+        emit(state.copyWith(loginStatus: StatusState.failure(errorMessage)));
+      },
+      (success) {
+        emit(state.copyWith(loginStatus: StatusState.success(success)));
       },
     );
   }

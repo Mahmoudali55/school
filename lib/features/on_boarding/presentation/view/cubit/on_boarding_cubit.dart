@@ -21,7 +21,7 @@ class OnBoardingCubit extends Cubit<OnBoardingState> {
 
   void nextPage(BuildContext context) {
     if (isLastPage()) {
-      NavigatorMethods.pushNamedAndRemoveUntil(context, RoutesName.selectInterfaceScreen);
+      NavigatorMethods.pushNamedAndRemoveUntil(context, RoutesName.loginScreen);
     } else {
       pageController.nextPage(duration: const Duration(milliseconds: 400), curve: Curves.easeInOut);
     }

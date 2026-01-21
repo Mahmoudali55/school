@@ -15,8 +15,7 @@ class CustomTextHeaderWidget extends StatelessWidget {
     return Align(
       alignment: Alignment.topRight,
       child: GestureDetector(
-        onTap: () =>
-            NavigatorMethods.pushNamedAndRemoveUntil(context, RoutesName.selectInterfaceScreen),
+        onTap: () => NavigatorMethods.pushNamedAndRemoveUntil(context, RoutesName.loginScreen),
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.h),
           child: Text(

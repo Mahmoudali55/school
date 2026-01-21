@@ -25,20 +25,14 @@ class AppRouters {
           builder: (_) =>
               BlocProvider(create: (context) => sl<OnBoardingCubit>(), child: OnBoardingScreen()),
         );
-      case RoutesName.selectInterfaceScreen:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => sl<InterfaceCubit>(),
-            child: SelectInterfaceScreen(),
-          ),
-        );
+
       // case RoutesName.forgetPasswordScreen:
       //   return MaterialPageRoute(
       //     builder: (_) =>
       //         BlocProvider(create: (context) => sl<AuthCubit>(), child: ForgetPasswordScreen()),
       //   );
       case RoutesName.layoutScreen:
-        return MaterialPageRoute(builder: (_) => LayoutScreen(selectedUserType: args));
+        return MaterialPageRoute(builder: (_) => LayoutScreen(type: args));
       case RoutesName.notificationsScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
