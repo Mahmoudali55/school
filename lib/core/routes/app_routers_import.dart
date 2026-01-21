@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/routes/routes_name.dart';
 import 'package:my_template/features/auth/presentation/view/screen/forget_password_screen.dart';
 import 'package:my_template/features/auth/presentation/view/screen/login_screen.dart';
+import 'package:my_template/features/auth/presentation/view/screen/register_screen.dart';
 import 'package:my_template/features/chat/presentation/screen/messages_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/assignments_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/digital_library_screen.dart';

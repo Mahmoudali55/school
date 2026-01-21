@@ -856,5 +856,17 @@
   "pick_up_requests": "Pick-up Requests",
   "status_preparing": "Preparing",
   "status_ready": "Ready at Gate",
-  "status_picked_up": "Picked Up"
+  "status_picked_up": "Picked Up",
+  "nationalId": "National ID",
+  "birthDate": "Birth Date",
+  "username":" User Name",
+  "confirmPassword": "Confirm Password",
+  "uppercase": "At least 1 uppercase letter",
+    "lowercase": "At least 1 lowercase letter",
+    "number": "At least 1 number",
+    "special": "At least 1 special character",
+    "min_length": "Minimum 8 characters",
+     "password_rules_not_valid":"password Rules Not Valid",
+     "registerSuccess":"Registration Successful",
+     "nationalId_invalid":"National ID Invalid"
 }

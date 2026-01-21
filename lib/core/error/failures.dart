@@ -36,9 +36,14 @@ class ServerFailure extends Failure {
         }
       }
 
-      // If we got a JSON map with a "message" field, return it immediately
-      if (map != null && map['message'] is String) {
-        return ServerFailure(map['message'] as String);
+      // If we got a JSON map with a "message" or "Message" field, return it immediately
+      if (map != null) {
+        if (map['message'] is String) {
+          return ServerFailure(map['message'] as String);
+        }
+        if (map['Message'] is String) {
+          return ServerFailure(map['Message'] as String);
+        }
       }
 
       // Otherwise fall back based on DioException type
@@ -56,10 +61,7 @@ class ServerFailure extends Failure {
         case DioExceptionType.unknown:
           return ServerFailure('Unexpected error, please try again!');
         case DioExceptionType.badResponse:
-          return ServerFailure.fromResponse(
-            dioError.response?.statusCode,
-            map ?? raw,
-          );
+          return ServerFailure.fromResponse(dioError.response?.statusCode, map ?? raw);
         default:
           return ServerFailure('Oops! There was an error, please try again.');
       }
@@ -72,8 +74,13 @@ class ServerFailure extends Failure {
   /// Handle different status codes, but always prefer the server‑sent "message" if available.
   factory ServerFailure.fromResponse(int? statusCode, dynamic response) {
     try {
-      if (response is Map<String, dynamic> && response['message'] is String) {
-        return ServerFailure(response['message'] as String);
+      if (response is Map<String, dynamic>) {
+        if (response['message'] is String) {
+          return ServerFailure(response['message'] as String);
+        }
+        if (response['Message'] is String) {
+          return ServerFailure(response['Message'] as String);
+        }
       }
 
       switch (statusCode) {
@@ -95,9 +102,7 @@ class ServerFailure extends Failure {
 }
 
 /// Executes any Dio request and returns either the parsed data or a Failure.
-Future<Either<Failure, T>> handleDioRequest<T>({
-  required Future<T> Function() request,
-}) async {
+Future<Either<Failure, T>> handleDioRequest<T>({required Future<T> Function() request}) async {
   try {
     final response = await request();
     return Right(response);
@@ -119,13 +124,15 @@ Future<Either<Failure, T>> handleDioRequest<T>({
 /// Helper to grab "message" from raw response data for logging.
 String? _extractServerMessage(dynamic rawData) {
   try {
-    if (rawData is Map<String, dynamic> && rawData['message'] is String) {
-      return rawData['message'] as String;
+    if (rawData is Map<String, dynamic>) {
+      if (rawData['message'] is String) return rawData['message'] as String;
+      if (rawData['Message'] is String) return rawData['Message'] as String;
     }
     if (rawData is String) {
       final decoded = jsonDecode(rawData);
-      if (decoded is Map<String, dynamic> && decoded['message'] is String) {
-        return decoded['message'] as String;
+      if (decoded is Map<String, dynamic>) {
+        if (decoded['message'] is String) return decoded['message'] as String;
+        if (decoded['Message'] is String) return decoded['Message'] as String;
       }
     }
   } catch (_) {}

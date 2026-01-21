@@ -3,6 +3,7 @@ class RoutesName {
   static const String homeScreen = 'homeScreen';
   static const String detailsScreen = 'detailsScreen';
   static const String loginScreen = 'loginScreen';
+  static const String registerScreen = 'registerScreen';
   static const String onBoardingScreen = 'onBoardingScreen';
   static const String selectInterfaceScreen = 'selectInterfaceScreen';
   static const String forgetPasswordScreen = 'ForgetPasswordScreen';

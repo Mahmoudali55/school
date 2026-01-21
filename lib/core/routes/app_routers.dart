@@ -12,10 +12,12 @@ class AppRouters {
         return MaterialPageRoute(builder: (_) => HomeScreen());
       case RoutesName.loginScreen:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => sl<AuthCubit>(),
-            child: LoginScreen(selectedUserType: args as UserTypeModel),
-          ),
+          builder: (_) => BlocProvider(create: (context) => sl<AuthCubit>(), child: LoginScreen()),
+        );
+      case RoutesName.registerScreen:
+        return MaterialPageRoute(
+          builder: (_) =>
+              BlocProvider(create: (context) => sl<AuthCubit>(), child: RegisterScreen()),
         );
 
       case RoutesName.onBoardingScreen:
@@ -30,11 +32,11 @@ class AppRouters {
             child: SelectInterfaceScreen(),
           ),
         );
-      case RoutesName.forgetPasswordScreen:
-        return MaterialPageRoute(
-          builder: (_) =>
-              BlocProvider(create: (context) => sl<AuthCubit>(), child: ForgetPasswordScreen()),
-        );
+      // case RoutesName.forgetPasswordScreen:
+      //   return MaterialPageRoute(
+      //     builder: (_) =>
+      //         BlocProvider(create: (context) => sl<AuthCubit>(), child: ForgetPasswordScreen()),
+      //   );
       case RoutesName.layoutScreen:
         return MaterialPageRoute(builder: (_) => LayoutScreen(selectedUserType: args));
       case RoutesName.notificationsScreen:

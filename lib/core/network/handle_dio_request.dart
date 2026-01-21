@@ -14,7 +14,7 @@ Future<Either<Failure, T>> handleDioRequest<T>({
   } on DioException catch (e) {
     // Optional: log the Dio error
     log('[DioException] ➜ ${e.message}');
-    log(e.response?.data['message']);
+    log(e.response?.data['Message']);
     return Left(ServerFailure.fromDioError(e));
   } catch (e, stack) {
     // Optional: log unknown errors

@@ -903,6 +903,19 @@
   "pick_up_requests": "طلبات الاستلام",
   "status_preparing": "جاري التجهيز",
   "status_ready": "جاهز للاستلام",
-  "status_picked_up": "تم الاستلام"
+  "status_picked_up": "تم الاستلام",
+  "register": "انشاء حساب",
+  "nationalId": "رقم البطاقة الوطنية",
+  "birthDate": "تاريخ الميلاد",
+  "username":" اسم المستخدم",
+  "confirmPassword": "تاكيد كلمة المرور",
+  "uppercase": "يجب أن يحتوي على حرف كبير واحد على الأقل",
+    "lowercase": "يجب أن يحتوي على حرف صغير واحد على الأقل",
+    "number": "يجب أن يحتوي على رقم واحد على الأقل",
+    "special": "يجب أن يحتوي على رمز خاص واحد على الأقل",
+    "min_length": "يجب أن يكون طوله 8 أحرف على الأقل",
+   "password_rules_not_valid":" كلمة المرور غير صحيحة",
+   "registerSuccess":"تم التسجيل بنجاح",
+   "nationalId_invalid":"رقم البطاقة الوطنية غير صحيح"
 
 }

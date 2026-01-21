@@ -25,6 +25,14 @@ class AppLocalKay {
   static const String dontHaveAccount = 'dontHaveAccount';
   static const String welcomeBack = 'welcomeBack';
   static const String loginToContinue = 'loginToContinue';
+  static const String register = 'register';
+  static const String createAccount = 'createAccount';
+  static const String signUp = 'signUp';
+  static const String alreadyHaveAccount = 'alreadyHaveAccount';
+  static const String username = 'username';
+  static const String identityNumber = 'identityNumber';
+  static const String dateOfBirth = 'dateOfBirth';
+  static const String dateOfBirthHint = 'dateOfBirthHint';
   static const String enterNewPassword = 'enterNewPassword';
   static const String newPassword = 'newPassword';
   static const String confirmPassword = 'confirmPassword';
@@ -44,7 +52,7 @@ class AppLocalKay {
   static const String filter_full = 'filter_full';
   static const String filter_available = 'filter_available';
   static const String stats_classes = 'stats_classes';
-
+  static const String nationalId = 'nationalId';
   static const String welcome = 'welcome';
   static const String todo = 'todo';
   static const String todo_hint = 'todo_hint';
@@ -849,4 +857,13 @@ class AppLocalKay {
   static const String status_preparing = 'status_preparing';
   static const String status_ready = 'status_ready';
   static const String status_picked_up = 'status_picked_up';
+  static const String birthDate = 'birthDate';
+  static const String uppercase = 'uppercase';
+  static const String lowercase = 'lowercase';
+  static const String number = 'number';
+  static const String special = 'special';
+  static const String min_length = 'min_length';
+  static const String password_rules_not_valid = 'password_rules_not_valid';
+  static const String registerSuccess = 'registerSuccess';
+  static const String nationalId_invalid = 'nationalId_invalid';
 }

@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
+import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
 import 'package:my_template/core/routes/routes_name.dart';
@@ -16,13 +17,11 @@ import 'package:my_template/core/utils/common_methods.dart';
 import 'package:my_template/core/utils/navigator_methods.dart';
 import 'package:my_template/features/auth/presentation/view/cubit/auth_cubit.dart';
 import 'package:my_template/features/auth/presentation/view/cubit/auth_state.dart';
-import 'package:my_template/features/select_interface/data/model/user_type_model.dart';
 
 class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key, this.selectedUserType});
+  LoginScreen({super.key});
 
   final _formKey = GlobalKey<FormState>();
-  final UserTypeModel? selectedUserType;
 
   @override
   Widget build(BuildContext context) {
@@ -30,138 +29,92 @@ class LoginScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColor.whiteColor(context),
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            height: 280.h,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColor.primaryColor(context),
-                  AppColor.primaryColor(context).withOpacity(0.8),
-                  AppColor.secondAppColor(context),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                stops: const [0.0, 0.6, 1.0],
-              ),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(36),
-                bottomRight: Radius.circular(36),
-              ),
+      appBar: CustomAppBar(
+        context,
+        title: Text(AppLocalKay.login.tr()),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            BlocConsumer<AuthCubit, AuthState>(
+              listener: (context, state) {
+                if (state.loginStatus.isSuccess) {
+                  // CommonMethods.showToast(
+                  //   message: state.loginStatus.data?.message ?? "Login success",
+                  // );
+                  NavigatorMethods.pushNamed(context, RoutesName.homeScreen);
+                }
+                if (state.loginStatus.isFailure) {
+                  log(state.loginStatus.error?.toString() ?? "Login error");
+                  final error = state.loginStatus.error ?? "Login failed";
+                  CommonMethods.showToast(message: error, type: ToastType.error);
+                }
+              },
+              builder: (context, state) {
+                return Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/global_icon/graduate.png',
+                        height: 150.h,
+                        width: 150.w,
+                        color: AppColor.primaryColor(context),
+                      ),
+                      Gap(16.h),
+                      CustomFormField(
+                        controller: cubit.mobileController,
+                        title: AppLocalKay.email.tr(),
+                        prefixIcon: Icon(Icons.email_outlined),
+                        validator: (value) => value!.isEmpty ? AppLocalKay.enterEmail.tr() : null,
+                      ),
+                      Gap(16.h),
+                      CustomFormField(
+                        controller: cubit.passwordController,
+                        title: AppLocalKay.password.tr(),
+                        prefixIcon: Icon(Icons.lock_outline),
+                        isPassword: true,
+                        validator: (value) =>
+                            value!.isEmpty ? AppLocalKay.enterPassword.tr() : null,
+                      ),
+                      Gap(16.h),
+                      _buildBottomOptions(context, cubit),
+                      Gap(24.h),
+                      _buildLoginButton(context, cubit, state),
+                      Gap(24.h),
+                      _buildSignUpLink(context),
+                    ],
+                  ),
+                );
+              },
             ),
-            padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(16.w),
-                  decoration: BoxDecoration(
-                    color: AppColor.primaryColor(context),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.school_outlined,
-                    size: 32.w,
-                    color: AppColor.whiteColor(context),
-                  ),
-                ),
-                Gap(16.h),
-                Text(
-                  AppLocalKay.welcomeBack.tr(),
-                  style: TextStyle(
-                    fontSize: 28.sp,
-                    fontWeight: FontWeight.w700,
-                    color: AppColor.whiteColor(context),
-                    height: 1.2,
-                  ),
-                ),
-                Gap(8.h),
-                Text(
-                  "${AppLocalKay.loginToContinue.tr()}${selectedUserType?.title ?? ""}",
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w400,
-                    color: AppColor.whiteColor(context).withOpacity(0.9),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          Expanded(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
-              child: BlocConsumer<AuthCubit, AuthState>(
-                listener: (context, state) {
-                  if (state.loginStatus.isSuccess) {
-                    CommonMethods.showToast(
-                      message: state.loginStatus.data?.message ?? "Login success",
-                    );
-                    NavigatorMethods.pushNamed(context, RoutesName.homeScreen);
-                  }
-                  if (state.loginStatus.isFailure) {
-                    log(state.loginStatus.error?.toString() ?? "Login error");
-                    final error = state.loginStatus.error ?? "Login failed";
-                    CommonMethods.showToast(message: error, type: ToastType.error);
-                  }
-                },
-                builder: (context, state) {
-                  return Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        _buildInputField(
-                          context,
-                          controller: cubit.mobileController,
-                          label: AppLocalKay.email.tr(),
-                          icon: Icons.email_outlined,
-                          validator: (value) => value!.isEmpty ? AppLocalKay.enterEmail.tr() : null,
-                        ),
-                        Gap(16.h),
-                        _buildInputField(
-                          context,
-                          controller: cubit.passwordController,
-                          label: AppLocalKay.password.tr(),
-                          icon: Icons.lock_outline,
-                          isPassword: true,
-                          validator: (value) =>
-                              value!.isEmpty ? AppLocalKay.enterPassword.tr() : null,
-                        ),
-                        Gap(16.h),
-                        _buildBottomOptions(context, cubit),
-                        Gap(24.h),
-                        _buildLoginButton(context, cubit, state),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildInputField(
-    BuildContext context, {
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-    bool isPassword = false,
-    String? Function(String?)? validator,
-  }) {
-    return CustomFormField(
-      title: label,
-      hintText: label,
-      controller: controller,
-      isPassword: isPassword,
-      validator: validator,
-      prefixIcon: Icon(icon, color: AppColor.iconColor(context), size: 24.w),
+  Widget _buildSignUpLink(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          AppLocalKay.dontHaveAccount.tr(),
+          style: AppTextStyle.bodyMedium(context).copyWith(color: AppColor.textSecondary(context)),
+        ),
+        TextButton(
+          onPressed: () => NavigatorMethods.pushNamed(context, RoutesName.registerScreen),
+          child: Text(
+            AppLocalKay.register.tr(),
+            style: AppTextStyle.bodyMedium(
+              context,
+            ).copyWith(color: AppColor.primaryColor(context), fontWeight: FontWeight.w800),
+          ),
+        ),
+      ],
     );
   }
 
@@ -181,44 +134,32 @@ class LoginScreen extends StatelessWidget {
             ),
           ],
         ),
-        TextButton(
-          onPressed: () {
-            NavigatorMethods.pushNamed(context, RoutesName.forgetPasswordScreen);
-          },
-          child: Text(
-            AppLocalKay.forgotPassword.tr(),
-            style: AppTextStyle.bodyMedium(
-              context,
-            ).copyWith(color: AppColor.primaryColor(context), fontWeight: FontWeight.w600),
-          ),
-        ),
+        // TextButton(
+        //   onPressed: () {
+        //     NavigatorMethods.pushNamed(context, RoutesName.forgetPasswordScreen);
+        //   },
+        //   child: Text(
+        //     AppLocalKay.forgotPassword.tr(),
+        //     style: AppTextStyle.bodyMedium(
+        //       context,
+        //     ).copyWith(color: AppColor.primaryColor(context), fontWeight: FontWeight.w600),
+        //   ),
+        // ),
       ],
     );
   }
 
   Widget _buildLoginButton(BuildContext context, AuthCubit cubit, AuthState state) {
-    return Container(
-      height: 56.h,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [AppColor.primaryColor(context), AppColor.secondAppColor(context)],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-        ),
-        borderRadius: BorderRadius.circular(16.r),
-      ),
-      child: CustomButton(
-        radius: 16,
-        text: AppLocalKay.login.tr(),
-        cubitState: cubit.state.loginStatus,
-        onPressed: () {
-          NavigatorMethods.pushNamed(context, RoutesName.layoutScreen, arguments: selectedUserType);
-          // if (_formKey.currentState!.validate()) {
-          //   cubit.login(context: context);
-          // }
-        },
-        color: Colors.transparent,
-      ),
+    return CustomButton(
+      radius: 16,
+      text: AppLocalKay.login.tr(),
+      cubitState: cubit.state.loginStatus,
+      onPressed: () {
+        NavigatorMethods.pushNamed(context, RoutesName.layoutScreen);
+        // if (_formKey.currentState!.validate()) {
+        //   cubit.login(context: context);
+        // }
+      },
     );
   }
 }

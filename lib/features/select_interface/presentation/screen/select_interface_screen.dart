@@ -86,9 +86,7 @@ class SelectInterfaceScreen extends StatelessWidget {
                   },
                 ),
               ),
-
               Gap(18.h),
-
               CustomButton(
                 radius: 12,
                 child: Text(AppLocalKay.continues.tr(), style: AppTextStyle.buttonStyle(context)),
@@ -101,7 +99,7 @@ class SelectInterfaceScreen extends StatelessWidget {
                     );
                     return;
                   }
-                  NavigatorMethods.pushNamed(
+                  NavigatorMethods.pushNamedAndRemoveUntil(
                     context,
                     RoutesName.loginScreen,
                     arguments: selectedUser,
