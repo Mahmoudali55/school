@@ -40,10 +40,21 @@ class LoginScreen extends StatelessWidget {
             BlocConsumer<AuthCubit, AuthState>(
               listener: (context, state) {
                 if (state.loginStatus.isSuccess) {
+                  String type = cubit.state.loginStatus.data?.type ?? "";
+                  String routeType = "admin";
+
+                  if (type == "1") {
+                    routeType = "student";
+                  } else if (type == "2") {
+                    routeType = "parent";
+                  } else if (type == "3") {
+                    routeType = "teacher";
+                  }
+
                   NavigatorMethods.pushNamed(
                     context,
                     RoutesName.layoutScreen,
-                    arguments: cubit.state.loginStatus.data?.type ?? "",
+                    arguments: routeType,
                   );
                 }
                 if (state.loginStatus.isFailure) {
@@ -80,8 +91,7 @@ class LoginScreen extends StatelessWidget {
                         validator: (value) =>
                             value!.isEmpty ? AppLocalKay.enterPassword.tr() : null,
                       ),
-                      Gap(16.h),
-                      _buildBottomOptions(context, cubit),
+
                       Gap(24.h),
                       _buildLoginButton(context, cubit, state),
                       Gap(24.h),
@@ -114,37 +124,6 @@ class LoginScreen extends StatelessWidget {
             ).copyWith(color: AppColor.primaryColor(context), fontWeight: FontWeight.w800),
           ),
         ),
-      ],
-    );
-  }
-
-  Widget _buildBottomOptions(BuildContext context, AuthCubit cubit) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            Checkbox(value: cubit.state.rememberMe, onChanged: (_) => cubit.changeRememberMe()),
-            Gap(8.w),
-            Text(
-              AppLocalKay.rememberMe.tr(),
-              style: AppTextStyle.bodyMedium(
-                context,
-              ).copyWith(color: AppColor.textSecondary(context)),
-            ),
-          ],
-        ),
-        // TextButton(
-        //   onPressed: () {
-        //     NavigatorMethods.pushNamed(context, RoutesName.forgetPasswordScreen);
-        //   },
-        //   child: Text(
-        //     AppLocalKay.forgotPassword.tr(),
-        //     style: AppTextStyle.bodyMedium(
-        //       context,
-        //     ).copyWith(color: AppColor.primaryColor(context), fontWeight: FontWeight.w600),
-        //   ),
-        // ),
       ],
     );
   }

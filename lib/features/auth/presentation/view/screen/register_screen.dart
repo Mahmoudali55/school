@@ -154,6 +154,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   /// Register Button
                   CustomButton(
                     radius: 12.r,
+                    isLoading: state.registerStatus.isLoading,
                     onPressed: () {
                       if (!_formKey.currentState!.validate()) return;
 
