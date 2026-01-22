@@ -5,6 +5,7 @@ import 'package:my_template/core/error/failures.dart';
 import 'package:my_template/core/network/api_consumer.dart';
 import 'package:my_template/core/network/end_points.dart';
 import 'package:my_template/features/home/data/models/parents_student_data_model.dart';
+import 'package:my_template/features/home/data/models/student_absent_count_model.dart';
 
 import '../models/home_models.dart';
 
@@ -14,6 +15,7 @@ abstract interface class HomeRepo {
   Future<Either<Failure, AdminHomeModel>> getAdminHomeData();
   Future<Either<Failure, ParentHomeModel>> getParentHomeData(int code);
   Future<Either<Failure, List<ParentsStudentData>>> ParentsStudent({required int code});
+  Future<Either<Failure, List<StudentAbsentCount>>> studentAbsentCount({required int code});
 }
 
 class HomeRepoImpl implements HomeRepo {
@@ -35,6 +37,20 @@ class HomeRepoImpl implements HomeRepo {
   }
 
   @override
+  Future<Either<Failure, List<StudentAbsentCount>>> studentAbsentCount({required int code}) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.studentAbsentcount,
+          queryParameters: {"Code": code},
+        );
+        final String dataString = response['Data'];
+        return StudentAbsentCount.listFromDataString(dataString);
+      },
+    );
+  }
+
+  @override
   Future<Either<Failure, ParentHomeModel>> getParentHomeData(int code) async {
     final result = await ParentsStudent(code: code);
     return result.fold((failure) => Left(failure), (students) {
@@ -50,6 +66,7 @@ class HomeRepoImpl implements HomeRepo {
                 (s) => StudentMiniInfo(
                   name: s.studentName,
                   grade: "كود: ${s.studentCode}",
+                  studentCode: s.studentCode,
                   school: "مدرسة التميز",
                 ),
               )
@@ -57,6 +74,7 @@ class HomeRepoImpl implements HomeRepo {
           selectedStudent: StudentMiniInfo(
             name: selected.studentName,
             grade: "كود: ${selected.studentCode}",
+            studentCode: selected.studentCode,
             school: "مدرسة التميز",
           ),
           quickActions: [

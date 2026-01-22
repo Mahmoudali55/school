@@ -1,11 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/routes/routes_name.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/navigator_methods.dart';
 import 'package:my_template/features/home/data/models/home_models.dart';
+
+import '../../../cubit/home_cubit.dart';
 
 class HeaderWidget extends StatelessWidget {
   final String parentName;
@@ -102,7 +105,11 @@ class HeaderWidget extends StatelessWidget {
             items: students
                 .map((student) => DropdownMenuItem(value: student, child: Text(student.name)))
                 .toList(),
-            onChanged: (value) {},
+            onChanged: (student) {
+              if (student != null) {
+                context.read<HomeCubit>().changeSelectedStudent(student);
+              }
+            },
           ),
         ),
       ],

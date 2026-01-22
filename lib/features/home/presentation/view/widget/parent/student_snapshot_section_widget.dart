@@ -2,13 +2,17 @@ import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
+import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 
 class StudentSnapshotWidget extends StatefulWidget {
-  const StudentSnapshotWidget({super.key});
+  final int studentCode;
+  const StudentSnapshotWidget({super.key, required this.studentCode});
 
   @override
   State<StudentSnapshotWidget> createState() => _StudentSnapshotWidgetState();
@@ -22,6 +26,8 @@ class _StudentSnapshotWidgetState extends State<StudentSnapshotWidget> {
   void initState() {
     super.initState();
     _startAutoScroll();
+    _studentCode = widget.studentCode;
+    _loadAbsentCount();
   }
 
   void _startAutoScroll() {
@@ -47,6 +53,22 @@ class _StudentSnapshotWidgetState extends State<StudentSnapshotWidget> {
     super.dispose();
   }
 
+  late int _studentCode;
+
+  void _loadAbsentCount() {
+    context.read<HomeCubit>().studentAbsentCount(_studentCode);
+  }
+
+  @override
+  void didUpdateWidget(covariant StudentSnapshotWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.studentCode != widget.studentCode) {
+      _studentCode = widget.studentCode;
+      _loadAbsentCount();
+    }
+  }
+
+  @override
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -132,55 +154,44 @@ class _StudentSnapshotWidgetState extends State<StudentSnapshotWidget> {
         // --- Absence Component ---
         GestureDetector(
           onTap: () => _showAbsenceDetails(context),
-          child: Container(
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
-            decoration: BoxDecoration(
-              color: AppColor.whiteColor(context),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: const Color(0xFFF3F4F6), width: 1),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColor.blackColor(context).withValues(alpha: 0.03),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(12.w),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFEF2F2),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: const Icon(Icons.event_busy_outlined, color: Color(0xFFEF4444), size: 28),
-                ),
-                SizedBox(width: 16.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "أيام الغياب",
-                      style: AppTextStyle.bodyMedium(
-                        context,
-                      ).copyWith(color: const Color(0xFF6B7280), fontWeight: FontWeight.w500),
-                    ),
-                    Text(
-                      "3 أيام هذا الشهر",
-                      style: AppTextStyle.titleLarge(context).copyWith(
-                        color: const Color(0xFF1F2937),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20.sp,
-                      ),
+          child: BlocBuilder<HomeCubit, HomeState>(
+            builder: (context, state) {
+              final count = state.studentAbsentCountStatus.data?.firstOrNull?.absentCount ?? 0;
+
+              return Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(20.w),
+                decoration: BoxDecoration(
+                  color: AppColor.whiteColor(context),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColor.blackColor(context).withOpacity(0.03),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
                     ),
                   ],
                 ),
-                const Spacer(),
-                const Icon(Icons.arrow_forward_ios, size: 16, color: Color(0xFF9CA3AF)),
-              ],
-            ),
+                child: Row(
+                  children: [
+                    Icon(Icons.event_busy_outlined, size: 28, color: Colors.red),
+                    SizedBox(width: 16.w),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("أيام الغياب", style: AppTextStyle.bodyMedium(context)),
+                        Text(
+                          "$count أيام هذا الشهر",
+                          style: AppTextStyle.titleLarge(
+                            context,
+                          ).copyWith(fontWeight: FontWeight.bold, fontSize: 20.sp),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ],

@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/features/home/data/models/home_models.dart';
 
 import '../../data/repository/home_repo.dart';
 import 'home_state.dart';
@@ -56,5 +57,26 @@ class HomeCubit extends Cubit<HomeState> {
         emit(state.copyWith(parentsStudentStatus: StatusState.success(success)));
       },
     );
+  }
+
+  Future<void> studentAbsentCount(int code) async {
+    emit(state.copyWith(studentAbsentCountStatus: StatusState.loading()));
+
+    final result = await _homeRepo.studentAbsentCount(code: code);
+
+    result.fold(
+      (error) {
+        final errorMessage = error.errMessage;
+        emit(state.copyWith(studentAbsentCountStatus: StatusState.failure(errorMessage)));
+      },
+      (success) {
+        emit(state.copyWith(studentAbsentCountStatus: StatusState.success(success)));
+      },
+    );
+  }
+
+  void changeSelectedStudent(StudentMiniInfo selectedStudent) {
+    emit(state.copyWith(selectedStudent: selectedStudent)); // فقط تحديث الطالب
+    studentAbsentCount(selectedStudent.studentCode); // تحميل أيام الغياب
   }
 }
