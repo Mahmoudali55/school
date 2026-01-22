@@ -45,7 +45,6 @@ class StudentAbsentData extends Equatable {
     };
   }
 
-  /// لتحويل Data String إلى List<StudentAbsentData>
   static List<StudentAbsentData> listFromDataString(String data) {
     if (data.isEmpty || data == "[]") return [];
     final List decoded = jsonDecode(data);

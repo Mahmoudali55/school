@@ -5,4 +5,6 @@ class EndPoints {
   static const String studentData = 'DeltagroupService/School/GetParentsStudentData';
   static const String studentAbsentcount = 'DeltagroupService/School/GetStudentAbsentcount';
   static const String studentMonthResult = 'DeltagroupService/School/GetStudentMonthResult';
+  static const String studentAbsentDataDetails = 'DeltagroupService/School/GetStudentAbsentData';
+  static const String parentBalance = 'DeltagroupService/School/GetParentsData';
 }

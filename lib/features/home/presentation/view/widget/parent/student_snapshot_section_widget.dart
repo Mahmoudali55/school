@@ -34,13 +34,19 @@ class _StudentSnapshotWidgetState extends State<StudentSnapshotWidget> {
   void _loadData() {
     final cubit = context.read<HomeCubit>();
     cubit.studentAbsentCount(_studentCode);
-    cubit.studentCourseDegree(_studentCode, 6);
+    cubit.studentCourseDegree(_studentCode, 1);
+    cubit.studentAbsentDataDetails(_studentCode);
   }
 
   void _startAutoScroll() {
     _timer = Timer.periodic(const Duration(seconds: 4), (timer) {
       if (mounted && _pageController.hasClients) {
+        final grades = context.read<HomeCubit>().state.studentCourseDegreeStatus.data ?? [];
+        if (grades.length <= 1) return;
+
         int nextPage = (_pageController.page?.round() ?? 0) + 1;
+        if (nextPage >= grades.length) nextPage = 0;
+
         _pageController.animateToPage(
           nextPage,
           duration: const Duration(milliseconds: 800),
@@ -107,6 +113,9 @@ class _StudentSnapshotWidgetState extends State<StudentSnapshotWidget> {
               height: 140.h,
               child: PageView.builder(
                 controller: _pageController,
+                physics: grades.length <= 1
+                    ? const NeverScrollableScrollPhysics()
+                    : const BouncingScrollPhysics(),
                 itemCount: grades.length,
                 itemBuilder: (context, index) {
                   final item = grades[index];
@@ -340,47 +349,62 @@ class _StudentSnapshotWidgetState extends State<StudentSnapshotWidget> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        height: MediaQuery.of(context).size.height * 0.5,
-        decoration: BoxDecoration(
-          color: AppColor.whiteColor(context),
-          borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-        ),
-        padding: EdgeInsets.all(24.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Container(
-                width: 50.w,
-                height: 5.h,
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(10),
-                ),
+      builder: (_) => BlocProvider.value(
+        value: context.read<HomeCubit>(),
+        child: BlocBuilder<HomeCubit, HomeState>(
+          builder: (context, state) {
+            final absenceDetails = state.studentAbsentDataStatus.data ?? [];
+
+            return Container(
+              height: MediaQuery.of(context).size.height * 0.5,
+              decoration: BoxDecoration(
+                color: AppColor.whiteColor(context),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
               ),
-            ),
-            SizedBox(height: 24.h),
-            Text(
-              "سجل الغياب",
-              style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20.h),
-            Expanded(
-              child: ListView(
+              padding: EdgeInsets.all(24.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildAbsenceTile(context, "الإثنين، 10 يناير 2026", "إجازة مرضية", Colors.blue),
-                  _buildAbsenceTile(
-                    context,
-                    "الأربعاء، 15 ديسمبر 2025",
-                    "ظروف عائلية",
-                    Colors.orange,
+                  Center(
+                    child: Container(
+                      width: 50.w,
+                      height: 5.h,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
                   ),
-                  _buildAbsenceTile(context, "الأحد، 20 نوفمبر 2025", "غياب بدون عذر", Colors.red),
+                  SizedBox(height: 24.h),
+                  Text(
+                    "سجل الغياب",
+                    style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 20.h),
+                  if (state.studentAbsentDataStatus.isLoading)
+                    const Expanded(child: Center(child: CircularProgressIndicator()))
+                  else if (absenceDetails.isEmpty)
+                    const Expanded(child: Center(child: Text("لا يوجد سجل غياب")))
+                  else
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: absenceDetails.length,
+                        itemBuilder: (context, index) {
+                          final item = absenceDetails[index];
+                          // توضيح: يمكن تخصيص الألوان بناءً على نوع الغياب إذا توفرت المعلومات
+                          return _buildAbsenceTile(
+                            context,
+                            item.absentDate,
+                            item.notes ?? "بدون عذر",
+                            item.absentType == 1 ? Colors.red : Colors.orange,
+                          );
+                        },
+                      ),
+                    ),
                 ],
               ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

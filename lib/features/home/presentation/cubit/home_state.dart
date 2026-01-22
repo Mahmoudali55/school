@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/home/data/models/parents_student_data_model.dart';
 import 'package:my_template/features/home/data/models/student_absent_count_model.dart';
+import 'package:my_template/features/home/data/models/student_absent_data_model.dart';
 import 'package:my_template/features/home/data/models/student_course_degree_model.dart';
 
 import '../../data/models/home_models.dart';
@@ -11,12 +12,14 @@ class HomeState extends Equatable {
     this.parentsStudentStatus = const StatusState.initial(),
     this.studentAbsentCountStatus = const StatusState.initial(),
     this.studentCourseDegreeStatus = const StatusState.initial(),
+    this.studentAbsentDataStatus = const StatusState.initial(),
     this.selectedStudent,
   });
 
   final StatusState<List<ParentsStudentData>> parentsStudentStatus;
   final StatusState<List<StudentAbsentCount>> studentAbsentCountStatus;
   final StatusState<List<StudentCourseDegree>> studentCourseDegreeStatus;
+  final StatusState<List<StudentAbsentData>> studentAbsentDataStatus;
   final StudentMiniInfo? selectedStudent;
 
   @override
@@ -25,12 +28,14 @@ class HomeState extends Equatable {
     studentAbsentCountStatus,
     selectedStudent,
     studentCourseDegreeStatus,
+    studentAbsentDataStatus,
   ];
 
   HomeState copyWith({
     StatusState<List<ParentsStudentData>>? parentsStudentStatus,
     StatusState<List<StudentAbsentCount>>? studentAbsentCountStatus,
     StatusState<List<StudentCourseDegree>>? studentCourseDegreeStatus,
+    StatusState<List<StudentAbsentData>>? studentAbsentDataStatus,
     StudentMiniInfo? selectedStudent,
   }) {
     return HomeState(
@@ -38,6 +43,7 @@ class HomeState extends Equatable {
       studentAbsentCountStatus: studentAbsentCountStatus ?? this.studentAbsentCountStatus,
       selectedStudent: selectedStudent ?? this.selectedStudent,
       studentCourseDegreeStatus: studentCourseDegreeStatus ?? this.studentCourseDegreeStatus,
+      studentAbsentDataStatus: studentAbsentDataStatus ?? this.studentAbsentDataStatus,
     );
   }
 }

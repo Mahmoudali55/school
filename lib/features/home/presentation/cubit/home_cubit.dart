@@ -72,7 +72,7 @@ class HomeCubit extends Cubit<HomeState> {
 
     // جلب بيانات الطالب الجديد
     studentAbsentCount(selectedStudent.studentCode);
-    studentCourseDegree(selectedStudent.studentCode, 6);
+    studentCourseDegree(selectedStudent.studentCode, 1);
 
     print("Selected student updated: ${selectedStudent.studentCode}");
   }
@@ -98,6 +98,17 @@ class HomeCubit extends Cubit<HomeState> {
       (error) =>
           emit(state.copyWith(studentCourseDegreeStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(studentCourseDegreeStatus: StatusState.success(success))),
+    );
+  }
+
+  Future<void> studentAbsentDataDetails(int code) async {
+    emit(state.copyWith(studentAbsentDataStatus: StatusState.loading()));
+
+    final result = await _homeRepo.studentAbsentDataDetails(code: code);
+    result.fold(
+      (error) =>
+          emit(state.copyWith(studentAbsentDataStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(studentAbsentDataStatus: StatusState.success(success))),
     );
   }
 }
