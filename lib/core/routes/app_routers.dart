@@ -55,6 +55,11 @@ class AppRouters {
             child: ProfileScreen(),
           ),
         );
+      case RoutesName.showStudentBalanceScreen:
+        return MaterialPageRoute(
+          builder: (_) =>
+              BlocProvider(create: (context) => sl<HomeCubit>(), child: ShowStudentBalanceScreen()),
+        );
       case RoutesName.digitalLibraryScreen:
         return MaterialPageRoute(builder: (_) => DigitalLibraryScreen());
       case RoutesName.assignmentsScreen:

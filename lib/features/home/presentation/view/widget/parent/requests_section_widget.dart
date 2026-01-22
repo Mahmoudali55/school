@@ -54,7 +54,9 @@ class _RequestsSectionWidgetState extends State<RequestsSectionWidget> {
                         subtitle: state.parentBalanceStatus.data?.first.balance.toString() ?? "",
                         icon: Icons.payments,
                         color: AppColor.errorColor(context),
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushNamed(context, RoutesName.showStudentBalanceScreen);
+                        },
                       );
                     },
                   ),

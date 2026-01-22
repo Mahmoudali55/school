@@ -8,6 +8,7 @@ import 'package:my_template/features/home/data/models/parent_balance_model.dart'
 import 'package:my_template/features/home/data/models/parents_student_data_model.dart';
 import 'package:my_template/features/home/data/models/student_absent_count_model.dart';
 import 'package:my_template/features/home/data/models/student_absent_data_model.dart';
+import 'package:my_template/features/home/data/models/student_balance_model.dart';
 import 'package:my_template/features/home/data/models/student_course_degree_model.dart';
 
 import '../models/home_models.dart';
@@ -21,6 +22,7 @@ abstract interface class HomeRepo {
   Future<Either<Failure, List<StudentAbsentData>>> studentAbsentDataDetails({required int code});
   Future<Either<Failure, List<StudentAbsentCount>>> studentAbsentCount({required int code});
   Future<Either<Failure, List<ParentBalanceModel>>> parentBalance({required int code});
+  Future<Either<Failure, List<StudentBalanceModel>>> studentBalance({required int code});
   Future<Either<Failure, List<StudentCourseDegree>>> studentCourseDegree({
     required int code,
     int? monthNo,
@@ -89,6 +91,21 @@ class HomeRepoImpl implements HomeRepo {
         final String dataString = response['Data'];
         if (dataString.isEmpty || dataString == "[]") return [];
         return ParentBalanceModel.listFromDataString(dataString);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, List<StudentBalanceModel>>> studentBalance({required int code}) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.studentBalance,
+          queryParameters: {"Code": code},
+        );
+        final String dataString = response['Data'];
+        if (dataString.isEmpty || dataString == "[]") return [];
+        return StudentBalanceModel.listFromDataString(dataString);
       },
     );
   }
