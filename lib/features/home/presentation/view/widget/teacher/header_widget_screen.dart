@@ -28,7 +28,7 @@ class HeaderWidget extends StatelessWidget {
                 ),
                 Text(
                   teacherName,
-                  style: AppTextStyle.displaySmall(
+                  style: AppTextStyle.headlineSmall(
                     context,
                   ).copyWith(color: const Color(0xFF1F2937)),
                 ),

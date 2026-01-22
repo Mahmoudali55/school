@@ -36,7 +36,7 @@ class HeaderWidget extends StatelessWidget {
                 ),
                 Text(
                   parentName,
-                  style: AppTextStyle.displaySmall(
+                  style: AppTextStyle.headlineSmall(
                     context,
                     color: const Color(0xFF1F2937),
                   ).copyWith(fontWeight: FontWeight.bold),

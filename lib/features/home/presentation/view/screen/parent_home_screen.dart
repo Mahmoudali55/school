@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/features/home/data/models/home_models.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
@@ -31,7 +32,7 @@ class HomeParentScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     HeaderWidget(
-                      parentName: parentData.userName,
+                      parentName: HiveMethods.getUserName(),
                       students: parentData.students,
                       selectedStudent: parentData.selectedStudent,
                     ),

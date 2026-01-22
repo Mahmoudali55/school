@@ -38,6 +38,10 @@ class HiveMethods {
     return _box.get('theme', defaultValue: ThemeEnum.light);
   }
 
+  static String getUserName() {
+    return _box.get('name', defaultValue: '');
+  }
+
   static void updateThem(ThemeEnum theme) {
     _box.put('theme', theme);
   }
@@ -48,5 +52,17 @@ class HiveMethods {
 
   static void updateNotificationSetting(String key, bool value) {
     _box.put(key, value);
+  }
+
+  static String getType() {
+    return _box.get('type', defaultValue: '');
+  }
+
+  static void updateType(String type) {
+    _box.put('type', type);
+  }
+
+  static void updateName(String name) {
+    _box.put('name', name);
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
@@ -40,7 +41,15 @@ class LoginScreen extends StatelessWidget {
             BlocConsumer<AuthCubit, AuthState>(
               listener: (context, state) {
                 if (state.loginStatus.isSuccess) {
+                  final token = cubit.state.loginStatus.data?.accessToken ?? "";
+                  HiveMethods.updateToken(token);
+
                   String type = cubit.state.loginStatus.data?.type ?? "";
+                  HiveMethods.updateType(type);
+
+                  String name = cubit.state.loginStatus.data?.name ?? "";
+                  HiveMethods.updateName(name);
+
                   String routeType = "admin";
 
                   if (type == "1") {
