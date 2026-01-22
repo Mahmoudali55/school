@@ -10,7 +10,6 @@ import 'package:my_template/features/home/presentation/view/widget/parent/live_t
 import 'package:my_template/features/home/presentation/view/widget/parent/requests_section_widget.dart';
 import 'package:my_template/features/home/presentation/view/widget/parent/student_snapshot_section_widget.dart';
 import 'package:my_template/features/home/presentation/view/widget/parent/urgent_alerts_widget%20.dart';
-import 'package:my_template/features/home/presentation/view/widget/student/gamification_banner.dart';
 
 class HomeParentScreen extends StatelessWidget {
   const HomeParentScreen({super.key});
@@ -35,12 +34,6 @@ class HomeParentScreen extends StatelessWidget {
                       parentName: HiveMethods.getUserName(),
                       students: parentData.students,
                       selectedStudent: parentData.selectedStudent,
-                    ),
-                    SizedBox(height: 25.h),
-                    GamificationBanner(
-                      points: parentData.points,
-                      level: parentData.level,
-                      badges: parentData.badges,
                     ),
                     SizedBox(height: 25.h),
                     const StudentSnapshotWidget(),

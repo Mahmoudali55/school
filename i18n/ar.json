@@ -916,6 +916,8 @@
     "min_length": "يجب أن يكون طوله 8 أحرف على الأقل",
    "password_rules_not_valid":" كلمة المرور غير صحيحة",
    "registerSuccess":"تم التسجيل بنجاح",
-   "nationalId_invalid":"رقم البطاقة الوطنية غير صحيح"
+   "nationalId_invalid":"رقم البطاقة الوطنية غير صحيح",
+   "quick_stats":"الإحصائيات السريعة",
+   "":"أيام الغياب"
 
 }

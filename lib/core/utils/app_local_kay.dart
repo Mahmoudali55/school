@@ -866,4 +866,5 @@ class AppLocalKay {
   static const String password_rules_not_valid = 'password_rules_not_valid';
   static const String registerSuccess = 'registerSuccess';
   static const String nationalId_invalid = 'nationalId_invalid';
+  static const String quick_stats = 'quick_stats';
 }

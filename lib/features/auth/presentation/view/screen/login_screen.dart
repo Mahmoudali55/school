@@ -49,7 +49,8 @@ class LoginScreen extends StatelessWidget {
 
                   String name = cubit.state.loginStatus.data?.name ?? "";
                   HiveMethods.updateName(name);
-
+                  String code = cubit.state.loginStatus.data?.code ?? "";
+                  HiveMethods.updateUserCode(code);
                   String routeType = "admin";
 
                   if (type == "1") {

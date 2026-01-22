@@ -65,4 +65,12 @@ class HiveMethods {
   static void updateName(String name) {
     _box.put('name', name);
   }
+
+  static String getUserCode() {
+    return _box.get('code', defaultValue: '');
+  }
+
+  static void updateUserCode(String code) {
+    _box.put('code', code);
+  }
 }

@@ -1,10 +1,14 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-class HomeModel {
+class HomeModel extends Equatable {
   final String userName;
   final String userRole;
   final List<HomeQuickAction> quickActions;
   final List<HomeNotification>? notifications;
+  final int points;
+  final int level;
+  final List<String> badges;
 
   HomeModel({
     required this.userName,
@@ -16,12 +20,19 @@ class HomeModel {
     this.badges = const [],
   });
 
-  final int points;
-  final int level;
-  final List<String> badges;
+  @override
+  List<Object?> get props => [
+    userName,
+    userRole,
+    quickActions,
+    notifications,
+    points,
+    level,
+    badges,
+  ];
 }
 
-class HomeQuickAction {
+class HomeQuickAction extends Equatable {
   final String title;
   final IconData icon;
   final Color color;
@@ -33,14 +44,20 @@ class HomeQuickAction {
     required this.color,
     required this.onTap,
   });
+
+  @override
+  List<Object?> get props => [title, icon, color];
 }
 
-class HomeNotification {
+class HomeNotification extends Equatable {
   final String title;
   final String time;
   final String type;
 
   HomeNotification({required this.title, required this.time, required this.type});
+
+  @override
+  List<Object?> get props => [title, time, type];
 }
 
 // Student Specific
@@ -61,31 +78,43 @@ class StudentHomeModel extends HomeModel {
     this.nextClass,
     this.tasks,
   });
+
+  @override
+  List<Object?> get props => [...super.props, classInfo, nextClass, tasks];
 }
 
-class NextClass {
+class NextClass extends Equatable {
   final String subject;
   final String time;
   final String room;
   final String teacher;
 
   NextClass({required this.subject, required this.time, required this.room, required this.teacher});
+
+  @override
+  List<Object?> get props => [subject, time, room, teacher];
 }
 
-class UpcomingTask {
+class UpcomingTask extends Equatable {
   final String title;
   final String subject;
   final String dueDate;
 
   UpcomingTask({required this.title, required this.subject, required this.dueDate});
+
+  @override
+  List<Object?> get props => [title, subject, dueDate];
 }
 
-class StudentMiniInfo {
+class StudentMiniInfo extends Equatable {
   final String name;
   final String grade;
   final String? school;
 
   StudentMiniInfo({required this.name, required this.grade, this.school});
+
+  @override
+  List<Object?> get props => [name, grade, school];
 }
 
 // Parent Specific
@@ -104,6 +133,9 @@ class ParentHomeModel extends HomeModel {
     required this.students,
     required this.selectedStudent,
   });
+
+  @override
+  List<Object?> get props => [...super.props, students, selectedStudent];
 }
 
 // Teacher Specific
@@ -124,14 +156,20 @@ class TeacherHomeModel extends HomeModel {
     required this.stats,
     this.schedule,
   });
+
+  @override
+  List<Object?> get props => [...super.props, subjects, stats, schedule];
 }
 
-class ScheduleItem {
+class ScheduleItem extends Equatable {
   final String time;
   final String subject;
   final String className;
 
   ScheduleItem({required this.time, required this.subject, required this.className});
+
+  @override
+  List<Object?> get props => [time, subject, className];
 }
 
 // Admin Specific
@@ -150,12 +188,18 @@ class AdminHomeModel extends HomeModel {
     required this.metrics,
     this.alerts,
   });
+
+  @override
+  List<Object?> get props => [...super.props, metrics, alerts];
 }
 
-class AdminAlert {
+class AdminAlert extends Equatable {
   final String title;
   final String time;
   final String severity;
 
   AdminAlert({required this.title, required this.time, required this.severity});
+
+  @override
+  List<Object?> get props => [title, time, severity];
 }
