@@ -869,5 +869,8 @@
      "password_rules_not_valid":"password Rules Not Valid",
      "registerSuccess":"Registration Successful",
      "nationalId_invalid":"National ID Invalid",
-     "quick_stats":"Quick Stats"
+     "quick_stats":"Quick Stats",
+     "absences":"Absences",
+     "day":"Day"
+
 }

@@ -21,22 +21,26 @@ class StudentSnapshotWidget extends StatefulWidget {
 class _StudentSnapshotWidgetState extends State<StudentSnapshotWidget> {
   final PageController _pageController = PageController();
   late Timer _timer;
+  late int _studentCode;
 
   @override
   void initState() {
     super.initState();
-    _startAutoScroll();
     _studentCode = widget.studentCode;
-    _loadAbsentCount();
+    _loadData();
+    _startAutoScroll();
+  }
+
+  void _loadData() {
+    final cubit = context.read<HomeCubit>();
+    cubit.studentAbsentCount(_studentCode);
+    cubit.studentCourseDegree(_studentCode, 6);
   }
 
   void _startAutoScroll() {
     _timer = Timer.periodic(const Duration(seconds: 4), (timer) {
       if (mounted && _pageController.hasClients) {
         int nextPage = (_pageController.page?.round() ?? 0) + 1;
-        if (nextPage >= 5) {
-          nextPage = 0;
-        }
         _pageController.animateToPage(
           nextPage,
           duration: const Duration(milliseconds: 800),
@@ -47,34 +51,36 @@ class _StudentSnapshotWidgetState extends State<StudentSnapshotWidget> {
   }
 
   @override
+  void didUpdateWidget(covariant StudentSnapshotWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.studentCode != widget.studentCode) {
+      _studentCode = widget.studentCode;
+      _loadData();
+    }
+  }
+
+  @override
   void dispose() {
     _timer.cancel();
     _pageController.dispose();
     super.dispose();
   }
 
-  late int _studentCode;
-
-  void _loadAbsentCount() {
-    context.read<HomeCubit>().studentAbsentCount(_studentCode);
+  // --- حساب الحالة بناءً على النسبة ---
+  String _gradeStatus(double studentDegree, double courseDegree) {
+    final percentage = (studentDegree / courseDegree) * 100;
+    if (percentage >= 90) return "ممتاز";
+    if (percentage >= 75) return "جيد جدًا";
+    if (percentage >= 60) return "جيد";
+    return "ضعيف";
   }
 
-  @override
-  void didUpdateWidget(covariant StudentSnapshotWidget oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.studentCode != widget.studentCode) {
-      _studentCode = widget.studentCode;
-      _loadAbsentCount();
-    }
-  }
-
-  @override
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // --- Grades Slider Header ---
+        // --- Grades Header ---
         Text(
           AppLocalKay.grades.tr(),
           style: AppTextStyle.titleMedium(
@@ -83,66 +89,129 @@ class _StudentSnapshotWidgetState extends State<StudentSnapshotWidget> {
         ),
         SizedBox(height: 12.h),
 
-        // --- Grades Slider Component ---
-        Container(
-          height: 140.h,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [AppColor.primaryColor(context), const Color(0xFF1E40AF)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(24),
-            boxShadow: [
-              BoxShadow(
-                color: AppColor.primaryColor(context).withOpacity(0.3),
-                blurRadius: 15,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
-          child: Stack(
-            children: [
-              // Decorative circles
-              Positioned(
-                right: -20,
-                top: -20,
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundColor: AppColor.whiteColor(context).withOpacity(0.1),
-                ),
-              ),
-              PageView(
+        // --- Grades Slider Dynamic ---
+        // --- Grades Slider Dynamic ---
+        BlocBuilder<HomeCubit, HomeState>(
+          builder: (context, state) {
+            final grades = state.studentCourseDegreeStatus.data ?? [];
+
+            if (state.studentCourseDegreeStatus.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (grades.isEmpty) {
+              return Center(child: Text("لا توجد درجات", style: AppTextStyle.bodyMedium(context)));
+            }
+
+            return SizedBox(
+              height: 140.h,
+              child: PageView.builder(
                 controller: _pageController,
-                physics: const BouncingScrollPhysics(),
-                children: [
-                  _buildGradeItem(
-                    context,
-                    "الرياضيات",
-                    "95/100",
-                    "تفوق ملحوظ",
-                    Icons.calculate_outlined,
-                  ),
-                  _buildGradeItem(
-                    context,
-                    "العلوم",
-                    "88/100",
-                    "أداء جيد جدًا",
-                    Icons.science_outlined,
-                  ),
-                  _buildGradeItem(context, "اللغة العربية", "92/100", "ممتاز", Icons.translate),
-                  _buildGradeItem(context, "English Language", "90/100", "Very Good", Icons.abc),
-                  _buildGradeItem(context, "التاريخ", "85/100", "جيد جداً", Icons.history_edu),
-                ],
+                itemCount: grades.length,
+                itemBuilder: (context, index) {
+                  final item = grades[index];
+
+                  // --- نسبة الطالب + الحالة ---
+                  final percentage = (item.studentDegree / item.courseDegree) * 100;
+                  String status;
+                  if (percentage >= 90) {
+                    status = "ممتاز";
+                  } else if (percentage >= 75) {
+                    status = "جيد جدًا";
+                  } else if (percentage >= 60) {
+                    status = "جيد";
+                  } else {
+                    status = "ضعيف";
+                  }
+
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [AppColor.primaryColor(context), const Color(0xFF1E40AF)],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColor.primaryColor(context).withOpacity(0.3),
+                            blurRadius: 12,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
+                      ),
+                      padding: EdgeInsets.all(16.w),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item.courseName,
+                            style: AppTextStyle.bodyMedium(context).copyWith(
+                              color: AppColor.whiteColor(context),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 8.h),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                "${item.studentDegree}",
+                                style: AppTextStyle.headlineLarge(context).copyWith(
+                                  color: AppColor.whiteColor(context),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 28.sp,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(bottom: 4.h, left: 4.w),
+                                child: Text(
+                                  "/${item.courseDegree}",
+                                  style: AppTextStyle.bodyLarge(
+                                    context,
+                                  ).copyWith(color: AppColor.whiteColor(context)),
+                                ),
+                              ),
+                              const Spacer(),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                                decoration: BoxDecoration(
+                                  color: AppColor.whiteColor(context).withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Text(
+                                  status,
+                                  style: AppTextStyle.bodySmall(context).copyWith(
+                                    color: AppColor.whiteColor(context),
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 6.h),
+                          LinearProgressIndicator(
+                            value: item.studentDegree / item.courseDegree,
+                            backgroundColor: AppColor.whiteColor(context).withOpacity(0.3),
+                            color: Colors.yellowAccent,
+                            minHeight: 6.h,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
-            ],
-          ),
+            );
+          },
         ),
 
         SizedBox(height: 24.h),
 
-        // --- Absence Section Header ---
+        // --- Absence Section ---
         Text(
           AppLocalKay.quick_stats.tr(),
           style: AppTextStyle.titleMedium(
@@ -151,7 +220,7 @@ class _StudentSnapshotWidgetState extends State<StudentSnapshotWidget> {
         ),
         SizedBox(height: 12.h),
 
-        // --- Absence Component ---
+        // --- Absences ---
         GestureDetector(
           onTap: () => _showAbsenceDetails(context),
           child: BlocBuilder<HomeCubit, HomeState>(
@@ -179,9 +248,9 @@ class _StudentSnapshotWidgetState extends State<StudentSnapshotWidget> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("أيام الغياب", style: AppTextStyle.bodyMedium(context)),
+                        Text(AppLocalKay.absences.tr(), style: AppTextStyle.bodyMedium(context)),
                         Text(
-                          "$count أيام هذا الشهر",
+                          "$count ${AppLocalKay.day.tr()}",
                           style: AppTextStyle.titleLarge(
                             context,
                           ).copyWith(fontWeight: FontWeight.bold, fontSize: 20.sp),

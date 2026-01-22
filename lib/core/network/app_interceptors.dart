@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 
 import '../utils/common_methods.dart';
@@ -11,10 +10,17 @@ class AppInterceptors extends Interceptor {
   Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     isInternet = true;
 
-    options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    if (!options.headers.containsKey('Content-Type')) {
+      options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    }
 
     final lang = HiveMethods.getLang();
     options.headers['lang'] = lang == 'en' ? 'en-GB' : lang;
+
+    final token = HiveMethods.getToken();
+    if (token != null) {
+      options.headers['Authorization'] = 'Bearer $token';
+    }
 
     // Check internet connectivity before sending request
     if (!await CommonMethods.hasConnection()) {

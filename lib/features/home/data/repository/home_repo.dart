@@ -6,6 +6,7 @@ import 'package:my_template/core/network/api_consumer.dart';
 import 'package:my_template/core/network/end_points.dart';
 import 'package:my_template/features/home/data/models/parents_student_data_model.dart';
 import 'package:my_template/features/home/data/models/student_absent_count_model.dart';
+import 'package:my_template/features/home/data/models/student_course_degree_model.dart';
 
 import '../models/home_models.dart';
 
@@ -16,6 +17,10 @@ abstract interface class HomeRepo {
   Future<Either<Failure, ParentHomeModel>> getParentHomeData(int code);
   Future<Either<Failure, List<ParentsStudentData>>> ParentsStudent({required int code});
   Future<Either<Failure, List<StudentAbsentCount>>> studentAbsentCount({required int code});
+  Future<Either<Failure, List<StudentCourseDegree>>> studentCourseDegree({
+    required int code,
+    int? monthNo,
+  });
 }
 
 class HomeRepoImpl implements HomeRepo {
@@ -31,6 +36,7 @@ class HomeRepoImpl implements HomeRepo {
           queryParameters: {"Code": code},
         );
         final String dataString = response['Data'];
+        if (dataString.isEmpty || dataString == "[]") return [];
         return ParentsStudentData.listFromDataString(dataString);
       },
     );
@@ -45,7 +51,26 @@ class HomeRepoImpl implements HomeRepo {
           queryParameters: {"Code": code},
         );
         final String dataString = response['Data'];
+        if (dataString.isEmpty || dataString == "[]") return [];
         return StudentAbsentCount.listFromDataString(dataString);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, List<StudentCourseDegree>>> studentCourseDegree({
+    required int code,
+    int? monthNo,
+  }) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.studentMonthResult,
+          queryParameters: {"Code": code, "MonthNo": monthNo},
+        );
+
+        final String dataString = response['Data'];
+        return StudentCourseDegree.listFromDataString(dataString);
       },
     );
   }

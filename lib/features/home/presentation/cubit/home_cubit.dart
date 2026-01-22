@@ -47,36 +47,57 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(parentsStudentStatus: StatusState.loading()));
 
     final result = await _homeRepo.ParentsStudent(code: code);
-
     result.fold(
-      (error) {
-        final errorMessage = error.errMessage;
-        emit(state.copyWith(parentsStudentStatus: StatusState.failure(errorMessage)));
-      },
-      (success) {
-        emit(state.copyWith(parentsStudentStatus: StatusState.success(success)));
+      (error) => emit(state.copyWith(parentsStudentStatus: StatusState.failure(error.errMessage))),
+      (students) {
+        emit(
+          state.copyWith(
+            parentsStudentStatus: StatusState.success(students),
+            selectedStudent: students.isNotEmpty ? students[0].toMiniInfo() : null,
+          ),
+        );
+        if (students.isNotEmpty) {
+          // تحميل بيانات الطالب الأول مباشرة
+          final firstStudent = students[0];
+          studentAbsentCount(firstStudent.studentCode);
+          studentCourseDegree(firstStudent.studentCode, 6);
+        }
       },
     );
   }
 
+  // تحديث الطالب المختار
+  void changeSelectedStudent(StudentMiniInfo selectedStudent) {
+    emit(state.copyWith(selectedStudent: selectedStudent));
+
+    // جلب بيانات الطالب الجديد
+    studentAbsentCount(selectedStudent.studentCode);
+    studentCourseDegree(selectedStudent.studentCode, 6);
+
+    print("Selected student updated: ${selectedStudent.studentCode}");
+  }
+
+  // جلب أيام الغياب
   Future<void> studentAbsentCount(int code) async {
     emit(state.copyWith(studentAbsentCountStatus: StatusState.loading()));
 
     final result = await _homeRepo.studentAbsentCount(code: code);
-
     result.fold(
-      (error) {
-        final errorMessage = error.errMessage;
-        emit(state.copyWith(studentAbsentCountStatus: StatusState.failure(errorMessage)));
-      },
-      (success) {
-        emit(state.copyWith(studentAbsentCountStatus: StatusState.success(success)));
-      },
+      (error) =>
+          emit(state.copyWith(studentAbsentCountStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(studentAbsentCountStatus: StatusState.success(success))),
     );
   }
 
-  void changeSelectedStudent(StudentMiniInfo selectedStudent) {
-    emit(state.copyWith(selectedStudent: selectedStudent)); // فقط تحديث الطالب
-    studentAbsentCount(selectedStudent.studentCode); // تحميل أيام الغياب
+  // جلب درجات الطالب
+  Future<void> studentCourseDegree(int code, int? monthNo) async {
+    emit(state.copyWith(studentCourseDegreeStatus: StatusState.loading()));
+
+    final result = await _homeRepo.studentCourseDegree(code: code, monthNo: monthNo);
+    result.fold(
+      (error) =>
+          emit(state.copyWith(studentCourseDegreeStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(studentCourseDegreeStatus: StatusState.success(success))),
+    );
   }
 }

@@ -35,8 +35,18 @@ class DioConsumer implements ApiConsumer {
   }
 
   @override
-  Future get(String path, {Map<String, dynamic>? queryParameters}) async {
-    final response = await client.get(path, queryParameters: queryParameters);
+  Future get(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? body,
+    Map<String, dynamic>? headers,
+  }) async {
+    final response = await client.request(
+      path,
+      data: body,
+      queryParameters: queryParameters,
+      options: Options(method: 'GET', headers: headers),
+    );
     return response.data;
   }
 
@@ -45,12 +55,14 @@ class DioConsumer implements ApiConsumer {
     String path, {
     Map<String, dynamic>? body,
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
     bool? isFormData,
   }) async {
     var response = await client.post(
       path,
       data: isFormData == true ? FormData.fromMap(body!) : body,
       queryParameters: queryParameters,
+      options: Options(headers: headers),
     );
     return response.data;
   }
@@ -60,12 +72,14 @@ class DioConsumer implements ApiConsumer {
     String path, {
     Map<String, dynamic>? body,
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
     bool? isFormData,
   }) async {
     final response = await client.put(
       path,
       data: isFormData == true ? FormData.fromMap(body!) : body,
       queryParameters: queryParameters,
+      options: Options(headers: headers),
     );
     return response.data;
   }
@@ -75,12 +89,14 @@ class DioConsumer implements ApiConsumer {
     String path, {
     Map<String, dynamic>? body,
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
     bool? isFormData,
   }) async {
-    final response = await client.get(
+    final response = await client.request(
       path,
       data: isFormData == true ? FormData.fromMap(body!) : body,
       queryParameters: queryParameters,
+      options: Options(method: 'DELETE', headers: headers),
     );
     return response.data;
   }
