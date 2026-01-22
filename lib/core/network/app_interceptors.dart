@@ -10,9 +10,7 @@ class AppInterceptors extends Interceptor {
   Future<void> onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
     isInternet = true;
 
-    if (!options.headers.containsKey('Content-Type')) {
-      options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
-    }
+    options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
 
     final lang = HiveMethods.getLang();
     options.headers['lang'] = lang == 'en' ? 'en-GB' : lang;

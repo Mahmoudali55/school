@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/features/home/data/models/parent_balance_model.dart';
 import 'package:my_template/features/home/data/models/parents_student_data_model.dart';
 import 'package:my_template/features/home/data/models/student_absent_count_model.dart';
 import 'package:my_template/features/home/data/models/student_absent_data_model.dart';
@@ -13,6 +14,7 @@ class HomeState extends Equatable {
     this.studentAbsentCountStatus = const StatusState.initial(),
     this.studentCourseDegreeStatus = const StatusState.initial(),
     this.studentAbsentDataStatus = const StatusState.initial(),
+    this.parentBalanceStatus = const StatusState.initial(),
     this.selectedStudent,
   });
 
@@ -20,6 +22,7 @@ class HomeState extends Equatable {
   final StatusState<List<StudentAbsentCount>> studentAbsentCountStatus;
   final StatusState<List<StudentCourseDegree>> studentCourseDegreeStatus;
   final StatusState<List<StudentAbsentData>> studentAbsentDataStatus;
+  final StatusState<List<ParentBalanceModel>> parentBalanceStatus;
   final StudentMiniInfo? selectedStudent;
 
   @override
@@ -29,6 +32,7 @@ class HomeState extends Equatable {
     selectedStudent,
     studentCourseDegreeStatus,
     studentAbsentDataStatus,
+    parentBalanceStatus,
   ];
 
   HomeState copyWith({
@@ -36,6 +40,7 @@ class HomeState extends Equatable {
     StatusState<List<StudentAbsentCount>>? studentAbsentCountStatus,
     StatusState<List<StudentCourseDegree>>? studentCourseDegreeStatus,
     StatusState<List<StudentAbsentData>>? studentAbsentDataStatus,
+    StatusState<List<ParentBalanceModel>>? parentBalanceStatus,
     StudentMiniInfo? selectedStudent,
   }) {
     return HomeState(
@@ -44,6 +49,7 @@ class HomeState extends Equatable {
       selectedStudent: selectedStudent ?? this.selectedStudent,
       studentCourseDegreeStatus: studentCourseDegreeStatus ?? this.studentCourseDegreeStatus,
       studentAbsentDataStatus: studentAbsentDataStatus ?? this.studentAbsentDataStatus,
+      parentBalanceStatus: parentBalanceStatus ?? this.parentBalanceStatus,
     );
   }
 }

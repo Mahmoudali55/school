@@ -111,4 +111,14 @@ class HomeCubit extends Cubit<HomeState> {
       (success) => emit(state.copyWith(studentAbsentDataStatus: StatusState.success(success))),
     );
   }
+
+  Future<void> parentBalance(int code) async {
+    emit(state.copyWith(parentBalanceStatus: StatusState.loading()));
+
+    final result = await _homeRepo.parentBalance(code: code);
+    result.fold(
+      (error) => emit(state.copyWith(parentBalanceStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(parentBalanceStatus: StatusState.success(success))),
+    );
+  }
 }

@@ -1,19 +1,34 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/routes/routes_name.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/home/data/models/home_models.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
+import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 
-class RequestsSectionWidget extends StatelessWidget {
+class RequestsSectionWidget extends StatefulWidget {
   final StudentMiniInfo? selectedStudent;
   final List<StudentMiniInfo> students;
   const RequestsSectionWidget({super.key, this.selectedStudent, this.students = const []});
+
   @override
+  State<RequestsSectionWidget> createState() => _RequestsSectionWidgetState();
+}
+
+class _RequestsSectionWidgetState extends State<RequestsSectionWidget> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<HomeCubit>().parentBalance(int.parse(HiveMethods.getUserCode()));
+  }
+
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,13 +46,17 @@ class RequestsSectionWidget extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: _buildRequestCard(
-                    context,
-                    title: AppLocalKay.fees.tr(),
-                    subtitle: "2,000 ريال",
-                    icon: Icons.payments,
-                    color: AppColor.errorColor(context),
-                    onTap: () {},
+                  child: BlocBuilder<HomeCubit, HomeState>(
+                    builder: (context, state) {
+                      return _buildRequestCard(
+                        context,
+                        title: AppLocalKay.fees.tr(),
+                        subtitle: state.parentBalanceStatus.data?.first.balance.toString() ?? "",
+                        icon: Icons.payments,
+                        color: AppColor.errorColor(context),
+                        onTap: () {},
+                      );
+                    },
                   ),
                 ),
                 Gap(12.w),
@@ -52,7 +71,7 @@ class RequestsSectionWidget extends StatelessWidget {
                       Navigator.pushNamed(
                         context,
                         RoutesName.uniformParentScreen,
-                        arguments: selectedStudent?.name,
+                        arguments: widget.selectedStudent?.name,
                       );
                     },
                   ),
@@ -73,7 +92,7 @@ class RequestsSectionWidget extends StatelessWidget {
                       Navigator.pushNamed(
                         context,
                         RoutesName.leaveParentScreen,
-                        arguments: selectedStudent?.name,
+                        arguments: widget.selectedStudent?.name,
                       );
                     },
                   ),
@@ -100,9 +119,9 @@ class RequestsSectionWidget extends StatelessWidget {
   }
 
   void _showArrivingConfirmation(BuildContext context) {
-    final String displayNames = students.isNotEmpty
-        ? students.map((s) => "${s.name} (${s.grade})").join(" - ")
-        : (selectedStudent?.name ?? '');
+    final String displayNames = widget.students.isNotEmpty
+        ? widget.students.map((s) => "${s.name} (${s.grade})").join(" - ")
+        : (widget.selectedStudent?.name ?? '');
 
     showModalBottomSheet(
       context: context,
@@ -133,7 +152,7 @@ class RequestsSectionWidget extends StatelessWidget {
               const Gap(10),
               Expanded(
                 child: ListView(
-                  children: students
+                  children: widget.students
                       .map(
                         (s) => Padding(
                           padding: const EdgeInsets.symmetric(vertical: 6),
@@ -257,7 +276,7 @@ class RequestsSectionWidget extends StatelessWidget {
               style: AppTextStyle.labelSmall(
                 context,
                 color: AppColor.grey400Color(context),
-              ).copyWith(fontSize: 8.sp),
+              ).copyWith(fontSize: 12.sp),
             ),
           ],
         ),
