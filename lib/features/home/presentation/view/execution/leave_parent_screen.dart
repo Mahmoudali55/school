@@ -11,17 +11,27 @@ import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/common_methods.dart';
 import 'package:my_template/features/home/data/models/add_permissions_mobile_model.dart';
+import 'package:my_template/features/home/data/models/edit_permissions_mobile_request_model.dart';
+import 'package:my_template/features/home/data/models/get_permissions_mobile_model.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
-import 'package:my_template/features/leave_permission/presentation/cubit/leave_state.dart';
 
 import '../../../../../core/utils/app_local_kay.dart';
-import '../../../../leave_permission/data/model/leave_model.dart';
-import '../../../../leave_permission/presentation/cubit/leave_cubit.dart';
 
-class LeaveParentScreen extends StatelessWidget {
+class LeaveParentScreen extends StatefulWidget {
   final String studentId;
   const LeaveParentScreen({super.key, required this.studentId});
+
+  @override
+  State<LeaveParentScreen> createState() => _LeaveParentScreenState();
+}
+
+class _LeaveParentScreenState extends State<LeaveParentScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<HomeCubit>().getPermissions(code: int.parse(HiveMethods.getUserCode()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,25 +46,21 @@ class LeaveParentScreen extends StatelessWidget {
         ),
       ),
       body: BlocBuilder<HomeCubit, HomeState>(
-        builder: (context, homeState) {
-          return BlocBuilder<LeaveCubit, LeaveState>(
-            builder: (context, state) {
-              if (state is LeaveLoading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is LeaveLoaded) {
-                return _buildBody(context, state.leaves);
-              } else if (state is LeaveError) {
-                return Center(child: Text(state.message));
-              }
-              return const SizedBox.shrink();
-            },
-          );
+        builder: (context, state) {
+          if (state.getPermissionsStatus.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state.getPermissionsStatus.isSuccess) {
+            return _buildBody(context, state.getPermissionsStatus.data?.data ?? []);
+          } else if (state.getPermissionsStatus.isFailure) {
+            return Center(child: Text(state.getPermissionsStatus.error ?? ''));
+          }
+          return const SizedBox.shrink();
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showRequestLeaveDialog(
           context,
-          int.parse(studentId),
+          int.parse(widget.studentId),
           int.parse(HiveMethods.getUserCode()),
         ),
         label: Text(AppLocalKay.request_leave.tr()),
@@ -64,7 +70,7 @@ class LeaveParentScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(BuildContext context, List<LeaveRequest> leaves) {
+  Widget _buildBody(BuildContext context, List<PermissionItem> leaves) {
     if (leaves.isEmpty) {
       return Center(
         child: Column(
@@ -93,14 +99,9 @@ class LeaveParentScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLeaveCard(BuildContext context, LeaveRequest request) {
-    final statusColor = _getStatusColor(request.status, context);
-    final statusText = _getStatusText(request.status);
-
+  Widget _buildLeaveCard(BuildContext context, PermissionItem request) {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -109,49 +110,58 @@ class LeaveParentScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  request.reason,
-                  style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: statusColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: statusColor),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        request.studentName,
+                        style: AppTextStyle.bodyLarge(context).copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: AppColor.primaryColor(context),
+                        ),
+                      ),
+                      const Gap(4),
+                      Text(request.reason, style: AppTextStyle.bodyMedium(context)),
+                    ],
                   ),
-                  child: Text(
-                    statusText,
-                    style: AppTextStyle.bodySmall(
+                ),
+                GestureDetector(
+                  onTap: () {
+                    _showRequestLeaveDialog(
                       context,
-                    ).copyWith(color: statusColor, fontWeight: FontWeight.bold),
+                      request.studentCode,
+                      request.parentCode,
+                      permissionItem: request,
+                    );
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppColor.warningColor(context).withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: AppColor.warningColor(context)),
+                    ),
+                    child: Text(
+                      AppLocalKay.edit.tr(),
+                      style: AppTextStyle.bodySmall(context).copyWith(
+                        color: AppColor.warningColor(context),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
-            const Divider(),
-            _buildDetailRow(
-              Icons.calendar_today,
-              AppLocalKay.leave_date.tr(),
-              DateFormat('yyyy-MM-dd').format(request.date),
-              context,
-            ),
-            const Gap(8),
-            _buildDetailRow(
-              Icons.access_time,
-              AppLocalKay.start_time.tr(),
-              request.startTime,
-              context,
-            ),
-            if (request.endTime != null) ...[
+            if (request.notes.isNotEmpty) ...[
               const Gap(8),
-              _buildDetailRow(
-                Icons.access_time_filled,
-                AppLocalKay.end_time.tr(),
-                request.endTime!,
-                context,
+              Text(
+                request.notes,
+                style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey[600]),
               ),
             ],
+            _buildDetailRow(Icons.calendar_month, "تاريخ الطلب", request.requestDate, context),
+            const Divider(),
           ],
         ),
       ),
@@ -172,213 +182,262 @@ class LeaveParentScreen extends StatelessWidget {
     );
   }
 
-  Color _getStatusColor(LeaveStatus status, BuildContext context) {
-    switch (status) {
-      case LeaveStatus.pending:
-        return AppColor.warningColor(context);
-      case LeaveStatus.approved:
-        return AppColor.secondAppColor(context);
-      case LeaveStatus.rejected:
-        return AppColor.errorColor(context);
-    }
-  }
-
-  String _getStatusText(LeaveStatus status) {
-    switch (status) {
-      case LeaveStatus.pending:
-        return AppLocalKay.status_pending.tr();
-      case LeaveStatus.approved:
-        return AppLocalKay.status_approved.tr();
-      case LeaveStatus.rejected:
-        return AppLocalKay.status_rejected.tr();
-    }
-  }
-
-  void _showRequestLeaveDialog(BuildContext context, int studentCode, int parentCode) {
-    final reasonController = TextEditingController();
-    final notesController = TextEditingController();
+  void _showRequestLeaveDialog(
+    BuildContext context,
+    int studentCode,
+    int parentCode, {
+    PermissionItem? permissionItem,
+  }) {
+    final reasonController = TextEditingController(text: permissionItem?.reason);
+    final notesController = TextEditingController(text: permissionItem?.notes);
     DateTime selectedDate = DateTime.now();
-    TimeOfDay selectedStartTime = TimeOfDay.now();
+    if (permissionItem != null) {
+      try {
+        selectedDate = DateFormat('dd/MM/yyyy').parse(permissionItem.requestDate);
+      } catch (e) {
+        try {
+          selectedDate = DateFormat('yyyy-MM-dd').parse(permissionItem.requestDate);
+        } catch (e) {}
+      }
+    }
 
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
+      useSafeArea: true,
       builder: (dialogContext) {
         final homeCubit = context.read<HomeCubit>();
         final initialStudents = homeCubit.state.parentsStudentStatus.data ?? [];
-        String currentSelectedStudentId = studentCode.toString();
+        String currentSelectedStudentId =
+            permissionItem?.studentCode.toString() ?? studentCode.toString();
+        // Stable GlobalKey inside the builder
+        final formKey = GlobalKey<FormState>();
 
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider.value(value: homeCubit),
-            BlocProvider.value(value: context.read<LeaveCubit>()),
-          ],
+        return BlocProvider.value(
+          value: homeCubit,
           child: StatefulBuilder(
-            builder: (context, setState) {
-              final homeState = context.watch<HomeCubit>().state;
-              final students = homeState.parentsStudentStatus.data ?? initialStudents;
-              final kay = GlobalKey<FormState>();
-
+            builder: (context, setDialogState) {
               return BlocListener<HomeCubit, HomeState>(
                 listener: (context, state) {
-                  if (state.addPermissionsStatus.isSuccess) {
-                    CommonMethods.showToast(
-                      message: state.addPermissionsStatus.data?.msg ?? "",
-                      type: ToastType.success,
-                    );
-                    Navigator.pop(context);
+                  final isAddSuccess = state.addPermissionsStatus.isSuccess;
+                  final isEditSuccess = state.editPermissionsStatus.isSuccess;
+
+                  if (isAddSuccess || isEditSuccess) {
+                    final message = isAddSuccess
+                        ? state.addPermissionsStatus.data?.msg
+                        : state.editPermissionsStatus.data?.msg;
+
+                    CommonMethods.showToast(message: message ?? "", type: ToastType.success);
+
+                    // 1. Reset status in cubit to prevent re-triggering this listener
+                    if (isAddSuccess) {
+                      homeCubit.resetAddPermissionStatus();
+                    } else {
+                      homeCubit.resetEditPermissionStatus();
+                    }
+
+                    // 2. Close dialogue immediately
+                    if (Navigator.of(context).canPop()) {
+                      Navigator.of(context).pop();
+                    }
+
+                    // 3. Refresh data after the UI has settled
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      homeCubit.getPermissions(code: int.parse(HiveMethods.getUserCode()));
+                    });
                   }
                 },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColor.whiteColor(context),
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                  child: SingleChildScrollView(
-                    child: Form(
-                      key: kay,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            width: 50,
-                            height: 5,
-                            margin: const EdgeInsets.only(bottom: 16),
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          Text(
-                            AppLocalKay.new_leave_request.tr(),
-                            style: AppTextStyle.bodyLarge(
-                              context,
-                            ).copyWith(fontWeight: FontWeight.bold, fontSize: 20),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 20),
-                          if (students.isNotEmpty) ...[
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Text(
-                                AppLocalKay.select_student.tr(),
-                                style: AppTextStyle.bodyMedium(
-                                  context,
-                                ).copyWith(fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey[300]!),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  value: currentSelectedStudentId,
-                                  isExpanded: true,
-                                  items: students.map((student) {
-                                    return DropdownMenuItem<String>(
-                                      value: student.studentCode.toString(),
-                                      child: Text(student.studentName),
-                                    );
-                                  }).toList(),
-                                  onChanged: (value) {
-                                    if (value != null) {
-                                      setState(() => currentSelectedStudentId = value);
-                                    }
-                                  },
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                          ],
-                          CustomFormField(
-                            controller: reasonController,
-                            title: AppLocalKay.leave_reason.tr(),
-                            maxLines: 1,
-                          ),
-                          const SizedBox(height: 16),
-                          CustomFormField(
-                            controller: notesController,
-                            title: AppLocalKay.note.tr(),
-                            maxLines: 3,
-                          ),
-                          const SizedBox(height: 16),
-                          Card(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                            child: ListTile(
-                              title: Text(DateFormat('yyyy-MM-dd').format(selectedDate)),
-                              subtitle: Text(AppLocalKay.leave_date.tr()),
-                              leading: const Icon(Icons.calendar_today, color: Colors.blue),
-                              onTap: () async {
-                                final pickedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: selectedDate,
-                                  firstDate: DateTime.now(),
-                                  lastDate: DateTime.now().add(const Duration(days: 30)),
-                                );
-                                if (pickedDate != null) {
-                                  setState(() => selectedDate = pickedDate);
-                                }
-                              },
-                            ),
-                          ),
-
-                          const SizedBox(height: 20),
-                          Row(
+                child: BlocBuilder<HomeCubit, HomeState>(
+                  builder: (context, state) {
+                    final students = state.parentsStudentStatus.data ?? initialStudents;
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: AppColor.whiteColor(context),
+                        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+                      ),
+                      padding: EdgeInsets.only(
+                        left: 20,
+                        right: 20,
+                        top: 16,
+                        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+                      ),
+                      child: SingleChildScrollView(
+                        child: Form(
+                          key: formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              Expanded(
-                                child: OutlinedButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  style: OutlinedButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(vertical: 14),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                  ),
-                                  child: Text(AppLocalKay.cancel.tr()),
+                              Container(
+                                width: 50,
+                                height: 5,
+                                margin: const EdgeInsets.only(bottom: 16),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: CustomButton(
-                                  radius: 12,
-                                  onPressed: () {
-                                    if (reasonController.text.isNotEmpty) {
-                                      final homeState = context.read<HomeCubit>();
-                                      homeState.addPermissions(
-                                        AddPermissionsMobile(
-                                          reason: reasonController.text,
-                                          requestDate: DateFormat(
-                                            'yyyy-MM-dd',
-                                          ).format(selectedDate),
-                                          studentCode: int.parse(currentSelectedStudentId),
-                                          parentCode: parentCode,
-                                          notes: notesController.text,
-                                        ),
-                                      );
-                                    }
-                                  },
-
+                              Text(
+                                permissionItem == null
+                                    ? AppLocalKay.new_leave_request.tr()
+                                    : AppLocalKay.edit.tr(),
+                                style: AppTextStyle.bodyLarge(
+                                  context,
+                                ).copyWith(fontWeight: FontWeight.bold, fontSize: 20),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 20),
+                              if (students.isNotEmpty) ...[
+                                Align(
+                                  alignment: Alignment.centerRight,
                                   child: Text(
-                                    AppLocalKay.submit_request.tr(),
+                                    AppLocalKay.select_student.tr(),
                                     style: AppTextStyle.bodyMedium(
                                       context,
-                                    ).copyWith(color: AppColor.whiteColor(context)),
+                                    ).copyWith(fontWeight: FontWeight.bold),
                                   ),
                                 ),
+                                const SizedBox(height: 8),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey[300]!),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      value: currentSelectedStudentId,
+                                      isExpanded: true,
+                                      items: students.map((student) {
+                                        return DropdownMenuItem<String>(
+                                          value: student.studentCode.toString(),
+                                          child: Text(student.studentName),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        if (value != null) {
+                                          setDialogState(() => currentSelectedStudentId = value);
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                              ],
+                              CustomFormField(
+                                controller: reasonController,
+                                title: AppLocalKay.leave_reason.tr(),
+                                maxLines: 1,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return AppLocalKay.please_enter_leave_reason.tr();
+                                  }
+                                  return null;
+                                },
                               ),
+                              const SizedBox(height: 16),
+                              CustomFormField(
+                                controller: notesController,
+                                title: AppLocalKay.note.tr(),
+                                maxLines: 3,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return AppLocalKay.please_enter_note.tr();
+                                  }
+                                  return null;
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                              Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: ListTile(
+                                  title: Text(
+                                    DateFormat('yyyy-MM-dd', 'en_US').format(selectedDate),
+                                  ),
+                                  subtitle: Text(AppLocalKay.leave_date.tr()),
+                                  leading: const Icon(Icons.calendar_today, color: Colors.blue),
+                                  onTap: () async {
+                                    final pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: selectedDate,
+                                      firstDate: DateTime.now(),
+                                      lastDate: DateTime.now().add(const Duration(days: 30)),
+                                    );
+                                    if (pickedDate != null) {
+                                      setDialogState(() => selectedDate = pickedDate);
+                                    }
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: OutlinedButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      style: OutlinedButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(vertical: 14),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                      child: Text(AppLocalKay.cancel.tr()),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: CustomButton(
+                                      radius: 12,
+                                      cubitState: permissionItem == null
+                                          ? state.addPermissionsStatus
+                                          : state.editPermissionsStatus,
+                                      onPressed: () {
+                                        if (reasonController.text.isNotEmpty) {
+                                          final hCubit = context.read<HomeCubit>();
+                                          final requestDateString = DateFormat(
+                                            'yyyy-MM-dd',
+                                            'en_US',
+                                          ).format(selectedDate);
+                                          if (formKey.currentState!.validate()) {
+                                            if (permissionItem == null) {
+                                              hCubit.addPermissions(
+                                                AddPermissionsMobile(
+                                                  reason: reasonController.text,
+                                                  requestDate: requestDateString,
+                                                  studentCode: int.parse(currentSelectedStudentId),
+                                                  parentCode: parentCode,
+                                                  notes: notesController.text,
+                                                ),
+                                              );
+                                            } else {
+                                              hCubit.editPermissions(
+                                                EditPermissionsMobileRequest(
+                                                  id: permissionItem.id,
+                                                  reason: reasonController.text,
+                                                  requestDate: requestDateString,
+                                                  studentCode: int.parse(currentSelectedStudentId),
+                                                  parentCode: parentCode,
+                                                  notes: notesController.text,
+                                                ),
+                                              );
+                                            }
+                                          }
+                                        }
+                                      },
+                                      text: AppLocalKay.submit_request.tr(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
                             ],
                           ),
-                          const SizedBox(height: 20),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
               );
             },

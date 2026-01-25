@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/home/data/models/add_permissions_mobile_model.dart';
+import 'package:my_template/features/home/data/models/edit_permissions_mobile_request_model.dart';
 import 'package:my_template/features/home/data/models/home_models.dart';
 
 import '../../data/repository/home_repo.dart';
@@ -134,12 +135,46 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> addPermissions(AddPermissionsMobile request) async {
+    if (isClosed) return;
     emit(state.copyWith(addPermissionsStatus: StatusState.loading()));
 
     final result = await _homeRepo.addPermissions(request: request);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(addPermissionsStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(addPermissionsStatus: StatusState.success(success))),
     );
+  }
+
+  Future<void> getPermissions({required int code}) async {
+    emit(state.copyWith(getPermissionsStatus: StatusState.loading()));
+
+    final result = await _homeRepo.getPermissions(code: code);
+    result.fold(
+      (error) => emit(state.copyWith(getPermissionsStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(getPermissionsStatus: StatusState.success(success))),
+    );
+  }
+
+  Future<void> editPermissions(EditPermissionsMobileRequest request) async {
+    if (isClosed) return;
+    emit(state.copyWith(editPermissionsStatus: StatusState.loading()));
+
+    final result = await _homeRepo.editPermissions(request: request);
+    if (isClosed) return;
+    result.fold(
+      (error) => emit(state.copyWith(editPermissionsStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(editPermissionsStatus: StatusState.success(success))),
+    );
+  }
+
+  void resetAddPermissionStatus() {
+    if (isClosed) return;
+    emit(state.copyWith(addPermissionsStatus: const StatusState.initial()));
+  }
+
+  void resetEditPermissionStatus() {
+    if (isClosed) return;
+    emit(state.copyWith(editPermissionsStatus: const StatusState.initial()));
   }
 }

@@ -9,4 +9,6 @@ class EndPoints {
   static const String parentBalance = 'DeltagroupService/School/GetParentBalance';
   static const String studentBalance = 'DeltagroupService/School/GetStudentBalance';
   static const String addPermissions = 'DeltagroupService/School/AddPermissionsMobile';
+  static const String getPermissionsMobile = 'DeltagroupService/School/GetPermissionsMobile';
+  static const String editPermissionsMobile = 'DeltagroupService/School/EditPermissionsMobile';
 }

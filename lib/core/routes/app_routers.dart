@@ -96,11 +96,8 @@ class AppRouters {
         final studentId = argsMap['studentId'] as String;
         final homeCubit = argsMap['homeCubit'] as HomeCubit;
         return MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(
-            providers: [
-              BlocProvider.value(value: homeCubit),
-              BlocProvider(create: (context) => sl<LeaveCubit>()..fetchStudentLeaves(studentId)),
-            ],
+          builder: (_) => BlocProvider.value(
+            value: homeCubit,
             child: LeaveParentScreen(studentId: studentId),
           ),
         );

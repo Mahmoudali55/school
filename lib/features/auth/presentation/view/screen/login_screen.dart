@@ -36,82 +36,84 @@ class LoginScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            BlocConsumer<AuthCubit, AuthState>(
-              listener: (context, state) {
-                if (state.loginStatus.isSuccess) {
-                  final token = cubit.state.loginStatus.data?.accessToken ?? "";
-                  HiveMethods.updateToken(token);
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              BlocConsumer<AuthCubit, AuthState>(
+                listener: (context, state) {
+                  if (state.loginStatus.isSuccess) {
+                    final token = cubit.state.loginStatus.data?.accessToken ?? "";
+                    HiveMethods.updateToken(token);
 
-                  String type = cubit.state.loginStatus.data?.type ?? "";
-                  HiveMethods.updateType(type);
+                    String type = cubit.state.loginStatus.data?.type ?? "";
+                    HiveMethods.updateType(type);
 
-                  String name = cubit.state.loginStatus.data?.name ?? "";
-                  HiveMethods.updateName(name);
-                  String code = cubit.state.loginStatus.data?.code ?? "";
-                  HiveMethods.updateUserCode(code);
-                  String routeType = "admin";
+                    String name = cubit.state.loginStatus.data?.name ?? "";
+                    HiveMethods.updateName(name);
+                    String code = cubit.state.loginStatus.data?.code ?? "";
+                    HiveMethods.updateUserCode(code);
+                    String routeType = "admin";
 
-                  if (type == "1") {
-                    routeType = "student";
-                  } else if (type == "2") {
-                    routeType = "parent";
-                  } else if (type == "3") {
-                    routeType = "teacher";
+                    if (type == "1") {
+                      routeType = "student";
+                    } else if (type == "2") {
+                      routeType = "parent";
+                    } else if (type == "3") {
+                      routeType = "teacher";
+                    }
+
+                    NavigatorMethods.pushNamed(
+                      context,
+                      RoutesName.layoutScreen,
+                      arguments: routeType,
+                    );
                   }
+                  if (state.loginStatus.isFailure) {
+                    CommonMethods.showToast(
+                      message: state.loginStatus.error ?? "Register failed",
+                      type: ToastType.error,
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  return Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/global_icon/graduate.png',
+                          height: 150.h,
+                          width: 150.w,
+                          color: AppColor.primaryColor(context),
+                        ),
+                        Gap(16.h),
+                        CustomFormField(
+                          controller: cubit.usernameLoginController,
+                          title: AppLocalKay.email.tr(),
+                          prefixIcon: Icon(Icons.email_outlined),
+                          validator: (value) => value!.isEmpty ? AppLocalKay.enterEmail.tr() : null,
+                        ),
+                        Gap(16.h),
+                        CustomFormField(
+                          controller: cubit.passwordLoginController,
+                          title: AppLocalKay.password.tr(),
+                          prefixIcon: Icon(Icons.lock_outline),
+                          isPassword: true,
+                          validator: (value) =>
+                              value!.isEmpty ? AppLocalKay.enterPassword.tr() : null,
+                        ),
 
-                  NavigatorMethods.pushNamed(
-                    context,
-                    RoutesName.layoutScreen,
-                    arguments: routeType,
+                        Gap(24.h),
+                        _buildLoginButton(context, cubit, state),
+                        Gap(24.h),
+                        _buildSignUpLink(context),
+                      ],
+                    ),
                   );
-                }
-                if (state.loginStatus.isFailure) {
-                  CommonMethods.showToast(
-                    message: state.loginStatus.error ?? "Register failed",
-                    type: ToastType.error,
-                  );
-                }
-              },
-              builder: (context, state) {
-                return Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        'assets/global_icon/graduate.png',
-                        height: 150.h,
-                        width: 150.w,
-                        color: AppColor.primaryColor(context),
-                      ),
-                      Gap(16.h),
-                      CustomFormField(
-                        controller: cubit.usernameLoginController,
-                        title: AppLocalKay.email.tr(),
-                        prefixIcon: Icon(Icons.email_outlined),
-                        validator: (value) => value!.isEmpty ? AppLocalKay.enterEmail.tr() : null,
-                      ),
-                      Gap(16.h),
-                      CustomFormField(
-                        controller: cubit.passwordLoginController,
-                        title: AppLocalKay.password.tr(),
-                        prefixIcon: Icon(Icons.lock_outline),
-                        isPassword: true,
-                        validator: (value) =>
-                            value!.isEmpty ? AppLocalKay.enterPassword.tr() : null,
-                      ),
-
-                      Gap(24.h),
-                      _buildLoginButton(context, cubit, state),
-                      Gap(24.h),
-                      _buildSignUpLink(context),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ],
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

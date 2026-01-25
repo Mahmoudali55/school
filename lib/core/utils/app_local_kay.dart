@@ -869,4 +869,7 @@ class AppLocalKay {
   static const String quick_stats = 'quick_stats';
   static const String absences = 'absences';
   static const String day = 'day';
+  static const String edit = 'edit';
+  static const String please_enter_leave_reason = 'please_enter_leave_reason';
+  static const String please_enter_note = 'please_enter_note';
 }

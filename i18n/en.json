@@ -871,6 +871,9 @@
      "nationalId_invalid":"National ID Invalid",
      "quick_stats":"Quick Stats",
      "absences":"Absences",
-     "day":"Day"
+     "day":"Day",
+     "edit":"Edit",
+      "please_enter_leave_reason":"Please enter leave reason",
+      "please_enter_note":"Please enter note"
 
 }

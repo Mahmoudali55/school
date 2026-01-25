@@ -919,6 +919,9 @@
    "nationalId_invalid":"رقم البطاقة الوطنية غير صحيح",
    "quick_stats":"الإحصائيات السريعة",
    "absences":"أيام الغياب",
-   "day":"يوم"
+   "day":"يوم",
+   "edit":"تعديل",
+   "please_enter_leave_reason":"يرجى ادخال سبب الاستئذان",
+   "please_enter_note":"يرجى ادخال ملاحظة"
 
 }

@@ -6,6 +6,9 @@ import 'package:my_template/core/network/api_consumer.dart';
 import 'package:my_template/core/network/end_points.dart';
 import 'package:my_template/features/home/data/models/add_permissions_mobile_model.dart';
 import 'package:my_template/features/home/data/models/add_permissions_response_model.dart';
+import 'package:my_template/features/home/data/models/edit_permissions_mobile_request_model.dart';
+import 'package:my_template/features/home/data/models/edit_permissions_mobile_response_model.dart';
+import 'package:my_template/features/home/data/models/get_permissions_mobile_model.dart';
 import 'package:my_template/features/home/data/models/parent_balance_model.dart';
 import 'package:my_template/features/home/data/models/parents_student_data_model.dart';
 import 'package:my_template/features/home/data/models/student_absent_count_model.dart';
@@ -28,9 +31,15 @@ abstract interface class HomeRepo {
   Future<Either<Failure, AddPermissionsResponse>> addPermissions({
     required AddPermissionsMobile request,
   });
+
   Future<Either<Failure, List<StudentCourseDegree>>> studentCourseDegree({
     required int code,
     int? monthNo,
+  });
+  Future<Either<Failure, GetPermissionsMobile>> getPermissions({required int code});
+
+  Future<Either<Failure, EditPermissionsMobileResponse>> editPermissions({
+    required EditPermissionsMobileRequest request,
   });
 }
 
@@ -116,6 +125,21 @@ class HomeRepoImpl implements HomeRepo {
   }
 
   @override
+  Future<Either<Failure, EditPermissionsMobileResponse>> editPermissions({
+    required EditPermissionsMobileRequest request,
+  }) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.put(
+          EndPoints.editPermissionsMobile,
+          body: request.toJson(),
+        );
+        return EditPermissionsMobileResponse.fromJson(response);
+      },
+    );
+  }
+
+  @override
   Future<Either<Failure, AddPermissionsResponse>> addPermissions({
     required AddPermissionsMobile request,
   }) async {
@@ -123,7 +147,6 @@ class HomeRepoImpl implements HomeRepo {
       request: () async {
         final response = await apiConsumer.post(EndPoints.addPermissions, body: request.toJson());
 
-        // مباشرة تحويل Response إلى كائن AddPermissionsResponse
         return AddPermissionsResponse.fromJson(response);
       },
     );
@@ -143,6 +166,20 @@ class HomeRepoImpl implements HomeRepo {
 
         final String dataString = response['Data'];
         return StudentCourseDegree.listFromDataString(dataString);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, GetPermissionsMobile>> getPermissions({required int code}) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.getPermissionsMobile,
+          queryParameters: {"Code": code},
+        );
+
+        return GetPermissionsMobile.fromJson(response);
       },
     );
   }
