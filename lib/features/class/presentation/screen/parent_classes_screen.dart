@@ -78,10 +78,6 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
                           selectedIndex: _selectedIndex,
                           onSelected: (index) {
                             setState(() => _selectedIndex = index);
-                            context.read<ClassCubit>().getHomeWork(
-                              code: students[index].studentCode,
-                              hwDate: DateFormat("yyyy-MM-dd", "en").format(DateTime.now()),
-                            );
                           },
                         ),
                         const SizedBox(height: 16),
