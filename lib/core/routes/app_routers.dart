@@ -80,7 +80,7 @@ class AppRouters {
       case RoutesName.uniformParentScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => sl<UniformCubit>()..loadParentData(args as String),
+            create: (context) => sl<HomeCubit>(),
             child: const UniformParentScreen(),
           ),
         );

@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/home/data/models/add_permissions_mobile_model.dart';
+import 'package:my_template/features/home/data/models/add_uniform_request_model.dart';
 import 'package:my_template/features/home/data/models/edit_permissions_mobile_request_model.dart';
+import 'package:my_template/features/home/data/models/edit_uniform_request_model.dart';
 import 'package:my_template/features/home/data/models/home_models.dart';
 
 import '../../data/repository/home_repo.dart';
@@ -168,6 +170,36 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  Future<void> addUniform(AddUniformRequestModel request) async {
+    emit(state.copyWith(addUniformStatus: StatusState.loading()));
+
+    final result = await _homeRepo.addUniform(request: request);
+    result.fold(
+      (error) => emit(state.copyWith(addUniformStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(addUniformStatus: StatusState.success(success))),
+    );
+  }
+
+  Future<void> getUniform({required int code, int? id}) async {
+    emit(state.copyWith(getUniformsStatus: StatusState.loading()));
+
+    final result = await _homeRepo.getUniforms(code: code, id: id);
+    result.fold(
+      (error) => emit(state.copyWith(getUniformsStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(getUniformsStatus: StatusState.success(success))),
+    );
+  }
+
+  Future<void> editUniform(EditUniformRequestModel request) async {
+    emit(state.copyWith(editUniformStatus: StatusState.loading()));
+
+    final result = await _homeRepo.editUniform(request: request);
+    result.fold(
+      (error) => emit(state.copyWith(editUniformStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(editUniformStatus: StatusState.success(success))),
+    );
+  }
+
   void resetAddPermissionStatus() {
     if (isClosed) return;
     emit(state.copyWith(addPermissionsStatus: const StatusState.initial()));
@@ -176,5 +208,15 @@ class HomeCubit extends Cubit<HomeState> {
   void resetEditPermissionStatus() {
     if (isClosed) return;
     emit(state.copyWith(editPermissionsStatus: const StatusState.initial()));
+  }
+
+  void resetAddUniformStatus() {
+    if (isClosed) return;
+    emit(state.copyWith(addUniformStatus: const StatusState.initial()));
+  }
+
+  void resetEditUniformStatus() {
+    if (isClosed) return;
+    emit(state.copyWith(editUniformStatus: const StatusState.initial()));
   }
 }

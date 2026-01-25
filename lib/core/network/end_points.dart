@@ -11,4 +11,7 @@ class EndPoints {
   static const String addPermissions = 'DeltagroupService/School/AddPermissionsMobile';
   static const String getPermissionsMobile = 'DeltagroupService/School/GetPermissionsMobile';
   static const String editPermissionsMobile = 'DeltagroupService/School/EditPermissionsMobile';
+  static const String addUniform = 'DeltagroupService/School/Adduniform';
+  static const String getUniform = 'DeltagroupService/School/Getuniformdata';
+  static const String editUniform = 'DeltagroupService/School/Edituniform';
 }

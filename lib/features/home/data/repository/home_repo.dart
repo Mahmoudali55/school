@@ -6,9 +6,14 @@ import 'package:my_template/core/network/api_consumer.dart';
 import 'package:my_template/core/network/end_points.dart';
 import 'package:my_template/features/home/data/models/add_permissions_mobile_model.dart';
 import 'package:my_template/features/home/data/models/add_permissions_response_model.dart';
+import 'package:my_template/features/home/data/models/add_uniform_request_model.dart';
+import 'package:my_template/features/home/data/models/add_uniform_response_model.dart';
 import 'package:my_template/features/home/data/models/edit_permissions_mobile_request_model.dart';
 import 'package:my_template/features/home/data/models/edit_permissions_mobile_response_model.dart';
+import 'package:my_template/features/home/data/models/edit_uniform_request_model.dart';
+import 'package:my_template/features/home/data/models/edit_uniform_response_model.dart';
 import 'package:my_template/features/home/data/models/get_permissions_mobile_model.dart';
+import 'package:my_template/features/home/data/models/get_uniform_data_model.dart';
 import 'package:my_template/features/home/data/models/parent_balance_model.dart';
 import 'package:my_template/features/home/data/models/parents_student_data_model.dart';
 import 'package:my_template/features/home/data/models/student_absent_count_model.dart';
@@ -40,6 +45,16 @@ abstract interface class HomeRepo {
 
   Future<Either<Failure, EditPermissionsMobileResponse>> editPermissions({
     required EditPermissionsMobileRequest request,
+  });
+
+  Future<Either<Failure, AddUniformResponseModel>> addUniform({
+    required AddUniformRequestModel request,
+  });
+
+  Future<Either<Failure, GetUniformDataResponse>> getUniforms({required int code, int? id});
+
+  Future<Either<Failure, EditUniformResponse>> editUniform({
+    required EditUniformRequestModel request,
   });
 }
 
@@ -153,6 +168,30 @@ class HomeRepoImpl implements HomeRepo {
   }
 
   @override
+  Future<Either<Failure, EditUniformResponse>> editUniform({
+    required EditUniformRequestModel request,
+  }) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.put(EndPoints.editUniform, body: request.toJson());
+        return EditUniformResponse.fromJson(response);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, AddUniformResponseModel>> addUniform({
+    required AddUniformRequestModel request,
+  }) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.post(EndPoints.addUniform, body: request.toJson());
+        return AddUniformResponseModel.fromJson(response);
+      },
+    );
+  }
+
+  @override
   Future<Either<Failure, List<StudentCourseDegree>>> studentCourseDegree({
     required int code,
     int? monthNo,
@@ -180,6 +219,19 @@ class HomeRepoImpl implements HomeRepo {
         );
 
         return GetPermissionsMobile.fromJson(response);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, GetUniformDataResponse>> getUniforms({required int code, int? id}) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.getUniform,
+          queryParameters: {"Code": code, "id": id},
+        );
+        return GetUniformDataResponse.fromJson(response);
       },
     );
   }

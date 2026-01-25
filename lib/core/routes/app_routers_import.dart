@@ -11,6 +11,7 @@ import 'package:my_template/features/home/presentation/view/execution/grades_scr
 import 'package:my_template/features/home/presentation/view/execution/leave_parent_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/schedule_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/show_student_balance_screen.dart';
+import 'package:my_template/features/home/presentation/view/execution/uniform_parent_screen.dart';
 import 'package:my_template/features/home/presentation/view/screen/home_screen.dart';
 import 'package:my_template/features/layout/presentation/screen/layout_screen.dart';
 import 'package:my_template/features/leave_permission/presentation/cubit/leave_cubit.dart';
@@ -27,7 +28,6 @@ import 'package:my_template/features/profile/presentation/screen/parent_profile_
 import 'package:my_template/features/profile/presentation/screen/profile_screen.dart';
 import 'package:my_template/features/uniform/presentation/cubit/uniform_cubit.dart';
 import 'package:my_template/features/uniform/presentation/screen/uniform_admin_screen.dart';
-import 'package:my_template/features/uniform/presentation/screen/uniform_parent_screen.dart';
 
 import '../../features/auth/presentation/view/cubit/auth_cubit.dart';
 import '../../features/splash/presentation/view/screen/splash_screen.dart' show SplashScreen;

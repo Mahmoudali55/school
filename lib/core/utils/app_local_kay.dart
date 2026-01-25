@@ -872,4 +872,8 @@ class AppLocalKay {
   static const String edit = 'edit';
   static const String please_enter_leave_reason = 'please_enter_leave_reason';
   static const String please_enter_note = 'please_enter_note';
+  static const String please_enter_height = 'please_enter_height';
+  static const String please_enter_weight = 'please_enter_weight';
+  static const String please_enter_size = 'please_enter_size';
+  static const String no_uniform_requests = 'no_uniform_requests';
 }

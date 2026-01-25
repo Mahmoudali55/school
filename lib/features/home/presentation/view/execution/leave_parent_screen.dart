@@ -27,10 +27,53 @@ class LeaveParentScreen extends StatefulWidget {
 }
 
 class _LeaveParentScreenState extends State<LeaveParentScreen> {
+  // Persistent controllers and key to prevent keyboard from disappearing
+  late TextEditingController reasonController;
+  late TextEditingController notesController;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  DateTime selectedDate = DateTime.now();
+  String? currentSelectedStudentId;
+  PermissionItem? activePermissionItem;
+
   @override
   void initState() {
     super.initState();
+    reasonController = TextEditingController();
+    notesController = TextEditingController();
+    currentSelectedStudentId = widget.studentId;
+
     context.read<HomeCubit>().getPermissions(code: int.parse(HiveMethods.getUserCode()));
+    if (context.read<HomeCubit>().state.parentsStudentStatus.data == null) {
+      context.read<HomeCubit>().parentData(int.parse(HiveMethods.getUserCode()));
+    }
+  }
+
+  @override
+  void dispose() {
+    reasonController.dispose();
+    notesController.dispose();
+    super.dispose();
+  }
+
+  void _prepareDialogData(PermissionItem? item) {
+    activePermissionItem = item;
+    reasonController.text = item?.reason ?? "";
+    notesController.text = item?.notes ?? "";
+    currentSelectedStudentId = item?.studentCode.toString() ?? widget.studentId;
+
+    if (item != null) {
+      try {
+        selectedDate = DateFormat('dd/MM/yyyy').parse(item.requestDate);
+      } catch (e) {
+        try {
+          selectedDate = DateFormat('yyyy-MM-dd').parse(item.requestDate);
+        } catch (e) {
+          selectedDate = DateTime.now();
+        }
+      }
+    } else {
+      selectedDate = DateTime.now();
+    }
   }
 
   @override
@@ -58,11 +101,10 @@ class _LeaveParentScreenState extends State<LeaveParentScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showRequestLeaveDialog(
-          context,
-          int.parse(widget.studentId),
-          int.parse(HiveMethods.getUserCode()),
-        ),
+        onPressed: () {
+          _prepareDialogData(null);
+          _showRequestLeaveDialog(context);
+        },
         label: Text(AppLocalKay.request_leave.tr()),
         icon: const Icon(Icons.add),
         backgroundColor: AppColor.infoColor(context),
@@ -128,12 +170,8 @@ class _LeaveParentScreenState extends State<LeaveParentScreen> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    _showRequestLeaveDialog(
-                      context,
-                      request.studentCode,
-                      request.parentCode,
-                      permissionItem: request,
-                    );
+                    _prepareDialogData(request);
+                    _showRequestLeaveDialog(context);
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -182,24 +220,9 @@ class _LeaveParentScreenState extends State<LeaveParentScreen> {
     );
   }
 
-  void _showRequestLeaveDialog(
-    BuildContext context,
-    int studentCode,
-    int parentCode, {
-    PermissionItem? permissionItem,
-  }) {
-    final reasonController = TextEditingController(text: permissionItem?.reason);
-    final notesController = TextEditingController(text: permissionItem?.notes);
-    DateTime selectedDate = DateTime.now();
-    if (permissionItem != null) {
-      try {
-        selectedDate = DateFormat('dd/MM/yyyy').parse(permissionItem.requestDate);
-      } catch (e) {
-        try {
-          selectedDate = DateFormat('yyyy-MM-dd').parse(permissionItem.requestDate);
-        } catch (e) {}
-      }
-    }
+  void _showRequestLeaveDialog(BuildContext context) {
+    final homeCubit = context.read<HomeCubit>();
+    final parentCode = int.parse(HiveMethods.getUserCode());
 
     showModalBottomSheet(
       context: context,
@@ -207,13 +230,6 @@ class _LeaveParentScreenState extends State<LeaveParentScreen> {
       backgroundColor: Colors.transparent,
       useSafeArea: true,
       builder: (dialogContext) {
-        final homeCubit = context.read<HomeCubit>();
-        final initialStudents = homeCubit.state.parentsStudentStatus.data ?? [];
-        String currentSelectedStudentId =
-            permissionItem?.studentCode.toString() ?? studentCode.toString();
-        // Stable GlobalKey inside the builder
-        final formKey = GlobalKey<FormState>();
-
         return BlocProvider.value(
           value: homeCubit,
           child: StatefulBuilder(
@@ -230,19 +246,16 @@ class _LeaveParentScreenState extends State<LeaveParentScreen> {
 
                     CommonMethods.showToast(message: message ?? "", type: ToastType.success);
 
-                    // 1. Reset status in cubit to prevent re-triggering this listener
                     if (isAddSuccess) {
                       homeCubit.resetAddPermissionStatus();
                     } else {
                       homeCubit.resetEditPermissionStatus();
                     }
 
-                    // 2. Close dialogue immediately
                     if (Navigator.of(context).canPop()) {
                       Navigator.of(context).pop();
                     }
 
-                    // 3. Refresh data after the UI has settled
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       homeCubit.getPermissions(code: int.parse(HiveMethods.getUserCode()));
                     });
@@ -250,7 +263,7 @@ class _LeaveParentScreenState extends State<LeaveParentScreen> {
                 },
                 child: BlocBuilder<HomeCubit, HomeState>(
                   builder: (context, state) {
-                    final students = state.parentsStudentStatus.data ?? initialStudents;
+                    final students = state.parentsStudentStatus.data ?? [];
                     return Container(
                       decoration: BoxDecoration(
                         color: AppColor.whiteColor(context),
@@ -278,7 +291,7 @@ class _LeaveParentScreenState extends State<LeaveParentScreen> {
                                 ),
                               ),
                               Text(
-                                permissionItem == null
+                                activePermissionItem == null
                                     ? AppLocalKay.new_leave_request.tr()
                                     : AppLocalKay.edit.tr(),
                                 style: AppTextStyle.bodyLarge(
@@ -390,34 +403,33 @@ class _LeaveParentScreenState extends State<LeaveParentScreen> {
                                   Expanded(
                                     child: CustomButton(
                                       radius: 12,
-                                      cubitState: permissionItem == null
+                                      cubitState: activePermissionItem == null
                                           ? state.addPermissionsStatus
                                           : state.editPermissionsStatus,
                                       onPressed: () {
                                         if (reasonController.text.isNotEmpty) {
-                                          final hCubit = context.read<HomeCubit>();
                                           final requestDateString = DateFormat(
                                             'yyyy-MM-dd',
                                             'en_US',
                                           ).format(selectedDate);
                                           if (formKey.currentState!.validate()) {
-                                            if (permissionItem == null) {
-                                              hCubit.addPermissions(
+                                            if (activePermissionItem == null) {
+                                              homeCubit.addPermissions(
                                                 AddPermissionsMobile(
                                                   reason: reasonController.text,
                                                   requestDate: requestDateString,
-                                                  studentCode: int.parse(currentSelectedStudentId),
+                                                  studentCode: int.parse(currentSelectedStudentId!),
                                                   parentCode: parentCode,
                                                   notes: notesController.text,
                                                 ),
                                               );
                                             } else {
-                                              hCubit.editPermissions(
+                                              homeCubit.editPermissions(
                                                 EditPermissionsMobileRequest(
-                                                  id: permissionItem.id,
+                                                  id: activePermissionItem!.id,
                                                   reason: reasonController.text,
                                                   requestDate: requestDateString,
-                                                  studentCode: int.parse(currentSelectedStudentId),
+                                                  studentCode: int.parse(currentSelectedStudentId!),
                                                   parentCode: parentCode,
                                                   notes: notesController.text,
                                                 ),

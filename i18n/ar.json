@@ -922,6 +922,7 @@
    "day":"يوم",
    "edit":"تعديل",
    "please_enter_leave_reason":"يرجى ادخال سبب الاستئذان",
-   "please_enter_note":"يرجى ادخال ملاحظة"
+   "please_enter_note":"يرجى ادخال ملاحظة",
+   "no_uniform_requests":"لا توجد طلبات زي حالياً"
 
 }
