@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/features/home/data/models/add_permissions_response_model.dart';
 import 'package:my_template/features/home/data/models/parent_balance_model.dart';
 import 'package:my_template/features/home/data/models/parents_student_data_model.dart';
 import 'package:my_template/features/home/data/models/student_absent_count_model.dart';
@@ -17,6 +18,7 @@ class HomeState extends Equatable {
     this.studentAbsentDataStatus = const StatusState.initial(),
     this.parentBalanceStatus = const StatusState.initial(),
     this.studentBalanceStatus = const StatusState.initial(),
+    this.addPermissionsStatus = const StatusState.initial(),
     this.selectedStudent,
   });
 
@@ -26,6 +28,7 @@ class HomeState extends Equatable {
   final StatusState<List<StudentAbsentData>> studentAbsentDataStatus;
   final StatusState<List<ParentBalanceModel>> parentBalanceStatus;
   final StatusState<List<StudentBalanceModel>> studentBalanceStatus;
+  final StatusState<AddPermissionsResponse> addPermissionsStatus;
   final StudentMiniInfo? selectedStudent;
 
   @override
@@ -37,6 +40,7 @@ class HomeState extends Equatable {
     studentAbsentDataStatus,
     parentBalanceStatus,
     studentBalanceStatus,
+    addPermissionsStatus,
   ];
 
   HomeState copyWith({
@@ -46,6 +50,7 @@ class HomeState extends Equatable {
     StatusState<List<StudentAbsentData>>? studentAbsentDataStatus,
     StatusState<List<ParentBalanceModel>>? parentBalanceStatus,
     StatusState<List<StudentBalanceModel>>? studentBalanceStatus,
+    StatusState<AddPermissionsResponse>? addPermissionsStatus,
     StudentMiniInfo? selectedStudent,
   }) {
     return HomeState(
@@ -56,6 +61,7 @@ class HomeState extends Equatable {
       studentAbsentDataStatus: studentAbsentDataStatus ?? this.studentAbsentDataStatus,
       parentBalanceStatus: parentBalanceStatus ?? this.parentBalanceStatus,
       studentBalanceStatus: studentBalanceStatus ?? this.studentBalanceStatus,
+      addPermissionsStatus: addPermissionsStatus ?? this.addPermissionsStatus,
     );
   }
 }

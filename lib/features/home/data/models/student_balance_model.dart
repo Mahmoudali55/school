@@ -17,10 +17,10 @@ class StudentBalanceModel extends Equatable {
 
   factory StudentBalanceModel.fromJson(Map<String, dynamic> json) {
     return StudentBalanceModel(
-      parentCode: json['PARENT_CODE'] as int,
-      studentCode: json['STUDENT_CODE'] as int,
-      balance: (json['BALANCE'] as num).toDouble(),
-      studentName: json['s_name'] as String,
+      parentCode: json['PARENT_CODE'] as int? ?? 0,
+      studentCode: json['STUDENT_CODE'] as int? ?? 0,
+      balance: (json['BALANCE'] as num?)?.toDouble() ?? 0.0,
+      studentName: json['s_name'] as String? ?? "",
     );
   }
 

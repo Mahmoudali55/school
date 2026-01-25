@@ -94,7 +94,10 @@ class _RequestsSectionWidgetState extends State<RequestsSectionWidget> {
                       Navigator.pushNamed(
                         context,
                         RoutesName.leaveParentScreen,
-                        arguments: widget.selectedStudent?.name,
+                        arguments: {
+                          'studentId': widget.selectedStudent?.studentCode.toString(),
+                          'homeCubit': context.read<HomeCubit>(),
+                        },
                       );
                     },
                   ),

@@ -10,8 +10,8 @@ class ParentBalanceModel extends Equatable {
 
   factory ParentBalanceModel.fromJson(Map<String, dynamic> json) {
     return ParentBalanceModel(
-      parentCode: json['PARENT_CODE'] as int,
-      balance: (json['P_BALANCE'] as num).toDouble(),
+      parentCode: json['PARENT_CODE'] as int? ?? 0,
+      balance: (json['P_BALANCE'] as num?)?.toDouble() ?? 0.0,
     );
   }
 

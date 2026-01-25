@@ -4,6 +4,8 @@ import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/error/failures.dart';
 import 'package:my_template/core/network/api_consumer.dart';
 import 'package:my_template/core/network/end_points.dart';
+import 'package:my_template/features/home/data/models/add_permissions_mobile_model.dart';
+import 'package:my_template/features/home/data/models/add_permissions_response_model.dart';
 import 'package:my_template/features/home/data/models/parent_balance_model.dart';
 import 'package:my_template/features/home/data/models/parents_student_data_model.dart';
 import 'package:my_template/features/home/data/models/student_absent_count_model.dart';
@@ -23,6 +25,9 @@ abstract interface class HomeRepo {
   Future<Either<Failure, List<StudentAbsentCount>>> studentAbsentCount({required int code});
   Future<Either<Failure, List<ParentBalanceModel>>> parentBalance({required int code});
   Future<Either<Failure, List<StudentBalanceModel>>> studentBalance({required int code});
+  Future<Either<Failure, AddPermissionsResponse>> addPermissions({
+    required AddPermissionsMobile request,
+  });
   Future<Either<Failure, List<StudentCourseDegree>>> studentCourseDegree({
     required int code,
     int? monthNo,
@@ -106,6 +111,20 @@ class HomeRepoImpl implements HomeRepo {
         final String dataString = response['Data'];
         if (dataString.isEmpty || dataString == "[]") return [];
         return StudentBalanceModel.listFromDataString(dataString);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, AddPermissionsResponse>> addPermissions({
+    required AddPermissionsMobile request,
+  }) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.post(EndPoints.addPermissions, body: request.toJson());
+
+        // مباشرة تحويل Response إلى كائن AddPermissionsResponse
+        return AddPermissionsResponse.fromJson(response);
       },
     );
   }

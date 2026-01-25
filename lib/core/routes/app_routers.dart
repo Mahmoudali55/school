@@ -92,10 +92,16 @@ class AppRouters {
           ),
         );
       case RoutesName.leaveParentScreen:
+        final argsMap = args as Map<String, dynamic>;
+        final studentId = argsMap['studentId'] as String;
+        final homeCubit = argsMap['homeCubit'] as HomeCubit;
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => sl<LeaveCubit>()..fetchStudentLeaves(args as String),
-            child: LeaveParentScreen(studentId: args as String),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: homeCubit),
+              BlocProvider(create: (context) => sl<LeaveCubit>()..fetchStudentLeaves(studentId)),
+            ],
+            child: LeaveParentScreen(studentId: studentId),
           ),
         );
       case RoutesName.leaveAdminScreen:

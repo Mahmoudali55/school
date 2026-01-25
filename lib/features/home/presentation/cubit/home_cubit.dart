@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/features/home/data/models/add_permissions_mobile_model.dart';
 import 'package:my_template/features/home/data/models/home_models.dart';
 
 import '../../data/repository/home_repo.dart';
@@ -129,6 +130,16 @@ class HomeCubit extends Cubit<HomeState> {
     result.fold(
       (error) => emit(state.copyWith(studentBalanceStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(studentBalanceStatus: StatusState.success(success))),
+    );
+  }
+
+  Future<void> addPermissions(AddPermissionsMobile request) async {
+    emit(state.copyWith(addPermissionsStatus: StatusState.loading()));
+
+    final result = await _homeRepo.addPermissions(request: request);
+    result.fold(
+      (error) => emit(state.copyWith(addPermissionsStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(addPermissionsStatus: StatusState.success(success))),
     );
   }
 }
