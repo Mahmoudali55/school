@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
+import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 import 'package:my_template/features/home/presentation/view/widget/parent/header_widget.dart';
@@ -35,16 +36,20 @@ class _HomeParentScreenState extends State<HomeParentScreen> {
       body: SafeArea(
         child: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
+            if (state.parentsStudentStatus.isLoading || state.parentsStudentStatus.isInitial) {
+              return const Center(child: CustomLoading());
+            }
+
+            if (state.parentsStudentStatus.isFailure) {
+              return Center(child: Text(state.parentsStudentStatus.error ?? "حدث خطأ ما"));
+            }
+
             final students = (state.parentsStudentStatus.data ?? [])
                 .map((e) => e.toMiniInfo())
                 .toList();
 
             final selectedStudent =
                 state.selectedStudent ?? (students.isNotEmpty ? students[0] : null);
-
-            if (state.parentsStudentStatus.isLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
 
             if (students.isEmpty || selectedStudent == null) {
               return const Center(child: Text("لا يوجد طلاب"));

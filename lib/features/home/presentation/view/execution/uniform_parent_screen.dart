@@ -56,7 +56,6 @@ class _UniformParentScreenState extends State<UniformParentScreen> {
         currentSelectedStudentId = students[0].studentCode.toString();
       }
     }
-    context.read<HomeCubit>().getUniform(code: int.parse(HiveMethods.getUserCode()));
   }
 
   @override
