@@ -55,8 +55,9 @@ class StudentCourseDegree extends Equatable {
 
   /// لتحويل Data String إلى List<StudentCourseDegree>
   static List<StudentCourseDegree> listFromDataString(String data) {
-    if (data.isEmpty || data == "[]") return [];
-    final List decoded = jsonDecode(data); // decode JSON داخل String
+    if (data.isEmpty || data == "[]" || data == "null") return [];
+    final List? decoded = jsonDecode(data);
+    if (decoded == null) return [];
     return decoded.map((e) => StudentCourseDegree.fromJson(e)).toList();
   }
 

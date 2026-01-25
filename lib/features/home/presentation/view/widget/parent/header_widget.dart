@@ -71,7 +71,7 @@ class HeaderWidget extends StatelessWidget {
         SizedBox(height: 16.h),
         Text(
           AppLocalKay.select_student.tr(),
-          style: AppTextStyle.headlineSmall(
+          style: AppTextStyle.bodyMedium(
             context,
             color: const Color(0xFF1F2937),
           ).copyWith(fontWeight: FontWeight.bold),

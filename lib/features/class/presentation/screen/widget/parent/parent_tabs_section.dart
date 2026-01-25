@@ -244,6 +244,13 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
                                               fontWeight: FontWeight.w900,
                                             ),
                                           ),
+                                          TextSpan(
+                                            text: "/${grade.studentDegree}",
+                                            style: AppTextStyle.titleLarge(context).copyWith(
+                                              color: Colors.grey[600],
+                                              fontWeight: FontWeight.w900,
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),

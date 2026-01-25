@@ -133,83 +133,81 @@ class _StudentSnapshotWidgetState extends State<StudentSnapshotWidget> {
                     status = "ضعيف";
                   }
 
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [AppColor.primaryColor(context), const Color(0xFF1E40AF)],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColor.primaryColor(context).withOpacity(0.3),
-                            blurRadius: 12,
-                            offset: const Offset(0, 6),
-                          ),
-                        ],
+                  return Container(
+                    margin: EdgeInsets.symmetric(horizontal: 4.w),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [AppColor.primaryColor(context), const Color(0xFF1E40AF)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
-                      padding: EdgeInsets.all(16.w),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item.courseName,
-                            style: AppTextStyle.bodyMedium(context).copyWith(
-                              color: AppColor.whiteColor(context),
-                              fontWeight: FontWeight.bold,
-                            ),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColor.primaryColor(context).withOpacity(0.3),
+                          blurRadius: 12,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
+                    ),
+                    padding: EdgeInsets.all(16.w),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.courseName,
+                          style: AppTextStyle.bodyMedium(context).copyWith(
+                            color: AppColor.whiteColor(context),
+                            fontWeight: FontWeight.bold,
                           ),
-                          SizedBox(height: 8.h),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Text(
-                                "${item.studentDegree}",
-                                style: AppTextStyle.headlineLarge(context).copyWith(
+                        ),
+                        SizedBox(height: 8.h),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              "${item.studentDegree}",
+                              style: AppTextStyle.headlineLarge(context).copyWith(
+                                color: AppColor.whiteColor(context),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 28.sp,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 4.h, left: 4.w),
+                              child: Text(
+                                "/${item.courseDegree}",
+                                style: AppTextStyle.bodyLarge(
+                                  context,
+                                ).copyWith(color: AppColor.whiteColor(context)),
+                              ),
+                            ),
+                            const Spacer(),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                              decoration: BoxDecoration(
+                                color: AppColor.whiteColor(context).withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Text(
+                                status,
+                                style: AppTextStyle.bodySmall(context).copyWith(
                                   color: AppColor.whiteColor(context),
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 28.sp,
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(bottom: 4.h, left: 4.w),
-                                child: Text(
-                                  "/${item.courseDegree}",
-                                  style: AppTextStyle.bodyLarge(
-                                    context,
-                                  ).copyWith(color: AppColor.whiteColor(context)),
-                                ),
-                              ),
-                              const Spacer(),
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                                decoration: BoxDecoration(
-                                  color: AppColor.whiteColor(context).withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Text(
-                                  status,
-                                  style: AppTextStyle.bodySmall(context).copyWith(
-                                    color: AppColor.whiteColor(context),
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 6.h),
-                          LinearProgressIndicator(
-                            value: item.studentDegree / item.courseDegree,
-                            backgroundColor: AppColor.whiteColor(context).withOpacity(0.3),
-                            color: Colors.yellowAccent,
-                            minHeight: 6.h,
-                          ),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 6.h),
+                        LinearProgressIndicator(
+                          value: item.studentDegree / item.courseDegree,
+                          backgroundColor: AppColor.whiteColor(context).withOpacity(0.3),
+                          color: Colors.yellowAccent,
+                          minHeight: 6.h,
+                        ),
+                      ],
                     ),
                   );
                 },

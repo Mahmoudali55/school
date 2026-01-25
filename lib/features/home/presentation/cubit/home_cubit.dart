@@ -64,7 +64,7 @@ class HomeCubit extends Cubit<HomeState> {
           // تحميل بيانات الطالب الأول مباشرة
           final firstStudent = students[0];
           studentAbsentCount(firstStudent.studentCode);
-          studentCourseDegree(firstStudent.studentCode, 6);
+          studentCourseDegree(firstStudent.studentCode, null);
         }
       },
     );
@@ -76,7 +76,7 @@ class HomeCubit extends Cubit<HomeState> {
 
     // جلب بيانات الطالب الجديد
     studentAbsentCount(selectedStudent.studentCode);
-    studentCourseDegree(selectedStudent.studentCode, 1);
+    studentCourseDegree(selectedStudent.studentCode, null);
 
     print("Selected student updated: ${selectedStudent.studentCode}");
   }
