@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/home/data/models/home_models.dart';
 
 class ParentChildrenSelection extends StatelessWidget {
-  final List<Map<String, String>> children;
+  final List<StudentMiniInfo> children;
   final int selectedIndex;
   final Function(int) onSelected;
 
@@ -39,8 +40,8 @@ class ParentChildrenSelection extends StatelessWidget {
                 onTap: () => onSelected(index),
                 child: _childChip(
                   context,
-                  name: c['name'.tr()]!,
-                  grade: c['grade'.tr()]!,
+                  name: c.name,
+                  grade: c.studentCode,
                   isSelected: selected,
                 ),
               );
@@ -54,7 +55,7 @@ class ParentChildrenSelection extends StatelessWidget {
   Widget _childChip(
     BuildContext context, {
     required String name,
-    required String grade,
+    required int grade,
     required bool isSelected,
   }) {
     return Container(
@@ -85,7 +86,7 @@ class ParentChildrenSelection extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  grade,
+                  int.tryParse(grade.toString())?.toString() ?? '',
                   style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey[600]),
                 ),
               ],

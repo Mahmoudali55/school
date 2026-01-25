@@ -876,4 +876,5 @@ class AppLocalKay {
   static const String please_enter_weight = 'please_enter_weight';
   static const String please_enter_size = 'please_enter_size';
   static const String no_uniform_requests = 'no_uniform_requests';
+  static const String no_task = 'no_task';
 }

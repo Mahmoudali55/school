@@ -875,6 +875,7 @@
      "edit":"Edit",
       "please_enter_leave_reason":"Please enter leave reason",
       "please_enter_note":"Please enter note",
-      "no_uniform_requests":"No uniform requests currently"
+      "no_uniform_requests":"No uniform requests currently",
+      "no_task":"No tasks for today"
 
 }

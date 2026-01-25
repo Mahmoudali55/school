@@ -1,11 +1,29 @@
 import 'package:equatable/equatable.dart';
+import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/class/data/model/class_models.dart';
+import 'package:my_template/features/class/data/model/home_work_model.dart';
 
-abstract class ClassState extends Equatable {
-  const ClassState();
+class ClassState extends Equatable {
+  final StatusState<List<ClassModel>> classesStatus;
+  final StatusState<List<HomeWorkModel>> homeWorkStatus;
+
+  const ClassState({
+    this.classesStatus = const StatusState.initial(),
+    this.homeWorkStatus = const StatusState.initial(),
+  });
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [classesStatus, homeWorkStatus];
+
+  ClassState copyWith({
+    StatusState<List<ClassModel>>? classesStatus,
+    StatusState<List<HomeWorkModel>>? homeWorkStatus,
+  }) {
+    return ClassState(
+      classesStatus: classesStatus ?? this.classesStatus,
+      homeWorkStatus: homeWorkStatus ?? this.homeWorkStatus,
+    );
+  }
 }
 
 class ClassInitial extends ClassState {}

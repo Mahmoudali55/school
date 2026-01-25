@@ -14,4 +14,5 @@ class EndPoints {
   static const String addUniform = 'DeltagroupService/School/Adduniform';
   static const String getUniform = 'DeltagroupService/School/Getuniformdata';
   static const String editUniform = 'DeltagroupService/School/Edituniform';
+  static const String getHomeWork = 'DeltagroupService/School/GetHomeWork';
 }

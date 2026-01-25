@@ -1,7 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:my_template/features/class/data/model/class_models.dart';
+import 'dart:convert';
 
-class ClassRepo {
+import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
+import 'package:my_template/core/error/failures.dart';
+import 'package:my_template/core/network/api_consumer.dart';
+import 'package:my_template/core/network/end_points.dart';
+import 'package:my_template/features/class/data/model/class_models.dart';
+import 'package:my_template/features/class/data/model/home_work_model.dart';
+
+abstract interface class ClassRepo {
+  Future<Either<Failure, List<HomeWorkModel>>> getHomeWork({
+    required int code,
+    required String hwDate,
+  });
   final List<StudentClassModel> _studentClasses = const [
     StudentClassModel(
       id: '1',
@@ -94,5 +105,37 @@ class ClassRepo {
 
   Future<List<StudentClassModel>> getParentStudentClasses() async {
     return _studentClasses;
+  }
+}
+
+class ClassRepoImpl extends ClassRepo {
+  final ApiConsumer apiConsumer;
+  ClassRepoImpl(this.apiConsumer);
+  @override
+  Future<Either<Failure, List<HomeWorkModel>>> getHomeWork({
+    required int code,
+    required String hwDate,
+  }) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.getHomeWork,
+          queryParameters: {"Code": code, "HWDate": hwDate},
+        );
+        final dynamic rawData = response['Data'];
+        if (rawData == null || rawData == "null" || rawData == "" || rawData == "[]") {
+          return [];
+        }
+
+        List<dynamic> list;
+        if (rawData is String) {
+          list = jsonDecode(rawData);
+        } else {
+          list = rawData;
+        }
+
+        return list.map((e) => HomeWorkModel.fromJson(e)).toList();
+      },
+    );
   }
 }
