@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/parent/parent_calendar_control_bar.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/parent/parent_calendar_header.dart';
@@ -7,6 +8,8 @@ import 'package:my_template/features/calendar/presentation/screen/widget/parent/
 import 'package:my_template/features/calendar/presentation/screen/widget/parent/parent_daily_view.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/parent/parent_monthly_view.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/parent/parent_weekly_view.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
+import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 
 class CalendarPatentScreen extends StatefulWidget {
   const CalendarPatentScreen({super.key});
@@ -18,37 +21,62 @@ class CalendarPatentScreen extends StatefulWidget {
 class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
   DateTime _selectedDate = DateTime.now();
   int _currentView = 0; // 0: شهري, 1: أسبوعي, 2: يومي
-  String _selectedStudent = "أحمد"; // الطالب المختار
-  final List<String> _students = ["أحمد", "ليلى", "محمد"]; // قائمة الأبناء
+  String _selectedStudent = "";
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.whiteColor(context),
-      body: SafeArea(
-        child: Column(
-          children: [
-            // رأس الصفحة
-            ParentCalendarHeader(selectedDate: _selectedDate, getFormattedDate: _getFormattedDate),
-            // اختيار الطالب وشريط التحكم
-            ParentCalendarControlBar(
-              selectedStudent: _selectedStudent,
-              students: _students,
-              currentView: _currentView,
-              onStudentChanged: (student) => setState(() => _selectedStudent = student),
-              onViewSelected: (index) => setState(() => _currentView = index),
-              onPrevious: _goToPrevious,
-              onNext: _goToNext,
+    return BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) {
+        List<String> students = [];
+        if (state.parentsStudentStatus.isSuccess) {
+          students = state.parentsStudentStatus.data!.map((e) => e.studentName).toList();
+          if (students.isNotEmpty && _selectedStudent.isEmpty) {
+            // Initialize selected student if empty
+            _selectedStudent = students.first;
+          } else if (students.isNotEmpty && !students.contains(_selectedStudent)) {
+            // Reset if selected student is not in the new list
+            _selectedStudent = students.first;
+          }
+        }
+
+        // Ensure "جميع الأبناء" or similar option if needed, but for now matching previous logic
+        // logic says: String _selectedStudent = "أحمد"; // initially
+
+        return Scaffold(
+          backgroundColor: AppColor.whiteColor(context),
+          body: SafeArea(
+            child: Column(
+              children: [
+                // رأس الصفحة
+                ParentCalendarHeader(
+                  selectedDate: _selectedDate,
+                  getFormattedDate: _getFormattedDate,
+                ),
+                // اختيار الطالب وشريط التحكم
+                state.parentsStudentStatus.isLoading
+                    ? const LinearProgressIndicator()
+                    : ParentCalendarControlBar(
+                        selectedStudent: _selectedStudent.isEmpty && students.isNotEmpty
+                            ? students.first
+                            : _selectedStudent,
+                        students: students,
+                        currentView: _currentView,
+                        onStudentChanged: (student) => setState(() => _selectedStudent = student),
+                        onViewSelected: (index) => setState(() => _currentView = index),
+                        onPrevious: _goToPrevious,
+                        onNext: _goToNext,
+                      ),
+                // عرض التقويم
+                Expanded(child: _buildCalendarContent(students)),
+              ],
             ),
-            // عرض التقويم
-            Expanded(child: _buildCalendarContent()),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildCalendarContent() {
+  Widget _buildCalendarContent(List<String> students) {
     switch (_currentView) {
       case 0:
         return ParentMonthlyView(
@@ -61,7 +89,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
       case 1:
         return ParentWeeklyView(
           selectedDate: _selectedDate,
-          students: _students,
+          students: students,
           onDateSelected: (date) => setState(() => _selectedDate = date),
           getEventsForDay: _getEventsForDay,
           getEventsForStudent: _getEventsForStudent,

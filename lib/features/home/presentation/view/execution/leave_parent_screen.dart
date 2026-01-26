@@ -81,7 +81,7 @@ class _LeaveParentScreenState extends State<LeaveParentScreen> {
     return Scaffold(
       appBar: CustomAppBar(
         context,
-        title: Text(AppLocalKay.student_leave.tr()),
+        title: Text(AppLocalKay.leave_requests.tr()),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),

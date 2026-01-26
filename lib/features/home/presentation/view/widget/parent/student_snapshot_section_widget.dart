@@ -264,6 +264,12 @@ class _StudentSnapshotWidgetState extends State<StudentSnapshotWidget> {
                         ),
                       ],
                     ),
+                    const Spacer(),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 16.sp,
+                      color: AppColor.primaryColor(context),
+                    ),
                   ],
                 ),
               );

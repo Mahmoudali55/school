@@ -12,7 +12,7 @@ class BusCubit extends Cubit<BusState> {
 
   BusCubit(this._busRepo) : super(const BusState());
 
-  Future<void> getBusData(String userTypeId) async {
+  Future<void> getBusData(String userTypeId, {int? code}) async {
     if (state.classes.isEmpty && state.studentsOnBus.isEmpty) {
       emit(state.copyWith(isLoading: true));
     }
@@ -21,7 +21,10 @@ class BusCubit extends Cubit<BusState> {
       final studentsOnBus = await _busRepo.getStudentsOnBus(userTypeId);
       final fieldTrips = await _busRepo.getFieldTrips(userTypeId);
       final buses = await _busRepo.getAdminBuses(userTypeId);
-      final parentChildrenBuses = await _busRepo.getParentChildrenBuses(userTypeId);
+      List<BusClass> parentChildrenBuses = [];
+      if (userTypeId == 'parent' && code != null) {
+        parentChildrenBuses = await _busRepo.getParentChildrenBuses(code: code);
+      }
       final overviewStats = _busRepo.getOverviewStats(userTypeId);
 
       emit(
