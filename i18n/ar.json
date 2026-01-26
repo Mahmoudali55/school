@@ -941,7 +941,8 @@
   "priority_name": "نوع الأولوية",
   "authorized_name": "اسم الجهة المصرحة",
   "auth_name": "اسم الجهة المصرحة",
-  "parent_name_en":"الاسم بالانجليزي"
+  "parent_name_en":"الاسم بالانجليزي",
+  "loading":"جاري التحميل"
 
 
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
-import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
+import 'package:my_template/features/home/data/models/home_models.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 import 'package:my_template/features/home/presentation/view/widget/parent/header_widget.dart';
@@ -36,24 +36,19 @@ class _HomeParentScreenState extends State<HomeParentScreen> {
       body: SafeArea(
         child: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
-            if (state.parentsStudentStatus.isLoading || state.parentsStudentStatus.isInitial) {
-              return const Center(child: CustomLoading());
-            }
+            // we no longer return a full-screen Loader or Error here
+            // to allow static parts of the screen to show up immediately.
 
-            if (state.parentsStudentStatus.isFailure) {
-              return Center(child: Text(state.parentsStudentStatus.error ?? "حدث خطأ ما"));
-            }
+            final bool isLoadingStudents =
+                state.parentsStudentStatus.isLoading || state.parentsStudentStatus.isInitial;
 
-            final students = (state.parentsStudentStatus.data ?? [])
-                .map((e) => e.toMiniInfo())
-                .toList();
+            final List<StudentMiniInfo>? students = state.parentsStudentStatus.data?.map((e) {
+              return e.toMiniInfo();
+            }).toList();
 
-            final selectedStudent =
-                state.selectedStudent ?? (students.isNotEmpty ? students[0] : null);
-
-            if (students.isEmpty || selectedStudent == null) {
-              return const Center(child: Text("لا يوجد طلاب"));
-            }
+            final StudentMiniInfo? selectedStudent =
+                state.selectedStudent ??
+                (students != null && students.isNotEmpty ? students[0] : null);
 
             return SingleChildScrollView(
               padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
@@ -62,17 +57,27 @@ class _HomeParentScreenState extends State<HomeParentScreen> {
                 children: [
                   HeaderWidget(
                     parentName: HiveMethods.getUserName(),
-                    students: students,
-                    selectedStudent: selectedStudent,
+                    students: students, // might be null
+                    selectedStudent: selectedStudent, // might be null
                   ),
                   SizedBox(height: 25.h),
-                  StudentSnapshotWidget(studentCode: selectedStudent.studentCode),
+                  StudentSnapshotWidget(studentCode: selectedStudent?.studentCode),
                   SizedBox(height: 25.h),
                   const LiveTrackingWidget(),
                   SizedBox(height: 25.h),
-                  RequestsSectionWidget(selectedStudent: selectedStudent, students: students),
+                  RequestsSectionWidget(selectedStudent: selectedStudent, students: students ?? []),
                   SizedBox(height: 25.h),
                   const UrgentAlertsWidget(),
+                  if (state.parentsStudentStatus.isFailure)
+                    Padding(
+                      padding: EdgeInsets.only(top: 20.h),
+                      child: Center(
+                        child: Text(
+                          state.parentsStudentStatus.error ?? "حدث خطأ في تحميل بيانات الطلاب",
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ),
                   SizedBox(height: 30.h),
                 ],
               ),

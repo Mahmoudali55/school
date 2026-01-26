@@ -11,8 +11,8 @@ import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 
 class StudentSnapshotWidget extends StatefulWidget {
-  final int studentCode;
-  const StudentSnapshotWidget({super.key, required this.studentCode});
+  final int? studentCode;
+  const StudentSnapshotWidget({super.key, this.studentCode});
 
   @override
   State<StudentSnapshotWidget> createState() => _StudentSnapshotWidgetState();
@@ -21,21 +21,24 @@ class StudentSnapshotWidget extends StatefulWidget {
 class _StudentSnapshotWidgetState extends State<StudentSnapshotWidget> {
   final PageController _pageController = PageController();
   late Timer _timer;
-  late int _studentCode;
+  int? _studentCode;
 
   @override
   void initState() {
     super.initState();
     _studentCode = widget.studentCode;
-    _loadData();
+    if (_studentCode != null) {
+      _loadData();
+    }
     _startAutoScroll();
   }
 
   void _loadData() {
+    if (_studentCode == null) return;
     final cubit = context.read<HomeCubit>();
-    cubit.studentAbsentCount(_studentCode);
-    cubit.studentCourseDegree(_studentCode, 1);
-    cubit.studentAbsentDataDetails(_studentCode);
+    cubit.studentAbsentCount(_studentCode!);
+    cubit.studentCourseDegree(_studentCode!, 1);
+    cubit.studentAbsentDataDetails(_studentCode!);
   }
 
   void _startAutoScroll() {
@@ -61,7 +64,9 @@ class _StudentSnapshotWidgetState extends State<StudentSnapshotWidget> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.studentCode != widget.studentCode) {
       _studentCode = widget.studentCode;
-      _loadData();
+      if (_studentCode != null) {
+        _loadData();
+      }
     }
   }
 
@@ -101,7 +106,7 @@ class _StudentSnapshotWidgetState extends State<StudentSnapshotWidget> {
           builder: (context, state) {
             final grades = state.studentCourseDegreeStatus.data ?? [];
 
-            if (state.studentCourseDegreeStatus.isLoading) {
+            if (_studentCode == null || state.studentCourseDegreeStatus.isLoading) {
               return const Center(child: CircularProgressIndicator());
             }
 
@@ -232,7 +237,9 @@ class _StudentSnapshotWidgetState extends State<StudentSnapshotWidget> {
           onTap: () => _showAbsenceDetails(context),
           child: BlocBuilder<HomeCubit, HomeState>(
             builder: (context, state) {
-              final count = state.studentAbsentCountStatus.data?.firstOrNull?.absentCount ?? 0;
+              final count = (_studentCode != null)
+                  ? state.studentAbsentCountStatus.data?.firstOrNull?.absentCount ?? 0
+                  : 0;
 
               return Container(
                 width: double.infinity,

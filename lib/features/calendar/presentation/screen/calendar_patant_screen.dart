@@ -51,19 +51,19 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                   selectedDate: _selectedDate,
                   getFormattedDate: _getFormattedDate,
                 ),
-                state.parentsStudentStatus.isLoading
-                    ? const LinearProgressIndicator()
-                    : ParentCalendarControlBar(
-                        selectedStudent: _selectedStudent.isEmpty && students.isNotEmpty
-                            ? students.first
-                            : _selectedStudent,
-                        students: students,
-                        currentView: _currentView,
-                        onStudentChanged: (student) => setState(() => _selectedStudent = student),
-                        onViewSelected: (index) => setState(() => _currentView = index),
-                        onPrevious: _goToPrevious,
-                        onNext: _goToNext,
-                      ),
+                ParentCalendarControlBar(
+                  selectedStudent: _selectedStudent.isEmpty && students.isNotEmpty
+                      ? students.first
+                      : _selectedStudent,
+                  students: students,
+                  currentView: _currentView,
+                  onStudentChanged: (student) => setState(() => _selectedStudent = student),
+                  onViewSelected: (index) => setState(() => _currentView = index),
+                  onPrevious: _goToPrevious,
+                  onNext: _goToNext,
+                ),
+                if (state.parentsStudentStatus.isLoading && students.isEmpty)
+                  const LinearProgressIndicator(),
                 Expanded(child: _buildCalendarContent(students)),
               ],
             ),

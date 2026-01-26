@@ -61,21 +61,15 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BusCubit, BusState>(
-      builder: (context, state) {
-        if (state.isLoading) {
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
-        }
+    return Scaffold(
+      backgroundColor: const Color(0xFFF8FAFD),
+      body: SafeArea(
+        child: BlocBuilder<BusCubit, BusState>(
+          builder: (context, state) {
+            final selectedBusData = state.selectedClass;
+            final bool isLoading = state.isLoading;
 
-        final selectedBusData = state.selectedClass;
-        if (selectedBusData == null) {
-          return const Scaffold(body: Center(child: Text("لا توجد بيانات متاحة")));
-        }
-
-        return Scaffold(
-          backgroundColor: const Color(0xFFF8FAFD),
-          body: SafeArea(
-            child: CustomScrollView(
+            return CustomScrollView(
               physics: const BouncingScrollPhysics(),
               slivers: [
                 // App Bar
@@ -92,62 +86,83 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                     ),
                   ),
                 ),
-                // Children Selector
-                SliverToBoxAdapter(
-                  child: ChildrenSelector(
-                    children: state.parentChildrenBuses.map((e) => e.childName ?? "").toList(),
-                    selectedChild: selectedBusData.childName ?? "",
-                    childrenBusData: state.parentChildrenBuses,
-                    onSelected: (childName) {
-                      final selected = state.parentChildrenBuses.firstWhere(
-                        (e) => e.childName == childName,
-                      );
-                      context.read<BusCubit>().selectClass(selected.id);
-                    },
+
+                if (isLoading && state.parentChildrenBuses.isEmpty)
+                  const SliverFillRemaining(child: Center(child: CircularProgressIndicator()))
+                else if (state.error != null && state.parentChildrenBuses.isEmpty)
+                  SliverFillRemaining(child: Center(child: Text(state.error ?? "حدث خطأ ما")))
+                else if (state.parentChildrenBuses.isEmpty)
+                  const SliverFillRemaining(child: Center(child: Text("لا توجد بيانات متاحة")))
+                else ...[
+                  // Children Selector
+                  SliverToBoxAdapter(
+                    child: ChildrenSelector(
+                      children: state.parentChildrenBuses.map((e) => e.childName ?? "").toList(),
+                      selectedChild: selectedBusData?.childName ?? "",
+                      childrenBusData: state.parentChildrenBuses,
+                      onSelected: (childName) {
+                        final selected = state.parentChildrenBuses.firstWhere(
+                          (e) => e.childName == childName,
+                        );
+                        context.read<BusCubit>().selectClass(selected.id);
+                      },
+                    ),
                   ),
-                ),
 
-                // Quick Overview
-                SliverToBoxAdapter(
-                  child: QuickOverview(
-                    childrenCount: state.parentChildrenBuses.length,
-                    inBusCount: state.parentChildrenBuses
-                        .where((c) => c.status == 'في الطريق')
-                        .length,
-                    nearestArrival: state.overviewStats['closestArrival'] ?? "---",
-                    safetyStatus: "٣/٣",
+                  // Quick Overview
+                  SliverToBoxAdapter(
+                    child: QuickOverview(
+                      childrenCount: state.parentChildrenBuses.length,
+                      inBusCount: state.parentChildrenBuses
+                          .where((c) => c.status == 'في الطريق')
+                          .length,
+                      nearestArrival: state.overviewStats['closestArrival'] ?? "---",
+                      safetyStatus: "٣/٣",
+                    ),
                   ),
-                ),
 
-                // Main Tracking Card
-                SliverToBoxAdapter(
-                  child: MainTrackingCard(
-                    selectedBusData: selectedBusData,
-                    busAnimation: _busAnimation,
-                    onCallDriver: () => _callDriver(selectedBusData),
-                    onShareLocation: () => _shareLocation(selectedBusData),
-                    onSetArrivalAlert: () => _setArrivalAlert(selectedBusData),
-                  ),
-                ),
+                  if (selectedBusData != null) ...[
+                    // Main Tracking Card
+                    SliverToBoxAdapter(
+                      child: MainTrackingCard(
+                        selectedBusData: selectedBusData,
+                        busAnimation: _busAnimation,
+                        onCallDriver: () => _callDriver(selectedBusData),
+                        onShareLocation: () => _shareLocation(selectedBusData),
+                        onSetArrivalAlert: () => _setArrivalAlert(selectedBusData),
+                      ),
+                    ),
 
-                // All Children Status
-                SliverToBoxAdapter(
-                  child: AllChildrenStatus(childrenBusData: state.parentChildrenBuses),
-                ),
+                    // All Children Status
+                    SliverToBoxAdapter(
+                      child: AllChildrenStatus(childrenBusData: state.parentChildrenBuses),
+                    ),
 
-                // Bus Details
-                SliverToBoxAdapter(child: BusDetails(selectedBusData: selectedBusData)),
-
-                // Safety & Alerts
+                    // Bus Details
+                    SliverToBoxAdapter(child: BusDetails(selectedBusData: selectedBusData)),
+                  ] else if (isLoading) ...[
+                    const SliverToBoxAdapter(
+                      child: Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
               ],
-            ),
-          ),
-          // Emergency Button
-          floatingActionButton: ParentEmergencyButton(
-            onPressed: () => _showEmergencyDialog(selectedBusData),
-          ),
-        );
-      },
+            );
+          },
+        ),
+      ),
+      // Emergency Button
+      floatingActionButton: BlocBuilder<BusCubit, BusState>(
+        builder: (context, state) {
+          if (state.selectedClass == null) return const SizedBox.shrink();
+          return ParentEmergencyButton(onPressed: () => _showEmergencyDialog(state.selectedClass!));
+        },
+      ),
     );
   }
 

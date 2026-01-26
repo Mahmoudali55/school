@@ -13,15 +13,10 @@ import '../../../cubit/home_cubit.dart';
 
 class HeaderWidget extends StatelessWidget {
   final String parentName;
-  final List<StudentMiniInfo> students;
-  final StudentMiniInfo selectedStudent;
+  final List<StudentMiniInfo>? students;
+  final StudentMiniInfo? selectedStudent;
 
-  const HeaderWidget({
-    super.key,
-    required this.parentName,
-    required this.students,
-    required this.selectedStudent,
-  });
+  const HeaderWidget({super.key, required this.parentName, this.students, this.selectedStudent});
 
   @override
   Widget build(BuildContext context) {
@@ -94,27 +89,56 @@ class HeaderWidget extends StatelessWidget {
               ),
             ],
           ),
-          child: DropdownButtonFormField<StudentMiniInfo>(
-            value: selectedStudent,
-            decoration: InputDecoration(
-              labelStyle: AppTextStyle.bodyMedium(context, color: const Color(0xFF6B7280)),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: BorderSide.none,
-              ),
-              filled: true,
-              fillColor: Colors.white,
-              contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-              prefixIcon: const Icon(Icons.person_outline, color: Color(0xFF2E5BFF)),
-            ),
-            items: students
-                .map((student) => DropdownMenuItem(value: student, child: Text(student.name)))
-                .toList(),
-            onChanged: (student) {
-              if (student != null) {
-                context.read<HomeCubit>().changeSelectedStudent(student);
-              }
-            },
+          child: Column(
+            children: [
+              if (students == null)
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.person_outline, color: Color(0xFF2E5BFF)),
+                      SizedBox(width: 12.w),
+                      Text(
+                        AppLocalKay.loading.tr(),
+                        style: AppTextStyle.bodyMedium(context, color: const Color(0xFF6B7280)),
+                      ),
+                      const Spacer(),
+                      SizedBox(
+                        width: 16.w,
+                        height: 16.w,
+                        child: const CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    ],
+                  ),
+                )
+              else
+                DropdownButtonFormField<StudentMiniInfo>(
+                  value: selectedStudent,
+                  decoration: InputDecoration(
+                    labelStyle: AppTextStyle.bodyMedium(context, color: const Color(0xFF6B7280)),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                    prefixIcon: const Icon(Icons.person_outline, color: Color(0xFF2E5BFF)),
+                  ),
+                  items: students!
+                      .map((student) => DropdownMenuItem(value: student, child: Text(student.name)))
+                      .toList(),
+                  onChanged: (student) {
+                    if (student != null) {
+                      context.read<HomeCubit>().changeSelectedStudent(student);
+                    }
+                  },
+                ),
+            ],
           ),
         ),
       ],

@@ -893,7 +893,8 @@
   "priority_name": "Priority Name",
   "authorized_name": "Authorized Name",
    "auth_name": "Authorized Name",
-   "parent_name_en":"Parent Name (English)"
+   "parent_name_en":"Parent Name (English)",
+   "loading":"Loading"
 
 
 }

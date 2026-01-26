@@ -898,4 +898,5 @@ class AppLocalKay {
   static const String add_priority = 'add_priority';
   static const String authorized_name = 'authorized_name';
   static const String parent_name_en = 'parent_name_en';
+  static const String loading = 'loading';
 }

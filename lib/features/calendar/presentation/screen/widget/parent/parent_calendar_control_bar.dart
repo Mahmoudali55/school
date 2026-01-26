@@ -6,7 +6,7 @@ import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
 class ParentCalendarControlBar extends StatelessWidget {
-  final String selectedStudent;
+  final String? selectedStudent;
   final List<String> students;
   final int currentView;
   final Function(String) onStudentChanged;
@@ -16,7 +16,7 @@ class ParentCalendarControlBar extends StatelessWidget {
 
   const ParentCalendarControlBar({
     super.key,
-    required this.selectedStudent,
+    this.selectedStudent,
     required this.students,
     required this.currentView,
     required this.onStudentChanged,
@@ -47,21 +47,9 @@ class ParentCalendarControlBar extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      _buildViewButton(
-                        context,
-                        AppLocalKay.backupFrequencyMonthly.tr(),
-                        0,
-                      ),
-                      _buildViewButton(
-                        context,
-                        AppLocalKay.backupFrequencyWeekly.tr(),
-                        1,
-                      ),
-                      _buildViewButton(
-                        context,
-                        AppLocalKay.backupFrequencyDaily.tr(),
-                        2,
-                      ),
+                      _buildViewButton(context, AppLocalKay.backupFrequencyMonthly.tr(), 0),
+                      _buildViewButton(context, AppLocalKay.backupFrequencyWeekly.tr(), 1),
+                      _buildViewButton(context, AppLocalKay.backupFrequencyDaily.tr(), 2),
                     ],
                   ),
                 ),
@@ -107,15 +95,14 @@ class ParentCalendarControlBar extends StatelessWidget {
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          value: selectedStudent,
-          icon: const Icon(
-            Icons.arrow_drop_down_rounded,
-            color: Color(0xFF2196F3),
-          ),
-          style: AppTextStyle.bodyMedium(context).copyWith(
-            fontWeight: FontWeight.w600,
-            color: const Color(0xFF1F2937),
-          ),
+          value: (selectedStudent != null && students.contains(selectedStudent))
+              ? selectedStudent
+              : (students.isNotEmpty ? students.first : null),
+          hint: Text(AppLocalKay.loading.tr(), style: AppTextStyle.bodySmall(context)),
+          icon: const Icon(Icons.arrow_drop_down_rounded, color: Color(0xFF2196F3)),
+          style: AppTextStyle.bodyMedium(
+            context,
+          ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
           onChanged: (String? newValue) {
             if (newValue != null) {
               onStudentChanged(newValue);
@@ -126,11 +113,7 @@ class ParentCalendarControlBar extends StatelessWidget {
               value: value,
               child: Row(
                 children: [
-                  Icon(
-                    Icons.person_outline_rounded,
-                    size: 16.w,
-                    color: const Color(0xFF2196F3),
-                  ),
+                  Icon(Icons.person_outline_rounded, size: 16.w, color: const Color(0xFF2196F3)),
                   SizedBox(width: 6.w),
                   Text(value),
                 ],
@@ -157,9 +140,7 @@ class ParentCalendarControlBar extends StatelessWidget {
               text,
               style: AppTextStyle.bodySmall(context).copyWith(
                 fontWeight: FontWeight.w600,
-                color: isSelected
-                    ? AppColor.whiteColor(context)
-                    : const Color(0xFF6B7280),
+                color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF6B7280),
               ),
             ),
           ),
