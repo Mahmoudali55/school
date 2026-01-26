@@ -1,7 +1,13 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:my_template/core/error/failures.dart';
+import 'package:my_template/core/network/api_consumer.dart';
+import 'package:my_template/core/network/end_points.dart';
+import 'package:my_template/features/profile/data/model/parent_profile_model.dart';
 import 'package:my_template/features/profile/data/model/profile_model.dart';
 
-class ProfileRepo {
+abstract class ProfileRepo {
+  Future<Either<Failure, ParentProfileModel>> getParentProfile({required int code});
   Future<ProfileModel> getStudentProfile() async {
     return ProfileModel(
       name: 'محمد أحمد السعيد',
@@ -10,16 +16,6 @@ class ProfileRepo {
       section: 'القسم العلمي',
       attendanceRate: 95,
       averageGrade: 88.5,
-    );
-  }
-
-  Future<ProfileModel> getParentProfile() async {
-    return ProfileModel(
-      name: 'أحمد السعيد',
-      email: 'ahmed@email.com',
-      phone: '+966 50 123 4567',
-      address: 'الرياض - العليا',
-      idNumber: '1234567890',
     );
   }
 
@@ -61,5 +57,47 @@ class ProfileRepo {
         color: Colors.green,
       ),
     ];
+  }
+}
+
+class ProfileRepoImpl implements ProfileRepo {
+  final ApiConsumer apiConsumer;
+  ProfileRepoImpl(this.apiConsumer);
+  @override
+  Future<Either<Failure, ParentProfileModel>> getParentProfile({required int code}) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.getParentProfile,
+          queryParameters: {"Code": code},
+        );
+        if (response['Data'] == null) {
+          throw const FormatException("No data found");
+        }
+        // Data comes as a JSON string inside the 'Data' field
+        final List<ParentProfileModel> profiles = ParentProfileModel.fromApi(response['Data']);
+        if (profiles.isEmpty) {
+          throw const FormatException("Empty profile data");
+        }
+        return profiles.first;
+      },
+    );
+  }
+
+  Future<List<Achievement>> getStudentAchievements() {
+    // TODO: implement getStudentAchievements
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<ProfileActivity>> getStudentActivities() {
+    // TODO: implement getStudentActivities
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<ProfileModel> getStudentProfile() {
+    // TODO: implement getStudentProfile
+    throw UnimplementedError();
   }
 }

@@ -878,6 +878,22 @@
       "no_uniform_requests":"No uniform requests currently",
       "no_task":"No tasks for today",
       "code":"Code",
-      "pay":"Pay Now"
+      "pay":"Pay Now",
+        "parent_name": "Parent Name",
+  "father_name": "Father Name",
+  "mobile_no": "Mobile No",
+  "home_tel": "Home Tel",
+  "id_number": "ID Number",
+  "id_end_date": "ID End Date",
+  "passport_no": "Passport No",
+  "passport_end_date": "Passport End Date",
+  "account_no": "Account No",
+  "employee_children": "Employee Children",
+  "nation_code": "Nation Code",
+  "priority_name": "Priority Name",
+  "authorized_name": "Authorized Name",
+   "auth_name": "Authorized Name",
+   "parent_name_en":"Parent Name (English)"
+
 
 }

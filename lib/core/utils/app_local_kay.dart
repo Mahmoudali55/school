@@ -879,4 +879,23 @@ class AppLocalKay {
   static const String no_task = 'no_task';
   static const String code = 'code';
   static const String pay = 'pay';
+  static const String parent_name = 'parent_name';
+  static const String father_name = 'father_name';
+  static const String mobile_no = 'mobile_no';
+  static const String home_tel = 'home_tel';
+  static const String id_number = 'id_number';
+  static const String id_end_date = 'id_end_date';
+  static const String passport_no = 'passport_no';
+  static const String passport_end_date = 'passport_end_date';
+  static const String account_no = 'account_no';
+  static const String employee_children = 'employee_children';
+  static const String nation_code = 'nation_code';
+  static const String priority_name = 'priority_name';
+  static const String priority = 'priority';
+  static const String new_priority = 'new_priority';
+  static const String edit_priority = 'edit_priority';
+  static const String delete_priority = 'delete_priority';
+  static const String add_priority = 'add_priority';
+  static const String authorized_name = 'authorized_name';
+  static const String parent_name_en = 'parent_name_en';
 }

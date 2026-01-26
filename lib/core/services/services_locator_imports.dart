@@ -27,7 +27,7 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<NotificationRepo>(() => NotificationRepo());
   sl.registerFactory<NotificationCubit>(() => NotificationCubit(sl()));
 
-  sl.registerLazySingleton<ProfileRepo>(() => ProfileRepo());
+  sl.registerLazySingleton<ProfileRepo>(() => ProfileRepoImpl(sl()));
   sl.registerFactory<ProfileCubit>(() => ProfileCubit(sl()));
 
   sl.registerLazySingleton<SettingsRepo>(() => SettingsRepo());

@@ -926,7 +926,23 @@
    "no_uniform_requests":"لا توجد طلبات زي حالياً",
    "no_task":"لاتوجد واجبات لهذا اليوم",
    "code":"الكود",
-   "pay":"ادفع الآن"
+   "pay":"ادفع الآن",
+    "parent_name": "الاسم",
+  "father_name": "اسم الأب",
+  "mobile_no": "الهاتف",
+  "home_tel": "الهاتف المنزلي",
+  "id_number": "الهوية",
+  "id_end_date": "تاريخ انتهاء الهوية",
+  "passport_no": "جواز السفر",
+  "passport_end_date": "تاريخ انتهاء جواز السفر",
+  "account_no": "رقم الحساب",
+  "employee_children": "عدد الأبناء الموظفين",
+  "nation_code": "رمز الجنسية",
+  "priority_name": "نوع الأولوية",
+  "authorized_name": "اسم الجهة المصرحة",
+  "auth_name": "اسم الجهة المصرحة",
+  "parent_name_en":"الاسم بالانجليزي"
+
 
 
 }

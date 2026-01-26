@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/routes/routes_name.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -48,7 +49,11 @@ class HeaderWidget extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                NavigatorMethods.pushNamed(context, RoutesName.parentProfileScreen);
+                NavigatorMethods.pushNamed(
+                  context,
+                  RoutesName.parentProfileScreen,
+                  arguments: int.tryParse(HiveMethods.getUserCode()) ?? 0,
+                );
               },
               child: Container(
                 padding: EdgeInsets.all(12.w),

@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/features/profile/data/model/parent_profile_model.dart';
 import 'package:my_template/features/profile/data/model/profile_model.dart';
 
 class ProfileState extends Equatable {
@@ -7,6 +9,7 @@ class ProfileState extends Equatable {
   final List<ProfileActivity> activities;
   final List<Achievement> achievements;
   final String? error;
+  final StatusState<ParentProfileModel> parentProfileStatus;
 
   const ProfileState({
     this.isLoading = false,
@@ -14,6 +17,7 @@ class ProfileState extends Equatable {
     this.activities = const [],
     this.achievements = const [],
     this.error,
+    this.parentProfileStatus = const StatusState.initial(),
   });
 
   ProfileState copyWith({
@@ -22,6 +26,7 @@ class ProfileState extends Equatable {
     List<ProfileActivity>? activities,
     List<Achievement>? achievements,
     String? error,
+    StatusState<ParentProfileModel>? parentProfileStatus,
   }) {
     return ProfileState(
       isLoading: isLoading ?? this.isLoading,
@@ -29,9 +34,17 @@ class ProfileState extends Equatable {
       activities: activities ?? this.activities,
       achievements: achievements ?? this.achievements,
       error: error ?? this.error,
+      parentProfileStatus: parentProfileStatus ?? this.parentProfileStatus,
     );
   }
 
   @override
-  List<Object?> get props => [isLoading, profile, activities, achievements, error];
+  List<Object?> get props => [
+    isLoading,
+    profile,
+    activities,
+    achievements,
+    error,
+    parentProfileStatus,
+  ];
 }

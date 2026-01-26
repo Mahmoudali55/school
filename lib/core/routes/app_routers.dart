@@ -71,7 +71,7 @@ class AppRouters {
       case RoutesName.parentProfileScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => sl<ProfileCubit>()..loadParentProfile(),
+            create: (context) => sl<ProfileCubit>()..loadParentProfile(args),
             child: ParentProfileScreen(),
           ),
         );

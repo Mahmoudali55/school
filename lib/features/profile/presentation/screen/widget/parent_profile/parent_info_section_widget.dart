@@ -44,7 +44,9 @@ class ParentInfoSection extends StatelessWidget {
     ),
     subtitle: Text(
       i['value'] as String,
-      style: AppTextStyle.bodyMedium(context).copyWith(fontSize: 14),
+      style: AppTextStyle.bodyMedium(
+        context,
+      ).copyWith(fontSize: 14.sp, fontWeight: FontWeight.bold, color: Colors.black),
     ),
   );
 }

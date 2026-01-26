@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/profile/data/repo/profile_repo.dart';
 import 'package:my_template/features/profile/presentation/cubit/profile_state.dart';
 
@@ -26,13 +27,13 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
-  Future<void> loadParentProfile() async {
-    emit(state.copyWith(isLoading: true, error: null));
-    try {
-      final profile = await _profileRepo.getParentProfile();
-      emit(state.copyWith(isLoading: false, profile: profile));
-    } catch (e) {
-      emit(state.copyWith(isLoading: false, error: e.toString()));
-    }
+  Future<void> loadParentProfile(int code) async {
+    emit(state.copyWith(parentProfileStatus: StatusState.loading()));
+
+    final result = await _profileRepo.getParentProfile(code: code);
+    result.fold(
+      (error) => emit(state.copyWith(parentProfileStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(parentProfileStatus: StatusState.success(success))),
+    );
   }
 }
