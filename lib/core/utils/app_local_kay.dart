@@ -878,4 +878,5 @@ class AppLocalKay {
   static const String no_uniform_requests = 'no_uniform_requests';
   static const String no_task = 'no_task';
   static const String code = 'code';
+  static const String pay = 'pay';
 }

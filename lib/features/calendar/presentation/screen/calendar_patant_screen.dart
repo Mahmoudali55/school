@@ -47,12 +47,10 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
           body: SafeArea(
             child: Column(
               children: [
-                // رأس الصفحة
                 ParentCalendarHeader(
                   selectedDate: _selectedDate,
                   getFormattedDate: _getFormattedDate,
                 ),
-                // اختيار الطالب وشريط التحكم
                 state.parentsStudentStatus.isLoading
                     ? const LinearProgressIndicator()
                     : ParentCalendarControlBar(
@@ -66,7 +64,6 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                         onPrevious: _goToPrevious,
                         onNext: _goToNext,
                       ),
-                // عرض التقويم
                 Expanded(child: _buildCalendarContent(students)),
               ],
             ),
@@ -113,7 +110,6 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
     }
   }
 
-  // دوال مساعدة
   String _getFormattedDate(DateTime date) {
     return DateFormat('EEEE, d MMMM y', 'ar').format(date);
   }

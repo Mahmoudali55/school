@@ -90,9 +90,21 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                                   context,
                                 ).copyWith(color: Colors.grey[600]),
                               ),
+                              SizedBox(height: 8.h),
+                              GestureDetector(
+                                onTap: () {},
+                                child: Text(
+                                  AppLocalKay.pay_now.tr(),
+                                  style: AppTextStyle.bodySmall(context).copyWith(
+                                    color: AppColor.primaryColor(context),
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
+
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                           decoration: BoxDecoration(
