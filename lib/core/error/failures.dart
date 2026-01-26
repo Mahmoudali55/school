@@ -40,9 +40,9 @@ class ServerFailure extends Failure {
       if (map != null) {
         if (map['message'] is String) return ServerFailure(map['message'] as String);
         if (map['Message'] is String) return ServerFailure(map['Message'] as String);
-        if (map['error'] is String) return ServerFailure(map['error'] as String);
         if (map['error_description'] is String)
           return ServerFailure(map['error_description'] as String);
+        if (map['error'] is String) return ServerFailure(map['error'] as String);
       }
 
       // Otherwise fall back based on DioException type

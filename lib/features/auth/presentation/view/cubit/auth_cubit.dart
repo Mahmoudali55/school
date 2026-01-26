@@ -112,7 +112,7 @@ class AuthCubit extends Cubit<AuthState> {
 
     result.fold(
       (error) {
-        final errorMessage = error.errMessage;
+        final errorMessage = error.errMessage ?? "Login failed";
         emit(state.copyWith(loginStatus: StatusState.failure(errorMessage)));
       },
       (success) {

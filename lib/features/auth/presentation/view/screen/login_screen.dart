@@ -89,8 +89,8 @@ class LoginScreen extends StatelessWidget {
                         Gap(16.h),
                         CustomFormField(
                           controller: cubit.usernameLoginController,
-                          title: AppLocalKay.email.tr(),
-                          prefixIcon: Icon(Icons.email_outlined),
+                          title: AppLocalKay.username.tr(),
+                          prefixIcon: Icon(Icons.person_2_outlined),
                           validator: (value) => value!.isEmpty ? AppLocalKay.enterEmail.tr() : null,
                         ),
                         Gap(16.h),

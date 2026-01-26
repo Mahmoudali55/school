@@ -138,7 +138,6 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
               ],
             ),
           ),
-
           // Emergency Button
           floatingActionButton: ParentEmergencyButton(
             onPressed: () => _showEmergencyDialog(selectedBusData),
