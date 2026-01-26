@@ -5,8 +5,9 @@ import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/bus/data/model/bus_tracking_models.dart';
+import 'package:my_template/features/bus/presentation/screen/widget/bus_map_widget.dart';
 
-class MainTrackingCard extends StatelessWidget {
+class MainTrackingCard extends StatefulWidget {
   final BusClass selectedBusData;
   final Animation<double> busAnimation;
   final VoidCallback onCallDriver;
@@ -21,6 +22,13 @@ class MainTrackingCard extends StatelessWidget {
     required this.onShareLocation,
     required this.onSetArrivalAlert,
   });
+
+  @override
+  State<MainTrackingCard> createState() => _MainTrackingCardState();
+}
+
+class _MainTrackingCardState extends State<MainTrackingCard> {
+  bool _showMap = false;
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +65,10 @@ class MainTrackingCard extends StatelessWidget {
           width: 50.w,
           height: 50.w,
           decoration: BoxDecoration(
-            color: selectedBusData.busColor.withOpacity(0.1),
+            color: widget.selectedBusData.busColor.withOpacity(0.1),
             shape: BoxShape.circle,
           ),
-          child: Icon(Icons.person_rounded, color: selectedBusData.busColor, size: 24.w),
+          child: Icon(Icons.person_rounded, color: widget.selectedBusData.busColor, size: 24.w),
         ),
         SizedBox(width: 12.w),
         Expanded(
@@ -68,13 +76,13 @@ class MainTrackingCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                selectedBusData.childName ?? "",
+                widget.selectedBusData.childName ?? "",
                 style: AppTextStyle.titleLarge(
                   context,
                 ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
               Text(
-                "${selectedBusData.subject} - ${selectedBusData.className}",
+                "${widget.selectedBusData.subject} - ${widget.selectedBusData.className}",
                 style: AppTextStyle.bodyMedium(context).copyWith(color: const Color(0xFF6B7280)),
               ),
             ],
@@ -83,17 +91,17 @@ class MainTrackingCard extends StatelessWidget {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
           decoration: BoxDecoration(
-            color: selectedBusData.status == 'في الطريق'
+            color: widget.selectedBusData.status == 'في الطريق'
                 ? AppColor.secondAppColor(context).withOpacity(0.1)
                 : AppColor.accentColor(context).withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
-            selectedBusData.status == 'في الطريق'
+            widget.selectedBusData.status == 'في الطريق'
                 ? AppLocalKay.in_bus.tr()
                 : AppLocalKay.waiting.tr(),
             style: AppTextStyle.bodySmall(context).copyWith(
-              color: selectedBusData.status == 'في الطريق'
+              color: widget.selectedBusData.status == 'في الطريق'
                   ? AppColor.secondAppColor(context)
                   : AppColor.accentColor(context),
               fontWeight: FontWeight.bold,
@@ -110,80 +118,104 @@ class MainTrackingCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFFE8F5E8),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: selectedBusData.busColor.withOpacity(0.3)),
+        border: Border.all(color: widget.selectedBusData.busColor.withOpacity(0.3)),
       ),
+      clipBehavior: Clip.antiAlias,
       child: Stack(
         children: [
-          Positioned(
-            top: 90.h,
-            left: 20.w,
-            right: 20.w,
-            child: Container(
-              height: 4.h,
-              decoration: BoxDecoration(
-                color: selectedBusData.busColor.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(2),
+          if (_showMap)
+            BusMapWidget(
+              busLat: widget.selectedBusData.lat ?? 24.7136, // Default to Riyadh
+              busLng: widget.selectedBusData.lng ?? 46.6753,
+              busId: widget.selectedBusData.busNumber,
+              busName: widget.selectedBusData.busNumber,
+            )
+          else ...[
+            Positioned(
+              top: 90.h,
+              left: 20.w,
+              right: 20.w,
+              child: Container(
+                height: 4.h,
+                decoration: BoxDecoration(
+                  color: widget.selectedBusData.busColor.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(2),
+                ),
               ),
             ),
-          ),
-          Positioned(
-            left: 20.w,
-            top: 80.h,
-            child: Column(
-              children: [
-                Icon(Icons.home_rounded, color: AppColor.secondAppColor(context), size: 24.w),
-                SizedBox(height: 4.h),
-                Text(
-                  AppLocalKay.home_address.tr(),
-                  style: AppTextStyle.bodySmall(context).copyWith(
-                    fontSize: 10.sp,
-                    color: const Color(0xFF6B7280),
-                    fontWeight: FontWeight.w600,
+            Positioned(
+              left: 20.w,
+              top: 80.h,
+              child: Column(
+                children: [
+                  Icon(Icons.home_rounded, color: AppColor.secondAppColor(context), size: 24.w),
+                  SizedBox(height: 4.h),
+                  Text(
+                    AppLocalKay.home_address.tr(),
+                    style: AppTextStyle.bodySmall(context).copyWith(
+                      fontSize: 10.sp,
+                      color: const Color(0xFF6B7280),
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Positioned(
-            right: 20.w,
-            top: 80.h,
-            child: Column(
-              children: [
-                Icon(Icons.school_rounded, color: AppColor.primaryColor(context), size: 24.w),
-                SizedBox(height: 4.h),
-                Text(
-                  AppLocalKay.school.tr(),
-                  style: AppTextStyle.bodySmall(context).copyWith(
-                    fontSize: 10.sp,
-                    color: const Color(0xFF6B7280),
-                    fontWeight: FontWeight.w600,
+            Positioned(
+              right: 20.w,
+              top: 80.h,
+              child: Column(
+                children: [
+                  Icon(Icons.school_rounded, color: AppColor.primaryColor(context), size: 24.w),
+                  SizedBox(height: 4.h),
+                  Text(
+                    AppLocalKay.school.tr(),
+                    style: AppTextStyle.bodySmall(context).copyWith(
+                      fontSize: 10.sp,
+                      color: const Color(0xFF6B7280),
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          _buildAnimatedBus(context),
+            _buildAnimatedBus(context),
+          ],
+
           Positioned(
             bottom: 12.h,
             right: 12.w,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10.r),
-                boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.map_outlined, size: 14.w, color: AppColor.primaryColor(context)),
-                  SizedBox(width: 4.w),
-                  Text(
-                    "عرض الخريطة الحية",
-                    style: AppTextStyle.bodySmall(
-                      context,
-                    ).copyWith(color: AppColor.primaryColor(context), fontWeight: FontWeight.bold),
-                  ),
-                ],
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  _showMap = !_showMap;
+                });
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10.r),
+                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      _showMap ? Icons.visibility_off : Icons.map_outlined,
+                      size: 14.w,
+                      color: AppColor.primaryColor(context),
+                    ),
+                    SizedBox(width: 4.w),
+                    Text(
+                      _showMap ? "إخفاء الخريطة" : "عرض الخريطة الحية",
+                      style: AppTextStyle.bodySmall(context).copyWith(
+                        color: AppColor.primaryColor(context),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -197,10 +229,10 @@ class MainTrackingCard extends StatelessWidget {
       left: MediaQuery.of(context).size.width * 0.3,
       top: 70.h,
       child: AnimatedBuilder(
-        animation: busAnimation,
+        animation: widget.busAnimation,
         builder: (context, child) {
           return Transform.translate(
-            offset: Offset(0, busAnimation.value),
+            offset: Offset(0, widget.busAnimation.value),
             child: Container(
               padding: EdgeInsets.all(10.w),
               decoration: BoxDecoration(
@@ -216,7 +248,7 @@ class MainTrackingCard extends StatelessWidget {
               ),
               child: Icon(
                 Icons.directions_bus_rounded,
-                color: selectedBusData.busColor,
+                color: widget.selectedBusData.busColor,
                 size: 32.w,
               ),
             ),
@@ -235,7 +267,7 @@ class MainTrackingCard extends StatelessWidget {
             AppLocalKay.call_driver.tr(),
             Icons.phone_rounded,
             AppColor.secondAppColor(context),
-            onCallDriver,
+            widget.onCallDriver,
           ),
         ),
         SizedBox(width: 12.w),
@@ -245,7 +277,7 @@ class MainTrackingCard extends StatelessWidget {
             AppLocalKay.share_location.tr(),
             Icons.share_rounded,
             AppColor.primaryColor(context),
-            onShareLocation,
+            widget.onShareLocation,
           ),
         ),
         SizedBox(width: 12.w),
@@ -255,7 +287,7 @@ class MainTrackingCard extends StatelessWidget {
             AppLocalKay.arrival_alert.tr(),
             Icons.notifications_rounded,
             AppColor.accentColor(context),
-            onSetArrivalAlert,
+            widget.onSetArrivalAlert,
           ),
         ),
       ],

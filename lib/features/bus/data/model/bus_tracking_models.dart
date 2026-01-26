@@ -18,6 +18,8 @@ class BusClass extends Equatable {
   final String attendanceRate;
   final Color classColor;
   final Color busColor;
+  final double? lat;
+  final double? lng;
 
   const BusClass({
     required this.id,
@@ -35,6 +37,8 @@ class BusClass extends Equatable {
     required this.attendanceRate,
     required this.classColor,
     required this.busColor,
+    this.lat,
+    this.lng,
   });
 
   @override
@@ -54,6 +58,8 @@ class BusClass extends Equatable {
     attendanceRate,
     classColor,
     busColor,
+    lat,
+    lng,
   ];
 
   BusClass copyWith({
@@ -72,6 +78,8 @@ class BusClass extends Equatable {
     String? attendanceRate,
     Color? classColor,
     Color? busColor,
+    double? lat,
+    double? lng,
   }) {
     return BusClass(
       id: id ?? this.id,
@@ -89,6 +97,8 @@ class BusClass extends Equatable {
       attendanceRate: attendanceRate ?? this.attendanceRate,
       classColor: classColor ?? this.classColor,
       busColor: busColor ?? this.busColor,
+      lat: lat ?? this.lat,
+      lng: lng ?? this.lng,
     );
   }
 }

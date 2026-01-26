@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:audioplayers/audioplayers.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +18,7 @@ import 'package:my_template/features/bus/presentation/screen/widget/parent/child
 import 'package:my_template/features/bus/presentation/screen/widget/parent/main_tracking_card.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/parent/parent_emergency_button.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/parent/quick_overview.dart';
-import 'package:my_template/features/bus/presentation/screen/widget/parent/safety_alerts.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ParentBusTrackingScreen extends StatefulWidget {
   const ParentBusTrackingScreen({super.key});
@@ -28,30 +31,31 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _busAnimation;
+  Timer? _alertTimer;
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  int _selectedAlertMinutes = 0;
 
   @override
   void initState() {
     super.initState();
     _initializeAnimations();
-    context.read<BusCubit>().getBusData(
-      'parent',
-      code: int.tryParse(HiveMethods.getUserCode()) ?? 0,
-    );
+    final code = int.tryParse(HiveMethods.getUserCode()) ?? 0;
+    context.read<BusCubit>().getBusData('parent', code: code);
   }
 
   void _initializeAnimations() {
     _animationController = AnimationController(vsync: this, duration: const Duration(seconds: 2))
       ..repeat(reverse: true);
-
     _busAnimation = Tween<double>(
-      begin: -5,
-      end: 5,
+      begin: -10,
+      end: 10,
     ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
   }
 
-  @override
   void dispose() {
     _animationController.dispose();
+    _alertTimer?.cancel();
+    _audioPlayer.dispose();
     super.dispose();
   }
 
@@ -135,11 +139,6 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                 SliverToBoxAdapter(child: BusDetails(selectedBusData: selectedBusData)),
 
                 // Safety & Alerts
-                SliverToBoxAdapter(
-                  child: SafetyAlerts(
-                    onFeatureTap: (feature) => _handleSafetyFeature(feature, selectedBusData),
-                  ),
-                ),
               ],
             ),
           ),
@@ -175,26 +174,132 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
   }
 
   void _shareLocation(BusClass selectedBusData) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('${AppLocalKay.share_location.tr()} ${selectedBusData.childName}'),
-        backgroundColor: const Color(0xFF4CAF50),
-      ),
-    );
+    if (selectedBusData.lat != null && selectedBusData.lng != null) {
+      final String googleMapsUrl =
+          "https://www.google.com/maps/search/?api=1&query=${selectedBusData.lat},${selectedBusData.lng}";
+      Share.share(
+        "${AppLocalKay.share_location.tr()} ${selectedBusData.childName}\n$googleMapsUrl",
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("الموقع غير متاح حالياً"), backgroundColor: Colors.red),
+      );
+    }
   }
 
   void _setArrivalAlert(BusClass selectedBusData) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(AppLocalKay.arrival_alert.tr(), style: AppTextStyle.bodyMedium(context)),
-        content: Text('${AppLocalKay.alert_message.tr()}${selectedBusData.childName} بـ 10 دقائق'),
-        actions: [
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(AppLocalKay.confirm.tr(), style: AppTextStyle.bodyMedium(context)),
-          ),
-        ],
+      builder: (context) {
+        int tempSelected = _selectedAlertMinutes;
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              title: Text(
+                AppLocalKay.arrival_alert.tr(),
+                style: AppTextStyle.bodyLarge(context).copyWith(fontWeight: FontWeight.bold),
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'اختر موعد التنبيه قبل وصول الحافلة:',
+                    style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey),
+                  ),
+                  SizedBox(height: 16.h),
+                  Wrap(
+                    spacing: 8.w,
+                    children: [
+                      _buildChoiceChip(
+                        5,
+                        "5 د",
+                        tempSelected,
+                        (val) => setDialogState(() => tempSelected = val),
+                      ),
+                      _buildChoiceChip(
+                        10,
+                        "10 د",
+                        tempSelected,
+                        (val) => setDialogState(() => tempSelected = val),
+                      ),
+                      _buildChoiceChip(
+                        15,
+                        "15 د",
+                        tempSelected,
+                        (val) => setDialogState(() => tempSelected = val),
+                      ),
+                    ],
+                  ),
+                  if (tempSelected != 0) ...[
+                    Padding(
+                      padding: EdgeInsets.only(top: 16.h),
+                      child: TextButton.icon(
+                        onPressed: () => setDialogState(() => tempSelected = 0),
+                        icon: const Icon(
+                          Icons.notifications_off_outlined,
+                          color: Colors.red,
+                          size: 20,
+                        ),
+                        label: Text(
+                          "إلغاء التنبيه",
+                          style: AppTextStyle.bodySmall(context).copyWith(color: Colors.red),
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyMedium(context)),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() => _selectedAlertMinutes = tempSelected);
+                    Navigator.pop(context);
+                    if (_selectedAlertMinutes > 0) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("تم ضبط التنبيه قبل $_selectedAlertMinutes دقائق"),
+                          backgroundColor: const Color(0xFF4CAF50),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("تم إلغاء التنبيه"),
+                          backgroundColor: Colors.orange,
+                        ),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(backgroundColor: AppColor.primaryColor(context)),
+                  child: Text(
+                    AppLocalKay.confirm.tr(),
+                    style: AppTextStyle.bodyMedium(context, color: Colors.white),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildChoiceChip(int value, String label, int currentSelection, Function(int) onSelected) {
+    final isSelected = value == currentSelection;
+    return ChoiceChip(
+      label: Text(label),
+      selected: isSelected,
+      onSelected: (selected) => onSelected(selected ? value : 0),
+      selectedColor: AppColor.primaryColor(context),
+      backgroundColor: Colors.grey[200],
+      labelStyle: TextStyle(
+        color: isSelected ? Colors.white : Colors.black,
+        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
       ),
     );
   }

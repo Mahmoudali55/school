@@ -96,38 +96,60 @@ class BusCubit extends Cubit<BusState> {
     emit(state.copyWith(fieldTrips: updatedTrips));
   }
 
-  void updateBusLocation(String busId, String newLocation) {
+  final List<Map<String, dynamic>> _routePoints = [
+    {'name': 'المحطة 1', 'lat': 24.7136, 'lng': 46.6753},
+    {'name': 'المحطة 2', 'lat': 24.7150, 'lng': 46.6780},
+    {'name': 'المحطة 3', 'lat': 24.7180, 'lng': 46.6800},
+    {'name': 'المحطة 4', 'lat': 24.7200, 'lng': 46.6850},
+    {'name': 'المحطة 5', 'lat': 24.7250, 'lng': 46.6900},
+  ];
+
+  void updateBusLocation(String busId, double lat, double lng) {
     final updatedClasses = state.classes.map((busClass) {
       if (busClass.id == busId) {
-        return busClass.copyWith(currentLocation: newLocation);
+        return busClass.copyWith(lat: lat, lng: lng);
+      }
+      return busClass;
+    }).toList();
+    // Also update parentChildrenBuses if the bus is in there
+    final updatedParentBuses = state.parentChildrenBuses.map((busClass) {
+      if (busClass.id == busId) {
+        return busClass.copyWith(lat: lat, lng: lng);
       }
       return busClass;
     }).toList();
 
-    emit(state.copyWith(classes: updatedClasses));
+    BusClass? selectedClass = state.selectedClass;
+    if (selectedClass != null && selectedClass.id == busId) {
+      selectedClass = selectedClass.copyWith(lat: lat, lng: lng);
+    }
+
+    emit(
+      state.copyWith(
+        classes: updatedClasses,
+        parentChildrenBuses: updatedParentBuses,
+        selectedClass: selectedClass,
+      ),
+    );
   }
 
   void _startPeriodicUpdates() {
     _updateTimer?.cancel();
-    _updateTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
-      if (state.classes.isNotEmpty) {
-        final randomClass = state.classes[DateTime.now().second % state.classes.length];
-        final newLocation = _getRandomLocation();
-        updateBusLocation(randomClass.id, newLocation);
+    int index = 0;
+    _updateTimer = Timer.periodic(const Duration(seconds: 3), (timer) {
+      if (state.classes.isNotEmpty || state.parentChildrenBuses.isNotEmpty) {
+        final point = _routePoints[index % _routePoints.length];
+
+        // Update both lists
+        for (var bus in state.classes) {
+          updateBusLocation(bus.id, point['lat'], point['lng']);
+        }
+        for (var bus in state.parentChildrenBuses) {
+          updateBusLocation(bus.id, point['lat'], point['lng']);
+        }
+        index++;
       }
     });
-  }
-
-  String _getRandomLocation() {
-    final locations = [
-      'شارع الملك فهد',
-      'حي السلام',
-      'حي الروضة',
-      'وسط المدينة',
-      'الطريق الدائري',
-      'حي النخيل',
-    ];
-    return locations[DateTime.now().second % locations.length];
   }
 
   @override

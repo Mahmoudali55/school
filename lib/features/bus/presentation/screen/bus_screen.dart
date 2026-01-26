@@ -1,9 +1,14 @@
+import 'dart:async';
+
+import 'package:audioplayers/audioplayers.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_state.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/bus_Information_widget.dart';
@@ -12,6 +17,7 @@ import 'package:my_template/features/bus/presentation/screen/widget/student/emer
 import 'package:my_template/features/bus/presentation/screen/widget/student/route_progress_widget.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/safety_features.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/schedule_section_widget.dart';
+import 'package:share_plus/share_plus.dart';
 
 class StudentBusTrackingScreen extends StatefulWidget {
   const StudentBusTrackingScreen({super.key});
@@ -25,11 +31,15 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
   late AnimationController _animationController;
   late Animation<double> _busAnimation;
   bool _isBusMoving = true;
+  int _selectedAlertMinutes = 0;
+  Timer? _alertTimer;
+  final AudioPlayer _audioPlayer = AudioPlayer();
 
   @override
   void initState() {
     super.initState();
     _initializeAnimations();
+    context.read<BusCubit>().getBusData('student');
   }
 
   void _initializeAnimations() {
@@ -45,6 +55,8 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
   @override
   void dispose() {
     _animationController.dispose();
+    _alertTimer?.cancel();
+    _audioPlayer.dispose();
     super.dispose();
   }
 
@@ -91,12 +103,15 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
   }
 
   void _handleSafetyFeature(String feature) {
+    if (context.read<BusCubit>().state.selectedAdminBus == null) return;
+    final bus = context.read<BusCubit>().state.selectedAdminBus!;
+
     switch (feature) {
       case AppLocalKay.arrival_alert:
         _setArrivalAlert();
         break;
       case AppLocalKay.share_location:
-        _shareLocation();
+        _shareLocation(bus);
         break;
       case AppLocalKay.urgent_call:
         _showEmergencyDialog();
@@ -107,23 +122,178 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
   void _setArrivalAlert() {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(AppLocalKay.arrival_alert.tr()),
-        content: const Text('سيتم إشعارك قبل وصول الحافلة بـ 5 دقائق'),
-        actions: [
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(AppLocalKay.confirm.tr()),
+      builder: (context) {
+        int tempSelected = _selectedAlertMinutes;
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              title: Text(
+                AppLocalKay.arrival_alert.tr(),
+                style: AppTextStyle.bodyLarge(context).copyWith(fontWeight: FontWeight.bold),
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'اختر موعد التنبيه قبل وصول الحافلة:',
+                    style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey),
+                  ),
+                  SizedBox(height: 16.h),
+                  Wrap(
+                    spacing: 8.w,
+                    runSpacing: 8.h,
+                    children: [
+                      _buildChoiceChip(
+                        5,
+                        "5 ثواني (تجربة)",
+                        tempSelected,
+                        (val) => setDialogState(() => tempSelected = val),
+                      ),
+                      _buildChoiceChip(
+                        5 * 60,
+                        "5 دقائق",
+                        tempSelected,
+                        (val) => setDialogState(() => tempSelected = val),
+                      ),
+                      _buildChoiceChip(
+                        10 * 60,
+                        "10 دقائق",
+                        tempSelected,
+                        (val) => setDialogState(() => tempSelected = val),
+                      ),
+                      _buildChoiceChip(
+                        15 * 60,
+                        "15 دقيقة",
+                        tempSelected,
+                        (val) => setDialogState(() => tempSelected = val),
+                      ),
+                    ],
+                  ),
+                  if (tempSelected != 0) ...[
+                    Padding(
+                      padding: EdgeInsets.only(top: 16.h),
+                      child: TextButton.icon(
+                        onPressed: () => setDialogState(() => tempSelected = 0),
+                        icon: const Icon(
+                          Icons.notifications_off_outlined,
+                          color: Colors.red,
+                          size: 20,
+                        ),
+                        label: Text(
+                          "إلغاء التنبيه",
+                          style: AppTextStyle.bodySmall(context).copyWith(color: Colors.red),
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyMedium(context)),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() => _selectedAlertMinutes = tempSelected);
+                    Navigator.pop(context);
+                    _scheduleAlert(tempSelected);
+                  },
+                  style: ElevatedButton.styleFrom(backgroundColor: AppColor.primaryColor(context)),
+                  child: Text(
+                    AppLocalKay.confirm.tr(),
+                    style: AppTextStyle.bodyMedium(context, color: Colors.white),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _scheduleAlert(int durationInSeconds) {
+    _alertTimer?.cancel();
+    if (durationInSeconds > 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "تم ضبط التنبيه بعد ${durationInSeconds < 60 ? '$durationInSeconds ثواني' : '${durationInSeconds ~/ 60} دقيقة'}",
           ),
-        ],
+          backgroundColor: const Color(0xFF4CAF50),
+        ),
+      );
+
+      _alertTimer = Timer(Duration(seconds: durationInSeconds), () async {
+        // Play Sound
+        try {
+          await _audioPlayer.play(
+            UrlSource('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3'),
+          );
+        } catch (e) {
+          print("Error playing sound: $e");
+        }
+
+        // Show Alert
+        if (mounted) {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Row(
+                children: [
+                  Icon(Icons.access_alarm, color: Colors.red),
+                  SizedBox(width: 8),
+                  Text("تنبيه الوصول!"),
+                ],
+              ),
+              content: const Text("الحافلة اقتربت من الوصول."),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    _audioPlayer.stop();
+                    Navigator.pop(context);
+                  },
+                  child: const Text("حسناً"),
+                ),
+              ],
+            ),
+          );
+        }
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("تم إلغاء التنبيه"), backgroundColor: Colors.orange),
+      );
+    }
+  }
+
+  Widget _buildChoiceChip(int value, String label, int currentSelection, Function(int) onSelected) {
+    final isSelected = value == currentSelection;
+    return ChoiceChip(
+      label: Text(label),
+      selected: isSelected,
+      onSelected: (selected) => onSelected(selected ? value : 0),
+      selectedColor: AppColor.primaryColor(context),
+      backgroundColor: Colors.grey[200],
+      labelStyle: TextStyle(
+        color: isSelected ? Colors.white : Colors.black,
+        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
       ),
     );
   }
 
-  void _shareLocation() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(AppLocalKay.share_location.tr()), backgroundColor: Color(0xFF4CAF50)),
-    );
+  void _shareLocation(BusModel bus) {
+    if (bus.lat != null && bus.lng != null) {
+      final String googleMapsUrl =
+          "https://www.google.com/maps/search/?api=1&query=${bus.lat},${bus.lng}";
+      Share.share("${AppLocalKay.share_location.tr()} ${bus.busNumber}\n$googleMapsUrl");
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("الموقع غير متاح حالياً"), backgroundColor: Colors.red),
+      );
+    }
   }
 
   void _showEmergencyDialog() {
