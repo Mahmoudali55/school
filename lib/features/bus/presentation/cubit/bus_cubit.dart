@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/bus/data/model/bus_tracking_models.dart';
 import 'package:my_template/features/bus/data/repo/bus_repo.dart';
 
@@ -150,6 +151,16 @@ class BusCubit extends Cubit<BusState> {
         index++;
       }
     });
+  }
+
+  Future<void> busLine(int code) async {
+    emit(state.copyWith(busStatus: StatusState.loading()));
+
+    final result = await _busRepo.getBusLines(code: code);
+    result.fold(
+      (error) => emit(state.copyWith(busStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(busStatus: StatusState.success(success))),
+    );
   }
 
   @override

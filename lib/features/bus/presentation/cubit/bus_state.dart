@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
+import 'package:my_template/features/bus/data/model/bus_line_model.dart';
 import 'package:my_template/features/bus/data/model/bus_tracking_models.dart';
 
 class BusState extends Equatable {
@@ -13,6 +15,7 @@ class BusState extends Equatable {
   final bool isLoading;
   final String? error;
   final Map<String, dynamic> overviewStats;
+  final StatusState<List<BusLine>> busStatus;
 
   const BusState({
     this.selectedClass,
@@ -25,6 +28,7 @@ class BusState extends Equatable {
     this.isLoading = false,
     this.error,
     this.overviewStats = const {},
+    this.busStatus = const StatusState.initial(),
   });
 
   BusState copyWith({
@@ -38,6 +42,7 @@ class BusState extends Equatable {
     bool? isLoading,
     String? error,
     Map<String, dynamic>? overviewStats,
+    StatusState<List<BusLine>>? busStatus,
   }) {
     return BusState(
       selectedClass: selectedClass ?? this.selectedClass,
@@ -50,6 +55,7 @@ class BusState extends Equatable {
       isLoading: isLoading ?? this.isLoading,
       error: error,
       overviewStats: overviewStats ?? this.overviewStats,
+      busStatus: busStatus ?? this.busStatus,
     );
   }
 
@@ -65,5 +71,6 @@ class BusState extends Equatable {
     isLoading,
     error,
     overviewStats,
+    busStatus,
   ];
 }

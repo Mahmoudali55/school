@@ -904,4 +904,5 @@ class AppLocalKay {
   static const String absence = 'absence';
   static const String no_absence = 'no_absence';
   static const String password_changed = 'password_changed';
+  static const String pick_up_time = 'pick_up_time';
 }

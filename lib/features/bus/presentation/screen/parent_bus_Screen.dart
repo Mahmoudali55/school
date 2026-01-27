@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
 import 'package:my_template/core/theme/app_colors.dart';
@@ -20,6 +21,7 @@ import 'package:my_template/features/bus/presentation/screen/widget/parent/main_
 import 'package:my_template/features/bus/presentation/screen/widget/parent/parent_emergency_button.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/parent/quick_overview.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ParentBusTrackingScreen extends StatefulWidget {
   const ParentBusTrackingScreen({super.key});
@@ -41,7 +43,17 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
     super.initState();
     _initializeAnimations();
     final code = int.tryParse(HiveMethods.getUserCode()) ?? 0;
-    context.read<BusCubit>().getBusData('parent', code: code);
+    final cubit = context.read<BusCubit>();
+    cubit.getBusData('parent', code: code).then((_) {
+      // After getting children buses, load bus line info for first child
+      final firstChild = cubit.state.parentChildrenBuses.firstOrNull;
+      if (firstChild != null) {
+        final studentCode = int.tryParse(firstChild.id) ?? 0;
+        if (studentCode > 0) {
+          cubit.busLine(studentCode);
+        }
+      }
+    });
   }
 
   void _initializeAnimations() {
@@ -63,7 +75,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFD),
+      backgroundColor: AppColor.whiteColor(context),
       body: SafeArea(
         child: BlocBuilder<BusCubit, BusState>(
           builder: (context, state) {
@@ -106,11 +118,15 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                           (e) => e.childName == childName,
                         );
                         context.read<BusCubit>().selectClass(selected.id);
+
+                        final studentCode = int.tryParse(selected.id) ?? 0;
+                        if (studentCode > 0) {
+                          context.read<BusCubit>().busLine(studentCode);
+                        }
                       },
                     ),
                   ),
 
-                  // Quick Overview
                   SliverToBoxAdapter(
                     child: QuickOverview(
                       childrenCount: state.parentChildrenBuses.length,
@@ -167,20 +183,64 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
     );
   }
 
+  // ... (existing imports)
+
   void _callDriver(BusClass selectedBusData) {
+    final busState = context.read<BusCubit>().state;
+    final String? phoneNumber = busState.busStatus.data?.firstOrNull?.mobileNo;
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(AppLocalKay.call_driver.tr(), style: AppTextStyle.bodyMedium(context)),
-        content: Text('${AppLocalKay.ConnectDriverHint.tr()}${selectedBusData.driverName}؟'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('${AppLocalKay.ConnectDriverHint.tr()}${selectedBusData.driverName}؟'),
+            if (phoneNumber != null) ...[
+              SizedBox(height: 8.h),
+              Text(
+                phoneNumber,
+                style: AppTextStyle.titleMedium(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: AppColor.primaryColor(context)),
+              ),
+            ],
+          ],
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyMedium(context)),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               Navigator.pop(context);
+              if (phoneNumber != null && phoneNumber.isNotEmpty) {
+                final uri = Uri(scheme: 'tel', path: phoneNumber);
+                if (await canLaunchUrl(uri)) {
+                  await launchUrl(uri);
+                } else {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('لا يمكن فتح تطبيق الهاتف'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                }
+              } else {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('رقم الهاتف غير متوفر'),
+                      backgroundColor: Colors.orange,
+                    ),
+                  );
+                }
+              }
             },
             child: Text(AppLocalKay.Connect.tr(), style: AppTextStyle.bodyMedium(context)),
           ),
@@ -220,10 +280,12 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'اختر موعد التنبيه قبل وصول الحافلة:',
-                    style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey),
+                    AppLocalKay.pick_up_time.tr(),
+                    style: AppTextStyle.bodySmall(
+                      context,
+                    ).copyWith(color: AppColor.greyColor(context)),
                   ),
-                  SizedBox(height: 16.h),
+                  Gap(16.h),
                   Wrap(
                     spacing: 8.w,
                     children: [
@@ -252,14 +314,16 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                       padding: EdgeInsets.only(top: 16.h),
                       child: TextButton.icon(
                         onPressed: () => setDialogState(() => tempSelected = 0),
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.notifications_off_outlined,
-                          color: Colors.red,
+                          color: AppColor.errorColor(context),
                           size: 20,
                         ),
                         label: Text(
                           "إلغاء التنبيه",
-                          style: AppTextStyle.bodySmall(context).copyWith(color: Colors.red),
+                          style: AppTextStyle.bodySmall(
+                            context,
+                          ).copyWith(color: AppColor.errorColor(context)),
                         ),
                       ),
                     ),

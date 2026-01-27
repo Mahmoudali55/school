@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:my_template/core/error/failures.dart';
 import 'package:my_template/core/network/api_consumer.dart';
 import 'package:my_template/core/network/end_points.dart';
+import 'package:my_template/features/bus/data/model/bus_line_model.dart';
 
 import '../model/admin_bus_model.dart';
 import '../model/bus_tracking_models.dart';
@@ -14,11 +17,24 @@ abstract class BusRepo {
   Future<List<BusModel>> getAdminBuses(String userTypeId);
   Future<List<BusClass>> getParentChildrenBuses({required int code});
   Map<String, dynamic> getOverviewStats(String userTypeId);
+  Future<Either<Failure, List<BusLine>>> getBusLines({required int code});
 }
 
 class BusRepoImpl implements BusRepo {
   final ApiConsumer apiConsumer;
   BusRepoImpl(this.apiConsumer);
+
+  @override
+  Future<Either<Failure, List<BusLine>>> getBusLines({required int code}) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(EndPoints.busLine, queryParameters: {"Code": code});
+        final String dataString = response['Data'];
+        if (dataString.isEmpty || dataString == "[]") return [];
+        return BusLine.fromDataString(dataString);
+      },
+    );
+  }
 
   @override
   Future<List<BusClass>> getParentChildrenBuses({required int code}) async {
