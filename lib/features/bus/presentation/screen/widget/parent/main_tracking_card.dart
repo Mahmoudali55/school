@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -77,35 +78,15 @@ class _MainTrackingCardState extends State<MainTrackingCard> {
             children: [
               Text(
                 widget.selectedBusData.childName ?? "",
-                style: AppTextStyle.titleLarge(
+                style: AppTextStyle.titleSmall(
                   context,
                 ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
               Text(
-                "${widget.selectedBusData.subject} - ${widget.selectedBusData.className}",
+                "${HiveMethods.getUserCompanyName()} ",
                 style: AppTextStyle.bodyMedium(context).copyWith(color: const Color(0xFF6B7280)),
               ),
             ],
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-          decoration: BoxDecoration(
-            color: widget.selectedBusData.status == 'في الطريق'
-                ? AppColor.secondAppColor(context).withOpacity(0.1)
-                : AppColor.accentColor(context).withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Text(
-            widget.selectedBusData.status == 'في الطريق'
-                ? AppLocalKay.in_bus.tr()
-                : AppLocalKay.waiting.tr(),
-            style: AppTextStyle.bodySmall(context).copyWith(
-              color: widget.selectedBusData.status == 'في الطريق'
-                  ? AppColor.secondAppColor(context)
-                  : AppColor.accentColor(context),
-              fontWeight: FontWeight.bold,
-            ),
           ),
         ),
       ],
@@ -116,7 +97,7 @@ class _MainTrackingCardState extends State<MainTrackingCard> {
     return Container(
       height: 200.h,
       decoration: BoxDecoration(
-        color: const Color(0xFFE8F5E8),
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: widget.selectedBusData.busColor.withOpacity(0.3)),
       ),
@@ -154,7 +135,7 @@ class _MainTrackingCardState extends State<MainTrackingCard> {
                     AppLocalKay.home_address.tr(),
                     style: AppTextStyle.bodySmall(context).copyWith(
                       fontSize: 10.sp,
-                      color: const Color(0xFF6B7280),
+                      color: AppColor.greyColor(context),
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -172,7 +153,7 @@ class _MainTrackingCardState extends State<MainTrackingCard> {
                     AppLocalKay.school.tr(),
                     style: AppTextStyle.bodySmall(context).copyWith(
                       fontSize: 10.sp,
-                      color: const Color(0xFF6B7280),
+                      color: AppColor.greyColor(context),
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -194,7 +175,7 @@ class _MainTrackingCardState extends State<MainTrackingCard> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColor.whiteColor(context),
                   borderRadius: BorderRadius.circular(10.r),
                   boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
                 ),
@@ -208,7 +189,7 @@ class _MainTrackingCardState extends State<MainTrackingCard> {
                     ),
                     SizedBox(width: 4.w),
                     Text(
-                      _showMap ? "إخفاء الخريطة" : "عرض الخريطة الحية",
+                      _showMap ? AppLocalKay.hide_map.tr() : AppLocalKay.show_map.tr(),
                       style: AppTextStyle.bodySmall(context).copyWith(
                         color: AppColor.primaryColor(context),
                         fontWeight: FontWeight.bold,
@@ -306,7 +287,7 @@ class _MainTrackingCardState extends State<MainTrackingCard> {
       child: Container(
         padding: EdgeInsets.all(10.w),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: (0.1)),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(

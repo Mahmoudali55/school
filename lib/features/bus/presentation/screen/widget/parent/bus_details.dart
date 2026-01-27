@@ -92,7 +92,12 @@ class BusDetails extends StatelessWidget {
           busLine.plateNo,
           Icons.confirmation_number_rounded,
         ),
-        _buildDetailItem(context, "نوع الحافلة", busLine.busType, Icons.directions_bus_rounded),
+        _buildDetailItem(
+          context,
+          AppLocalKay.bag_type.tr(),
+          busLine.busType,
+          Icons.directions_bus_rounded,
+        ),
         _buildDetailItem(
           context,
           AppLocalKay.driver.tr(),
@@ -102,17 +107,17 @@ class BusDetails extends StatelessWidget {
         _buildDetailItem(context, AppLocalKay.phone.tr(), busLine.mobileNo, Icons.phone_rounded),
         _buildDetailItem(
           context,
-          "المشرف",
+          AppLocalKay.supervisor.tr(),
           busLine.busSupervisorName1,
           Icons.supervisor_account_rounded,
         ),
         _buildDetailItem(
           context,
-          "هاتف المشرف",
+          AppLocalKay.supervisor_phone.tr(),
           busLine.supMobileNo ?? "---",
           Icons.phone_in_talk_rounded,
         ),
-        _buildDetailItem(context, "الخط", busLine.busLineName, Icons.route_rounded),
+        _buildDetailItem(context, AppLocalKay.line.tr(), busLine.busLineName, Icons.route_rounded),
         _buildDetailItem(
           context,
           AppLocalKay.capacity.tr(),

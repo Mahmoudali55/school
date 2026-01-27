@@ -905,4 +905,10 @@ class AppLocalKay {
   static const String no_absence = 'no_absence';
   static const String password_changed = 'password_changed';
   static const String pick_up_time = 'pick_up_time';
+  static const String bag_type = 'bag_type';
+  static const String supervisor = 'supervisor';
+  static const String supervisor_phone = 'supervisor_phone';
+  static const String line = 'line';
+  static const String hide_map = 'hide_map';
+  static const String show_map = 'show_map';
 }

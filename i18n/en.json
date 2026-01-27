@@ -900,7 +900,13 @@
   "absence":"Absence History",
   "no_absence":"No Absence History",
   "password_changed":"Password Changed Successfully",
-  "pick_up_time":"Pick-up Time Before Gate:"
+  "pick_up_time":"Pick-up Time Before Gate:",
+   "bag_type": "Bus Type",
+  "supervisor":"Supervisor",
+  "supervisor_phone":"Supervisor Phone",
+  "line":"Line",
+   "hide_map":"Hide Map",
+  "show_map":"Show Map"
 
 
 }
