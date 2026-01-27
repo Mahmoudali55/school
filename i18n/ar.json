@@ -955,7 +955,15 @@
   "line":"الخط",
   "hide_map":"إخفاء الخريطة",
   "show_map":"عرض الخريطة الحية",
-  "bus_route":"مسار الحافلة"
+  "bus_route":"مسار الحافلة",
+  "cancel_alert":"إلغاء التنبيه",
+  "alert_arrived":"تنبيه الوصول!",
+  "alert_arrived_desc":"الحافلة اقتربت من الوصول.",
+  "alert_cancel":"تم إلغاء التنبيه",
+  "location_not_available":"الموقع غير متاح حالياً",
+  "phone_app_cant_open":"لا يمكن فتح تطبيق الهاتف",
+  "phone_not_available":"رقم الهاتف غير متوفر",
+  "no_stations":"لا توجد محطات متاحة"
 
 
 

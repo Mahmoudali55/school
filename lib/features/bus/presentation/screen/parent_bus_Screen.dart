@@ -11,6 +11,7 @@ import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.da
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/core/utils/common_methods.dart';
 import 'package:my_template/features/bus/data/model/bus_tracking_models.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_state.dart';
@@ -145,7 +146,6 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                   //   ),
                   // ),
                   if (selectedBusData != null) ...[
-                    // Main Tracking Card
                     SliverToBoxAdapter(
                       child: MainTrackingCard(
                         selectedBusData: selectedBusData,
@@ -156,13 +156,9 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                         onRouteLineTapped: () => _showAllStationsBottomSheet(state),
                       ),
                     ),
-
-                    // All Children Status
                     SliverToBoxAdapter(
                       child: AllChildrenStatus(childrenBusData: state.parentChildrenBuses),
                     ),
-
-                    // Bus Details
                     SliverToBoxAdapter(
                       child: BusDetails(
                         selectedBusData: selectedBusData,
@@ -235,21 +231,17 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                   await launchUrl(uri);
                 } else {
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('لا يمكن فتح تطبيق الهاتف'),
-                        backgroundColor: Colors.red,
-                      ),
+                    CommonMethods.showToast(
+                      message: AppLocalKay.phone_app_cant_open.tr(),
+                      backgroundColor: AppColor.errorColor(context),
                     );
                   }
                 }
               } else {
                 if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('رقم الهاتف غير متوفر'),
-                      backgroundColor: Colors.orange,
-                    ),
+                  CommonMethods.showToast(
+                    message: AppLocalKay.phone_not_available.tr(),
+                    backgroundColor: AppColor.errorColor(context),
                   );
                 }
               }
@@ -332,7 +324,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                           size: 20,
                         ),
                         label: Text(
-                          "إلغاء التنبيه",
+                          AppLocalKay.cancel_alert.tr(),
                           style: AppTextStyle.bodySmall(
                             context,
                           ).copyWith(color: AppColor.errorColor(context)),
@@ -360,9 +352,9 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("تم إلغاء التنبيه"),
-                          backgroundColor: Colors.orange,
+                        SnackBar(
+                          content: Text(AppLocalKay.alert_cancel.tr()),
+                          backgroundColor: AppColor.errorColor(context),
                         ),
                       );
                     }
@@ -370,7 +362,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                   style: ElevatedButton.styleFrom(backgroundColor: AppColor.primaryColor(context)),
                   child: Text(
                     AppLocalKay.confirm.tr(),
-                    style: AppTextStyle.bodyMedium(context, color: Colors.white),
+                    style: AppTextStyle.bodyMedium(context, color: AppColor.whiteColor(context)),
                   ),
                 ),
               ],
@@ -388,122 +380,10 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
       selected: isSelected,
       onSelected: (selected) => onSelected(selected ? value : 0),
       selectedColor: AppColor.primaryColor(context),
-      backgroundColor: Colors.grey[200],
+      backgroundColor: AppColor.grey200Color(context),
       labelStyle: TextStyle(
-        color: isSelected ? Colors.white : Colors.black,
+        color: isSelected ? AppColor.whiteColor(context) : AppColor.blackColor(context),
         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-      ),
-    );
-  }
-
-  void _handleSafetyFeature(String feature, BusClass selectedBusData) {
-    switch (feature) {
-      case AppLocalKay.arrival_alert:
-        _setArrivalAlert(selectedBusData);
-        break;
-      case AppLocalKay.bus_tracker:
-        _showTripHistory(selectedBusData);
-        break;
-      case AppLocalKay.report_incident:
-        _reportProblem(selectedBusData);
-        break;
-    }
-  }
-
-  void _handleOverviewItemTapped(String type, BusState state) {
-    String message = "";
-    IconData icon = Icons.info_outline;
-    final selectedBus = state.selectedClass;
-
-    switch (type) {
-      case 'children':
-        final names = state.parentChildrenBuses.map((e) => e.childName).join('، ');
-        message = "الأبناء: $names";
-        icon = Icons.family_restroom_rounded;
-        break;
-      case 'in_bus':
-        final inBus = state.parentChildrenBuses.where((e) => e.status == 'في الطريق').toList();
-        if (inBus.isEmpty) {
-          message = "لا يوجد أبناء في الحافلة حالياً";
-        } else {
-          message = "في الحافلة: ${inBus.map((e) => e.childName).join('، ')}";
-        }
-        icon = Icons.directions_bus_rounded;
-        break;
-      case 'arrival':
-        if (state.parentChildrenBuses.isEmpty) {
-          message = "لا توجد بيانات وصول";
-        } else {
-          final closest = state.parentChildrenBuses.first;
-          message = "أقرب وصول: ${closest.estimatedArrival} لـ ${closest.childName}";
-        }
-        icon = Icons.schedule_rounded;
-        break;
-      case 'attendance':
-        if (selectedBus != null) {
-          message = "نسبة حضور ${selectedBus.childName}: ${selectedBus.attendanceRate}";
-        } else {
-          message = "اختر ابناً لعرض نسبة الحضور";
-        }
-        icon = Icons.analytics_rounded;
-        break;
-      case 'driver':
-        if (selectedBus != null) {
-          message = "سائق الحافلة: ${selectedBus.driverName}";
-        } else {
-          message = "معلومات السائق غير متوفرة حالياً";
-        }
-        icon = Icons.person_pin_rounded;
-        break;
-      case 'bus':
-        if (selectedBus != null) {
-          message = "رقم الحافلة: ${selectedBus.busNumber}";
-        } else {
-          message = "اختر ابناً لعرض رقم الحافلة";
-        }
-        icon = Icons.confirmation_number_rounded;
-        break;
-      case 'stop':
-        if (selectedBus != null) {
-          message = "المحطة القادمة: ${selectedBus.nextStop}";
-        } else {
-          message = "المحطة القادمة غير محددة بعد";
-        }
-        icon = Icons.near_me_rounded;
-        break;
-      case 'status':
-        message = "حالة النظام: مستقر وجميع الحافلات في المسار الصحيح";
-        icon = Icons.verified_rounded;
-        break;
-    }
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            Icon(icon, color: Colors.white, size: 20.w),
-            SizedBox(width: 12.w),
-            Expanded(
-              child: Text(
-                message,
-                style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.white),
-              ),
-            ),
-          ],
-        ),
-        backgroundColor: AppColor.primaryColor(context),
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        margin: EdgeInsets.all(16.w),
-      ),
-    );
-  }
-
-  void _showTripHistory(BusClass selectedBusData) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('  رحلات ${selectedBusData.childName}'),
-        backgroundColor: AppColor.primaryColor(context),
       ),
     );
   }
@@ -534,7 +414,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                 width: 40.w,
                 height: 4.h,
                 decoration: BoxDecoration(
-                  color: Colors.grey[300],
+                  color: AppColor.grey300Color(context),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -574,7 +454,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                 ),
               ),
 
-              Divider(height: 1, color: Colors.grey[200]),
+              Divider(height: 1, color: AppColor.grey200Color(context)),
 
               // Stations List
               Expanded(
@@ -590,7 +470,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                             ),
                             SizedBox(height: 12.h),
                             Text(
-                              'لا توجد محطات متاحة',
+                              AppLocalKay.no_stations.tr(),
                               style: AppTextStyle.bodyMedium(
                                 context,
                               ).copyWith(color: AppColor.greyColor(context)),
@@ -637,7 +517,6 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Timeline indicator
         Column(
           children: [
             Container(
@@ -666,7 +545,9 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                       : isLast
                       ? Icons.school_rounded
                       : Icons.location_on_rounded,
-                  color: isFirst || isLast ? Colors.white : AppColor.greyColor(context),
+                  color: isFirst || isLast
+                      ? AppColor.whiteColor(context)
+                      : AppColor.greyColor(context),
                   size: 14.w,
                 ),
               ),
@@ -675,7 +556,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
               Container(
                 width: 2.w,
                 height: 50.h,
-                color: AppColor.greyColor(context).withOpacity(0.3),
+                color: AppColor.greyColor(context).withValues(alpha: (0.3)),
               ),
           ],
         ),
@@ -689,16 +570,16 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
             padding: EdgeInsets.all(12.w),
             decoration: BoxDecoration(
               color: isFirst
-                  ? AppColor.secondAppColor(context).withOpacity(0.1)
+                  ? AppColor.secondAppColor(context).withValues(alpha: (0.1))
                   : isLast
-                  ? AppColor.primaryColor(context).withOpacity(0.1)
-                  : AppColor.greyColor(context).withOpacity(0.05),
+                  ? AppColor.primaryColor(context).withValues(alpha: (0.1))
+                  : AppColor.greyColor(context).withValues(alpha: (0.05)),
               borderRadius: BorderRadius.circular(12.r),
               border: Border.all(
                 color: isFirst
-                    ? AppColor.secondAppColor(context).withOpacity(0.3)
+                    ? AppColor.secondAppColor(context).withValues(alpha: 0.3)
                     : isLast
-                    ? AppColor.primaryColor(context).withOpacity(0.3)
+                    ? AppColor.primaryColor(context).withValues(alpha: (0.3))
                     : Colors.transparent,
               ),
             ),
@@ -718,7 +599,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                       decoration: BoxDecoration(
-                        color: AppColor.primaryColor(context).withOpacity(0.1),
+                        color: AppColor.primaryColor(context).withValues(alpha: (0.1)),
                         borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: Text(
@@ -756,37 +637,6 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
           ),
         ),
       ],
-    );
-  }
-
-  void _reportProblem(BusClass selectedBusData) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(AppLocalKay.report_incident.tr(), style: AppTextStyle.bodyMedium(context)),
-        content: Text('${AppLocalKay.select_problem.tr()}${selectedBusData.childName}'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyMedium(context)),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    AppLocalKay.incident_report.tr(),
-                    style: AppTextStyle.bodyMedium(context),
-                  ),
-                  backgroundColor: const Color(0xFF4CAF50),
-                ),
-              );
-            },
-            child: Text(AppLocalKay.send.tr(), style: AppTextStyle.bodyMedium(context)),
-          ),
-        ],
-      ),
     );
   }
 

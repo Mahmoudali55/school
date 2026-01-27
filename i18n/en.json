@@ -907,7 +907,15 @@
   "line":"Line",
    "hide_map":"Hide Map",
   "show_map":"Show Map",
-  "bus_route":"Bus Route"
+  "bus_route":"Bus Route",
+  "cancel_alert":"Cancel Alert",
+  "alert_arrived":"Alert Arrived!",
+  "alert_arrived_desc":"Bus is approaching the gate.",
+   "alert_cancel":"Alert Cancelled",
+   "location_not_available":"Location Not Available",
+   "phone_app_cant_open":"Phone App Can't Open",
+  "phone_not_available": "Phone Not Available",
+  "no_stations": "No Stations Available"
 
 
 }

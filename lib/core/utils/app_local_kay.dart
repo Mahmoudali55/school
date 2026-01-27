@@ -912,4 +912,12 @@ class AppLocalKay {
   static const String hide_map = 'hide_map';
   static const String show_map = 'show_map';
   static const String bus_route = 'bus_route';
+  static const String cancel_alert = 'cancel_alert';
+  static const String alert_arrived = 'alert_arrived';
+  static const String alert_arrived_desc = 'alert_arrived_desc';
+  static const String alert_cancel = 'alert_cancel';
+  static const String location_not_available = 'location_not_available';
+  static const String phone_app_cant_open = 'phone_app_cant_open';
+  static const String phone_not_available = 'phone_not_available';
+  static const String no_stations = 'no_stations';
 }

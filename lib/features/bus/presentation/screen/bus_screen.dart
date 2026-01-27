@@ -175,14 +175,16 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
                       padding: EdgeInsets.only(top: 16.h),
                       child: TextButton.icon(
                         onPressed: () => setDialogState(() => tempSelected = 0),
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.notifications_off_outlined,
-                          color: Colors.red,
+                          color: AppColor.errorColor(context),
                           size: 20,
                         ),
                         label: Text(
-                          "إلغاء التنبيه",
-                          style: AppTextStyle.bodySmall(context).copyWith(color: Colors.red),
+                          AppLocalKay.cancel_alert.tr(),
+                          style: AppTextStyle.bodySmall(
+                            context,
+                          ).copyWith(color: AppColor.errorColor(context)),
                         ),
                       ),
                     ),
@@ -236,26 +238,31 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
           print("Error playing sound: $e");
         }
 
-        // Show Alert
         if (mounted) {
           showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: const Row(
+              title: Row(
                 children: [
                   Icon(Icons.access_alarm, color: Colors.red),
                   SizedBox(width: 8),
-                  Text("تنبيه الوصول!"),
+                  Text(
+                    AppLocalKay.alert_arrived.tr(),
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
-              content: const Text("الحافلة اقتربت من الوصول."),
+              content: Text(
+                AppLocalKay.alert_arrived_desc.tr(),
+                style: AppTextStyle.bodySmall(context),
+              ),
               actions: [
                 ElevatedButton(
                   onPressed: () {
                     _audioPlayer.stop();
                     Navigator.pop(context);
                   },
-                  child: const Text("حسناً"),
+                  child: Text(AppLocalKay.ok.tr(), style: AppTextStyle.bodyMedium(context)),
                 ),
               ],
             ),
@@ -264,7 +271,10 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("تم إلغاء التنبيه"), backgroundColor: Colors.orange),
+        SnackBar(
+          content: Text(AppLocalKay.alert_cancel.tr()),
+          backgroundColor: AppColor.accentColor(context),
+        ),
       );
     }
   }
@@ -276,9 +286,9 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
       selected: isSelected,
       onSelected: (selected) => onSelected(selected ? value : 0),
       selectedColor: AppColor.primaryColor(context),
-      backgroundColor: Colors.grey[200],
+      backgroundColor: AppColor.grey200Color(context),
       labelStyle: TextStyle(
-        color: isSelected ? Colors.white : Colors.black,
+        color: isSelected ? AppColor.whiteColor(context) : AppColor.blackColor(context),
         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
       ),
     );
@@ -291,7 +301,10 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
       Share.share("${AppLocalKay.share_location.tr()} ${bus.busNumber}\n$googleMapsUrl");
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("الموقع غير متاح حالياً"), backgroundColor: Colors.red),
+        SnackBar(
+          content: Text(AppLocalKay.location_not_available.tr()),
+          backgroundColor: AppColor.errorColor(context),
+        ),
       );
     }
   }
@@ -302,7 +315,7 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
       builder: (context) => AlertDialog(
         title: Row(
           children: [
-            const Icon(Icons.emergency_rounded, color: Colors.red),
+            Icon(Icons.emergency_rounded, color: AppColor.errorColor(context)),
             SizedBox(width: 8.w),
             Text(AppLocalKay.emergency_management.tr(), style: AppTextStyle.bodyMedium(context)),
           ],
@@ -322,14 +335,14 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
                     AppLocalKay.alert_sent.tr(),
                     style: AppTextStyle.bodyMedium(context),
                   ),
-                  backgroundColor: Colors.red,
+                  backgroundColor: AppColor.errorColor(context),
                 ),
               );
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            style: ElevatedButton.styleFrom(backgroundColor: AppColor.errorColor(context)),
             child: Text(
               AppLocalKay.send.tr(),
-              style: AppTextStyle.bodyMedium(context, color: Colors.white),
+              style: AppTextStyle.bodyMedium(context, color: AppColor.whiteColor(context)),
             ),
           ),
         ],
@@ -367,7 +380,7 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
         ];
 
         return Scaffold(
-          backgroundColor: const Color(0xFFF8FAFD),
+          backgroundColor: AppColor.whiteColor(context),
           body: SafeArea(
             child: CustomScrollView(
               physics: const BouncingScrollPhysics(),
