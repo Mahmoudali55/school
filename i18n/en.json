@@ -896,7 +896,9 @@
    "parent_name_en":"Parent Name (English)",
    "loading":"Loading",
   "student_code": "Student Code",
-  "balance": "Balance"
+  "balance": "Balance",
+  "absence":"Absence History",
+  "no_absence":"No Absence History"
 
 
 }

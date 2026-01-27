@@ -901,4 +901,6 @@ class AppLocalKay {
   static const String loading = 'loading';
   static const String student_code = 'student_code';
   static const String balance = 'balance';
+  static const String absence = 'absence';
+  static const String no_absence = 'no_absence';
 }

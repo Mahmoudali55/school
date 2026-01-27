@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/features/home/data/models/home_models.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
@@ -56,14 +58,14 @@ class _HomeParentScreenState extends State<HomeParentScreen> {
                 children: [
                   HeaderWidget(
                     parentName: HiveMethods.getUserName(),
-                    students: students, // might be null
-                    selectedStudent: selectedStudent, // might be null
+                    students: students,
+                    selectedStudent: selectedStudent,
                   ),
-                  SizedBox(height: 25.h),
+                  Gap(25.h),
                   StudentSnapshotWidget(studentCode: selectedStudent?.studentCode),
-                  SizedBox(height: 25.h),
+                  Gap(25.h),
                   RequestsSectionWidget(selectedStudent: selectedStudent, students: students ?? []),
-                  SizedBox(height: 25.h),
+                  Gap(25.h),
                   const UrgentAlertsWidget(),
                   if (state.parentsStudentStatus.isFailure)
                     Padding(
@@ -71,11 +73,11 @@ class _HomeParentScreenState extends State<HomeParentScreen> {
                       child: Center(
                         child: Text(
                           state.parentsStudentStatus.error ?? "حدث خطأ في تحميل بيانات الطلاب",
-                          style: const TextStyle(color: Colors.red),
+                          style: TextStyle(color: AppColor.errorColor(context), fontSize: 16),
                         ),
                       ),
                     ),
-                  SizedBox(height: 30.h),
+                  Gap(30.h),
                 ],
               ),
             );

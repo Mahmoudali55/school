@@ -944,7 +944,9 @@
   "parent_name_en":"الاسم بالانجليزي",
   "loading":"جاري التحميل",
   "student_code": "كود الطالب",
-  "balance": "الرصيد"
+  "balance": "الرصيد",
+  "absence":"سجل الغياب",
+  "no_absence":"لا يوجد سجلات الغياب"
 
 
 

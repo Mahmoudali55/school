@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
+import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -88,11 +89,11 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                 ),
 
                 if (isLoading && state.parentChildrenBuses.isEmpty)
-                  const SliverFillRemaining(child: Center(child: CircularProgressIndicator()))
+                  const SliverFillRemaining(child: Center(child: CustomLoading()))
                 else if (state.error != null && state.parentChildrenBuses.isEmpty)
                   SliverFillRemaining(child: Center(child: Text(state.error ?? "حدث خطأ ما")))
                 else if (state.parentChildrenBuses.isEmpty)
-                  const SliverFillRemaining(child: Center(child: Text("لا توجد بيانات متاحة")))
+                  const SliverFillRemaining(child: Center(child: CustomLoading()))
                 else ...[
                   // Children Selector
                   SliverToBoxAdapter(
