@@ -66,6 +66,14 @@ class HiveMethods {
     _box.put('name', name);
   }
 
+  static String getUserCompanyName() {
+    return _box.get('compneyname', defaultValue: '');
+  }
+
+  static void updateUserCompanyName(String name) {
+    _box.put('compneyname', name);
+  }
+
   static String getUserCode() {
     return _box.get('code', defaultValue: '');
   }
