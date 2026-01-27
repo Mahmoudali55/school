@@ -906,7 +906,8 @@
   "supervisor_phone":"Supervisor Phone",
   "line":"Line",
    "hide_map":"Hide Map",
-  "show_map":"Show Map"
+  "show_map":"Show Map",
+  "bus_route":"Bus Route"
 
 
 }

@@ -19,7 +19,6 @@ import 'package:my_template/features/bus/presentation/screen/widget/parent/bus_d
 import 'package:my_template/features/bus/presentation/screen/widget/parent/children_selector.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/parent/main_tracking_card.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/parent/parent_emergency_button.dart';
-import 'package:my_template/features/bus/presentation/screen/widget/parent/quick_overview.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -127,17 +126,24 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                     ),
                   ),
 
-                  SliverToBoxAdapter(
-                    child: QuickOverview(
-                      childrenCount: state.parentChildrenBuses.length,
-                      inBusCount: state.parentChildrenBuses
-                          .where((c) => c.status == 'في الطريق')
-                          .length,
-                      nearestArrival: state.overviewStats['closestArrival'] ?? "---",
-                      safetyStatus: "٣/٣",
-                    ),
-                  ),
-
+                  // Quick Overview
+                  // Quick Overview
+                  // SliverToBoxAdapter(
+                  //   child: QuickOverview(
+                  //     childrenCount: state.parentChildrenBuses.length,
+                  //     inBusCount: state.parentChildrenBuses
+                  //         .where((c) => c.status == 'في الطريق')
+                  //         .length,
+                  //     nearestArrival: state.overviewStats['closestArrival'] ?? "---",
+                  //     safetyStatus: "١٠٠٪",
+                  //     nextStop: selectedBusData?.nextStop,
+                  //     driverName: selectedBusData?.driverName,
+                  //     busNumber: selectedBusData?.busNumber,
+                  //     attendanceRate: selectedBusData?.attendanceRate,
+                  //     lastUpdate: "تحديث لحظي",
+                  //     onItemTapped: (type) => _handleOverviewItemTapped(type, state),
+                  //   ),
+                  // ),
                   if (selectedBusData != null) ...[
                     // Main Tracking Card
                     SliverToBoxAdapter(
@@ -147,6 +153,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                         onCallDriver: () => _callDriver(selectedBusData),
                         onShareLocation: () => _shareLocation(selectedBusData),
                         onSetArrivalAlert: () => _setArrivalAlert(selectedBusData),
+                        onRouteLineTapped: () => _showAllStationsBottomSheet(state),
                       ),
                     ),
 
@@ -156,7 +163,12 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                     ),
 
                     // Bus Details
-                    SliverToBoxAdapter(child: BusDetails(selectedBusData: selectedBusData)),
+                    SliverToBoxAdapter(
+                      child: BusDetails(
+                        selectedBusData: selectedBusData,
+                        onRouteLineTapped: () => _showAllStationsBottomSheet(state),
+                      ),
+                    ),
                   ] else if (isLoading) ...[
                     const SliverToBoxAdapter(
                       child: Center(
@@ -398,12 +410,352 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
     }
   }
 
+  void _handleOverviewItemTapped(String type, BusState state) {
+    String message = "";
+    IconData icon = Icons.info_outline;
+    final selectedBus = state.selectedClass;
+
+    switch (type) {
+      case 'children':
+        final names = state.parentChildrenBuses.map((e) => e.childName).join('، ');
+        message = "الأبناء: $names";
+        icon = Icons.family_restroom_rounded;
+        break;
+      case 'in_bus':
+        final inBus = state.parentChildrenBuses.where((e) => e.status == 'في الطريق').toList();
+        if (inBus.isEmpty) {
+          message = "لا يوجد أبناء في الحافلة حالياً";
+        } else {
+          message = "في الحافلة: ${inBus.map((e) => e.childName).join('، ')}";
+        }
+        icon = Icons.directions_bus_rounded;
+        break;
+      case 'arrival':
+        if (state.parentChildrenBuses.isEmpty) {
+          message = "لا توجد بيانات وصول";
+        } else {
+          final closest = state.parentChildrenBuses.first;
+          message = "أقرب وصول: ${closest.estimatedArrival} لـ ${closest.childName}";
+        }
+        icon = Icons.schedule_rounded;
+        break;
+      case 'attendance':
+        if (selectedBus != null) {
+          message = "نسبة حضور ${selectedBus.childName}: ${selectedBus.attendanceRate}";
+        } else {
+          message = "اختر ابناً لعرض نسبة الحضور";
+        }
+        icon = Icons.analytics_rounded;
+        break;
+      case 'driver':
+        if (selectedBus != null) {
+          message = "سائق الحافلة: ${selectedBus.driverName}";
+        } else {
+          message = "معلومات السائق غير متوفرة حالياً";
+        }
+        icon = Icons.person_pin_rounded;
+        break;
+      case 'bus':
+        if (selectedBus != null) {
+          message = "رقم الحافلة: ${selectedBus.busNumber}";
+        } else {
+          message = "اختر ابناً لعرض رقم الحافلة";
+        }
+        icon = Icons.confirmation_number_rounded;
+        break;
+      case 'stop':
+        if (selectedBus != null) {
+          message = "المحطة القادمة: ${selectedBus.nextStop}";
+        } else {
+          message = "المحطة القادمة غير محددة بعد";
+        }
+        icon = Icons.near_me_rounded;
+        break;
+      case 'status':
+        message = "حالة النظام: مستقر وجميع الحافلات في المسار الصحيح";
+        icon = Icons.verified_rounded;
+        break;
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            Icon(icon, color: Colors.white, size: 20.w),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: Text(
+                message,
+                style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: AppColor.primaryColor(context),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        margin: EdgeInsets.all(16.w),
+      ),
+    );
+  }
+
   void _showTripHistory(BusClass selectedBusData) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('  رحلات ${selectedBusData.childName}'),
         backgroundColor: AppColor.primaryColor(context),
       ),
+    );
+  }
+
+  void _showAllStationsBottomSheet(BusState state) {
+    final busLines = state.busStatus.data ?? [];
+    //final selectedBus = state.selectedClass;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.6,
+          decoration: BoxDecoration(
+            color: AppColor.whiteColor(context),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(24.r),
+              topRight: Radius.circular(24.r),
+            ),
+          ),
+          child: Column(
+            children: [
+              // Handle bar
+              Container(
+                margin: EdgeInsets.only(top: 12.h),
+                width: 40.w,
+                height: 4.h,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+
+              // Header
+              Padding(
+                padding: EdgeInsets.all(16.w),
+                child: Row(
+                  children: [
+                    Icon(Icons.route_rounded, color: AppColor.primaryColor(context), size: 24.w),
+                    SizedBox(width: 12.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            AppLocalKay.bus_route.tr(),
+                            style: AppTextStyle.titleSmall(
+                              context,
+                            ).copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          if (busLines.first.busCode != null)
+                            Text(
+                              '${AppLocalKay.bus_number.tr()}: ${busLines.first.busCode}',
+                              style: AppTextStyle.bodySmall(
+                                context,
+                              ).copyWith(color: AppColor.greyColor(context)),
+                            ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(Icons.close_rounded, color: AppColor.greyColor(context)),
+                    ),
+                  ],
+                ),
+              ),
+
+              Divider(height: 1, color: Colors.grey[200]),
+
+              // Stations List
+              Expanded(
+                child: busLines.isEmpty
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.location_off_rounded,
+                              size: 48.w,
+                              color: AppColor.greyColor(context),
+                            ),
+                            SizedBox(height: 12.h),
+                            Text(
+                              'لا توجد محطات متاحة',
+                              style: AppTextStyle.bodyMedium(
+                                context,
+                              ).copyWith(color: AppColor.greyColor(context)),
+                            ),
+                          ],
+                        ),
+                      )
+                    : ListView.builder(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                        itemCount: busLines.length,
+                        itemBuilder: (context, index) {
+                          final busLine = busLines[index];
+                          final isFirst = index == 0;
+                          final isLast = index == busLines.length - 1;
+
+                          return _buildStationItem(
+                            context,
+                            stationName: busLine.busLineName,
+                            stationDetails: busLine.busSectionName,
+                            driverName: busLine.busDriverName,
+                            isFirst: isFirst,
+                            isLast: isLast,
+                            index: index,
+                          );
+                        },
+                      ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildStationItem(
+    BuildContext context, {
+    required String stationName,
+    required String stationDetails,
+    required String driverName,
+    required bool isFirst,
+    required bool isLast,
+    required int index,
+  }) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Timeline indicator
+        Column(
+          children: [
+            Container(
+              width: 24.w,
+              height: 24.w,
+              decoration: BoxDecoration(
+                color: isFirst
+                    ? AppColor.secondAppColor(context)
+                    : isLast
+                    ? AppColor.primaryColor(context)
+                    : AppColor.greyColor(context).withOpacity(0.3),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: isFirst
+                      ? AppColor.secondAppColor(context)
+                      : isLast
+                      ? AppColor.primaryColor(context)
+                      : AppColor.greyColor(context),
+                  width: 2,
+                ),
+              ),
+              child: Center(
+                child: Icon(
+                  isFirst
+                      ? Icons.home_rounded
+                      : isLast
+                      ? Icons.school_rounded
+                      : Icons.location_on_rounded,
+                  color: isFirst || isLast ? Colors.white : AppColor.greyColor(context),
+                  size: 14.w,
+                ),
+              ),
+            ),
+            if (!isLast)
+              Container(
+                width: 2.w,
+                height: 50.h,
+                color: AppColor.greyColor(context).withOpacity(0.3),
+              ),
+          ],
+        ),
+
+        SizedBox(width: 12.w),
+
+        // Station info
+        Expanded(
+          child: Container(
+            margin: EdgeInsets.only(bottom: isLast ? 0 : 16.h),
+            padding: EdgeInsets.all(12.w),
+            decoration: BoxDecoration(
+              color: isFirst
+                  ? AppColor.secondAppColor(context).withOpacity(0.1)
+                  : isLast
+                  ? AppColor.primaryColor(context).withOpacity(0.1)
+                  : AppColor.greyColor(context).withOpacity(0.05),
+              borderRadius: BorderRadius.circular(12.r),
+              border: Border.all(
+                color: isFirst
+                    ? AppColor.secondAppColor(context).withOpacity(0.3)
+                    : isLast
+                    ? AppColor.primaryColor(context).withOpacity(0.3)
+                    : Colors.transparent,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        stationName,
+                        style: AppTextStyle.bodyMedium(
+                          context,
+                        ).copyWith(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                      decoration: BoxDecoration(
+                        color: AppColor.primaryColor(context).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Text(
+                        '${index + 1}',
+                        style: AppTextStyle.bodySmall(context).copyWith(
+                          color: AppColor.primaryColor(context),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  stationDetails,
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(color: AppColor.greyColor(context)),
+                ),
+                SizedBox(height: 4.h),
+                Row(
+                  children: [
+                    Icon(Icons.person_rounded, size: 14.w, color: AppColor.greyColor(context)),
+                    SizedBox(width: 4.w),
+                    Text(
+                      driverName,
+                      style: AppTextStyle.bodySmall(
+                        context,
+                      ).copyWith(color: AppColor.greyColor(context), fontSize: 10.sp),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 

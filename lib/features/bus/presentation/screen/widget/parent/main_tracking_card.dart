@@ -14,6 +14,7 @@ class MainTrackingCard extends StatefulWidget {
   final VoidCallback onCallDriver;
   final VoidCallback onShareLocation;
   final VoidCallback onSetArrivalAlert;
+  final VoidCallback? onRouteLineTapped;
 
   const MainTrackingCard({
     super.key,
@@ -22,6 +23,7 @@ class MainTrackingCard extends StatefulWidget {
     required this.onCallDriver,
     required this.onShareLocation,
     required this.onSetArrivalAlert,
+    this.onRouteLineTapped,
   });
 
   @override
@@ -116,11 +118,18 @@ class _MainTrackingCardState extends State<MainTrackingCard> {
               top: 90.h,
               left: 20.w,
               right: 20.w,
-              child: Container(
-                height: 4.h,
-                decoration: BoxDecoration(
-                  color: widget.selectedBusData.busColor.withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(2),
+              child: GestureDetector(
+                onTap: widget.onRouteLineTapped,
+                child: Container(
+                  height: 20.h,
+                  alignment: Alignment.center,
+                  child: Container(
+                    height: 4.h,
+                    decoration: BoxDecoration(
+                      color: widget.selectedBusData.busColor.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
                 ),
               ),
             ),

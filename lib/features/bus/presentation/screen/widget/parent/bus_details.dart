@@ -12,8 +12,9 @@ import 'package:my_template/features/bus/presentation/cubit/bus_state.dart';
 
 class BusDetails extends StatelessWidget {
   final BusClass selectedBusData;
+  final VoidCallback? onRouteLineTapped;
 
-  const BusDetails({super.key, required this.selectedBusData});
+  const BusDetails({super.key, required this.selectedBusData, this.onRouteLineTapped});
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +118,16 @@ class BusDetails extends StatelessWidget {
           busLine.supMobileNo ?? "---",
           Icons.phone_in_talk_rounded,
         ),
-        _buildDetailItem(context, AppLocalKay.line.tr(), busLine.busLineName, Icons.route_rounded),
+        GestureDetector(
+          onTap: onRouteLineTapped,
+          child: _buildDetailItem(
+            context,
+            AppLocalKay.line.tr(),
+            busLine.busLineName,
+            Icons.route_rounded,
+            isTappable: true,
+          ),
+        ),
         _buildDetailItem(
           context,
           AppLocalKay.capacity.tr(),
@@ -172,13 +182,25 @@ class BusDetails extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailItem(BuildContext context, String title, String value, IconData icon) {
+  Widget _buildDetailItem(
+    BuildContext context,
+    String title,
+    String value,
+    IconData icon, {
+    bool isTappable = false,
+  }) {
     return Container(
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8FAFD),
+        color: isTappable
+            ? AppColor.primaryColor(context).withOpacity(0.05)
+            : const Color(0xFFF8FAFD),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE5E7EB)),
+        border: Border.all(
+          color: isTappable
+              ? AppColor.primaryColor(context).withOpacity(0.3)
+              : const Color(0xFFE5E7EB),
+        ),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -192,9 +214,18 @@ class BusDetails extends StatelessWidget {
             child: Icon(icon, size: 16.w, color: selectedBusData.busColor),
           ),
           SizedBox(height: 8.w),
-          Text(
-            title,
-            style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                title,
+                style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
+              ),
+              if (isTappable) ...[
+                SizedBox(width: 4.w),
+                Icon(Icons.touch_app_rounded, size: 12.w, color: AppColor.primaryColor(context)),
+              ],
+            ],
           ),
           SizedBox(height: 8.w),
           Text(

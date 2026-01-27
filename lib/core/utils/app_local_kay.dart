@@ -911,4 +911,5 @@ class AppLocalKay {
   static const String line = 'line';
   static const String hide_map = 'hide_map';
   static const String show_map = 'show_map';
+  static const String bus_route = 'bus_route';
 }
