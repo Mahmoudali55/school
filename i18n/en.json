@@ -898,7 +898,8 @@
   "student_code": "Student Code",
   "balance": "Balance",
   "absence":"Absence History",
-  "no_absence":"No Absence History"
+  "no_absence":"No Absence History",
+  "password_changed":"Password Changed Successfully"
 
 
 }

@@ -73,4 +73,12 @@ class HiveMethods {
   static void updateUserCode(String code) {
     _box.put('code', code);
   }
+
+  /// Clear all user data (token, type, name, code) while preserving app settings
+  static void clearUserData() {
+    _box.delete('token');
+    _box.delete('type');
+    _box.delete('name');
+    _box.delete('code');
+  }
 }

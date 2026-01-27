@@ -903,4 +903,5 @@ class AppLocalKay {
   static const String balance = 'balance';
   static const String absence = 'absence';
   static const String no_absence = 'no_absence';
+  static const String password_changed = 'password_changed';
 }

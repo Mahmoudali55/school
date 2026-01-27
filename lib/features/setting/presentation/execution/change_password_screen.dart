@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
@@ -55,9 +56,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             listener: (context, state) {
               if (state.changePasswordStatus.isSuccess) {
                 CommonMethods.showToast(
-                  message: 'تم تغيير كلمة المرور بنجاح',
+                  message: AppLocalKay.password_changed.tr(),
                   type: ToastType.success,
                 );
+                HiveMethods.deleteToken();
               } else if (state.changePasswordStatus.isFailure) {
                 CommonMethods.showToast(
                   message: state.changePasswordStatus.error ?? '',
@@ -143,7 +145,6 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 ),
                 Gap(24.h),
 
-                // نصائح الأمان
                 Padding(
                   padding: EdgeInsets.all(16.w),
                   child: Column(
@@ -170,6 +171,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   radius: 16.r,
                   color: AppColor.primaryColor(context),
                   isLoading: context.watch<SettingsCubit>().state.changePasswordStatus.isLoading,
+                  cubitState: context.watch<SettingsCubit>().state.changePasswordStatus,
                   onPressed: _changePassword,
                 ),
               ],

@@ -82,6 +82,7 @@ class AuthCubit extends Cubit<AuthState> {
   // }
 
   Future<void> register(BuildContext context) async {
+    if (isClosed) return;
     emit(state.copyWith(registerStatus: StatusState.loading()));
 
     final result = await authRepo.register(
@@ -91,18 +92,24 @@ class AuthCubit extends Cubit<AuthState> {
       email: emailController.text,
     );
 
+    if (isClosed) return;
     result.fold(
       (error) {
         final errorMessage = error.errMessage ?? "Register failed";
-        emit(state.copyWith(registerStatus: StatusState.failure(errorMessage)));
+        if (!isClosed) {
+          emit(state.copyWith(registerStatus: StatusState.failure(errorMessage)));
+        }
       },
       (success) {
-        emit(state.copyWith(registerStatus: StatusState.success(success)));
+        if (!isClosed) {
+          emit(state.copyWith(registerStatus: StatusState.success(success)));
+        }
       },
     );
   }
 
   Future<void> login(BuildContext context) async {
+    if (isClosed) return;
     emit(state.copyWith(loginStatus: StatusState.loading()));
 
     final result = await authRepo.login(
@@ -110,13 +117,18 @@ class AuthCubit extends Cubit<AuthState> {
       password: passwordLoginController.text,
     );
 
+    if (isClosed) return;
     result.fold(
       (error) {
         final errorMessage = error.errMessage ?? "Login failed";
-        emit(state.copyWith(loginStatus: StatusState.failure(errorMessage)));
+        if (!isClosed) {
+          emit(state.copyWith(loginStatus: StatusState.failure(errorMessage)));
+        }
       },
       (success) {
-        emit(state.copyWith(loginStatus: StatusState.success(success)));
+        if (!isClosed) {
+          emit(state.copyWith(loginStatus: StatusState.success(success)));
+        }
       },
     );
   }
