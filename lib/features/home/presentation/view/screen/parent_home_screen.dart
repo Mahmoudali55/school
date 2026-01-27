@@ -6,7 +6,6 @@ import 'package:my_template/features/home/data/models/home_models.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 import 'package:my_template/features/home/presentation/view/widget/parent/header_widget.dart';
-import 'package:my_template/features/home/presentation/view/widget/parent/live_tracking_widget.dart';
 import 'package:my_template/features/home/presentation/view/widget/parent/requests_section_widget.dart';
 import 'package:my_template/features/home/presentation/view/widget/parent/student_snapshot_section_widget.dart';
 import 'package:my_template/features/home/presentation/view/widget/parent/urgent_alerts_widget%20.dart';
@@ -62,8 +61,6 @@ class _HomeParentScreenState extends State<HomeParentScreen> {
                   ),
                   SizedBox(height: 25.h),
                   StudentSnapshotWidget(studentCode: selectedStudent?.studentCode),
-                  SizedBox(height: 25.h),
-                  const LiveTrackingWidget(),
                   SizedBox(height: 25.h),
                   RequestsSectionWidget(selectedStudent: selectedStudent, students: students ?? []),
                   SizedBox(height: 25.h),

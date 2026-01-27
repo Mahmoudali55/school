@@ -44,8 +44,7 @@ class _UniformParentScreenState extends State<UniformParentScreen> {
     heightController = TextEditingController();
     weightController = TextEditingController();
     noteController = TextEditingController();
-    currentSelectedSize = sizeList[1]; // Default to "M"
-
+    currentSelectedSize = sizeList[1];
     final homeCubit = context.read<HomeCubit>();
     homeCubit.getUniform(code: int.parse(HiveMethods.getUserCode()));
     if (homeCubit.state.parentsStudentStatus.data == null) {
@@ -240,6 +239,13 @@ class _UniformParentScreenState extends State<UniformParentScreen> {
           decoration: BoxDecoration(
             color: AppColor.whiteColor(context),
             borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.15),
+                blurRadius: 20,
+                offset: const Offset(0, -4),
+              ),
+            ],
           ),
           padding: EdgeInsets.only(
             left: 20.w,
@@ -254,6 +260,7 @@ class _UniformParentScreenState extends State<UniformParentScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Handle bar
                   Center(
                     child: Container(
                       width: 50.w,
@@ -265,6 +272,8 @@ class _UniformParentScreenState extends State<UniformParentScreen> {
                       ),
                     ),
                   ),
+
+                  // Title
                   Row(
                     children: [
                       Icon(
@@ -280,17 +289,21 @@ class _UniformParentScreenState extends State<UniformParentScreen> {
                       ),
                     ],
                   ),
+
                   const Gap(8),
                   Text(
                     AppLocalKay.measurements_hint.tr(),
-                    style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey),
+                    style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey[600]),
                   ),
+
                   const Gap(16),
                   Text(
                     AppLocalKay.select_student.tr(),
                     style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
                   ),
                   const Gap(8),
+
+                  // Dropdown for students
                   if (initialStudents.isEmpty)
                     Text(
                       "Loading students...",
@@ -301,7 +314,8 @@ class _UniformParentScreenState extends State<UniformParentScreen> {
                       padding: EdgeInsets.symmetric(horizontal: 12.w),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey[300]!),
-                        borderRadius: BorderRadius.circular(12.r),
+                        borderRadius: BorderRadius.circular(14.r),
+                        color: Colors.grey[50],
                       ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
@@ -324,7 +338,9 @@ class _UniformParentScreenState extends State<UniformParentScreen> {
                         ),
                       ),
                     ),
+
                   const Gap(16),
+                  // Height
                   CustomFormField(
                     controller: heightController,
                     title: AppLocalKay.height.tr(),
@@ -338,6 +354,8 @@ class _UniformParentScreenState extends State<UniformParentScreen> {
                     },
                   ),
                   const Gap(12),
+
+                  // Weight
                   CustomFormField(
                     controller: weightController,
                     title: AppLocalKay.weight.tr(),
@@ -351,6 +369,8 @@ class _UniformParentScreenState extends State<UniformParentScreen> {
                     },
                   ),
                   const Gap(12),
+
+                  // Size selection
                   Text(
                     AppLocalKay.typical_size.tr(),
                     style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
@@ -360,7 +380,8 @@ class _UniformParentScreenState extends State<UniformParentScreen> {
                     padding: EdgeInsets.symmetric(horizontal: 12.w),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey[300]!),
-                      borderRadius: BorderRadius.circular(12.r),
+                      borderRadius: BorderRadius.circular(14.r),
+                      color: Colors.grey[50],
                     ),
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
@@ -378,16 +399,20 @@ class _UniformParentScreenState extends State<UniformParentScreen> {
                     ),
                   ),
                   const Gap(12),
+
+                  // Notes
                   CustomFormField(
                     controller: noteController,
                     title: AppLocalKay.note.tr(),
                     prefixIcon: const Icon(Icons.edit_note),
                   ),
                   const Gap(24),
+
+                  // Save / Edit Button
                   BlocBuilder<HomeCubit, HomeState>(
                     builder: (context, state) {
                       return CustomButton(
-                        radius: 12.r,
+                        radius: 14.r,
                         cubitState: isEdit ? state.editUniformStatus : state.addUniformStatus,
                         onPressed: () {
                           if (formKey.currentState!.validate() &&

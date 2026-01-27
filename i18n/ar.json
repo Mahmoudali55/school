@@ -942,7 +942,10 @@
   "authorized_name": "اسم الجهة المصرحة",
   "auth_name": "اسم الجهة المصرحة",
   "parent_name_en":"الاسم بالانجليزي",
-  "loading":"جاري التحميل"
+  "loading":"جاري التحميل",
+  "student_code": "كود الطالب",
+  "balance": "الرصيد"
+
 
 
 

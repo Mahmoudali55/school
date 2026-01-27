@@ -894,7 +894,9 @@
   "authorized_name": "Authorized Name",
    "auth_name": "Authorized Name",
    "parent_name_en":"Parent Name (English)",
-   "loading":"Loading"
+   "loading":"Loading",
+  "student_code": "Student Code",
+  "balance": "Balance"
 
 
 }

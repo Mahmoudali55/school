@@ -50,76 +50,135 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
               return Center(child: Text("لا توجد بيانات", style: AppTextStyle.bodyMedium(context)));
             }
 
-            return ListView.builder(
+            return ListView.separated(
               itemCount: balances.length,
+              separatorBuilder: (_, __) => SizedBox(height: 16.h),
               itemBuilder: (context, index) {
                 final student = balances[index];
-                return Card(
-                  margin: EdgeInsets.only(bottom: 16.h),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                  elevation: 4,
-                  shadowColor: Colors.black12,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 20.w),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 30.r,
-                          backgroundColor: AppColor.primaryColor(context).withOpacity(0.2),
-                          child: Icon(
-                            Icons.person,
-                            color: AppColor.primaryColor(context),
-                            size: 28.sp,
-                          ),
-                        ),
-                        SizedBox(width: 16.w),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                student.studentName,
-                                style: AppTextStyle.titleMedium(
-                                  context,
-                                ).copyWith(fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 4.h),
-                              Text(
-                                "كود الطالب: ${student.studentCode}",
-                                style: AppTextStyle.bodySmall(
-                                  context,
-                                ).copyWith(color: Colors.grey[600]),
-                              ),
-                              SizedBox(height: 8.h),
-                              GestureDetector(
-                                onTap: () {},
-                                child: Text(
-                                  AppLocalKay.pay_now.tr(),
-                                  style: AppTextStyle.bodySmall(context).copyWith(
-                                    color: AppColor.primaryColor(context),
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
 
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                          decoration: BoxDecoration(
-                            color: Colors.green.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(12),
+                return
+                /// تعديل الألوان للشاشة لتكون أكثر عصريّة
+                Container(
+                  padding: EdgeInsets.all(16.w),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColor.primaryColor(context).withOpacity(0.1), // تدرج ناعم
+                        Colors.grey.shade50,
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.08),
+                        blurRadius: 12,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      /// Header
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 28.r,
+                            backgroundColor: AppColor.primaryColor(context).withOpacity(0.2),
+                            child: Icon(
+                              Icons.school_rounded,
+                              color: AppColor.primaryColor(context),
+                              size: 26.sp,
+                            ),
                           ),
+                          SizedBox(width: 12.w),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  student.studentName,
+                                  style: AppTextStyle.titleMedium(
+                                    context,
+                                  ).copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(height: 4.h),
+                                Text(
+                                  "${AppLocalKay.student_code.tr()} : ${student.studentCode}",
+                                  style: AppTextStyle.bodySmall(
+                                    context,
+                                  ).copyWith(color: Colors.grey.shade600),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(height: 16.h),
+
+                      /// Balance
+                      Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 14.h),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Colors.green.shade100, Colors.green.shade50],
+                          ),
+                          borderRadius: BorderRadius.circular(14),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.green.shade200.withOpacity(0.2),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            Text(
+                              AppLocalKay.financial_desc.tr(),
+                              style: AppTextStyle.bodySmall(
+                                context,
+                              ).copyWith(color: Colors.green.shade800),
+                            ),
+                            SizedBox(height: 6.h),
+                            Text(
+                              "${student.balance} ر.س",
+                              style: AppTextStyle.titleLarge(
+                                context,
+                              ).copyWith(fontWeight: FontWeight.bold, color: Colors.green.shade900),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      SizedBox(height: 14.h),
+
+                      /// Pay Now Button
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColor.primaryColor(context),
+                            padding: EdgeInsets.symmetric(vertical: 14.h),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                            elevation: 3,
+                            shadowColor: AppColor.primaryColor(context).withOpacity(0.4),
+                          ),
+                          onPressed: () {
+                            // TODO: navigate to payment
+                          },
                           child: Text(
-                            "${student.balance} ر.س",
-                            style: AppTextStyle.titleMedium(
+                            AppLocalKay.pay_now.tr(),
+                            style: AppTextStyle.bodyMedium(
                               context,
-                            ).copyWith(fontWeight: FontWeight.bold, color: Colors.green[700]),
+                            ).copyWith(color: Colors.white, fontWeight: FontWeight.w600),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 );
               },
