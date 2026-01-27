@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/setting/data/model/settings_model.dart';
 import 'package:my_template/features/setting/data/repo/settings_repo.dart';
 import 'package:my_template/features/setting/presentation/cubit/settings_state.dart';
@@ -48,5 +50,29 @@ class SettingsCubit extends Cubit<SettingsState> {
       }
       emit(SettingsLoaded(updatedSettings));
     }
+  }
+
+  Future<void> changePassword(
+    BuildContext context,
+    String oldPasswordController,
+    String newPasswordController,
+    String confirmPasswordController,
+  ) async {
+    emit(state.copyWith(changePasswordStatus: StatusState.loading()));
+
+    final result = await _settingsRepo.changePassword(
+      oldPassword: oldPasswordController,
+      newPassword: newPasswordController,
+      confirmNewPassword: confirmPasswordController,
+    );
+    result.fold(
+      (error) {
+        final errorMessage = error.errMessage ?? "Register failed";
+        emit(state.copyWith(changePasswordStatus: StatusState.failure(errorMessage)));
+      },
+      (success) {
+        emit(state.copyWith(changePasswordStatus: StatusState.success(success)));
+      },
+    );
   }
 }

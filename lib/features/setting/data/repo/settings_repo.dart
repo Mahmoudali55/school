@@ -1,8 +1,18 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
+import 'package:my_template/core/error/failures.dart';
+import 'package:my_template/core/network/api_consumer.dart';
+import 'package:my_template/core/network/end_points.dart';
+import 'package:my_template/features/setting/data/model/change_password_response_model.dart';
 import 'package:my_template/features/setting/data/model/settings_model.dart';
 
-class SettingsRepo {
+abstract class SettingsRepo {
+  Future<Either<Failure, ChangePasswordResponseModel>> changePassword({
+    required String oldPassword,
+    required String newPassword,
+    required String confirmNewPassword,
+  });
   SettingsModel getSettings() {
     return SettingsModel(
       languageCode: HiveMethods.getLang(),
@@ -20,5 +30,46 @@ class SettingsRepo {
 
   void updateNotificationSetting(String key, bool value) {
     HiveMethods.updateNotificationSetting(key, value);
+  }
+}
+
+class SettingsRepoImpl implements SettingsRepo {
+  final ApiConsumer apiConsumer;
+  SettingsRepoImpl(this.apiConsumer);
+
+  @override
+  Future<Either<Failure, ChangePasswordResponseModel>> changePassword({
+    required String oldPassword,
+    required String newPassword,
+    required String confirmNewPassword,
+  }) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.post(
+          EndPoints.changePassword,
+          body: {
+            "OldPassword": oldPassword,
+            "NewPassword": newPassword,
+            "ConfirmPassword": confirmNewPassword,
+          },
+        );
+        return ChangePasswordResponseModel.fromJson(response);
+      },
+    );
+  }
+
+  SettingsModel getSettings() {
+    // TODO: implement getSettings
+    throw UnimplementedError();
+  }
+
+  @override
+  void updateLanguage(String code) {
+    // TODO: implement updateLanguage
+  }
+
+  @override
+  void updateNotificationSetting(String key, bool value) {
+    // TODO: implement updateNotificationSetting
   }
 }

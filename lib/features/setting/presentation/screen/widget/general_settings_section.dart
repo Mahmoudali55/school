@@ -43,7 +43,13 @@ class GeneralSettingsSection extends StatelessWidget {
 
   // دوال التنقل
   void _navigateToChangePassword(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => ChangePasswordScreen()));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            BlocProvider(create: (context) => sl<SettingsCubit>(), child: ChangePasswordScreen()),
+      ),
+    );
   }
 
   void _navigateToNotificationsSettings(BuildContext context) {

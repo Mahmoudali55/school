@@ -30,7 +30,7 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<ProfileRepo>(() => ProfileRepoImpl(sl()));
   sl.registerFactory<ProfileCubit>(() => ProfileCubit(sl()));
 
-  sl.registerLazySingleton<SettingsRepo>(() => SettingsRepo());
+  sl.registerLazySingleton<SettingsRepo>(() => SettingsRepoImpl(sl()));
   sl.registerFactory<SettingsCubit>(() => SettingsCubit(sl()));
 
   sl.registerLazySingleton<UniformRepo>(() => UniformRepo());

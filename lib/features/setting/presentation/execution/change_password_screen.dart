@@ -1,13 +1,19 @@
 // lib/features/settings/presentation/screens/change_password_screen.dart
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
+import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/core/utils/common_methods.dart';
+import 'package:my_template/features/setting/presentation/cubit/settings_cubit.dart';
+import 'package:my_template/features/setting/presentation/cubit/settings_state.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -45,116 +51,129 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         padding: EdgeInsets.all(16.w),
         child: Form(
           key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // كلمة المرور الحالية
-              CustomFormField(
-                controller: _currentPasswordController,
-                prefixIcon: Icon(Icons.lock),
-                suffixIcon: IconButton(
-                  icon: Icon(_obscureCurrentPassword ? Icons.visibility : Icons.visibility_off),
-                  onPressed: () {
-                    setState(() {
-                      _obscureCurrentPassword = !_obscureCurrentPassword;
-                    });
+          child: BlocListener<SettingsCubit, SettingsState>(
+            listener: (context, state) {
+              if (state.changePasswordStatus.isSuccess) {
+                CommonMethods.showToast(
+                  message: 'تم تغيير كلمة المرور بنجاح',
+                  type: ToastType.success,
+                );
+              } else if (state.changePasswordStatus.isFailure) {
+                CommonMethods.showToast(
+                  message: state.changePasswordStatus.error ?? '',
+                  type: ToastType.error,
+                );
+              }
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomFormField(
+                  controller: _currentPasswordController,
+                  prefixIcon: Icon(Icons.lock),
+                  suffixIcon: IconButton(
+                    icon: Icon(_obscureCurrentPassword ? Icons.visibility : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _obscureCurrentPassword = !_obscureCurrentPassword;
+                      });
+                    },
+                  ),
+                  isPassword: _obscureCurrentPassword,
+                  title: AppLocalKay.current_password.tr(),
+                  radius: 12.r,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return AppLocalKay.enter_current_password.tr();
+                    }
+                    return null;
                   },
                 ),
-                isPassword: _obscureCurrentPassword,
-                title: AppLocalKay.current_password.tr(),
-                radius: 12.r,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return AppLocalKay.enter_current_password.tr();
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 16.h),
+                Gap(16.h),
 
-              // كلمة المرور الجديدة
-              CustomFormField(
-                controller: _newPasswordController,
-                isPassword: _obscureNewPassword,
-                title: AppLocalKay.new_password.tr(),
-                prefixIcon: Icon(Icons.lock_outline),
-                suffixIcon: IconButton(
-                  icon: Icon(_obscureNewPassword ? Icons.visibility : Icons.visibility_off),
-                  onPressed: () {
-                    setState(() {
-                      _obscureNewPassword = !_obscureNewPassword;
-                    });
+                CustomFormField(
+                  controller: _newPasswordController,
+                  isPassword: _obscureNewPassword,
+                  title: AppLocalKay.new_password.tr(),
+                  prefixIcon: Icon(Icons.lock_outline),
+                  suffixIcon: IconButton(
+                    icon: Icon(_obscureNewPassword ? Icons.visibility : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _obscureNewPassword = !_obscureNewPassword;
+                      });
+                    },
+                  ),
+                  radius: 12.r,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return AppLocalKay.enter_new_password.tr();
+                    }
+                    if (value.length < 6) {
+                      return AppLocalKay.password_length.tr();
+                    }
+                    return null;
                   },
                 ),
-                radius: 12.r,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return AppLocalKay.enter_new_password.tr();
-                  }
-                  if (value.length < 6) {
-                    return AppLocalKay.password_length.tr();
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 16.h),
+                Gap(16.h),
 
-              // تأكيد كلمة المرور
-              CustomFormField(
-                controller: _confirmPasswordController,
-                isPassword: _obscureConfirmPassword,
-                title: AppLocalKay.new_password.tr(),
-                prefixIcon: Icon(Icons.lock_reset),
-                suffixIcon: IconButton(
-                  icon: Icon(_obscureConfirmPassword ? Icons.visibility : Icons.visibility_off),
-                  onPressed: () {
-                    setState(() {
-                      _obscureConfirmPassword = !_obscureConfirmPassword;
-                    });
+                CustomFormField(
+                  controller: _confirmPasswordController,
+                  isPassword: _obscureConfirmPassword,
+                  title: AppLocalKay.new_password.tr(),
+                  prefixIcon: Icon(Icons.lock_reset),
+                  suffixIcon: IconButton(
+                    icon: Icon(_obscureConfirmPassword ? Icons.visibility : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _obscureConfirmPassword = !_obscureConfirmPassword;
+                      });
+                    },
+                  ),
+                  radius: 12.r,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return AppLocalKay.enter_new_password.tr();
+                    }
+                    if (value != _newPasswordController.text) {
+                      return AppLocalKay.password_not_match.tr();
+                    }
+                    return null;
                   },
                 ),
-                radius: 12.r,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return AppLocalKay.enter_new_password.tr();
-                  }
-                  if (value != _newPasswordController.text) {
-                    return AppLocalKay.password_not_match.tr();
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 24.h),
+                Gap(24.h),
 
-              // نصائح الأمان
-              Padding(
-                padding: EdgeInsets.all(16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      AppLocalKay.suggestions.tr(),
-                      style: AppTextStyle.titleSmall(
-                        context,
-                      ).copyWith(fontWeight: FontWeight.bold, color: Colors.blue[800]),
-                    ),
-                    SizedBox(height: 8.h),
-                    Text(
-                      AppLocalKay.suggestions_content.tr(),
-                      style: AppTextStyle.bodySmall(context).copyWith(color: Colors.blue[700]),
-                    ),
-                  ],
+                // نصائح الأمان
+                Padding(
+                  padding: EdgeInsets.all(16.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppLocalKay.suggestions.tr(),
+                        style: AppTextStyle.titleSmall(
+                          context,
+                        ).copyWith(fontWeight: FontWeight.bold, color: Colors.blue[800]),
+                      ),
+                      Gap(8.h),
+                      Text(
+                        AppLocalKay.suggestions_content.tr(),
+                        style: AppTextStyle.bodySmall(context).copyWith(color: Colors.blue[700]),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: 32.h),
+                Gap(32.h),
 
-              CustomButton(
-                text: AppLocalKay.change_password.tr(),
-                radius: 16.r,
-                color: AppColor.primaryColor(context),
-                onPressed: _changePassword,
-              ),
-            ],
+                CustomButton(
+                  text: AppLocalKay.change_password.tr(),
+                  radius: 16.r,
+                  color: AppColor.primaryColor(context),
+                  isLoading: context.watch<SettingsCubit>().state.changePasswordStatus.isLoading,
+                  onPressed: _changePassword,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -163,11 +182,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
 
   void _changePassword() {
     if (_formKey.currentState!.validate()) {
-      // TODO: تنفيذ تغيير كلمة المرور
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('تم تغيير كلمة المرور بنجاح'), backgroundColor: Colors.green),
+      context.read<SettingsCubit>().changePassword(
+        context,
+        _currentPasswordController.text,
+        _newPasswordController.text,
+        _confirmPasswordController.text,
       );
-      Navigator.pop(context);
     }
   }
 

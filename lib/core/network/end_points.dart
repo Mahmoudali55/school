@@ -16,4 +16,5 @@ class EndPoints {
   static const String editUniform = 'DeltagroupService/School/Edituniform';
   static const String getHomeWork = 'DeltagroupService/School/GetHomeWork';
   static const String getParentProfile = 'DeltagroupService/School/GetParentProfile';
+  static const String changePassword = 'DeltagroupService/School/ChangePassword';
 }
