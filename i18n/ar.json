@@ -963,7 +963,21 @@
   "location_not_available":"الموقع غير متاح حالياً",
   "phone_app_cant_open":"لا يمكن فتح تطبيق الهاتف",
   "phone_not_available":"رقم الهاتف غير متوفر",
-  "no_stations":"لا توجد محطات متاحة"
+  "no_stations":"لا توجد محطات متاحة",
+  "rate":"التقييم",
+  "percentage":"النسبة المئوية",
+  "grades_report":"نتائج الطالب",
+  "cumulative_rate":"المعدل التراكمي:",
+  "grades_report_title":"تقرير الدرجات ",
+   "excellent_high": "ممتاز مرتفع",
+  "excellent": "ممتاز",
+  "very_good_high": "جيد جداً مرتفع",
+  "very_good": "جيد جداً",
+  "good_high": "جيد مرتفع",
+  "good": "جيد",
+  "pass": "مقبول",
+  "fail": "ضعيف"
+
 
 
 

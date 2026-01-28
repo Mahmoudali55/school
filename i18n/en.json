@@ -915,7 +915,13 @@
    "location_not_available":"Location Not Available",
    "phone_app_cant_open":"Phone App Can't Open",
   "phone_not_available": "Phone Not Available",
-  "no_stations": "No Stations Available"
+  "no_stations": "No Stations Available",
+  "rate":"Rates",
+  "percentage":"Percentage",
+  "grades_report":"Grades Report",
+  "cumulative_rate":"Cumulative Rate:",
+  "grades_report_title":"Grades Report"
+
 
 
 }

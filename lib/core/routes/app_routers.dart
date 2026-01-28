@@ -67,7 +67,9 @@ class AppRouters {
       case RoutesName.scheduleScreen:
         return MaterialPageRoute(builder: (_) => ScheduleScreen());
       case RoutesName.gradesScreen:
-        return MaterialPageRoute(builder: (_) => GradesScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(create: (context) => sl<HomeCubit>(), child: GradesScreen()),
+        );
       case RoutesName.parentProfileScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(

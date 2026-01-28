@@ -920,4 +920,17 @@ class AppLocalKay {
   static const String phone_app_cant_open = 'phone_app_cant_open';
   static const String phone_not_available = 'phone_not_available';
   static const String no_stations = 'no_stations';
+  static const String rate = 'rate';
+  static const String percentage = 'percentage';
+  static const String grades_report = 'grades_report';
+  static const String cumulative_rate = 'cumulative_rate';
+  static const String grades_report_title = 'grades_report_title';
+  static const String excellentHigh = 'excellent_high';
+  static const String excellent = 'excellent';
+  static const String veryGoodHigh = 'very_good_high';
+  static const String veryGood = 'very_good';
+  static const String goodHigh = 'good_high';
+  static const String good = 'good';
+  static const String pass = 'pass';
+  static const String fail = 'fail';
 }
