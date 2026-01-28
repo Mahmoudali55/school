@@ -12,15 +12,28 @@ class ClassCubit extends Cubit<ClassState> {
   Future<void> getClassData(String userTypeId) async {
     emit(state.copyWith(classesStatus: const StatusState.loading()));
 
+    // Map numeric types to named types with robust normalization
+    final cleanType = userTypeId.trim();
+    String normalizedType;
+    if (cleanType == '1' || cleanType == 'student') {
+      normalizedType = 'student';
+    } else if (cleanType == '2' || cleanType == 'parent') {
+      normalizedType = 'parent';
+    } else if (cleanType == '3' || cleanType == 'teacher') {
+      normalizedType = 'teacher';
+    } else {
+      normalizedType = 'admin';
+    }
+
     try {
       final List<dynamic> data;
-      if (userTypeId == 'student') {
+      if (normalizedType == 'student') {
         data = await _classRepo.getStudentClasses();
-      } else if (userTypeId == 'teacher') {
+      } else if (normalizedType == 'teacher') {
         data = await _classRepo.getTeacherClasses();
-      } else if (userTypeId == 'admin') {
+      } else if (normalizedType == 'admin') {
         data = await _classRepo.getAdminClasses();
-      } else if (userTypeId == 'parent') {
+      } else if (normalizedType == 'parent') {
         data = await _classRepo.getParentStudentClasses();
       } else {
         emit(state.copyWith(classesStatus: const StatusState.failure("Unknown user type")));

@@ -28,54 +28,74 @@ class _LayoutScreenState extends State<LayoutScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Normalize user type for consistent state and logic
+    final cleanType = widget.type.trim();
+    String role;
+    if (cleanType == '1' || cleanType == 'student') {
+      role = 'student';
+    } else if (cleanType == '2' || cleanType == 'parent') {
+      role = 'parent';
+    } else if (cleanType == '3' || cleanType == 'teacher') {
+      role = 'teacher';
+    } else {
+      role = 'admin';
+    }
+
     final List<NavItemData> _navItems = [
       NavItemData(
         label: AppLocalKay.home.tr(),
         icon: Icons.home_outlined,
         activeIcon: Icons.home_rounded,
-        screen: getScreen("home", widget.type),
+        screen: getScreen("home", role),
       ),
       NavItemData(
         label: AppLocalKay.calendar.tr(),
         icon: Icons.calendar_today_outlined,
         activeIcon: Icons.calendar_today_rounded,
-        screen: getScreen("calendar", widget.type),
-        showBadge: _showBadge("calendar"),
+        screen: getScreen("calendar", role),
+        showBadge: _showBadge("calendar", role),
       ),
       NavItemData(
         label: AppLocalKay.classes.tr(),
         icon: Icons.class_outlined,
         activeIcon: Icons.class_rounded,
-        screen: getScreen("classes", widget.type),
-        showBadge: _showBadge("classes"),
+        screen: getScreen("classes", role),
+        showBadge: _showBadge("classes", role),
       ),
       NavItemData(
         label: AppLocalKay.bus.tr(),
         icon: Icons.directions_bus_outlined,
         activeIcon: Icons.directions_bus_rounded,
-        screen: getScreen("bus", widget.type),
-        showBadge: _showBadge("bus"),
+        screen: getScreen("bus", role),
+        showBadge: _showBadge("bus", role),
       ),
       NavItemData(
         label: AppLocalKay.settings.tr(),
         icon: Icons.settings_outlined,
         activeIcon: Icons.settings_rounded,
-        screen: getScreen("settings", widget.type),
+        screen: getScreen("settings", role),
       ),
     ];
 
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => sl<HomeCubit>()
-            ..getHomeData(
-              widget.type,
-              widget.type == 'parent' ? int.parse(HiveMethods.getUserCode()) : 0,
-            ),
+          create: (context) =>
+              sl<HomeCubit>()
+                ..getHomeData(role, role == 'parent' ? int.parse(HiveMethods.getUserCode()) : 0),
         ),
-        BlocProvider(create: (context) => sl<ClassCubit>()..getClassData(widget.type)),
-        BlocProvider(create: (context) => sl<CalendarCubit>()..getCalendarData(widget.type)),
-        BlocProvider(create: (context) => sl<BusCubit>()..getBusData(widget.type)),
+        BlocProvider(create: (context) => sl<ClassCubit>()..getClassData(role)),
+        BlocProvider(create: (context) => sl<CalendarCubit>()..getCalendarData(role)),
+        BlocProvider(
+          create: (context) => sl<BusCubit>()
+            ..getBusData(
+              role,
+              code: role == 'parent' ? int.tryParse(HiveMethods.getUserCode()) : null,
+            ),
+          // Only initialize for parent/teacher/admin roles that need real data
+          // Students now use a standalone mockup
+          lazy: role == 'student',
+        ),
         BlocProvider(create: (context) => sl<NotificationCubit>()..loadNotifications()),
         BlocProvider(create: (context) => sl<SettingsCubit>()..loadSettings()),
       ],
@@ -86,22 +106,21 @@ class _LayoutScreenState extends State<LayoutScreen> {
           items: _navItems,
           currentIndex: _currentIndex,
           onTap: (index) => setState(() => _currentIndex = index),
-          selectedColor: _getSelectedColor(),
+          selectedColor: _getSelectedColor(role),
         ),
       ),
     );
   }
 
-  bool _showBadge(String tab) {
-    return tab == "bus" && widget.type == 'parent';
+  bool _showBadge(String tab, String role) {
+    return tab == "bus" && role == 'parent';
   }
 
-  Color _getSelectedColor() {
-    final roleId = widget.type;
-    if (roleId == 'student') return const Color(0xFF4CAF50);
-    if (roleId == 'parent') return const Color(0xFF2196F3);
-    if (roleId == 'teacher') return const Color(0xFFFF9800);
-    if (roleId == 'admin') return const Color(0xFF9C27B0);
+  Color _getSelectedColor(String role) {
+    if (role == 'student') return const Color(0xFF4CAF50);
+    if (role == 'parent') return const Color(0xFF2196F3);
+    if (role == 'teacher') return const Color(0xFFFF9800);
+    if (role == 'admin') return const Color(0xFF9C27B0);
     return const Color(0xFF2E5BFF);
   }
 }

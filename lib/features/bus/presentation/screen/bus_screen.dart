@@ -10,7 +10,6 @@ import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
-import 'package:my_template/features/bus/presentation/cubit/bus_state.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/bus_Information_widget.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/bus_tracking_card.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/emergency_button.dart';
@@ -39,7 +38,7 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
   void initState() {
     super.initState();
     _initializeAnimations();
-    context.read<BusCubit>().getBusData('student');
+    // API linkage removed for Student mockup
   }
 
   void _initializeAnimations() {
@@ -62,7 +61,7 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
 
   // =========================== إجراءات ===========================
   void _refreshLocation() {
-    context.read<BusCubit>().getBusData('student');
+    // API linkage removed for Student mockup. Previously: context.read<BusCubit>().getBusData('student');
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(AppLocalKay.update_location.tr()),
@@ -351,69 +350,80 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
   }
 
   // =========================== Build ===========================
+  // =========================== Build ===========================
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BusCubit, BusState>(
-      builder: (context, state) {
-        if (state.isLoading) {
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
-        }
+    // Reverted to local mockup for Student view as requested
+    final selectedBus = BusModel(
+      busNumber: "BUS-112",
+      busName: "حافلة الصف العاشر",
+      driverName: "محمد الوهيبي",
+      driverPhone: "0501234567",
+      currentLocation: "حي الملقا - طريق الملك فهد",
+      nextStop: "محطة الجامعة",
+      estimatedTime: "7 دقائق",
+      distance: "1.2 كم",
+      speed: "45 كم/ساعة",
+      capacity: "40",
+      occupiedSeats: "32",
+      status: "في الطريق",
+      busColor: const Color(0xFF4CAF50),
+      route: "مسار النخبة",
+      attendanceRate: "98%",
+      fuelLevel: "85%",
+      maintenanceStatus: "جيد",
+      studentsOnBoard: "32",
+      lat: 24.7136,
+      lng: 46.6753,
+    );
 
-        final selectedBus = state.selectedAdminBus;
-        if (selectedBus == null) {
-          return const Scaffold(body: Center(child: Text("لا توجد بيانات متاحة")));
-        }
+    final List<Map<String, dynamic>> stops = [
+      {'name': 'المنزل', 'time': '6:30 ص', 'passed': true, 'current': false},
+      {'name': 'شارع التحلية', 'time': '6:45 ص', 'passed': true, 'current': false},
+      {'name': 'ميدان الملكة', 'time': '7:00 ص', 'passed': false, 'current': true},
+      {'name': 'محطة الجامعة', 'time': '7:15 ص', 'passed': false, 'current': false},
+      {'name': 'المدرسة', 'time': '7:30 ص', 'passed': false, 'current': false},
+    ];
 
-        // Mock stops and schedule for now as they are not in the model yet
-        final List<Map<String, dynamic>> stops = [
-          {'name': 'المنزل', 'time': '6:30 ص', 'passed': true, 'current': false},
-          {'name': 'شارع التحلية', 'time': '6:45 ص', 'passed': true, 'current': false},
-          {'name': 'ميدان الملكة', 'time': '7:00 ص', 'passed': false, 'current': true},
-          {'name': 'محطة الجامعة', 'time': '7:15 ص', 'passed': false, 'current': false},
-          {'name': 'المدرسة', 'time': '7:30 ص', 'passed': false, 'current': false},
-        ];
+    final List<Map<String, dynamic>> schedule = [
+      {'period': AppLocalKay.morning.tr(), 'pickup': '6:30 ص', 'arrival': '7:30 ص'},
+      {'period': AppLocalKay.evening.tr(), 'pickup': '12:30 م', 'arrival': '1:30 م'},
+      {'period': AppLocalKay.night.tr(), 'pickup': '3:30 م', 'arrival': '4:30 م'},
+    ];
 
-        final List<Map<String, dynamic>> schedule = [
-          {'period': AppLocalKay.morning.tr(), 'pickup': '6:30 ص', 'arrival': '7:30 ص'},
-          {'period': AppLocalKay.evening.tr(), 'pickup': '12:30 م', 'arrival': '1:30 م'},
-          {'period': AppLocalKay.night.tr(), 'pickup': '3:30 م', 'arrival': '4:30 م'},
-        ];
-
-        return Scaffold(
-          backgroundColor: AppColor.whiteColor(context),
-          body: SafeArea(
-            child: CustomScrollView(
-              physics: const BouncingScrollPhysics(),
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Center(
-                    child: Text(
-                      AppLocalKay.bus_title.tr(),
-                      style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
-                    ),
-                  ),
+    return Scaffold(
+      backgroundColor: AppColor.whiteColor(context),
+      body: SafeArea(
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            SliverToBoxAdapter(
+              child: Center(
+                child: Text(
+                  AppLocalKay.bus_title.tr(),
+                  style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
                 ),
-                SliverToBoxAdapter(
-                  child: BusTrackingCard(
-                    busData: selectedBus, // This will need updating in the widget itself
-                    stops: stops,
-                    busAnimation: _busAnimation,
-                    isBusMoving: _isBusMoving,
-                    refreshLocation: _refreshLocation,
-                    toggleBusMovement: _toggleBusMovement,
-                    callDriver: () => _callDriver(selectedBus.driverName),
-                  ),
-                ),
-                SliverToBoxAdapter(child: RouteProgress(stops: stops)),
-                SliverToBoxAdapter(child: BusInformation(busData: selectedBus)),
-                SliverToBoxAdapter(child: ScheduleSection(schedule: schedule)),
-                SliverToBoxAdapter(child: SafetyFeatures(onFeatureTap: _handleSafetyFeature)),
-              ],
+              ),
             ),
-          ),
-          floatingActionButton: EmergencyButton(showDialogCallback: () => _showEmergencyDialog()),
-        );
-      },
+            SliverToBoxAdapter(
+              child: BusTrackingCard(
+                busData: selectedBus,
+                stops: stops,
+                busAnimation: _busAnimation,
+                isBusMoving: _isBusMoving,
+                refreshLocation: _refreshLocation,
+                toggleBusMovement: _toggleBusMovement,
+                callDriver: () => _callDriver(selectedBus.driverName),
+              ),
+            ),
+            SliverToBoxAdapter(child: RouteProgress(stops: stops)),
+            SliverToBoxAdapter(child: BusInformation(busData: selectedBus)),
+            SliverToBoxAdapter(child: ScheduleSection(schedule: schedule)),
+            SliverToBoxAdapter(child: SafetyFeatures(onFeatureTap: _handleSafetyFeature)),
+          ],
+        ),
+      ),
+      floatingActionButton: EmergencyButton(showDialogCallback: () => _showEmergencyDialog()),
     );
   }
 }

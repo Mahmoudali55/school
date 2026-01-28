@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_template/features/Bus/presentation/screen/bus_screen.dart';
 import 'package:my_template/features/bus/presentation/screen/admin_bus_tracking_screen.dart';
+import 'package:my_template/features/bus/presentation/screen/bus_screen.dart';
 import 'package:my_template/features/bus/presentation/screen/parent_bus_Screen.dart';
 import 'package:my_template/features/bus/presentation/screen/teacher_bus_tracking_screen.dart';
 import 'package:my_template/features/calendar/presentation/screen/calendar_admin_screen.dart';
@@ -19,52 +19,50 @@ import 'package:my_template/features/setting/presentation/screen/admin_settings_
 import 'package:my_template/features/setting/presentation/screen/student_settings_screen.dart';
 
 Widget getScreen(String tab, String userTypeId) {
-  // استخدام المعرفات الثابتة بدلاً من النصوص المترجمة
-  const parentId = 'parent';
-  const teacherId = 'teacher';
-  const adminId = 'admin';
+  // Normalize user type with standard identifiers
+  final cleanType = userTypeId.trim();
+  String role;
+
+  if (cleanType == '1' || cleanType == 'student') {
+    role = 'student';
+  } else if (cleanType == '2' || cleanType == 'parent') {
+    role = 'parent';
+  } else if (cleanType == '3' || cleanType == 'teacher') {
+    role = 'teacher';
+  } else {
+    role = 'admin';
+  }
 
   switch (tab) {
     case "home":
-      return userTypeId == parentId
-          ? const HomeParentScreen()
-          : userTypeId == teacherId
-          ? const TeacherHomeScreen()
-          : userTypeId == adminId
-          ? const AdminHomeScreen()
-          : const HomeScreen();
+      if (role == 'parent') return const HomeParentScreen();
+      if (role == 'teacher') return const TeacherHomeScreen();
+      if (role == 'admin') return const AdminHomeScreen();
+      return const HomeScreen();
+
     case "calendar":
-      return userTypeId == parentId
-          ? const CalendarPatentScreen()
-          : userTypeId == teacherId
-          ? const CalendarTeacherScreen()
-          : userTypeId == adminId
-          ? const AdminCalendarScreen()
-          : const CalendarScreen();
+      if (role == 'parent') return const CalendarPatentScreen();
+      if (role == 'teacher') return const CalendarTeacherScreen();
+      if (role == 'admin') return const AdminCalendarScreen();
+      return const CalendarScreen();
+
     case "classes":
-      return userTypeId == parentId
-          ? const ParentClassScreen()
-          : userTypeId == teacherId
-          ? const TeacherClassesScreen()
-          : userTypeId == adminId
-          ? const AdminClassesScreen()
-          : const StudentClassesScreen();
+      if (role == 'parent') return const ParentClassScreen();
+      if (role == 'teacher') return const TeacherClassesScreen();
+      if (role == 'admin') return const AdminClassesScreen();
+      return const StudentClassesScreen();
+
     case "bus":
-      return userTypeId == parentId
-          ? const ParentBusTrackingScreen()
-          : userTypeId == teacherId
-          ? const TeacherBusTrackingScreen()
-          : userTypeId == adminId
-          ? const AdminBusTrackingScreen()
-          : const StudentBusTrackingScreen();
+      if (role == 'parent') return const ParentBusTrackingScreen();
+      if (role == 'teacher') return const TeacherBusTrackingScreen();
+      if (role == 'admin') return const AdminBusTrackingScreen();
+      if (role == 'student') return const StudentBusTrackingScreen();
+      return const StudentBusTrackingScreen();
+
     case "settings":
-      return userTypeId == parentId
-          ? const StudentSettingsScreen()
-          : userTypeId == teacherId
-          ? const StudentSettingsScreen()
-          : userTypeId == adminId
-          ? const AdminSettingsScreen()
-          : const StudentSettingsScreen();
+      if (role == 'admin') return const AdminSettingsScreen();
+      return const StudentSettingsScreen();
+
     default:
       return const HomeScreen();
   }

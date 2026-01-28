@@ -17,16 +17,30 @@ class BusCubit extends Cubit<BusState> {
     if (state.classes.isEmpty && state.studentsOnBus.isEmpty) {
       emit(state.copyWith(isLoading: true));
     }
+
+    // Map numeric types to named types with robust normalization
+    final cleanType = userTypeId.trim();
+    String normalizedType;
+    if (cleanType == '1' || cleanType == 'student') {
+      normalizedType = 'student';
+    } else if (cleanType == '2' || cleanType == 'parent') {
+      normalizedType = 'parent';
+    } else if (cleanType == '3' || cleanType == 'teacher') {
+      normalizedType = 'teacher';
+    } else {
+      normalizedType = 'admin';
+    }
+
     try {
-      final classes = await _busRepo.getBusClasses(userTypeId);
-      final studentsOnBus = await _busRepo.getStudentsOnBus(userTypeId);
-      final fieldTrips = await _busRepo.getFieldTrips(userTypeId);
-      final buses = await _busRepo.getAdminBuses(userTypeId);
+      final classes = await _busRepo.getBusClasses(normalizedType);
+      final studentsOnBus = await _busRepo.getStudentsOnBus(normalizedType);
+      final fieldTrips = await _busRepo.getFieldTrips(normalizedType);
+      final buses = await _busRepo.getAdminBuses(normalizedType);
       List<BusClass> parentChildrenBuses = [];
-      if (userTypeId == 'parent' && code != null) {
+      if (normalizedType == 'parent' && code != null) {
         parentChildrenBuses = await _busRepo.getParentChildrenBuses(code: code);
       }
-      final overviewStats = _busRepo.getOverviewStats(userTypeId);
+      final overviewStats = _busRepo.getOverviewStats(normalizedType);
 
       emit(
         state.copyWith(

@@ -56,12 +56,12 @@ class StudentClassesScreen extends StatelessWidget {
             Expanded(
               child: BlocBuilder<ClassCubit, ClassState>(
                 builder: (context, state) {
-                  if (state is ClassLoading) {
+                  if (state.classesStatus.isLoading) {
                     return const Center(child: CircularProgressIndicator());
-                  } else if (state is ClassError) {
-                    return Center(child: Text(state.message));
-                  } else if (state is ClassLoaded) {
-                    final classes = state.classes.cast<StudentClassModel>();
+                  } else if (state.classesStatus.isFailure) {
+                    return Center(child: Text(state.classesStatus.error ?? 'حدث خطأ ما'));
+                  } else if (state.classesStatus.isSuccess) {
+                    final classes = state.classesStatus.data?.cast<StudentClassModel>() ?? [];
                     if (classes.isEmpty) {
                       return const Center(child: Text("No classes found"));
                     }

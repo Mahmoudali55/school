@@ -17,26 +17,39 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> getHomeData(String userTypeId, int code) async {
     emit(HomeLoading());
 
-    if (userTypeId == 'student') {
+    // Map numeric types to named types with robust normalization
+    final cleanType = userTypeId.trim();
+    String normalizedType;
+    if (cleanType == '1' || cleanType == 'student') {
+      normalizedType = 'student';
+    } else if (cleanType == '2' || cleanType == 'parent') {
+      normalizedType = 'parent';
+    } else if (cleanType == '3' || cleanType == 'teacher') {
+      normalizedType = 'teacher';
+    } else {
+      normalizedType = 'admin';
+    }
+
+    if (normalizedType == 'student') {
       final result = await _homeRepo.getStudentHomeData();
       result.fold(
         (failure) => emit(HomeError(failure.errMessage)),
         (data) => emit(HomeLoaded(data)),
       );
-    } else if (userTypeId == 'parent') {
+    } else if (normalizedType == 'parent') {
       // For parents, we fetch the students and return a ParentHomeModel
       final result = await _homeRepo.getParentHomeData(code);
       result.fold(
         (failure) => emit(HomeError(failure.errMessage)),
         (data) => emit(HomeLoaded(data)),
       );
-    } else if (userTypeId == 'teacher') {
+    } else if (normalizedType == 'teacher') {
       final result = await _homeRepo.getTeacherHomeData();
       result.fold(
         (failure) => emit(HomeError(failure.errMessage)),
         (data) => emit(HomeLoaded(data)),
       );
-    } else if (userTypeId == 'admin') {
+    } else if (normalizedType == 'admin') {
       final result = await _homeRepo.getAdminHomeData();
       result.fold(
         (failure) => emit(HomeError(failure.errMessage)),

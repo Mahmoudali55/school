@@ -21,9 +21,23 @@ class CalendarCubit extends Cubit<CalendarState> {
     if (state.classes.isEmpty && state.events.isEmpty) {
       emit(state.copyWith(isLoading: true));
     }
+
+    // Map numeric types to named types with robust normalization
+    final cleanType = userTypeId.trim();
+    String normalizedType;
+    if (cleanType == '1' || cleanType == 'student') {
+      normalizedType = 'student';
+    } else if (cleanType == '2' || cleanType == 'parent') {
+      normalizedType = 'parent';
+    } else if (cleanType == '3' || cleanType == 'teacher') {
+      normalizedType = 'teacher';
+    } else {
+      normalizedType = 'admin';
+    }
+
     try {
-      final classes = await _calendarRepo.getClasses(userTypeId);
-      final events = await _calendarRepo.getEvents(userTypeId);
+      final classes = await _calendarRepo.getClasses(normalizedType);
+      final events = await _calendarRepo.getEvents(normalizedType);
       emit(
         state.copyWith(
           classes: classes,

@@ -45,7 +45,7 @@ class LoginScreen extends StatelessWidget {
                     final token = cubit.state.loginStatus.data?.accessToken ?? "";
                     HiveMethods.updateToken(token);
 
-                    String type = cubit.state.loginStatus.data?.type ?? "";
+                    final type = (cubit.state.loginStatus.data?.type ?? "").trim();
                     HiveMethods.updateType(type);
 
                     String name = cubit.state.loginStatus.data?.name ?? "";
@@ -56,11 +56,11 @@ class LoginScreen extends StatelessWidget {
                     HiveMethods.updateUserCompanyName(compneyname);
                     String routeType = "admin";
 
-                    if (type == "1") {
+                    if (type == "1" || type == "student") {
                       routeType = "student";
-                    } else if (type == "2") {
+                    } else if (type == "2" || type == "parent") {
                       routeType = "parent";
-                    } else if (type == "3") {
+                    } else if (type == "3" || type == "teacher") {
                       routeType = "teacher";
                     }
 

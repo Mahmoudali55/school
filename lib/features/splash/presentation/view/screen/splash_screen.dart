@@ -18,14 +18,14 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 3)).then((value) {
       final token = HiveMethods.getToken();
       if (token != null && token.isNotEmpty) {
-        String type = HiveMethods.getType();
+        final type = HiveMethods.getType().trim();
         String routeType = "admin";
 
-        if (type == "1") {
+        if (type == "1" || type == "student") {
           routeType = "student";
-        } else if (type == "2") {
+        } else if (type == "2" || type == "parent") {
           routeType = "parent";
-        } else if (type == "3") {
+        } else if (type == "3" || type == "teacher") {
           routeType = "teacher";
         }
 
