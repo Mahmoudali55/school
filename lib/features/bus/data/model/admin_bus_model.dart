@@ -19,8 +19,12 @@ class BusModel {
   final String fuelLevel;
   final String maintenanceStatus;
   final String studentsOnBoard;
-  final double? lat;
-  final double? lng;
+  final String? supervisorName;
+  final String? supervisorPhone;
+  final String? busType;
+  final String? modelYear;
+  final String? sectionName;
+  final String? accountName;
 
   BusModel({
     required this.busNumber,
@@ -41,7 +45,12 @@ class BusModel {
     required this.fuelLevel,
     required this.maintenanceStatus,
     required this.studentsOnBoard,
-    this.lat,
-    this.lng,
+
+    this.supervisorName,
+    this.supervisorPhone,
+    this.busType,
+    this.modelYear,
+    this.sectionName,
+    this.accountName,
   });
 }

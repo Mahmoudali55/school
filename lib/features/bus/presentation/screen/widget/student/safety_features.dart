@@ -18,7 +18,6 @@ class SafetyFeatures extends StatelessWidget {
         'icon': Icons.notifications_active_rounded,
         'color': Colors.orange,
       },
-      {'title': AppLocalKay.share_location.tr(), 'icon': Icons.share_rounded, 'color': Colors.blue},
       {
         'title': AppLocalKay.emergency_management.tr(),
         'icon': Icons.emergency_rounded,

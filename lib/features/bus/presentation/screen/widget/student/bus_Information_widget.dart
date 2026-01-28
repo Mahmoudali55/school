@@ -36,7 +36,14 @@ class BusInformation extends StatelessWidget {
           SizedBox(height: 16.h),
           InfoRow(label: AppLocalKay.driver.tr(), value: busData.driverName),
           InfoRow(label: AppLocalKay.phone.tr(), value: busData.driverPhone),
-          InfoRow(label: AppLocalKay.current_location.tr(), value: busData.currentLocation),
+          if (busData.supervisorName != null)
+            InfoRow(label: "المشرف", value: busData.supervisorName!),
+          if (busData.supervisorPhone != null)
+            InfoRow(label: "جوال المشرف", value: busData.supervisorPhone!),
+          if (busData.busType != null) InfoRow(label: "نوع الحافلة", value: busData.busType!),
+          if (busData.modelYear != null) InfoRow(label: "موديل", value: busData.modelYear!),
+          if (busData.sectionName != null) InfoRow(label: "القسم", value: busData.sectionName!),
+          if (busData.accountName != null) InfoRow(label: "الحساب", value: busData.accountName!),
           InfoRow(label: AppLocalKay.speed.tr(), value: busData.speed),
           InfoRow(
             label: AppLocalKay.passengers.tr(),

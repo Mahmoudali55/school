@@ -5,18 +5,18 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
+import 'package:my_template/features/bus/presentation/cubit/bus_state.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/bus_Information_widget.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/bus_tracking_card.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/emergency_button.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/route_progress_widget.dart';
-import 'package:my_template/features/bus/presentation/screen/widget/student/safety_features.dart';
-import 'package:my_template/features/bus/presentation/screen/widget/student/schedule_section_widget.dart';
-import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class StudentBusTrackingScreen extends StatefulWidget {
   const StudentBusTrackingScreen({super.key});
@@ -38,7 +38,8 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
   void initState() {
     super.initState();
     _initializeAnimations();
-    // API linkage removed for Student mockup
+    // Fetch bus data
+    context.read<BusCubit>().busLine(int.parse(HiveMethods.getUserCode()));
   }
 
   void _initializeAnimations() {
@@ -61,7 +62,7 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
 
   // =========================== إجراءات ===========================
   void _refreshLocation() {
-    // API linkage removed for Student mockup. Previously: context.read<BusCubit>().getBusData('student');
+    context.read<BusCubit>().busLine(int.parse(HiveMethods.getUserCode()));
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(AppLocalKay.update_location.tr()),
@@ -81,231 +82,36 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
     });
   }
 
-  void _callDriver(String driverName) {
+  void _callDriver(String driverName, String phoneNumber) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text(AppLocalKay.call_driver.tr(), style: AppTextStyle.bodyMedium(context)),
-        content: Text('\ ${AppLocalKay.ConnectDriverHint.tr()}   $driverName؟'),
+        content: Text('${AppLocalKay.ConnectDriverHint.tr()}   $driverName؟\n$phoneNumber'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyMedium(context)),
           ),
           ElevatedButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              Navigator.pop(context);
+              final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
+              canLaunchUrl(launchUri).then((bool result) {
+                if (result) {
+                  launchUrl(launchUri);
+                } else {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text("Could not launch $phoneNumber")));
+                }
+              });
+            },
             child: Text(AppLocalKay.Connect.tr(), style: AppTextStyle.bodyMedium(context)),
           ),
         ],
       ),
     );
-  }
-
-  void _handleSafetyFeature(String feature) {
-    if (context.read<BusCubit>().state.selectedAdminBus == null) return;
-    final bus = context.read<BusCubit>().state.selectedAdminBus!;
-
-    switch (feature) {
-      case AppLocalKay.arrival_alert:
-        _setArrivalAlert();
-        break;
-      case AppLocalKay.share_location:
-        _shareLocation(bus);
-        break;
-      case AppLocalKay.urgent_call:
-        _showEmergencyDialog();
-        break;
-    }
-  }
-
-  void _setArrivalAlert() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        int tempSelected = _selectedAlertMinutes;
-        return StatefulBuilder(
-          builder: (context, setDialogState) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              title: Text(
-                AppLocalKay.arrival_alert.tr(),
-                style: AppTextStyle.bodyLarge(context).copyWith(fontWeight: FontWeight.bold),
-              ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'اختر موعد التنبيه قبل وصول الحافلة:',
-                    style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey),
-                  ),
-                  SizedBox(height: 16.h),
-                  Wrap(
-                    spacing: 8.w,
-                    runSpacing: 8.h,
-                    children: [
-                      _buildChoiceChip(
-                        5,
-                        "5 ثواني (تجربة)",
-                        tempSelected,
-                        (val) => setDialogState(() => tempSelected = val),
-                      ),
-                      _buildChoiceChip(
-                        5 * 60,
-                        "5 دقائق",
-                        tempSelected,
-                        (val) => setDialogState(() => tempSelected = val),
-                      ),
-                      _buildChoiceChip(
-                        10 * 60,
-                        "10 دقائق",
-                        tempSelected,
-                        (val) => setDialogState(() => tempSelected = val),
-                      ),
-                      _buildChoiceChip(
-                        15 * 60,
-                        "15 دقيقة",
-                        tempSelected,
-                        (val) => setDialogState(() => tempSelected = val),
-                      ),
-                    ],
-                  ),
-                  if (tempSelected != 0) ...[
-                    Padding(
-                      padding: EdgeInsets.only(top: 16.h),
-                      child: TextButton.icon(
-                        onPressed: () => setDialogState(() => tempSelected = 0),
-                        icon: Icon(
-                          Icons.notifications_off_outlined,
-                          color: AppColor.errorColor(context),
-                          size: 20,
-                        ),
-                        label: Text(
-                          AppLocalKay.cancel_alert.tr(),
-                          style: AppTextStyle.bodySmall(
-                            context,
-                          ).copyWith(color: AppColor.errorColor(context)),
-                        ),
-                      ),
-                    ),
-                  ],
-                ],
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyMedium(context)),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() => _selectedAlertMinutes = tempSelected);
-                    Navigator.pop(context);
-                    _scheduleAlert(tempSelected);
-                  },
-                  style: ElevatedButton.styleFrom(backgroundColor: AppColor.primaryColor(context)),
-                  child: Text(
-                    AppLocalKay.confirm.tr(),
-                    style: AppTextStyle.bodyMedium(context, color: Colors.white),
-                  ),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
-
-  void _scheduleAlert(int durationInSeconds) {
-    _alertTimer?.cancel();
-    if (durationInSeconds > 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            "تم ضبط التنبيه بعد ${durationInSeconds < 60 ? '$durationInSeconds ثواني' : '${durationInSeconds ~/ 60} دقيقة'}",
-          ),
-          backgroundColor: const Color(0xFF4CAF50),
-        ),
-      );
-
-      _alertTimer = Timer(Duration(seconds: durationInSeconds), () async {
-        // Play Sound
-        try {
-          await _audioPlayer.play(
-            UrlSource('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3'),
-          );
-        } catch (e) {
-          print("Error playing sound: $e");
-        }
-
-        if (mounted) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Row(
-                children: [
-                  Icon(Icons.access_alarm, color: Colors.red),
-                  SizedBox(width: 8),
-                  Text(
-                    AppLocalKay.alert_arrived.tr(),
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              content: Text(
-                AppLocalKay.alert_arrived_desc.tr(),
-                style: AppTextStyle.bodySmall(context),
-              ),
-              actions: [
-                ElevatedButton(
-                  onPressed: () {
-                    _audioPlayer.stop();
-                    Navigator.pop(context);
-                  },
-                  child: Text(AppLocalKay.ok.tr(), style: AppTextStyle.bodyMedium(context)),
-                ),
-              ],
-            ),
-          );
-        }
-      });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalKay.alert_cancel.tr()),
-          backgroundColor: AppColor.accentColor(context),
-        ),
-      );
-    }
-  }
-
-  Widget _buildChoiceChip(int value, String label, int currentSelection, Function(int) onSelected) {
-    final isSelected = value == currentSelection;
-    return ChoiceChip(
-      label: Text(label),
-      selected: isSelected,
-      onSelected: (selected) => onSelected(selected ? value : 0),
-      selectedColor: AppColor.primaryColor(context),
-      backgroundColor: AppColor.grey200Color(context),
-      labelStyle: TextStyle(
-        color: isSelected ? AppColor.whiteColor(context) : AppColor.blackColor(context),
-        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-      ),
-    );
-  }
-
-  void _shareLocation(BusModel bus) {
-    if (bus.lat != null && bus.lng != null) {
-      final String googleMapsUrl =
-          "https://www.google.com/maps/search/?api=1&query=${bus.lat},${bus.lng}";
-      Share.share("${AppLocalKay.share_location.tr()} ${bus.busNumber}\n$googleMapsUrl");
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalKay.location_not_available.tr()),
-          backgroundColor: AppColor.errorColor(context),
-        ),
-      );
-    }
   }
 
   void _showEmergencyDialog() {
@@ -353,75 +159,108 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
   // =========================== Build ===========================
   @override
   Widget build(BuildContext context) {
-    // Reverted to local mockup for Student view as requested
-    final selectedBus = BusModel(
-      busNumber: "BUS-112",
-      busName: "حافلة الصف العاشر",
-      driverName: "محمد الوهيبي",
-      driverPhone: "0501234567",
-      currentLocation: "حي الملقا - طريق الملك فهد",
-      nextStop: "محطة الجامعة",
-      estimatedTime: "7 دقائق",
-      distance: "1.2 كم",
-      speed: "45 كم/ساعة",
-      capacity: "40",
-      occupiedSeats: "32",
-      status: "في الطريق",
-      busColor: const Color(0xFF4CAF50),
-      route: "مسار النخبة",
-      attendanceRate: "98%",
-      fuelLevel: "85%",
-      maintenanceStatus: "جيد",
-      studentsOnBoard: "32",
-      lat: 24.7136,
-      lng: 46.6753,
-    );
-
-    final List<Map<String, dynamic>> stops = [
-      {'name': 'المنزل', 'time': '6:30 ص', 'passed': true, 'current': false},
-      {'name': 'شارع التحلية', 'time': '6:45 ص', 'passed': true, 'current': false},
-      {'name': 'ميدان الملكة', 'time': '7:00 ص', 'passed': false, 'current': true},
-      {'name': 'محطة الجامعة', 'time': '7:15 ص', 'passed': false, 'current': false},
-      {'name': 'المدرسة', 'time': '7:30 ص', 'passed': false, 'current': false},
-    ];
-
-    final List<Map<String, dynamic>> schedule = [
-      {'period': AppLocalKay.morning.tr(), 'pickup': '6:30 ص', 'arrival': '7:30 ص'},
-      {'period': AppLocalKay.evening.tr(), 'pickup': '12:30 م', 'arrival': '1:30 م'},
-      {'period': AppLocalKay.night.tr(), 'pickup': '3:30 م', 'arrival': '4:30 م'},
-    ];
+    // Mock stops and schedule as they are not yet in BusLine
 
     return Scaffold(
       backgroundColor: AppColor.whiteColor(context),
-      body: SafeArea(
-        child: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            SliverToBoxAdapter(
-              child: Center(
-                child: Text(
-                  AppLocalKay.bus_title.tr(),
-                  style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
-                ),
+      body: BlocBuilder<BusCubit, BusState>(
+        builder: (context, state) {
+          if (state.busStatus.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state.busStatus.isFailure) {
+            return Center(child: Text(state.busStatus.error ?? "An error occurred"));
+          }
+
+          if (state.busStatus.isSuccess) {
+            final busLines = state.busStatus.data ?? [];
+            if (busLines.isEmpty) {
+              return Center(child: Text("No Bus Found"));
+            }
+
+            final busLine = busLines.first;
+
+            // Map BusLine to BusModel
+            final selectedBus = BusModel(
+              busNumber: busLine.plateNo,
+              busName: busLine.busLineName,
+              driverName: busLine.busDriverName,
+              driverPhone: busLine.mobileNo,
+              currentLocation: "الموقع الحالي غير متاح",
+              nextStop: "---",
+              estimatedTime: "---",
+              distance: "---",
+              speed: "---",
+              capacity: busLine.busSets.toString(),
+              occupiedSeats: busLine.busSetsUsed.toString(),
+              status: busLine.busState == 1 ? "Active" : "Inactive",
+              busColor: const Color(0xFF4CAF50),
+              route: "مسار ${busLine.busLineName}",
+              attendanceRate: "---",
+              fuelLevel: "---",
+              maintenanceStatus: "---",
+              studentsOnBoard: busLine.busSetsUsed.toString(),
+              supervisorName: busLine.busSupervisorName1,
+              supervisorPhone: busLine.supMobileNo,
+              busType: busLine.busType,
+              modelYear: busLine.modelNo,
+              sectionName: busLine.busSectionName,
+              accountName: busLine.accountName,
+            );
+
+            // Dynamic Stops Parsing
+            // Splitting "Station1/Station2/Station3" -> List
+            List<String> routeStopsNames = busLine.busLineName
+                .split('/')
+                .map((e) => e.trim())
+                .where((e) => e.isNotEmpty)
+                .toList();
+
+            // Fallback if split results in empty (shouldn't happen if name exists)
+            if (routeStopsNames.isEmpty) {
+              routeStopsNames = [busLine.busLineName];
+            }
+
+            // Create stops list for UI
+            final List<Map<String, dynamic>> dynamicStops = routeStopsNames.map((name) {
+              return {'name': name, 'time': '---', 'passed': false, 'current': false};
+            }).toList();
+
+            return SafeArea(
+              child: CustomScrollView(
+                physics: const BouncingScrollPhysics(),
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Center(
+                      child: Text(
+                        AppLocalKay.bus_title.tr(),
+                        style: AppTextStyle.titleLarge(
+                          context,
+                        ).copyWith(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: BusTrackingCard(
+                      busData: selectedBus,
+                      stops: dynamicStops,
+                      busAnimation: _busAnimation,
+                      isBusMoving: _isBusMoving,
+                      refreshLocation: _refreshLocation,
+                      toggleBusMovement: _toggleBusMovement,
+                      callDriver: () =>
+                          _callDriver(selectedBus.driverName, selectedBus.driverPhone),
+                    ),
+                  ),
+                  SliverToBoxAdapter(child: RouteProgress(stops: dynamicStops)),
+                  SliverToBoxAdapter(child: BusInformation(busData: selectedBus)),
+                ],
               ),
-            ),
-            SliverToBoxAdapter(
-              child: BusTrackingCard(
-                busData: selectedBus,
-                stops: stops,
-                busAnimation: _busAnimation,
-                isBusMoving: _isBusMoving,
-                refreshLocation: _refreshLocation,
-                toggleBusMovement: _toggleBusMovement,
-                callDriver: () => _callDriver(selectedBus.driverName),
-              ),
-            ),
-            SliverToBoxAdapter(child: RouteProgress(stops: stops)),
-            SliverToBoxAdapter(child: BusInformation(busData: selectedBus)),
-            SliverToBoxAdapter(child: ScheduleSection(schedule: schedule)),
-            SliverToBoxAdapter(child: SafetyFeatures(onFeatureTap: _handleSafetyFeature)),
-          ],
-        ),
+            );
+          }
+
+          // Show something while initial or waiting if not loading
+          return const Center(child: CircularProgressIndicator());
+        },
       ),
       floatingActionButton: EmergencyButton(showDialogCallback: () => _showEmergencyDialog()),
     );
