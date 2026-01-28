@@ -60,7 +60,7 @@ abstract class ProfileRepo {
   }
 }
 
-class ProfileRepoImpl implements ProfileRepo {
+class ProfileRepoImpl extends ProfileRepo {
   final ApiConsumer apiConsumer;
   ProfileRepoImpl(this.apiConsumer);
   @override
@@ -82,22 +82,5 @@ class ProfileRepoImpl implements ProfileRepo {
         return profiles.first;
       },
     );
-  }
-
-  Future<List<Achievement>> getStudentAchievements() {
-    // TODO: implement getStudentAchievements
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<List<ProfileActivity>> getStudentActivities() {
-    // TODO: implement getStudentActivities
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<ProfileModel> getStudentProfile() {
-    // TODO: implement getStudentProfile
-    throw UnimplementedError();
   }
 }

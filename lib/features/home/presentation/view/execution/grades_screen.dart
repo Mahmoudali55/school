@@ -51,7 +51,6 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
     _headerController.forward();
     _monthScrollController = ScrollController();
 
-    // Set initial month based on current date if possible
     _setInitialMonth();
     _fetchData();
   }
@@ -75,12 +74,10 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
     final cubit = context.read<HomeCubit>();
     int? code;
 
-    // Determine code based on user type
     final type = HiveMethods.getType().trim();
     if (type == '1' || type == 'student') {
       code = int.tryParse(HiveMethods.getUserCode());
     } else {
-      // Parent viewing selected student
       code = cubit.state.selectedStudent?.studentCode;
     }
 
@@ -127,9 +124,7 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
             child: CustomScrollView(
               physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
               slivers: [
-                // Month Selector
                 SliverToBoxAdapter(child: _buildMonthSelector()),
-
                 if (isLoading)
                   const SliverFillRemaining(child: Center(child: CustomLoading()))
                 else if (error != null)
@@ -137,17 +132,17 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
                 else if (grades.isEmpty)
                   _buildEmptyState()
                 else ...[
-                  // GPA Summary Card
                   SliverToBoxAdapter(
                     child: ScaleTransition(scale: _headerScale, child: _buildGPACard(average)),
                   ),
-
-                  // Grades List
                   SliverPadding(
                     padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate((context, index) {
-                        return _buildGradeCard(grades[index], index);
+                        final grade = grades[index];
+                        final percentage = (grade.studentDegree / grade.courseDegree) * 100;
+                        final color = _getStatusColor(percentage);
+                        return _buildGradeCard(grade, color);
                       }, childCount: grades.length),
                     ),
                   ),
@@ -234,7 +229,6 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
       ),
       child: Stack(
         children: [
-          // Decorative circles
           Positioned(
             right: -20,
             top: -20,
@@ -245,7 +239,6 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
             bottom: -30,
             child: CircleAvatar(radius: 40, backgroundColor: Colors.white.withOpacity(0.1)),
           ),
-
           Padding(
             padding: EdgeInsets.all(24.w),
             child: Row(
@@ -287,7 +280,6 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
                     ],
                   ),
                 ),
-                // Circular Progress Indicator
                 SizedBox(
                   width: 100.w,
                   height: 100.w,
@@ -312,9 +304,8 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
     );
   }
 
-  Widget _buildGradeCard(StudentCourseDegree grade, int index) {
+  Widget _buildGradeCard(StudentCourseDegree grade, Color color) {
     final percentage = (grade.studentDegree / grade.courseDegree) * 100;
-    final color = _getStatusColor(percentage);
 
     return Container(
       margin: EdgeInsets.only(bottom: 16.h),
@@ -332,7 +323,7 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () => _viewGradeDetails(grade),
+          onTap: () => _viewGradeDetails(grade, color),
           borderRadius: BorderRadius.circular(20.r),
           child: Padding(
             padding: EdgeInsets.all(16.w),
@@ -450,10 +441,10 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
   }
 
   Color _getStatusColor(double percentage) {
-    if (percentage >= 90) return AppColor.secondAppColor(context); // Premium Green
-    if (percentage >= 80) return AppColor.primaryColor(context); // Premium Blue
-    if (percentage >= 70) return AppColor.accentColor(context); // Premium Orange
-    return AppColor.errorColor(context); // Premium Pink/Red
+    if (percentage >= 90) return AppColor.secondAppColor(context);
+    if (percentage >= 80) return AppColor.primaryColor(context);
+    if (percentage >= 70) return AppColor.accentColor(context);
+    return AppColor.errorColor(context);
   }
 
   String _getGradeDescription(double percentage) {
@@ -490,9 +481,8 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
     Share.share(gradesText, subject: AppLocalKay.grades_report.tr());
   }
 
-  void _viewGradeDetails(StudentCourseDegree grade) {
+  void _viewGradeDetails(StudentCourseDegree grade, Color color) {
     final percentage = (grade.studentDegree / grade.courseDegree) * 100;
-    final color = _getStatusColor(percentage);
 
     showModalBottomSheet(
       context: context,
