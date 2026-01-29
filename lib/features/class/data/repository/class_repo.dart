@@ -149,15 +149,11 @@ class ClassRepoImpl extends ClassRepo {
           EndPoints.studentCourses,
           queryParameters: {"Level": level},
         );
-
         final rawData = response['Data'];
-
         if (rawData == null || rawData == "null" || rawData == "" || rawData == "[]") {
           return <StudentCoursesModel>[];
         }
-
         List<dynamic> decoded = [];
-
         if (rawData is String) {
           try {
             decoded = jsonDecode(rawData);
@@ -167,7 +163,6 @@ class ClassRepoImpl extends ClassRepo {
         } else if (rawData is List) {
           decoded = rawData;
         }
-
         return decoded.map((e) => StudentCoursesModel.fromJson(e)).toList();
       },
     );

@@ -20,7 +20,6 @@ class _SplashScreenState extends State<SplashScreen> {
       if (token != null && token.isNotEmpty) {
         final type = HiveMethods.getType().trim();
         String routeType = "admin";
-
         if (type == "1" || type == "student") {
           routeType = "student";
         } else if (type == "2" || type == "parent") {
@@ -28,8 +27,8 @@ class _SplashScreenState extends State<SplashScreen> {
         } else if (type == "3" || type == "teacher") {
           routeType = "teacher";
         }
-
-        NavigatorMethods.pushNamed(context, RoutesName.layoutScreen, arguments: routeType);
+        //  NavigatorMethods.pushNamed(context, RoutesName.layoutScreen, arguments: routeType);
+        NavigatorMethods.pushNamed(context, RoutesName.onBoardingScreen);
       } else {
         NavigatorMethods.pushNamed(context, RoutesName.onBoardingScreen);
       }
