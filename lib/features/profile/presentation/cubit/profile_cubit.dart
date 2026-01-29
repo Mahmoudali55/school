@@ -36,4 +36,14 @@ class ProfileCubit extends Cubit<ProfileState> {
       (success) => emit(state.copyWith(parentProfileStatus: StatusState.success(success))),
     );
   }
+
+  Future<void> StudentProfile(int code) async {
+    emit(state.copyWith(studentProfileStatus: StatusState.loading()));
+
+    final result = await _profileRepo.StudentProfile(code: code);
+    result.fold(
+      (error) => emit(state.copyWith(studentProfileStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(studentProfileStatus: StatusState.success(success))),
+    );
+  }
 }
