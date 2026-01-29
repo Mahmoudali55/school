@@ -61,7 +61,7 @@ class _BusTrackingCardState extends State<BusTrackingCard> {
               isBusMoving: widget.isBusMoving,
             ),
           ),
-
+          SizedBox(height: 20.h),
           BusControls(
             refreshLocation: widget.refreshLocation,
             toggleBusMovement: widget.toggleBusMovement,

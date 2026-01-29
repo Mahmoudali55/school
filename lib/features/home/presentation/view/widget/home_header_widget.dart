@@ -45,13 +45,9 @@ class HomeHeaderWidget extends StatelessWidget {
               SizedBox(height: 4.h),
               Text(
                 studentName,
-                style: AppTextStyle.headlineSmall(
+                style: AppTextStyle.bodyMedium(
                   context,
                 ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
-              ),
-              Text(
-                classInfo,
-                style: AppTextStyle.headlineSmall(context).copyWith(color: const Color(0xFF1F2937)),
               ),
             ],
           ),

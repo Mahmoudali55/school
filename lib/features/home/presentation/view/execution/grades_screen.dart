@@ -180,17 +180,17 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
                     ? LinearGradient(
                         colors: [
                           AppColor.primaryColor(context),
-                          AppColor.primaryColor(context).withOpacity(0.8),
+                          AppColor.primaryColor(context).withValues(alpha: 0.8),
                         ],
                       )
                     : null,
-                color: isSelected ? null : Colors.white,
+                color: isSelected ? null : AppColor.whiteColor(context),
                 borderRadius: BorderRadius.circular(20.r),
                 boxShadow: [
                   BoxShadow(
                     color: isSelected
-                        ? AppColor.primaryColor(context).withOpacity(0.3)
-                        : Colors.black.withOpacity(0.05),
+                        ? AppColor.primaryColor(context).withValues(alpha: (0.3))
+                        : AppColor.blackColor(context).withValues(alpha: (0.05)),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -200,7 +200,7 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
               child: Text(
                 _months[index]['name'],
                 style: AppTextStyle.bodySmall(context).copyWith(
-                  color: isSelected ? Colors.white : Colors.grey[700],
+                  color: isSelected ? AppColor.whiteColor(context) : AppColor.greyColor(context),
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
                 ),
               ),
@@ -221,10 +221,18 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [color, color.withOpacity(0.8), color.withOpacity(0.6)],
+          colors: [
+            color,
+            color.withValues(alpha: (0.8)),
+            color.withValues(alpha: 0.6),
+          ],
         ),
         boxShadow: [
-          BoxShadow(color: color.withOpacity(0.3), blurRadius: 20, offset: const Offset(0, 10)),
+          BoxShadow(
+            color: color.withValues(alpha: 0.3),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
         ],
       ),
       child: Stack(
@@ -232,12 +240,18 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
           Positioned(
             right: -20,
             top: -20,
-            child: CircleAvatar(radius: 60, backgroundColor: Colors.white.withOpacity(0.1)),
+            child: CircleAvatar(
+              radius: 60,
+              backgroundColor: AppColor.whiteColor(context).withValues(alpha: 0.1),
+            ),
           ),
           Positioned(
             left: 20,
             bottom: -30,
-            child: CircleAvatar(radius: 40, backgroundColor: Colors.white.withOpacity(0.1)),
+            child: CircleAvatar(
+              radius: 40,
+              backgroundColor: AppColor.whiteColor(context).withValues(alpha: 0.1),
+            ),
           ),
           Padding(
             padding: EdgeInsets.all(24.w),
@@ -252,13 +266,13 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
                         AppLocalKay.gpa.tr(),
                         style: AppTextStyle.bodyMedium(
                           context,
-                        ).copyWith(color: Colors.white.withOpacity(0.9)),
+                        ).copyWith(color: AppColor.whiteColor(context).withValues(alpha: 0.9)),
                       ),
                       Gap(4.h),
                       Text(
                         '${average.toStringAsFixed(1)}%',
                         style: AppTextStyle.headlineLarge(context).copyWith(
-                          color: Colors.white,
+                          color: AppColor.whiteColor(context),
                           fontWeight: FontWeight.bold,
                           fontSize: 42.sp,
                         ),
@@ -267,14 +281,15 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.2),
+                          color: AppColor.whiteColor(context).withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(20.r),
                         ),
                         child: Text(
                           _getGradeDescription(average),
-                          style: AppTextStyle.bodySmall(
-                            context,
-                          ).copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                          style: AppTextStyle.bodySmall(context).copyWith(
+                            color: AppColor.whiteColor(context),
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
@@ -289,10 +304,14 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
                       CircularProgressIndicator(
                         value: average / 100,
                         strokeWidth: 10,
-                        backgroundColor: Colors.white.withOpacity(0.2),
-                        valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                        backgroundColor: AppColor.whiteColor(context).withValues(alpha: 0.2),
+                        valueColor: AlwaysStoppedAnimation<Color>(AppColor.whiteColor(context)),
                       ),
-                      const Icon(Icons.emoji_events_rounded, color: Colors.white, size: 40),
+                      Icon(
+                        Icons.emoji_events_rounded,
+                        color: AppColor.whiteColor(context),
+                        size: 40,
+                      ),
                     ],
                   ),
                 ),
@@ -310,11 +329,11 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
     return Container(
       margin: EdgeInsets.only(bottom: 16.h),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: AppColor.blackColor(context).withValues(alpha: 0.03),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -335,7 +354,7 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
                       width: 50.w,
                       height: 50.w,
                       decoration: BoxDecoration(
-                        color: color.withOpacity(0.1),
+                        color: color.withValues(alpha: (0.1)),
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       child: Icon(Icons.auto_stories_rounded, color: color),
@@ -355,7 +374,7 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
                             '${AppLocalKay.grade.tr()}: ${grade.studentDegree}/${grade.courseDegree}',
                             style: AppTextStyle.bodySmall(
                               context,
-                            ).copyWith(color: Colors.grey[600]),
+                            ).copyWith(color: AppColor.grey600Color(context)),
                           ),
                         ],
                       ),
@@ -373,7 +392,7 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
                           _getGradeDescription(percentage),
                           style: AppTextStyle.bodySmall(
                             context,
-                          ).copyWith(color: color.withOpacity(0.7), fontSize: 10.sp),
+                          ).copyWith(color: color.withValues(alpha: 0.7), fontSize: 10.sp),
                         ),
                       ],
                     ),
@@ -385,7 +404,7 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
                     Container(
                       height: 8.h,
                       decoration: BoxDecoration(
-                        color: Colors.grey[100],
+                        color: AppColor.grey100Color(context),
                         borderRadius: BorderRadius.circular(4.r),
                       ),
                     ),
@@ -394,11 +413,11 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
                       height: 8.h,
                       width: (MediaQuery.of(context).size.width - 64.w) * (percentage / 100),
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(colors: [color.withOpacity(0.6), color]),
+                        gradient: LinearGradient(colors: [color.withValues(alpha: 0.2), color]),
                         borderRadius: BorderRadius.circular(4.r),
                         boxShadow: [
                           BoxShadow(
-                            color: color.withOpacity(0.2),
+                            color: color.withValues(alpha: 0.2),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
                           ),
@@ -432,7 +451,9 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
             Gap(16.h),
             Text(
               AppLocalKay.no_grades.tr(),
-              style: AppTextStyle.bodyLarge(context).copyWith(color: Colors.grey),
+              style: AppTextStyle.bodyLarge(
+                context,
+              ).copyWith(color: AppColor.grey600Color(context)),
             ),
           ],
         ),
@@ -448,14 +469,14 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
   }
 
   String _getGradeDescription(double percentage) {
-    if (percentage >= 95) return AppLocalKay.excellentHigh;
-    if (percentage >= 90) return AppLocalKay.excellent;
-    if (percentage >= 85) return AppLocalKay.veryGoodHigh;
-    if (percentage >= 80) return AppLocalKay.veryGood;
-    if (percentage >= 75) return AppLocalKay.goodHigh;
-    if (percentage >= 70) return AppLocalKay.good;
-    if (percentage >= 60) return AppLocalKay.pass;
-    return AppLocalKay.fail;
+    if (percentage >= 95) return AppLocalKay.excellentHigh.tr();
+    if (percentage >= 90) return AppLocalKay.excellent.tr();
+    if (percentage >= 85) return AppLocalKay.veryGoodHigh.tr();
+    if (percentage >= 80) return AppLocalKay.veryGood.tr();
+    if (percentage >= 75) return AppLocalKay.goodHigh.tr();
+    if (percentage >= 70) return AppLocalKay.good.tr();
+    if (percentage >= 60) return AppLocalKay.pass.tr();
+    return AppLocalKay.fail.tr();
   }
 
   double _calculateAverage(List<StudentCourseDegree> grades) {
@@ -478,7 +499,9 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
     final avg = _calculateAverage(grades);
     gradesText += "\n🏆 *${AppLocalKay.cumulative_rate.tr()} ${avg.toStringAsFixed(1)}%*";
 
-    Share.share(gradesText, subject: AppLocalKay.grades_report.tr());
+    SharePlus.instance.share(
+      ShareParams(text: gradesText, subject: AppLocalKay.grades_report.tr()),
+    );
   }
 
   void _viewGradeDetails(StudentCourseDegree grade, Color color) {

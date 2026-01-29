@@ -2,12 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/home/presentation/view/execution/assignment_detail_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/widget/assignment_card.dart';
 import 'package:my_template/features/home/presentation/view/execution/widget/assignment_tabs.dart';
-import 'package:my_template/features/home/presentation/view/execution/widget/create_assignment_sheet.dart';
 import 'package:my_template/features/home/presentation/view/execution/widget/submit_assignment_dialog.dart';
 
 class AssignmentsScreen extends StatefulWidget {
@@ -88,9 +88,6 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
           Expanded(child: _buildTabContent()),
         ],
       ),
-      floatingActionButton: _selectedTab == 0
-          ? FloatingActionButton(onPressed: _createNewAssignment, child: const Icon(Icons.add))
-          : null,
     );
   }
 
@@ -113,11 +110,11 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.assignment, size: 60.w, color: Colors.grey),
+            Icon(Icons.assignment, size: 60.w, color: AppColor.greyColor(context)),
             SizedBox(height: 16.h),
             Text(
               AppLocalKay.no_assignments.tr(),
-              style: AppTextStyle.titleMedium(context).copyWith(color: Colors.grey),
+              style: AppTextStyle.titleMedium(context).copyWith(color: AppColor.greyColor(context)),
             ),
           ],
         ),
@@ -135,14 +132,6 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
           onViewDetails: _viewAssignmentDetails,
         );
       },
-    );
-  }
-
-  void _createNewAssignment() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) => const CreateAssignmentSheet(),
     );
   }
 
