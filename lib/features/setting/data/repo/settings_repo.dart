@@ -33,7 +33,7 @@ abstract class SettingsRepo {
   }
 }
 
-class SettingsRepoImpl implements SettingsRepo {
+class SettingsRepoImpl extends SettingsRepo {
   final ApiConsumer apiConsumer;
   SettingsRepoImpl(this.apiConsumer);
 
@@ -56,20 +56,5 @@ class SettingsRepoImpl implements SettingsRepo {
         return ChangePasswordResponseModel.fromJson(response);
       },
     );
-  }
-
-  SettingsModel getSettings() {
-    // TODO: implement getSettings
-    throw UnimplementedError();
-  }
-
-  @override
-  void updateLanguage(String code) {
-    // TODO: implement updateLanguage
-  }
-
-  @override
-  void updateNotificationSetting(String key, bool value) {
-    // TODO: implement updateNotificationSetting
   }
 }
