@@ -54,4 +54,16 @@ class ClassCubit extends Cubit<ClassState> {
       (homeWorkList) => emit(state.copyWith(homeWorkStatus: StatusState.success(homeWorkList))),
     );
   }
+
+  Future<void> studentCoursesStatus({required int level}) async {
+    emit(state.copyWith(studentCoursesStatus: const StatusState.loading()));
+
+    final result = await _classRepo.getStudentCourses(level: level);
+    result.fold(
+      (failure) =>
+          emit(state.copyWith(studentCoursesStatus: StatusState.failure(failure.errMessage))),
+      (homeWorkList) =>
+          emit(state.copyWith(studentCoursesStatus: StatusState.success(homeWorkList))),
+    );
+  }
 }

@@ -70,7 +70,7 @@ class HiveMethods {
     _box.put('levelCode', levelCode);
   }
 
-  static void getUserLevelCode() {
+  static getUserLevelCode() {
     return _box.get('levelCode', defaultValue: '');
   }
 

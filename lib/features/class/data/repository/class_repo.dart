@@ -7,12 +7,14 @@ import 'package:my_template/core/network/api_consumer.dart';
 import 'package:my_template/core/network/end_points.dart';
 import 'package:my_template/features/class/data/model/class_models.dart';
 import 'package:my_template/features/class/data/model/home_work_model.dart';
+import 'package:my_template/features/class/data/model/student_courses_model.dart';
 
 abstract interface class ClassRepo {
   Future<Either<Failure, List<HomeWorkModel>>> getHomeWork({
     required int code,
     required String hwDate,
   });
+  Future<Either<Failure, List<StudentCoursesModel>>> getStudentCourses({required int level});
   final List<StudentClassModel> _studentClasses = const [
     StudentClassModel(
       id: '1',
@@ -135,6 +137,38 @@ class ClassRepoImpl extends ClassRepo {
         }
 
         return list.map((e) => HomeWorkModel.fromJson(e)).toList();
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, List<StudentCoursesModel>>> getStudentCourses({required int level}) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.studentCourses,
+          queryParameters: {"Level": level},
+        );
+
+        final rawData = response['Data'];
+
+        if (rawData == null || rawData == "null" || rawData == "" || rawData == "[]") {
+          return <StudentCoursesModel>[];
+        }
+
+        List<dynamic> decoded = [];
+
+        if (rawData is String) {
+          try {
+            decoded = jsonDecode(rawData);
+          } catch (_) {
+            return <StudentCoursesModel>[];
+          }
+        } else if (rawData is List) {
+          decoded = rawData;
+        }
+
+        return decoded.map((e) => StudentCoursesModel.fromJson(e)).toList();
       },
     );
   }
