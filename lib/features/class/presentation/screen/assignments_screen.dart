@@ -1,121 +1,126 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
-import 'package:my_template/features/class/data/model/assignment_model.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/class/data/model/home_work_model.dart';
+import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
+import 'package:my_template/features/class/presentation/cubit/class_state.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 
 class AssignmentsScreen extends StatefulWidget {
-  const AssignmentsScreen({super.key});
+  final int? code;
+  final String? hwDate;
+
+  const AssignmentsScreen({super.key, this.code, this.hwDate});
 
   @override
   State<AssignmentsScreen> createState() => _AssignmentsScreenState();
 }
 
 class _AssignmentsScreenState extends State<AssignmentsScreen> {
-  AssignmentStatus? _selectedFilter;
+  @override
+  void initState() {
+    super.initState();
+    _fetchHomeWork();
+  }
 
-  final List<AssignmentModel> _dummyAssignments = [
-    AssignmentModel(
-      id: "1",
-      title: "بحث في تاريخ العلوم",
-      subject: "التاريخ",
-      description: "اكتب بحثاً من 3 صفحات عن علماء العصر الذهبي.",
-      dueDate: DateTime.now().add(const Duration(days: 2)),
-      status: AssignmentStatus.pending,
-    ),
-    AssignmentModel(
-      id: "2",
-      title: "حل تمارين الجبر",
-      subject: "الرياضيات",
-      description: "حل المسائل من صفحة 45 إلى 50.",
-      dueDate: DateTime.now().subtract(const Duration(days: 1)),
-      status: AssignmentStatus.submitted,
-    ),
-    AssignmentModel(
-      id: "3",
-      title: "تحليل نص شعري",
-      subject: "اللغة العربية",
-      description: "حلل الأبيات العشرة الأولى من معلقة امرئ القيس.",
-      dueDate: DateTime.now().subtract(const Duration(days: 5)),
-      status: AssignmentStatus.graded,
-      grade: 95,
-    ),
-  ];
+  void _fetchHomeWork() {
+    int targetCode = widget.code ?? 0;
+    String targetDate = widget.hwDate ?? DateFormat('yyyy-MM-dd', 'en').format(DateTime.now());
+
+    if (targetCode == 0) {
+      // Try HomeCubit
+      try {
+        final homeCubit = context.read<HomeCubit>();
+        targetCode = homeCubit.state.selectedStudent?.studentCode ?? 0;
+
+        if (targetCode == 0) {
+          final parentsStudents = homeCubit.state.parentsStudentStatus.data;
+          if (parentsStudents != null && parentsStudents.isNotEmpty) {
+            targetCode = parentsStudents[0].studentCode;
+          }
+        }
+      } catch (_) {}
+    }
+
+    if (targetCode == 0) {
+      // Try Hive
+      String hiveCode = HiveMethods.getUserCode();
+      if (hiveCode.isNotEmpty) {
+        targetCode = int.tryParse(hiveCode) ?? 0;
+      }
+    }
+
+    if (targetCode != 0) {
+      context.read<ClassCubit>().getHomeWork(code: targetCode, hwDate: targetDate);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final filteredList = _selectedFilter == null
-        ? _dummyAssignments
-        : _dummyAssignments.where((a) => a.status == _selectedFilter).toList();
-
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
-      appBar: CustomAppBar(context, title: const Text("الواجبات والمهام")),
-      body: Column(
-        children: [
-          _buildFilterBar(),
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.all(16.w),
-              itemCount: filteredList.length,
-              itemBuilder: (context, index) {
-                return _buildAssignmentCard(filteredList[index]);
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFilterBar() {
-    return Container(
-      height: 60.h,
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [
-          _buildFilterChip(null, "الكل"),
-          _buildFilterChip(AssignmentStatus.pending, "قيد التنفيذ"),
-          _buildFilterChip(AssignmentStatus.submitted, "تم التسليم"),
-          _buildFilterChip(AssignmentStatus.graded, "مصصح"),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFilterChip(AssignmentStatus? status, String label) {
-    bool isSelected = _selectedFilter == status;
-    return Padding(
-      padding: EdgeInsets.only(right: 8.w),
-      child: FilterChip(
-        label: Text(label),
-        selected: isSelected,
-        onSelected: (val) {
-          setState(() => _selectedFilter = status);
-        },
-        selectedColor: AppColor.primaryColor(context).withOpacity(0.2),
-        checkmarkColor: AppColor.primaryColor(context),
-        labelStyle: AppTextStyle.bodySmall(context).copyWith(
-          color: isSelected ? AppColor.primaryColor(context) : Colors.black54,
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+      backgroundColor: AppColor.whiteColor(context),
+      appBar: CustomAppBar(
+        context,
+        title: Text(AppLocalKay.todostitle.tr()),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
+      body: BlocBuilder<ClassCubit, ClassState>(
+        builder: (context, state) {
+          if (state.homeWorkStatus.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state.homeWorkStatus.isFailure) {
+            return Center(
+              child: Text(
+                state.homeWorkStatus.error ?? "حدث خطأ ما",
+                style: AppTextStyle.bodyMedium(
+                  context,
+                ).copyWith(color: AppColor.errorColor(context)),
+              ),
+            );
+          } else if (state.homeWorkStatus.isSuccess) {
+            final assignments = state.homeWorkStatus.data ?? [];
+            if (assignments.isEmpty) {
+              return Center(
+                child: Text(
+                  AppLocalKay.no_assignments.tr(),
+                  style: AppTextStyle.bodyMedium(context),
+                ),
+              );
+            }
+            return ListView.builder(
+              padding: EdgeInsets.all(16.w),
+              itemCount: assignments.length,
+              itemBuilder: (context, index) {
+                return _buildAssignmentCard(assignments[index]);
+              },
+            );
+          }
+          return const SizedBox.shrink();
+        },
+      ),
     );
   }
 
-  Widget _buildAssignmentCard(AssignmentModel assignment) {
+  Widget _buildAssignmentCard(HomeWorkModel assignment) {
     return Container(
       margin: EdgeInsets.only(bottom: 16.h),
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withValues(alpha: (0.05)),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -130,88 +135,54 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
                 decoration: BoxDecoration(
-                  color: _getStatusColor(assignment.status).withOpacity(0.1),
+                  color: AppColor.primaryColor(context).withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8.r),
                 ),
                 child: Text(
-                  _getStatusLabel(assignment.status),
-                  style: AppTextStyle.bodySmall(context).copyWith(
-                    color: _getStatusColor(assignment.status),
-                    fontWeight: FontWeight.bold,
-                  ),
+                  assignment.courseName,
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(color: AppColor.primaryColor(context), fontWeight: FontWeight.bold),
                 ),
               ),
               Text(
-                assignment.subject,
-                style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey),
+                assignment.hwDate,
+                style: AppTextStyle.bodySmall(
+                  context,
+                ).copyWith(color: AppColor.grey600Color(context)),
               ),
             ],
           ),
           SizedBox(height: 12.h),
           Text(
-            assignment.title,
+            assignment.hw,
             style: AppTextStyle.bodyLarge(context).copyWith(fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 8.h),
-          Text(
-            assignment.description,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.black54),
-          ),
+          if (assignment.notes.isNotEmpty) ...[
+            SizedBox(height: 8.h),
+            Text(
+              assignment.notes,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: AppTextStyle.bodyMedium(context).copyWith(color: AppColor.blackColor(context)),
+            ),
+          ],
           SizedBox(height: 16.h),
           const Divider(),
           SizedBox(height: 8.h),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                children: [
-                  const Icon(Icons.calendar_month_outlined, size: 16, color: Colors.grey),
-                  SizedBox(width: 4.w),
-                  Text(
-                    "موعد التسليم: ${DateFormat('yyyy-MM-dd').format(assignment.dueDate)}",
-                    style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey),
-                  ),
-                ],
+              Icon(Icons.school_outlined, size: 16, color: AppColor.greyColor(context)),
+              SizedBox(width: 4.w),
+              Text(
+                "${AppLocalKay.code.tr()}: ${assignment.classCode}",
+                style: AppTextStyle.bodySmall(context).copyWith(color: AppColor.greyColor(context)),
               ),
-              if (assignment.status == AssignmentStatus.graded)
-                Text(
-                  "الدرجة: ${assignment.grade}/100",
-                  style: AppTextStyle.bodyMedium(
-                    context,
-                  ).copyWith(color: Colors.green, fontWeight: FontWeight.bold),
-                ),
             ],
           ),
         ],
       ),
     );
-  }
-
-  Color _getStatusColor(AssignmentStatus status) {
-    switch (status) {
-      case AssignmentStatus.pending:
-        return Colors.orange;
-      case AssignmentStatus.submitted:
-        return Colors.blue;
-      case AssignmentStatus.graded:
-        return Colors.green;
-      case AssignmentStatus.late:
-        return Colors.red;
-    }
-  }
-
-  String _getStatusLabel(AssignmentStatus status) {
-    switch (status) {
-      case AssignmentStatus.pending:
-        return "قيد التنفيذ";
-      case AssignmentStatus.submitted:
-        return "تم التسليم";
-      case AssignmentStatus.graded:
-        return "تم التصحيح";
-      case AssignmentStatus.late:
-        return "متأخر";
-    }
   }
 }

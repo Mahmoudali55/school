@@ -63,7 +63,18 @@ class AppRouters {
       case RoutesName.digitalLibraryScreen:
         return MaterialPageRoute(builder: (_) => DigitalLibraryScreen());
       case RoutesName.assignmentsScreen:
-        return MaterialPageRoute(builder: (_) => AssignmentsScreen());
+        int? code;
+        String? date;
+        if (args is Map<String, dynamic>) {
+          code = args['code'];
+          date = args['date'];
+        }
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<ClassCubit>(),
+            child: AssignmentsScreen(code: code, hwDate: date),
+          ),
+        );
       case RoutesName.scheduleScreen:
         return MaterialPageRoute(builder: (_) => ScheduleScreen());
       case RoutesName.gradesScreen:
