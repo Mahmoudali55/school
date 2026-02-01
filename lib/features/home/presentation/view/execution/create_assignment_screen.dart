@@ -52,6 +52,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
   void initState() {
     super.initState();
     context.read<HomeCubit>().teacherLevel(int.parse(HiveMethods.getUserStage()));
+    context.read<HomeCubit>().teacherCourses(int.parse(HiveMethods.getUserCode()));
   }
 
   @override
@@ -142,13 +143,22 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                 style: AppTextStyle.formTitleStyle(context),
               ),
               SizedBox(height: 8.h),
-              CustomDropdownFormField<String>(
-                value: _selectedSubject,
-                submitted: _submitted,
-                hint: AppLocalKay.user_management_subject.tr(),
-                errorText: AppLocalKay.user_management_select_subject.tr(),
-                items: subjects.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-                onChanged: (v) => setState(() => _selectedSubject = v),
+              BlocBuilder<HomeCubit, HomeState>(
+                builder: (context, state) {
+                  final courses = state.teacherCoursesStatus.data ?? [];
+                  return CustomDropdownFormField<String>(
+                    value: _selectedSubject,
+                    submitted: _submitted,
+                    hint: AppLocalKay.user_management_subject.tr(),
+                    errorText: AppLocalKay.user_management_select_subject.tr(),
+                    items: courses
+                        .map(
+                          (e) => DropdownMenuItem(value: e.courseName, child: Text(e.courseName)),
+                        )
+                        .toList(),
+                    onChanged: (v) => setState(() => _selectedSubject = v),
+                  );
+                },
               ),
 
               Gap(8.h),

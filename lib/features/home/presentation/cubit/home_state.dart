@@ -13,6 +13,7 @@ import 'package:my_template/features/home/data/models/student_absent_data_model.
 import 'package:my_template/features/home/data/models/student_balance_model.dart';
 import 'package:my_template/features/home/data/models/student_course_degree_model.dart';
 import 'package:my_template/features/home/data/models/teacher_class_model.dart';
+import 'package:my_template/features/home/data/models/teacher_courses_model.dart';
 import 'package:my_template/features/home/data/models/teacher_level_model.dart';
 
 import '../../data/models/home_models.dart';
@@ -33,6 +34,7 @@ class HomeState extends Equatable {
     this.editUniformStatus = const StatusState.initial(),
     this.teacherLevelStatus = const StatusState.initial(),
     this.teacherClassesStatus = const StatusState.initial(),
+    this.teacherCoursesStatus = const StatusState.initial(),
 
     this.selectedStudent,
   });
@@ -51,6 +53,7 @@ class HomeState extends Equatable {
   final StatusState<EditUniformResponse> editUniformStatus;
   final StatusState<List<TeacherLevelModel>> teacherLevelStatus;
   final StatusState<List<TeacherClassModels>> teacherClassesStatus;
+  final StatusState<List<TeacherCoursesModel>> teacherCoursesStatus;
   final StudentMiniInfo? selectedStudent;
 
   @override
@@ -70,6 +73,7 @@ class HomeState extends Equatable {
     editUniformStatus,
     teacherLevelStatus,
     teacherClassesStatus,
+    teacherCoursesStatus,
   ];
 
   HomeState copyWith({
@@ -87,6 +91,7 @@ class HomeState extends Equatable {
     StatusState<EditUniformResponse>? editUniformStatus,
     StatusState<List<TeacherLevelModel>>? teacherLevelStatus,
     StatusState<List<TeacherClassModels>>? teacherClassesStatus,
+    StatusState<List<TeacherCoursesModel>>? teacherCoursesStatus,
 
     StudentMiniInfo? selectedStudent,
   }) {
@@ -106,6 +111,7 @@ class HomeState extends Equatable {
       editUniformStatus: editUniformStatus ?? this.editUniformStatus,
       teacherLevelStatus: teacherLevelStatus ?? this.teacherLevelStatus,
       teacherClassesStatus: teacherClassesStatus ?? this.teacherClassesStatus,
+      teacherCoursesStatus: teacherCoursesStatus ?? this.teacherCoursesStatus,
     );
   }
 }

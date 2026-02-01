@@ -21,6 +21,7 @@ import 'package:my_template/features/home/data/models/student_absent_data_model.
 import 'package:my_template/features/home/data/models/student_balance_model.dart';
 import 'package:my_template/features/home/data/models/student_course_degree_model.dart';
 import 'package:my_template/features/home/data/models/teacher_class_model.dart';
+import 'package:my_template/features/home/data/models/teacher_courses_model.dart';
 import 'package:my_template/features/home/data/models/teacher_level_model.dart';
 
 import '../models/home_models.dart';
@@ -66,6 +67,7 @@ abstract interface class HomeRepo {
     required int stageCode,
     required int levelCode,
   });
+  Future<Either<Failure, List<TeacherCoursesModel>>> teacherCourses({required int code});
 }
 
 class HomeRepoImpl implements HomeRepo {
@@ -278,6 +280,18 @@ class HomeRepoImpl implements HomeRepo {
         );
 
         return TeacherClassModels.fromApiResponse(response);
+      },
+    );
+  }
+
+  Future<Either<Failure, List<TeacherCoursesModel>>> teacherCourses({required int code}) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.teacherCourses,
+          queryParameters: {"Code": code},
+        );
+        return TeacherCoursesModel.fromApiResponse(response);
       },
     );
   }
