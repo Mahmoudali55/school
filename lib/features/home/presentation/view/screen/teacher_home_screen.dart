@@ -26,10 +26,12 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
       body: SafeArea(
         child: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
-            if (state is HomeLoading) {
+            final data = state.data;
+            final teacherData = data is TeacherHomeModel ? data : null;
+
+            if (state.isLoading && data == null) {
               return const Center(child: CircularProgressIndicator());
-            } else if (state is HomeLoaded) {
-              final teacherData = state.data as TeacherHomeModel;
+            } else if (teacherData != null) {
               return SingleChildScrollView(
                 padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
                 child: Column(
@@ -51,8 +53,8 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                   ],
                 ),
               );
-            } else if (state is HomeError) {
-              return Center(child: Text(state.message));
+            } else if (state.errorMessage != null && data == null) {
+              return Center(child: Text(state.errorMessage!));
             }
             return const SizedBox.shrink();
           },

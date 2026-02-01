@@ -14,6 +14,9 @@ class BusCubit extends Cubit<BusState> {
   BusCubit(this._busRepo) : super(const BusState());
 
   Future<void> getBusData(String userTypeId, {int? code}) async {
+    if ((state.classes.isNotEmpty || state.parentChildrenBuses.isNotEmpty) && state.error == null)
+      return;
+
     if (state.classes.isEmpty && state.studentsOnBus.isEmpty) {
       emit(state.copyWith(isLoading: true));
     }

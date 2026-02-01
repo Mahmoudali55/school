@@ -20,10 +20,12 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         child: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
-            if (state is HomeLoading) {
+            final data = state.data;
+            final studentData = data is StudentHomeModel ? data : null;
+
+            if (state.isLoading && data == null) {
               return const Center(child: CircularProgressIndicator());
-            } else if (state is HomeLoaded) {
-              final studentData = state.data as StudentHomeModel;
+            } else if (studentData != null) {
               return SingleChildScrollView(
                 padding: EdgeInsets.all(16.w),
                 child: Column(
@@ -44,8 +46,8 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               );
-            } else if (state is HomeError) {
-              return Center(child: Text(state.message));
+            } else if (state.errorMessage != null && data == null) {
+              return Center(child: Text(state.errorMessage!));
             }
             return const SizedBox.shrink();
           },

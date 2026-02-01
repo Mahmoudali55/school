@@ -18,6 +18,8 @@ class CalendarCubit extends Cubit<CalendarState> {
       );
 
   Future<void> getCalendarData(String userTypeId) async {
+    if (state.classes.isNotEmpty || state.events.isNotEmpty) return;
+
     if (state.classes.isEmpty && state.events.isEmpty) {
       emit(state.copyWith(isLoading: true));
     }

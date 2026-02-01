@@ -15,7 +15,8 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this._homeRepo) : super(HomeInitial());
 
   Future<void> getHomeData(String userTypeId, int code) async {
-    emit(HomeLoading());
+    if (state.data != null && state.errorMessage == null) return;
+    emit(state.copyWith(isLoading: true, errorMessage: null));
 
     // Map numeric types to named types with robust normalization
     final cleanType = userTypeId.trim();
@@ -33,30 +34,30 @@ class HomeCubit extends Cubit<HomeState> {
     if (normalizedType == 'student') {
       final result = await _homeRepo.getStudentHomeData();
       result.fold(
-        (failure) => emit(HomeError(failure.errMessage)),
-        (data) => emit(HomeLoaded(data)),
+        (failure) => emit(state.copyWith(isLoading: false, errorMessage: failure.errMessage)),
+        (data) => emit(state.copyWith(isLoading: false, data: data, errorMessage: null)),
       );
     } else if (normalizedType == 'parent') {
       // For parents, we fetch the students and return a ParentHomeModel
       final result = await _homeRepo.getParentHomeData(code);
       result.fold(
-        (failure) => emit(HomeError(failure.errMessage)),
-        (data) => emit(HomeLoaded(data)),
+        (failure) => emit(state.copyWith(isLoading: false, errorMessage: failure.errMessage)),
+        (data) => emit(state.copyWith(isLoading: false, data: data, errorMessage: null)),
       );
     } else if (normalizedType == 'teacher') {
       final result = await _homeRepo.getTeacherHomeData();
       result.fold(
-        (failure) => emit(HomeError(failure.errMessage)),
-        (data) => emit(HomeLoaded(data)),
+        (failure) => emit(state.copyWith(isLoading: false, errorMessage: failure.errMessage)),
+        (data) => emit(state.copyWith(isLoading: false, data: data, errorMessage: null)),
       );
     } else if (normalizedType == 'admin') {
       final result = await _homeRepo.getAdminHomeData();
       result.fold(
-        (failure) => emit(HomeError(failure.errMessage)),
-        (data) => emit(HomeLoaded(data)),
+        (failure) => emit(state.copyWith(isLoading: false, errorMessage: failure.errMessage)),
+        (data) => emit(state.copyWith(isLoading: false, data: data, errorMessage: null)),
       );
     } else {
-      emit(const HomeError("Invalid User Type"));
+      emit(state.copyWith(isLoading: false, errorMessage: "Invalid User Type"));
     }
   }
 

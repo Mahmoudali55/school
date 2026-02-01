@@ -10,6 +10,7 @@ class ClassCubit extends Cubit<ClassState> {
   ClassCubit(this._classRepo) : super(ClassInitial());
 
   Future<void> getClassData(String userTypeId) async {
+    if (state.classesStatus.isSuccess) return;
     emit(state.copyWith(classesStatus: const StatusState.loading()));
 
     // Map numeric types to named types with robust normalization

@@ -37,6 +37,9 @@ class HomeState extends Equatable {
     this.teacherCoursesStatus = const StatusState.initial(),
 
     this.selectedStudent,
+    this.data,
+    this.isLoading = false,
+    this.errorMessage,
   });
 
   final StatusState<List<ParentsStudentData>> parentsStudentStatus;
@@ -56,6 +59,11 @@ class HomeState extends Equatable {
   final StatusState<List<TeacherCoursesModel>> teacherCoursesStatus;
   final StudentMiniInfo? selectedStudent;
 
+  /// Main home data (TeacherHomeModel, StudentHomeModel, etc.)
+  final HomeModel? data;
+  final bool isLoading;
+  final String? errorMessage;
+
   @override
   List<Object?> get props => [
     parentsStudentStatus,
@@ -74,6 +82,9 @@ class HomeState extends Equatable {
     teacherLevelStatus,
     teacherClassesStatus,
     teacherCoursesStatus,
+    data,
+    isLoading,
+    errorMessage,
   ];
 
   HomeState copyWith({
@@ -92,8 +103,10 @@ class HomeState extends Equatable {
     StatusState<List<TeacherLevelModel>>? teacherLevelStatus,
     StatusState<List<TeacherClassModels>>? teacherClassesStatus,
     StatusState<List<TeacherCoursesModel>>? teacherCoursesStatus,
-
     StudentMiniInfo? selectedStudent,
+    HomeModel? data,
+    bool? isLoading,
+    String? errorMessage,
   }) {
     return HomeState(
       parentsStudentStatus: parentsStudentStatus ?? this.parentsStudentStatus,
@@ -112,28 +125,27 @@ class HomeState extends Equatable {
       teacherLevelStatus: teacherLevelStatus ?? this.teacherLevelStatus,
       teacherClassesStatus: teacherClassesStatus ?? this.teacherClassesStatus,
       teacherCoursesStatus: teacherCoursesStatus ?? this.teacherCoursesStatus,
+      data: data ?? this.data,
+      isLoading: isLoading ?? this.isLoading,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 }
 
-class HomeInitial extends HomeState {}
+class HomeInitial extends HomeState {
+  const HomeInitial() : super();
+}
 
-class HomeLoading extends HomeState {}
+class HomeLoading extends HomeState {
+  const HomeLoading() : super(isLoading: true);
+}
 
 class HomeLoaded extends HomeState {
-  final HomeModel data;
-
-  const HomeLoaded(this.data);
-
-  @override
-  List<Object?> get props => [data];
+  const HomeLoaded(HomeModel data) : super(data: data);
 }
 
 class HomeError extends HomeState {
-  final String message;
+  const HomeError(String message) : super(errorMessage: message);
 
-  const HomeError(this.message);
-
-  @override
-  List<Object?> get props => [message];
+  String get message => errorMessage ?? "";
 }
