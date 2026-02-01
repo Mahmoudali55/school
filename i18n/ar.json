@@ -982,7 +982,10 @@
   "search":"ابحث في الفصول الدراسية",
   "account": "الحساب",
   "class_name_assigment":"الفصل",
-  "user_management_select_classs":"يرجي اختيار الفصل"
+  "user_management_select_classs":"يرجي اختيار الفصل",
+  "stage":"المرحلة",
+  "user_management_select_stage":"يرجي اختيار المرحلة"
+
 
 
 

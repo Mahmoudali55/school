@@ -25,7 +25,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
   final _notesController = TextEditingController();
 
   bool _submitted = false;
-
+  String? _selectedStage;
   String? _selectedSection;
   String? _selectedLine;
   String? _selectedClass;
@@ -37,6 +37,13 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
   final lines = ['الصف الأول', 'الصف الثاني', 'الصف الثالث', 'الصف الرابع', 'الصف الخامس'];
   final classes = ['A', 'B', 'C', 'D'];
   final subjects = ['الرياضيات', 'العلوم', 'اللغة العربية', 'اللغة الإنجليزية'];
+  final stages = [
+    'المرحلة الاولى',
+    'المرحلة الثانية',
+    'المرحلة الثالثة',
+    'المرحلة الرابعة',
+    'المرحلة الخامسة',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +76,16 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                 errorText: AppLocalKay.user_management_select_class.tr(),
                 items: sections.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
                 onChanged: (v) => setState(() => _selectedSection = v),
+              ),
+              Text(AppLocalKay.stage.tr(), style: AppTextStyle.formTitleStyle(context)),
+              SizedBox(height: 8.h),
+              CustomDropdownFormField<String>(
+                value: _selectedStage,
+                submitted: _submitted,
+                hint: AppLocalKay.select_section.tr(),
+                errorText: AppLocalKay.user_management_select_stage.tr(),
+                items: stages.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+                onChanged: (v) => setState(() => _selectedStage = v),
               ),
 
               Gap(8.h),

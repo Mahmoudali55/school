@@ -926,7 +926,9 @@
   "account": "Account",
   "search": "Search for a class...",
   "class_name_assigment":"Class Name",
-   "user_management_select_classs":"Please select a class"
+   "user_management_select_classs":"Please select a class",
+  "stage":"Stage",
+  "user_management_select_stage":"Please select a stage"
 
 
 }

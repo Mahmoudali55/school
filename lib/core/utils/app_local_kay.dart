@@ -939,4 +939,6 @@ class AppLocalKay {
   static const String search = 'search';
   static const String class_name_assigment = 'class_name_assigment';
   static const String user_management_select_classs = 'user_management_select_classs';
+  static const String stage = 'stage';
+  static const String user_management_select_stage = 'user_management_select_stage';
 }
