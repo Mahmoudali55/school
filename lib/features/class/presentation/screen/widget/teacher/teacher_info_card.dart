@@ -44,7 +44,7 @@ class TeacherInfoCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      Icon(Icons.email, size: 14, color: Colors.grey[600]),
+                      Icon(Icons.school, size: 14, color: Colors.grey[600]),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(

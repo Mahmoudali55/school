@@ -97,12 +97,12 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
       body: SafeArea(
         child: BlocBuilder<ClassCubit, ClassState>(
           builder: (context, state) {
-            if (state is ClassLoading) {
+            if (state.classesStatus.isLoading) {
               return const Center(child: CircularProgressIndicator());
-            } else if (state is ClassError) {
-              return Center(child: Text(state.message));
-            } else if (state is ClassLoaded) {
-              final classes = state.classes.cast<AdminClassModel>();
+            } else if (state.classesStatus.isFailure) {
+              return Center(child: Text(state.classesStatus.error ?? "حدث خطأ ما"));
+            } else if (state.classesStatus.isSuccess) {
+              final classes = state.classesStatus.data!.cast<AdminClassModel>();
               return Column(
                 children: [
                   const AdminClassesHeader(),
