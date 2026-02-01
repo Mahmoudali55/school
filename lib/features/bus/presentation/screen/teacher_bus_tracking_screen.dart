@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -17,6 +19,7 @@ import 'package:my_template/features/bus/presentation/screen/widget/teacher/fiel
 import 'package:my_template/features/bus/presentation/screen/widget/teacher/main_tracking_card.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/teacher/quick_overview_widget.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/teacher/students_on_bus_widget.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 
 class TeacherBusTrackingScreen extends StatefulWidget {
   const TeacherBusTrackingScreen({super.key});
@@ -34,6 +37,12 @@ class _TeacherBusTrackingScreenState extends State<TeacherBusTrackingScreen>
   void initState() {
     super.initState();
     _initializeAnimations();
+
+    // Fetch real classes for the teacher
+    final sectionCode = int.tryParse(HiveMethods.getUserSection().toString()) ?? 0;
+    final stageCode = int.tryParse(HiveMethods.getUserStage().toString()) ?? 0;
+    // Using levelCode 111 as per previous implementations for this specific API
+    context.read<HomeCubit>().teacherClasses(sectionCode, stageCode, 111);
   }
 
   void _initializeAnimations() {

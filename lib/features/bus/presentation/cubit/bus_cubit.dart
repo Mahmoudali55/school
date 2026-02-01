@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/network/status.state.dart';
@@ -177,6 +178,55 @@ class BusCubit extends Cubit<BusState> {
     result.fold(
       (error) => emit(state.copyWith(busStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(busStatus: StatusState.success(success))),
+    );
+  }
+
+  void selectTeacherClass(dynamic tc) {
+    final selected = BusClass(
+      id: tc.classCode.toString(),
+      className: tc.classNameAr,
+      subject: tc.deltaConfig,
+      totalStudents: ((tc.newStudent ?? 0) + (tc.oldStudent ?? 0)).toString(),
+      studentsOnBus: "0",
+      busNumber: "-",
+      driverName: tc.teacherName ?? "-",
+      estimatedArrival: "-",
+      currentLocation: tc.floorName ?? "-",
+      nextStop: "-",
+      status: "نشط",
+      attendanceRate: "0%",
+      classColor: const Color(0xFF6366F1),
+      busColor: const Color(0xFFF59E0B),
+    );
+
+    emit(state.copyWith(selectedClass: selected));
+  }
+
+  void updateClassesFromTeacherHome(List<dynamic> teacherClasses) {
+    final List<BusClass> busClasses = teacherClasses.map((tc) {
+      return BusClass(
+        id: tc.classCode.toString(),
+        className: tc.classNameAr,
+        subject: tc.deltaConfig,
+        totalStudents: ((tc.newStudent ?? 0) + (tc.oldStudent ?? 0)).toString(),
+        studentsOnBus: "0",
+        busNumber: "-",
+        driverName: tc.teacherName ?? "-",
+        estimatedArrival: "-",
+        currentLocation: tc.floorName ?? "-",
+        nextStop: "-",
+        status: "نشط",
+        attendanceRate: "0%",
+        classColor: const Color(0xFF6366F1),
+        busColor: const Color(0xFFF59E0B),
+      );
+    }).toList();
+
+    emit(
+      state.copyWith(
+        classes: busClasses,
+        selectedClass: state.selectedClass ?? (busClasses.isNotEmpty ? busClasses.first : null),
+      ),
     );
   }
 
