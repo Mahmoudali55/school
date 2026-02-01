@@ -937,4 +937,6 @@ class AppLocalKay {
   static const String model_year = 'model_year';
   static const String account = 'account';
   static const String search = 'search';
+  static const String class_name_assigment = 'class_name_assigment';
+  static const String user_management_select_classs = 'user_management_select_classs';
 }

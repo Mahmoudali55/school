@@ -2,8 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/custom_widgets/custom_form_field/custom_dropdown_form_field.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -18,20 +20,23 @@ class CreateAssignmentScreen extends StatefulWidget {
 
 class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _titleController = TextEditingController();
+
   final _descriptionController = TextEditingController();
-  String? _selectedSubject;
+  final _notesController = TextEditingController();
+
+  bool _submitted = false;
+
+  String? _selectedSection;
+  String? _selectedLine;
   String? _selectedClass;
+  String? _selectedSubject;
+
   DateTime? _dueDate;
 
-  List<String> subjects = [
-    'الرياضيات',
-    'العلوم',
-    'اللغة العربية',
-    'اللغة الإنجليزية',
-    'الاجتماعيات',
-  ];
-  List<String> classes = ['الصف الأول', 'الصف الثاني', 'الصف الثالث', 'الصف الرابع', 'الصف الخامس'];
+  final sections = ['الابتدائية', 'المتوسطة', 'الثانوية'];
+  final lines = ['الصف الأول', 'الصف الثاني', 'الصف الثالث', 'الصف الرابع', 'الصف الخامس'];
+  final classes = ['A', 'B', 'C', 'D'];
+  final subjects = ['الرياضيات', 'العلوم', 'اللغة العربية', 'اللغة الإنجليزية'];
 
   @override
   Widget build(BuildContext context) {
@@ -54,101 +59,96 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
           key: _formKey,
           child: ListView(
             children: [
-              Text(
-                AppLocalKay.user_management_subject.tr(),
-                style: AppTextStyle.formTitleStyle(context),
-              ),
+              /// القسم
+              Text(AppLocalKay.select_section.tr(), style: AppTextStyle.formTitleStyle(context)),
               SizedBox(height: 8.h),
-              DropdownButtonFormField<String>(
-                value: _selectedSubject,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  filled: true,
-                  fillColor: AppColor.textFormFillColor(context),
-                ),
-                items: subjects.map((String subject) {
-                  return DropdownMenuItem<String>(value: subject, child: Text(subject));
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedSubject = newValue;
-                  });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return AppLocalKay.user_management_select_subject.tr();
-                  }
-                  return null;
-                },
-              ),
-              Text(AppLocalKay.select_section.tr(), style: AppTextStyle.formTitle20Style(context)),
-              // اختيار الصف
-              DropdownButtonFormField<String>(
-                value: _selectedClass,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  filled: true,
-                  fillColor: AppColor.textFormFillColor(context),
-                ),
-                items: classes.map((String classItem) {
-                  return DropdownMenuItem<String>(value: classItem, child: Text(classItem));
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedClass = newValue;
-                  });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return AppLocalKay.user_management_select_class.tr();
-                  }
-                  return null;
-                },
+              CustomDropdownFormField<String>(
+                value: _selectedSection,
+                submitted: _submitted,
+                hint: AppLocalKay.select_section.tr(),
+                errorText: AppLocalKay.user_management_select_class.tr(),
+                items: sections.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+                onChanged: (v) => setState(() => _selectedSection = v),
               ),
 
+              Gap(8.h),
+
+              /// الصف
               Text(
                 AppLocalKay.user_management_class.tr(),
                 style: AppTextStyle.formTitleStyle(context),
               ),
               SizedBox(height: 8.h),
-              DropdownButtonFormField<String>(
+              CustomDropdownFormField<String>(
+                value: _selectedLine,
+                submitted: _submitted,
+                hint: AppLocalKay.user_management_class.tr(),
+                errorText: AppLocalKay.user_management_select_class.tr(),
+                items: lines.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+                onChanged: (v) => setState(() => _selectedLine = v),
+              ),
+
+              Gap(8.h),
+
+              /// الشعبة
+              Text(
+                AppLocalKay.class_name_assigment.tr(),
+                style: AppTextStyle.formTitleStyle(context),
+              ),
+              SizedBox(height: 8.h),
+              CustomDropdownFormField<String>(
                 value: _selectedClass,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                  filled: true,
-                  fillColor: AppColor.textFormFillColor(context),
-                ),
-                items: classes.map((String classItem) {
-                  return DropdownMenuItem<String>(value: classItem, child: Text(classItem));
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedClass = newValue;
-                  });
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return AppLocalKay.user_management_select_class.tr();
-                  }
-                  return null;
-                },
+                submitted: _submitted,
+                hint: AppLocalKay.class_name_assigment.tr(),
+                errorText: AppLocalKay.user_management_select_classs.tr(),
+                items: classes.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+                onChanged: (v) => setState(() => _selectedClass = v),
               ),
-              SizedBox(height: 16.h),
 
+              Gap(8.h),
+
+              /// المادة
+              Text(
+                AppLocalKay.user_management_subject.tr(),
+                style: AppTextStyle.formTitleStyle(context),
+              ),
+              SizedBox(height: 8.h),
+              CustomDropdownFormField<String>(
+                value: _selectedSubject,
+                submitted: _submitted,
+                hint: AppLocalKay.user_management_subject.tr(),
+                errorText: AppLocalKay.user_management_select_subject.tr(),
+                items: subjects.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+                onChanged: (v) => setState(() => _selectedSubject = v),
+              ),
+
+              Gap(8.h),
+
+              /// تاريخ التسليم
               CustomFormField(
-                controller: _titleController,
+                readOnly: true,
                 radius: 12,
-                title: AppLocalKay.user_management_task.tr(),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return AppLocalKay.user_management_select_task.tr();
+                title: AppLocalKay.user_management_deadline.tr(),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.calendar_today),
+                  onPressed: _selectDueDate,
+                ),
+                controller: TextEditingController(
+                  text: _dueDate == null
+                      ? ''
+                      : '${_dueDate!.day}/${_dueDate!.month}/${_dueDate!.year}',
+                ),
+                validator: (_) {
+                  if (_dueDate == null) {
+                    return AppLocalKay.user_management_no_deadline.tr();
                   }
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
 
-              // وصف الواجب
+              Gap(8.h),
+
+              /// الوصف
               CustomFormField(
                 controller: _descriptionController,
                 maxLines: 4,
@@ -161,41 +161,28 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
 
-              // تاريخ التسليم
+              Gap(8.h),
+
+              /// ملاحظات
               CustomFormField(
-                readOnly: true,
+                controller: _notesController,
+                maxLines: 3,
                 radius: 12,
-                title: AppLocalKay.user_management_deadline.tr(),
-                suffixIcon: IconButton(icon: Icon(Icons.calendar_today), onPressed: _selectDueDate),
-                controller: TextEditingController(
-                  text: _dueDate != null
-                      ? '${_dueDate!.day}/${_dueDate!.month}/${_dueDate!.year}'
-                      : AppLocalKay.user_management_select_deadline.tr(),
-                ),
-                validator: (value) {
-                  if (_dueDate == null) {
-                    return AppLocalKay.user_management_no_deadline.tr();
-                  }
-                  return null;
-                },
+                title: AppLocalKay.note.tr(),
               ),
-              SizedBox(height: 16.h),
 
-              // رفع الملفات
+              Gap(8.h),
+
+              /// رفع ملفات
               GestureDetector(
                 onTap: () async {
-                  final result = await FilePicker.platform.pickFiles(
+                  await FilePicker.platform.pickFiles(
                     type: FileType.custom,
-                    allowedExtensions: ['pdf', 'ppt', 'pptx', 'doc', 'docx', 'mp4', 'avi'],
+                    allowedExtensions: ['pdf', 'ppt', 'pptx', 'doc', 'docx', 'mp4'],
                   );
-
-                  if (result != null) {
-                  } else {}
                 },
                 child: Container(
-                  width: double.infinity,
                   padding: EdgeInsets.all(16.w),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey.shade300),
@@ -211,31 +198,25 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                           context,
                         ).copyWith(fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 8.h),
-                      Text(
-                        'PDF, PPT, Word, Video',
-                        style: AppTextStyle.titleSmall(
-                          context,
-                        ).copyWith(color: AppColor.greyColor(context)),
-                      ),
                     ],
                   ),
                 ),
               ),
+
               SizedBox(height: 24.h),
 
-              // زر الإنشاء
+              /// زر الإنشاء
               CustomButton(
                 radius: 12.r,
                 text: AppLocalKay.user_management_create_task.tr(),
+                color: AppColor.accentColor(context),
                 onPressed: () {
+                  setState(() => _submitted = true);
                   if (_formKey.currentState!.validate()) {
                     _createAssignment();
                   }
                 },
-                color: AppColor.accentColor(context),
               ),
-              SizedBox(height: 16.h),
             ],
           ),
         ),
@@ -244,30 +225,28 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
   }
 
   Future<void> _selectDueDate() async {
-    final DateTime? picked = await showDatePicker(
+    final picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now().add(Duration(days: 7)),
+      initialDate: DateTime.now().add(const Duration(days: 7)),
       firstDate: DateTime.now(),
       lastDate: DateTime(2100),
     );
-    if (picked != null && picked != _dueDate) {
-      setState(() {
-        _dueDate = picked;
-      });
+    if (picked != null) {
+      setState(() => _dueDate = picked);
     }
   }
 
   void _createAssignment() {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('تم إنشاء الواجب بنجاح'), backgroundColor: Colors.green));
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('تم إنشاء الواجب بنجاح'), backgroundColor: Colors.green),
+    );
     Navigator.pop(context);
   }
 
   @override
   void dispose() {
-    _titleController.dispose();
     _descriptionController.dispose();
+    _notesController.dispose();
     super.dispose();
   }
 }

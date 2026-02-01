@@ -141,7 +141,7 @@
     "contact":"اتصل بنا",
     "contact_info":"معلومات التواصل",
     "send_message":"أرسل رسالة",
-    "select_section":"اختر القسم",
+    "select_section":"القسم ",
     "full_name":"الاسم الكامل",
     "full_name_hint":"الرجاء إدخال الاسم",
     "email_hint":"ادخل البريد الإلكتروني",
@@ -281,9 +281,9 @@
     "user_management_select_task":"يرجى إدخال عنوان الواجب",
     "user_management_description":"وصف الواجب",
     "user_management_select_description":"يرجى إدخال وصف الواجب",
-    "user_management_deadline":"تاريخ التسليم",
-    "user_management_select_deadline":"اختر تاريخ التسليم",
-    "user_management_no_deadline":"يرجى اختيار تاريخ التسليم",
+    "user_management_deadline":"تاريخ الواجب",
+    "user_management_select_deadline":"اختر تاريخ الواجب",
+    "user_management_no_deadline":"يرجى اختيار تاريخ الواجب",
     "user_management_upload_files":"ارفع ملفات الواجب",
     "user_management_create_task":"انشاء الواجب",
     "user_management_upload_lesson":"ارفع ملفات الدرس",
@@ -980,7 +980,9 @@
   "bus_type": "نوع الحافلة",
   "model_year": "موديل",
   "search":"ابحث في الفصول الدراسية",
-  "account": "الحساب"
+  "account": "الحساب",
+  "class_name_assigment":"الفصل",
+  "user_management_select_classs":"يرجي اختيار الفصل"
 
 
 

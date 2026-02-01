@@ -281,11 +281,11 @@
   "user_management_select_task": "Please enter assignment title",
   "user_management_description": "Assignment Description",
   "user_management_select_description": "Please enter assignment description",
-  "user_management_deadline": "Deadline",
-  "user_management_select_deadline": "Select deadline",
-  "user_management_no_deadline": "Please select deadline",
-  "user_management_upload_files": "Upload Assignment Files",
-  "user_management_create_task": "Create Assignment",
+"user_management_deadline":"Assignment date",
+"user_management_select_deadline":"Select assignment date",
+"user_management_no_deadline":"Please select assignment date",
+"user_management_upload_files":"Upload assignment files",
+"user_management_create_task":"Create assignment",
   "user_management_upload_lesson": "Upload Lesson Files",
   "user_management_create_lesson": "Upload Lesson",
   "user_management_date": "Date",
@@ -924,8 +924,9 @@
   "bus_type": "Bus Type",
   "model_year": "Model Year",
   "account": "Account",
-  "search": "Search for a class..."
-
+  "search": "Search for a class...",
+  "class_name_assigment":"Class Name",
+   "user_management_select_classs":"Please select a class"
 
 
 }
