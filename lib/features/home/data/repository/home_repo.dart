@@ -20,6 +20,7 @@ import 'package:my_template/features/home/data/models/student_absent_count_model
 import 'package:my_template/features/home/data/models/student_absent_data_model.dart';
 import 'package:my_template/features/home/data/models/student_balance_model.dart';
 import 'package:my_template/features/home/data/models/student_course_degree_model.dart';
+import 'package:my_template/features/home/data/models/teacher_class_model.dart';
 import 'package:my_template/features/home/data/models/teacher_level_model.dart';
 
 import '../models/home_models.dart';
@@ -59,6 +60,12 @@ abstract interface class HomeRepo {
   });
 
   Future<Either<Failure, List<TeacherLevelModel>>> teacherLevel({required int stageCode});
+
+  Future<Either<Failure, List<TeacherClassModels>>> teacherClasses({
+    required int sectionCode,
+    required int stageCode,
+    required int levelCode,
+  });
 }
 
 class HomeRepoImpl implements HomeRepo {
@@ -249,6 +256,28 @@ class HomeRepoImpl implements HomeRepo {
         );
 
         return TeacherLevelModel.fromApiResponse(response);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, List<TeacherClassModels>>> teacherClasses({
+    required int sectionCode,
+    required int stageCode,
+    required int levelCode,
+  }) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.teacherClass,
+          queryParameters: {
+            "sectioncode": sectionCode,
+            "stagecode": stageCode,
+            "levelcode": levelCode,
+          },
+        );
+
+        return TeacherClassModels.fromApiResponse(response);
       },
     );
   }

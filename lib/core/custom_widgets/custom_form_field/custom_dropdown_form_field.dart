@@ -24,12 +24,16 @@ class CustomDropdownFormField<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<T>(
       value: value,
+      dropdownColor: AppColor.whiteColor(context),
+      style: TextStyle(color: AppColor.blackColor(context), fontSize: 14.sp),
       autovalidateMode: submitted ? AutovalidateMode.always : AutovalidateMode.disabled,
       decoration: InputDecoration(
         hintText: hint,
+        hintStyle: TextStyle(color: Colors.grey.shade600),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
         filled: true,
         fillColor: AppColor.textFormFillColor(context),
+        errorText: submitted && value == null ? errorText : null,
       ),
       items: items,
       onChanged: onChanged,

@@ -12,7 +12,6 @@ import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_fi
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
-import 'package:my_template/features/home/data/models/teacher_level_model.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 
@@ -93,7 +92,18 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                     items: levels
                         .map((e) => DropdownMenuItem(value: e.levelName, child: Text(e.levelName)))
                         .toList(),
-                    onChanged: (v) => setState(() => _selectedLine = v),
+                    onChanged: (v) {
+                      setState(() {
+                        _selectedLine = v;
+                        _selectedClass = null; // Reset section when level changes
+                      });
+                      final selectedLevel = levels.firstWhere((e) => e.levelName == v);
+                      context.read<HomeCubit>().teacherClasses(
+                        int.parse(HiveMethods.getUserSection()),
+                        int.parse(HiveMethods.getUserStage()),
+                        selectedLevel.levelCode,
+                      );
+                    },
                   );
                 },
               ),
@@ -106,13 +116,22 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                 style: AppTextStyle.formTitleStyle(context),
               ),
               SizedBox(height: 8.h),
-              CustomDropdownFormField<String>(
-                value: _selectedClass,
-                submitted: _submitted,
-                hint: AppLocalKay.class_name_assigment.tr(),
-                errorText: AppLocalKay.user_management_select_classs.tr(),
-                items: classes.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-                onChanged: (v) => setState(() => _selectedClass = v),
+              BlocBuilder<HomeCubit, HomeState>(
+                builder: (context, state) {
+                  final classesList = state.teacherClassesStatus.data ?? [];
+                  return CustomDropdownFormField<String>(
+                    value: _selectedClass,
+                    submitted: _submitted,
+                    hint: AppLocalKay.class_name_assigment.tr(),
+                    errorText: AppLocalKay.user_management_select_classs.tr(),
+                    items: classesList
+                        .map(
+                          (e) => DropdownMenuItem(value: e.classNameAr, child: Text(e.classNameAr)),
+                        )
+                        .toList(),
+                    onChanged: (v) => setState(() => _selectedClass = v),
+                  );
+                },
               ),
 
               Gap(8.h),
