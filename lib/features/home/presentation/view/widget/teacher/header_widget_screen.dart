@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -51,27 +52,7 @@ class HeaderWidget extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 12.h),
-        Wrap(
-          spacing: 8.w,
-          runSpacing: 8.h,
-          children: subjects.map((subject) {
-            return Container(
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-              decoration: BoxDecoration(
-                color: AppColor.primaryColor(context).withOpacity(0.1),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColor.primaryColor(context).withOpacity(0.3)),
-              ),
-              child: Text(
-                subject,
-                style: AppTextStyle.bodyMedium(
-                  context,
-                ).copyWith(color: AppColor.primaryColor(context)),
-              ),
-            );
-          }).toList(),
-        ),
+        Gap(12.h),
       ],
     );
   }

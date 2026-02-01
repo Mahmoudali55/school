@@ -10,8 +10,28 @@ import 'package:my_template/features/bus/presentation/cubit/bus_state.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 
-class ClassesSelectorWidget extends StatelessWidget {
+class ClassesSelectorWidget extends StatefulWidget {
   const ClassesSelectorWidget({super.key});
+
+  @override
+  State<ClassesSelectorWidget> createState() => _ClassesSelectorWidgetState();
+}
+
+class _ClassesSelectorWidgetState extends State<ClassesSelectorWidget> {
+  @override
+  void initState() {
+    super.initState();
+    // Sync if success state is already present (e.g., from home screen)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        final homeState = context.read<HomeCubit>().state;
+        if (homeState.teacherClassesStatus.isSuccess) {
+          final classes = homeState.teacherClassesStatus.data ?? [];
+          context.read<BusCubit>().updateClassesFromTeacherHome(classes);
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

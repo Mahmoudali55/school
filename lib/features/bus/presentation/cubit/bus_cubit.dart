@@ -225,7 +225,7 @@ class BusCubit extends Cubit<BusState> {
     emit(
       state.copyWith(
         classes: busClasses,
-        selectedClass: state.selectedClass ?? (busClasses.isNotEmpty ? busClasses.first : null),
+        selectedClass: busClasses.isNotEmpty ? busClasses.first : null,
       ),
     );
   }
