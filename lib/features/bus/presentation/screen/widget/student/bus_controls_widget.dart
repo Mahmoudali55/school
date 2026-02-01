@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/control_button_widget.dart';
@@ -31,7 +32,7 @@ class BusControls extends StatelessWidget {
             onPressed: refreshLocation,
           ),
         ),
-        SizedBox(width: 12.w),
+        Gap(12.w),
         Expanded(
           child: ControlButton(
             text: isBusMoving ? AppLocalKay.stop.tr() : AppLocalKay.start.tr(),
@@ -40,7 +41,7 @@ class BusControls extends StatelessWidget {
             onPressed: toggleBusMovement,
           ),
         ),
-        SizedBox(width: 12.w),
+        Gap(12.w),
         Expanded(
           child: ControlButton(
             text: AppLocalKay.call_driver.tr(),

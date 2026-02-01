@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 class RegistrationModel extends Equatable {
   final String UserName;
   final String email;
-  final int iDNO;
+  final String iDNO;
   final String password;
 
   const RegistrationModel({

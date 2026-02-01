@@ -5,10 +5,17 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
+import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
+import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
+import 'package:my_template/core/images/app_images.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/core/utils/common_methods.dart';
 import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_state.dart';
@@ -60,15 +67,9 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
     super.dispose();
   }
 
-  // =========================== إجراءات ===========================
   void _refreshLocation() {
     context.read<BusCubit>().busLine(int.parse(HiveMethods.getUserCode()));
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(AppLocalKay.update_location.tr()),
-        backgroundColor: const Color(0xFF4CAF50),
-      ),
-    );
+    CommonMethods.showToast(message: AppLocalKay.update_location.tr(), type: ToastType.success);
   }
 
   void _toggleBusMovement() {
@@ -89,25 +90,39 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
         title: Text(AppLocalKay.call_driver.tr(), style: AppTextStyle.bodyMedium(context)),
         content: Text('${AppLocalKay.ConnectDriverHint.tr()}   $driverName؟\n$phoneNumber'),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyMedium(context)),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
-              canLaunchUrl(launchUri).then((bool result) {
-                if (result) {
-                  launchUrl(launchUri);
-                } else {
-                  ScaffoldMessenger.of(
-                    context,
-                  ).showSnackBar(SnackBar(content: Text("Could not launch $phoneNumber")));
-                }
-              });
-            },
-            child: Text(AppLocalKay.Connect.tr(), style: AppTextStyle.bodyMedium(context)),
+          Row(
+            children: [
+              Expanded(
+                child: TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyMedium(context)),
+                ),
+              ),
+              Gap(16.w),
+              Expanded(
+                child: CustomButton(
+                  radius: 12.r,
+                  onPressed: () {
+                    Navigator.pop(context);
+                    final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
+                    canLaunchUrl(launchUri).then((bool result) {
+                      if (result) {
+                        launchUrl(launchUri);
+                      } else {
+                        CommonMethods.showToast(
+                          message: "Could not launch $phoneNumber",
+                          type: ToastType.error,
+                        );
+                      }
+                    });
+                  },
+                  child: Text(
+                    AppLocalKay.Connect.tr(),
+                    style: AppTextStyle.bodyMedium(context, color: AppColor.whiteColor(context)),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -121,34 +136,43 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
         title: Row(
           children: [
             Icon(Icons.emergency_rounded, color: AppColor.errorColor(context)),
-            SizedBox(width: 8.w),
+            Gap(8.w),
             Text(AppLocalKay.emergency_management.tr(), style: AppTextStyle.bodyMedium(context)),
           ],
         ),
         content: Text(AppLocalKay.emergency_alert.tr(), style: AppTextStyle.bodySmall(context)),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyMedium(context)),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    AppLocalKay.alert_sent.tr(),
-                    style: AppTextStyle.bodyMedium(context),
-                  ),
-                  backgroundColor: AppColor.errorColor(context),
+          Row(
+            children: [
+              Expanded(
+                child: TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyMedium(context)),
                 ),
-              );
-            },
-            style: ElevatedButton.styleFrom(backgroundColor: AppColor.errorColor(context)),
-            child: Text(
-              AppLocalKay.send.tr(),
-              style: AppTextStyle.bodyMedium(context, color: AppColor.whiteColor(context)),
-            ),
+              ),
+              Expanded(
+                child: CustomButton(
+                  radius: 12.r,
+                  onPressed: () {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          AppLocalKay.alert_sent.tr(),
+                          style: AppTextStyle.bodyMedium(context),
+                        ),
+                        backgroundColor: AppColor.errorColor(context),
+                      ),
+                    );
+                  },
+
+                  child: Text(
+                    AppLocalKay.send.tr(),
+                    style: AppTextStyle.bodyMedium(context, color: AppColor.whiteColor(context)),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -166,7 +190,7 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
       body: BlocBuilder<BusCubit, BusState>(
         builder: (context, state) {
           if (state.busStatus.isLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: CustomLoading());
           } else if (state.busStatus.isFailure) {
             return Center(child: Text(state.busStatus.error ?? "An error occurred"));
           }
@@ -174,7 +198,14 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
           if (state.busStatus.isSuccess) {
             final busLines = state.busStatus.data ?? [];
             if (busLines.isEmpty) {
-              return Center(child: Text("No Bus Found"));
+              return Center(
+                child: SvgPicture.asset(
+                  AppImages.assetsGlobalIconEmptyFolderIcon,
+                  height: 300.h,
+                  width: 300.w,
+                  color: AppColor.primaryColor(context),
+                ),
+              );
             }
 
             final busLine = busLines.first;
@@ -207,8 +238,6 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
               accountName: busLine.accountName,
             );
 
-            // Dynamic Stops Parsing
-            // Splitting "Station1/Station2/Station3" -> List
             List<String> routeStopsNames = busLine.busLineName
                 .split('/')
                 .map((e) => e.trim())
@@ -258,8 +287,7 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
             );
           }
 
-          // Show something while initial or waiting if not loading
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CustomLoading());
         },
       ),
       floatingActionButton: EmergencyButton(showDialogCallback: () => _showEmergencyDialog()),

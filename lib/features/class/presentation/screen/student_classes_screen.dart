@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
@@ -20,11 +21,21 @@ class StudentClassesScreen extends StatefulWidget {
 }
 
 class _StudentClassesScreenState extends State<StudentClassesScreen> {
+  late final TextEditingController _searchController;
+  String _searchQuery = '';
+
   @override
   void initState() {
     super.initState();
+    _searchController = TextEditingController();
     final levelCode = HiveMethods.getUserLevelCode();
     context.read<ClassCubit>().studentCoursesStatus(level: int.tryParse(levelCode.toString()) ?? 0);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   Widget build(BuildContext context) {
@@ -49,12 +60,17 @@ class _StudentClassesScreenState extends State<StudentClassesScreen> {
           children: [
             // Search Bar
             CustomFormField(
-              controller: TextEditingController(),
+              controller: _searchController,
               radius: 12.r,
               prefixIcon: const Icon(Icons.search),
-              hintText: 'ابحث في الفصول الدراسية',
+              hintText: AppLocalKay.search.tr(),
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value;
+                });
+              },
             ),
-            const SizedBox(height: 20),
+            const Gap(20),
             // Title
             Text(
               AppLocalKay.classes_section.tr(),
@@ -62,8 +78,8 @@ class _StudentClassesScreenState extends State<StudentClassesScreen> {
                 context,
               ).copyWith(fontWeight: FontWeight.bold, color: Colors.blue),
             ),
-            const SizedBox(height: 16),
-            // Classes List
+            const Gap(16),
+
             Expanded(
               child: BlocBuilder<ClassCubit, ClassState>(
                 builder: (context, state) {
@@ -72,16 +88,37 @@ class _StudentClassesScreenState extends State<StudentClassesScreen> {
                   } else if (state.studentCoursesStatus.isFailure) {
                     return Center(child: Text(state.studentCoursesStatus.error ?? 'حدث خطأ ما'));
                   } else if (state.studentCoursesStatus.isSuccess) {
-                    final classes = state.studentCoursesStatus.data;
+                    final allAvailableClasses = state.studentCoursesStatus.data ?? [];
+
+                    final filteredClasses = allAvailableClasses.where((classItem) {
+                      return classItem.courseNameAr.toLowerCase().contains(
+                        _searchQuery.toLowerCase(),
+                      );
+                    }).toList();
+
+                    if (filteredClasses.isEmpty) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.search_off_rounded, size: 64.sp, color: Colors.grey[300]),
+                            const Gap(16),
+                            Text(
+                              'لا توجد نتائج بحث مطابقة',
+                              style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
 
                     return ListView.builder(
-                      itemCount: classes?.length,
+                      itemCount: filteredClasses.length,
                       itemBuilder: (context, index) {
-                        final classItem = classes?[index];
+                        final classItem = filteredClasses[index];
                         return StudentClassCard(
-                          className: classItem?.courseNameAr ?? "",
-                          notes: classItem?.notes ?? "",
-
+                          className: classItem.courseNameAr,
+                          notes: classItem.notes ?? "",
                           onEnter: () {},
                         );
                       },

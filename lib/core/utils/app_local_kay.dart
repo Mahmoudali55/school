@@ -933,4 +933,8 @@ class AppLocalKay {
   static const String good = 'good';
   static const String pass = 'pass';
   static const String fail = 'fail';
+  static const String bus_type = 'bus_type';
+  static const String model_year = 'model_year';
+  static const String account = 'account';
+  static const String search = 'search';
 }

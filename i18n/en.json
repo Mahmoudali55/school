@@ -920,7 +920,11 @@
   "percentage":"Percentage",
   "grades_report":"Grades Report",
   "cumulative_rate":"Cumulative Rate:",
-  "grades_report_title":"Grades Report"
+  "grades_report_title":"Grades Report",
+  "bus_type": "Bus Type",
+  "model_year": "Model Year",
+  "account": "Account",
+  "search": "Search for a class..."
 
 
 

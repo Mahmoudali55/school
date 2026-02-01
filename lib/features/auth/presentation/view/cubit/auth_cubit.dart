@@ -87,7 +87,7 @@ class AuthCubit extends Cubit<AuthState> {
 
     final result = await authRepo.register(
       username: userNameController.text,
-      nationalId: int.parse(nationalIdController.text),
+      nationalId: nationalIdController.text,
       password: registerPasswordController.text,
       email: emailController.text,
     );

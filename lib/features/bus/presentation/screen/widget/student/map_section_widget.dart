@@ -23,9 +23,9 @@ class MapSection extends StatelessWidget {
     return Container(
       height: 180.h,
       decoration: BoxDecoration(
-        color: const Color(0xFFE8F5E8),
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColor.secondAppColor(context).withOpacity(0.3)),
+        border: Border.all(color: AppColor.secondAppColor(context).withValues(alpha: (0.3))),
       ),
       child: Stack(
         children: [
@@ -36,7 +36,7 @@ class MapSection extends StatelessWidget {
             child: Container(
               height: 4.h,
               decoration: BoxDecoration(
-                color: AppColor.secondAppColor(context).withOpacity(0.5),
+                color: AppColor.secondAppColor(context).withValues(alpha: (0.5)),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -58,7 +58,7 @@ class MapSection extends StatelessWidget {
                       color: stop['current']
                           ? AppColor.secondAppColor(context)
                           : stop['passed']
-                          ? AppColor.secondAppColor(context).withOpacity(0.5)
+                          ? AppColor.secondAppColor(context).withValues(alpha: (0.5))
                           : const Color(0xFF9CA3AF),
                       shape: BoxShape.circle,
                       border: Border.all(color: AppColor.secondAppColor(context), width: 2.w),

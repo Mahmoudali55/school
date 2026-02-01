@@ -31,11 +31,7 @@ class RouteProgress extends StatelessWidget {
         children: [
           Text(
             AppLocalKay.routes.tr(),
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF1F2937),
-            ),
+            style: AppTextStyle.bodyLarge(context).copyWith(fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 16.h),
           ...stops.asMap().entries.map((entry) {

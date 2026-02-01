@@ -11,7 +11,7 @@ import '../model/registration_model.dart';
 abstract interface class AuthRepo {
   Future<Either<Failure, RegistrationResponse>> register({
     required String username,
-    required int nationalId,
+    required String nationalId,
     required String password,
     required String email,
   });
@@ -28,7 +28,7 @@ class AuthRepoImpl implements AuthRepo {
   @override
   Future<Either<Failure, RegistrationResponse>> register({
     required String username,
-    required int nationalId,
+    required String nationalId,
     required String password,
     required String email,
   }) {
