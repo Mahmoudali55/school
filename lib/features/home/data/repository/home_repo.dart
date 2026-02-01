@@ -20,6 +20,7 @@ import 'package:my_template/features/home/data/models/student_absent_count_model
 import 'package:my_template/features/home/data/models/student_absent_data_model.dart';
 import 'package:my_template/features/home/data/models/student_balance_model.dart';
 import 'package:my_template/features/home/data/models/student_course_degree_model.dart';
+import 'package:my_template/features/home/data/models/teacher_level_model.dart';
 
 import '../models/home_models.dart';
 
@@ -56,6 +57,8 @@ abstract interface class HomeRepo {
   Future<Either<Failure, EditUniformResponse>> editUniform({
     required EditUniformRequestModel request,
   });
+
+  Future<Either<Failure, List<TeacherLevelModel>>> teacherLevel({required int stageCode});
 }
 
 class HomeRepoImpl implements HomeRepo {
@@ -232,6 +235,20 @@ class HomeRepoImpl implements HomeRepo {
           queryParameters: {"Code": code, "id": id},
         );
         return GetUniformDataResponse.fromJson(response);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, List<TeacherLevelModel>>> teacherLevel({required int stageCode}) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.teacherLevel,
+          queryParameters: {"stagecode": stageCode},
+        );
+
+        return TeacherLevelModel.fromApiResponse(response);
       },
     );
   }

@@ -70,8 +70,24 @@ class HiveMethods {
     _box.put('levelCode', levelCode);
   }
 
+  static void updateUserStage(String stageCode) {
+    _box.put('stageCode', stageCode);
+  }
+
+  static void updateUserSection(String sectionCode) {
+    _box.put('sectionCode', sectionCode);
+  }
+
   static getUserLevelCode() {
     return _box.get('levelCode', defaultValue: '');
+  }
+
+  static getUserStage() {
+    return _box.get('stageCode', defaultValue: '');
+  }
+
+  static getUserSection() {
+    return _box.get('sectionCode', defaultValue: '');
   }
 
   static String getUserCompanyName() {

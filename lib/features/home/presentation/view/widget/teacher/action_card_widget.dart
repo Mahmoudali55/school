@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/services/services_locator.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/schedule_Item_model.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/view/execution/attendance_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/behavior_report_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/create_assignment_screen.dart';
@@ -54,7 +57,10 @@ class ActionCardWidget extends StatelessWidget {
         screen = const AttendanceScreen();
         break;
       case AppLocalKay.create_todo:
-        screen = const CreateAssignmentScreen();
+        screen = BlocProvider(
+          create: (context) => sl<HomeCubit>(),
+          child: const CreateAssignmentScreen(),
+        );
         break;
       case AppLocalKay.send_notification:
         screen = const SendNotificationScreen();

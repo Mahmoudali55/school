@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_dropdown_form_field.dart';
@@ -10,6 +12,9 @@ import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_fi
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/home/data/models/teacher_level_model.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
+import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 
 class CreateAssignmentScreen extends StatefulWidget {
   const CreateAssignmentScreen({super.key});
@@ -34,7 +39,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
   DateTime? _dueDate;
 
   final sections = ['الابتدائية', 'المتوسطة', 'الثانوية'];
-  final lines = ['الصف الأول', 'الصف الثاني', 'الصف الثالث', 'الصف الرابع', 'الصف الخامس'];
+  final lines = ['الاول', 'الثاني', 'الثالث', 'الرابع', 'الخامس'];
   final classes = ['A', 'B', 'C', 'D'];
   final subjects = ['الرياضيات', 'العلوم', 'اللغة العربية', 'اللغة الإنجليزية'];
   final stages = [
@@ -44,6 +49,11 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
     'المرحلة الرابعة',
     'المرحلة الخامسة',
   ];
+  @override
+  void initState() {
+    super.initState();
+    context.read<HomeCubit>().teacherLevel(int.parse(HiveMethods.getUserStage()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,42 +77,25 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
           child: ListView(
             children: [
               /// القسم
-              Text(AppLocalKay.select_section.tr(), style: AppTextStyle.formTitleStyle(context)),
-              SizedBox(height: 8.h),
-              CustomDropdownFormField<String>(
-                value: _selectedSection,
-                submitted: _submitted,
-                hint: AppLocalKay.select_section.tr(),
-                errorText: AppLocalKay.user_management_select_class.tr(),
-                items: sections.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-                onChanged: (v) => setState(() => _selectedSection = v),
-              ),
-              Text(AppLocalKay.stage.tr(), style: AppTextStyle.formTitleStyle(context)),
-              SizedBox(height: 8.h),
-              CustomDropdownFormField<String>(
-                value: _selectedStage,
-                submitted: _submitted,
-                hint: AppLocalKay.select_section.tr(),
-                errorText: AppLocalKay.user_management_select_stage.tr(),
-                items: stages.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-                onChanged: (v) => setState(() => _selectedStage = v),
-              ),
-
-              Gap(8.h),
-
-              /// الصف
               Text(
                 AppLocalKay.user_management_class.tr(),
                 style: AppTextStyle.formTitleStyle(context),
               ),
               SizedBox(height: 8.h),
-              CustomDropdownFormField<String>(
-                value: _selectedLine,
-                submitted: _submitted,
-                hint: AppLocalKay.user_management_class.tr(),
-                errorText: AppLocalKay.user_management_select_class.tr(),
-                items: lines.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
-                onChanged: (v) => setState(() => _selectedLine = v),
+              BlocBuilder<HomeCubit, HomeState>(
+                builder: (context, state) {
+                  final levels = state.teacherLevelStatus.data ?? [];
+                  return CustomDropdownFormField<String>(
+                    value: _selectedLine,
+                    submitted: _submitted,
+                    hint: AppLocalKay.user_management_class.tr(),
+                    errorText: AppLocalKay.user_management_select_class.tr(),
+                    items: levels
+                        .map((e) => DropdownMenuItem(value: e.levelName, child: Text(e.levelName)))
+                        .toList(),
+                    onChanged: (v) => setState(() => _selectedLine = v),
+                  );
+                },
               ),
 
               Gap(8.h),

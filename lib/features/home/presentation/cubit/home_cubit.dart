@@ -213,6 +213,16 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  Future<void> teacherLevel(int stageCode) async {
+    emit(state.copyWith(teacherLevelStatus: StatusState.loading()));
+
+    final result = await _homeRepo.teacherLevel(stageCode: stageCode);
+    result.fold(
+      (error) => emit(state.copyWith(teacherLevelStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(teacherLevelStatus: StatusState.success(success))),
+    );
+  }
+
   void resetAddPermissionStatus() {
     if (isClosed) return;
     emit(state.copyWith(addPermissionsStatus: const StatusState.initial()));

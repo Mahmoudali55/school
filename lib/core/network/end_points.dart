@@ -20,8 +20,6 @@ class EndPoints {
   static const String busLine = 'DeltagroupService/School/GetBusLine';
   static const String studentProfile = 'DeltagroupService/School/GetStudentProfile';
   static const String studentCourses = 'DeltagroupService/School/GetStudentCourses';
-  static const String teacherSeaction = 'DeltagroupService/School/GetTeacherSeaction';
-  static const String teacherStage = 'DeltagroupService/School/GetTeacherStage';
   static const String teacherLevel = 'DeltagroupService/School/GetTeacherLevel';
   static const String teacherClass = 'DeltagroupService/School/GetTeacherClass';
   static const String teacherCourses = 'DeltagroupService/School/GetTeacherCourses';
