@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:my_template/features/home/data/models/home_work_details_model.dart';
 
-class AddHomeworkModel extends Equatable {
-  final List<int>? classCodes;
+class AddHomeworkModelRequest extends Equatable {
+  final String classCodes;
   final int sectionCode;
   final int stageCode;
   final int level;
@@ -11,8 +11,8 @@ class AddHomeworkModel extends Equatable {
   final String? notes;
   final List<HomeworkDetailsModel> homeworkDetails;
 
-  const AddHomeworkModel({
-    this.classCodes,
+  const AddHomeworkModelRequest({
+    required this.classCodes,
     required this.sectionCode,
     required this.stageCode,
     required this.level,
@@ -22,9 +22,9 @@ class AddHomeworkModel extends Equatable {
     required this.homeworkDetails,
   });
 
-  factory AddHomeworkModel.fromJson(Map<String, dynamic> json) {
-    return AddHomeworkModel(
-      classCodes: json['classcodes'] != null ? List<int>.from(json['classcodes']) : null,
+  factory AddHomeworkModelRequest.fromJson(Map<String, dynamic> json) {
+    return AddHomeworkModelRequest(
+      classCodes: json['classcodes'] as String,
       sectionCode: json['SECTIONCODE'] as int,
       stageCode: json['STAGECODE'] as int,
       level: json['level'] as int,

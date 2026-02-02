@@ -4,6 +4,8 @@ import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/error/failures.dart';
 import 'package:my_template/core/network/api_consumer.dart';
 import 'package:my_template/core/network/end_points.dart';
+import 'package:my_template/features/home/data/models/add_home_work_request_model.dart';
+import 'package:my_template/features/home/data/models/add_homework_response_model.dart';
 import 'package:my_template/features/home/data/models/add_permissions_mobile_model.dart';
 import 'package:my_template/features/home/data/models/add_permissions_response_model.dart';
 import 'package:my_template/features/home/data/models/add_uniform_request_model.dart';
@@ -68,6 +70,10 @@ abstract interface class HomeRepo {
     required int levelCode,
   });
   Future<Either<Failure, List<TeacherCoursesModel>>> teacherCourses({required int code});
+
+  Future<Either<Failure, AddHomeworkResponseModel>> addHomework({
+    required AddHomeworkModelRequest request,
+  });
 }
 
 class HomeRepoImpl implements HomeRepo {
@@ -292,6 +298,18 @@ class HomeRepoImpl implements HomeRepo {
           queryParameters: {"Code": code},
         );
         return TeacherCoursesModel.fromApiResponse(response);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, AddHomeworkResponseModel>> addHomework({
+    required AddHomeworkModelRequest request,
+  }) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.post(EndPoints.addHomeWork, body: request.toJson());
+        return AddHomeworkResponseModel.fromJson(response);
       },
     );
   }

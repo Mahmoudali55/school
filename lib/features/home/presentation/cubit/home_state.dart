@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/features/home/data/models/add_homework_response_model.dart';
 import 'package:my_template/features/home/data/models/add_permissions_response_model.dart';
 import 'package:my_template/features/home/data/models/add_uniform_response_model.dart';
 import 'package:my_template/features/home/data/models/edit_permissions_mobile_response_model.dart';
@@ -35,6 +36,7 @@ class HomeState extends Equatable {
     this.teacherLevelStatus = const StatusState.initial(),
     this.teacherClassesStatus = const StatusState.initial(),
     this.teacherCoursesStatus = const StatusState.initial(),
+    this.addHomeworkStatus = const StatusState.initial(),
 
     this.selectedStudent,
     this.data,
@@ -57,6 +59,7 @@ class HomeState extends Equatable {
   final StatusState<List<TeacherLevelModel>> teacherLevelStatus;
   final StatusState<List<TeacherClassModels>> teacherClassesStatus;
   final StatusState<List<TeacherCoursesModel>> teacherCoursesStatus;
+  final StatusState<AddHomeworkResponseModel> addHomeworkStatus;
   final StudentMiniInfo? selectedStudent;
 
   /// Main home data (TeacherHomeModel, StudentHomeModel, etc.)
@@ -85,6 +88,7 @@ class HomeState extends Equatable {
     data,
     isLoading,
     errorMessage,
+    addHomeworkStatus,
   ];
 
   HomeState copyWith({
@@ -103,6 +107,7 @@ class HomeState extends Equatable {
     StatusState<List<TeacherLevelModel>>? teacherLevelStatus,
     StatusState<List<TeacherClassModels>>? teacherClassesStatus,
     StatusState<List<TeacherCoursesModel>>? teacherCoursesStatus,
+    StatusState<AddHomeworkResponseModel>? addHomeworkStatus,
     StudentMiniInfo? selectedStudent,
     HomeModel? data,
     bool? isLoading,
@@ -128,6 +133,7 @@ class HomeState extends Equatable {
       data: data ?? this.data,
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
+      addHomeworkStatus: addHomeworkStatus ?? this.addHomeworkStatus,
     );
   }
 }
