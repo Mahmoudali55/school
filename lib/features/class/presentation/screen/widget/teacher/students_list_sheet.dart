@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/teacher_classes_models.dart';
@@ -25,9 +26,11 @@ class StudentsListSheet extends StatelessWidget {
                   width: 30,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: Colors.black),
+                    border: Border.all(color: AppColor.blackColor(context)),
                   ),
-                  child: const Center(child: Icon(Icons.close, color: Colors.black, size: 18)),
+                  child: Center(
+                    child: Icon(Icons.close, color: AppColor.blackColor(context), size: 18),
+                  ),
                 ),
               ),
               const Spacer(),

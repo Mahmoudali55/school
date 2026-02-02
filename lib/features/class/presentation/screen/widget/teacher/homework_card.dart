@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/get_T_home_work_model.dart';
@@ -18,11 +19,11 @@ class HomeworkCard extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(top: 30, left: 8, right: 8),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColor.whiteColor(context),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: AppColor.blackColor(context).withValues(alpha: 0.1),
               blurRadius: 25,
               spreadRadius: 0,
               offset: const Offset(0, 10),
@@ -63,7 +64,7 @@ class HomeworkCard extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(Icons.school, size: 16, color: Color(0xFF667eea)),
-                        const SizedBox(width: 8),
+                        const Gap(8),
                         Text(
                           item.courseName,
                           style: TextStyle(
@@ -76,7 +77,7 @@ class HomeworkCard extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 20),
+                  const Gap(20),
 
                   // Homework title
                   Text(
@@ -89,7 +90,7 @@ class HomeworkCard extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 16),
+                  const Gap(16),
 
                   // Notes section
                   if (item.notes.isNotEmpty) ...[
@@ -104,7 +105,7 @@ class HomeworkCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Icon(Icons.sticky_note_2, color: Color(0xFFed64a6), size: 20),
-                          const SizedBox(width: 12),
+                          const Gap(12),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,7 +118,7 @@ class HomeworkCard extends StatelessWidget {
                                     fontSize: 12,
                                   ),
                                 ),
-                                const SizedBox(height: 4),
+                                const Gap(4),
                                 Text(
                                   item.notes,
                                   style: TextStyle(color: Color(0xFF702459), fontSize: 14),
@@ -128,7 +129,7 @@ class HomeworkCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    const Gap(20),
                   ],
 
                   // Date and actions row
@@ -144,7 +145,7 @@ class HomeworkCard extends StatelessWidget {
                         child: Row(
                           children: [
                             Icon(Icons.calendar_today, size: 16, color: Color(0xFF38a169)),
-                            const SizedBox(width: 8),
+                            const Gap(8),
                             Text(
                               item.hwDate,
                               style: TextStyle(
@@ -173,7 +174,7 @@ class HomeworkCard extends StatelessWidget {
                               color: AppColor.primaryColor(context),
                               onTap: onEdit,
                             ),
-                            const SizedBox(width: 5),
+                            const Gap(5),
                             _buildModernButton(
                               icon: Icons.delete,
                               label: AppLocalKay.delete.tr(),
@@ -214,7 +215,7 @@ class HomeworkCard extends StatelessWidget {
           child: Row(
             children: [
               Icon(icon, color: color, size: 18),
-              const SizedBox(width: 6),
+              const Gap(6),
               Text(
                 label,
                 style: TextStyle(color: color, fontWeight: FontWeight.w600, fontSize: 13),

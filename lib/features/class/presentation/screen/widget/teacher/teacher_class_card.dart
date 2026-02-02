@@ -127,10 +127,10 @@ class TeacherClassCard extends StatelessWidget {
                     PopupMenuItem(
                       value: 'edit',
                       child: Row(
-                        children: const [
+                        children: [
                           Icon(Icons.edit, size: 18),
                           SizedBox(width: 8),
-                          Text('تعديل'),
+                          Text(AppLocalKay.user_management_edit.tr()),
                         ],
                       ),
                     ),

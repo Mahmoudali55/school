@@ -63,7 +63,6 @@ class _TeacherClassesScreenState extends State<TeacherClassesScreen> {
                 final userCode = int.tryParse(HiveMethods.getUserCode()) ?? 0;
                 final sectionCode = int.tryParse(HiveMethods.getUserSection().toString()) ?? 0;
                 final stageCode = int.tryParse(HiveMethods.getUserStage().toString()) ?? 0;
-                final levelCode = int.tryParse(HiveMethods.getUserLevelCode().toString()) ?? 0;
 
                 context.read<HomeCubit>().teacherCourses(userCode);
                 context.read<HomeCubit>().teacherClasses(sectionCode, stageCode, 111);
@@ -86,8 +85,8 @@ class _TeacherClassesScreenState extends State<TeacherClassesScreen> {
                           0,
                           (sum, c) => sum + (c.newStudent ?? 0) + (c.oldStudent ?? 0),
                         ),
-                        totalAssignments: 0, // Not available in this API
-                        attendanceRate: 0.0, // Not available in this API
+                        totalAssignments: 0,
+                        attendanceRate: 0.0,
                       ),
                     ),
                     const SizedBox(height: 20),

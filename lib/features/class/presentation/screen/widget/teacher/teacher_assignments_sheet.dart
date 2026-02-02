@@ -128,13 +128,15 @@ class _TeacherAssignmentsSheetState extends State<TeacherAssignmentsSheet> {
               width: 60,
               margin: const EdgeInsets.only(right: 10),
               decoration: BoxDecoration(
-                color: isSelected ? Colors.blue : Colors.white,
+                color: isSelected ? AppColor.infoColor(context) : AppColor.whiteColor(context),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: isSelected ? Colors.blue : Colors.grey[300]!),
+                border: Border.all(
+                  color: isSelected ? AppColor.infoColor(context) : AppColor.grey300Color(context),
+                ),
                 boxShadow: isSelected
                     ? [
                         BoxShadow(
-                          color: Colors.blue.withOpacity(0.3),
+                          color: AppColor.infoColor(context).withValues(alpha: (0.3)),
                           blurRadius: 8,
                           offset: const Offset(0, 4),
                         ),
@@ -147,7 +149,9 @@ class _TeacherAssignmentsSheetState extends State<TeacherAssignmentsSheet> {
                   Text(
                     DateFormat('E', 'ar').format(date),
                     style: AppTextStyle.bodySmall(context).copyWith(
-                      color: isSelected ? Colors.white : Colors.grey[600],
+                      color: isSelected
+                          ? AppColor.whiteColor(context)
+                          : AppColor.grey600Color(context),
                       fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                     ),
                   ),
@@ -155,7 +159,9 @@ class _TeacherAssignmentsSheetState extends State<TeacherAssignmentsSheet> {
                   Text(
                     date.day.toString(),
                     style: AppTextStyle.titleMedium(context).copyWith(
-                      color: isSelected ? Colors.white : Colors.black,
+                      color: isSelected
+                          ? AppColor.whiteColor(context)
+                          : AppColor.blackColor(context),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -185,11 +191,17 @@ class _TeacherAssignmentsSheetState extends State<TeacherAssignmentsSheet> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.assignment_outlined, size: 60, color: Colors.grey[300]),
+                    Icon(
+                      Icons.assignment_outlined,
+                      size: 60,
+                      color: AppColor.grey300Color(context),
+                    ),
                     const SizedBox(height: 16),
                     Text(
                       AppLocalKay.no_task_today.tr(),
-                      style: AppTextStyle.bodyLarge(context).copyWith(color: Colors.grey[400]),
+                      style: AppTextStyle.bodyLarge(
+                        context,
+                      ).copyWith(color: AppColor.grey400Color(context)),
                     ),
                   ],
                 ),
