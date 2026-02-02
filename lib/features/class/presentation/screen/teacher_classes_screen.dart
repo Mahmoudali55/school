@@ -14,7 +14,8 @@ import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 
 class TeacherClassesScreen extends StatefulWidget {
-  const TeacherClassesScreen({super.key});
+  final int? classCode;
+  const TeacherClassesScreen({super.key, this.classCode});
 
   @override
   State<TeacherClassesScreen> createState() => _TeacherClassesScreenState();

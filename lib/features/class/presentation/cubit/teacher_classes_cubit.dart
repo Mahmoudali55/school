@@ -1,10 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/class/data/model/teacher_classes_models.dart';
+import 'package:my_template/features/class/data/repository/class_repo.dart';
 
 import 'teacher_classes_state.dart';
 
 class TeacherClassesCubit extends Cubit<TeacherClassesState> {
-  TeacherClassesCubit()
+  final ClassRepo _classRepo;
+  TeacherClassesCubit(this._classRepo)
     : super(
         TeacherClassesState(
           teacherInfo: TeacherInfo(
