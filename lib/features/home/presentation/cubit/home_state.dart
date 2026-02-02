@@ -3,6 +3,7 @@ import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/home/data/models/add_homework_response_model.dart';
 import 'package:my_template/features/home/data/models/add_permissions_response_model.dart';
 import 'package:my_template/features/home/data/models/add_uniform_response_model.dart';
+import 'package:my_template/features/home/data/models/class_hW_del_model.dart';
 import 'package:my_template/features/home/data/models/edit_permissions_mobile_response_model.dart';
 import 'package:my_template/features/home/data/models/edit_uniform_response_model.dart';
 import 'package:my_template/features/home/data/models/get_permissions_mobile_model.dart';
@@ -37,6 +38,7 @@ class HomeState extends Equatable {
     this.teacherClassesStatus = const StatusState.initial(),
     this.teacherCoursesStatus = const StatusState.initial(),
     this.addHomeworkStatus = const StatusState.initial(),
+    this.deleteHomeworkStatus = const StatusState.initial(),
 
     this.selectedStudent,
     this.data,
@@ -60,6 +62,8 @@ class HomeState extends Equatable {
   final StatusState<List<TeacherClassModels>> teacherClassesStatus;
   final StatusState<List<TeacherCoursesModel>> teacherCoursesStatus;
   final StatusState<AddHomeworkResponseModel> addHomeworkStatus;
+  final StatusState<ClassHWDelModel> deleteHomeworkStatus;
+
   final StudentMiniInfo? selectedStudent;
 
   /// Main home data (TeacherHomeModel, StudentHomeModel, etc.)
@@ -89,6 +93,7 @@ class HomeState extends Equatable {
     isLoading,
     errorMessage,
     addHomeworkStatus,
+    deleteHomeworkStatus,
   ];
 
   HomeState copyWith({
@@ -108,6 +113,7 @@ class HomeState extends Equatable {
     StatusState<List<TeacherClassModels>>? teacherClassesStatus,
     StatusState<List<TeacherCoursesModel>>? teacherCoursesStatus,
     StatusState<AddHomeworkResponseModel>? addHomeworkStatus,
+    StatusState<ClassHWDelModel>? deleteHomeworkStatus,
     StudentMiniInfo? selectedStudent,
     HomeModel? data,
     bool? isLoading,
@@ -134,6 +140,7 @@ class HomeState extends Equatable {
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
       addHomeworkStatus: addHomeworkStatus ?? this.addHomeworkStatus,
+      deleteHomeworkStatus: deleteHomeworkStatus ?? this.deleteHomeworkStatus,
     );
   }
 }

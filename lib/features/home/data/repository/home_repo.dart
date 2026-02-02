@@ -10,6 +10,7 @@ import 'package:my_template/features/home/data/models/add_permissions_mobile_mod
 import 'package:my_template/features/home/data/models/add_permissions_response_model.dart';
 import 'package:my_template/features/home/data/models/add_uniform_request_model.dart';
 import 'package:my_template/features/home/data/models/add_uniform_response_model.dart';
+import 'package:my_template/features/home/data/models/class_hW_del_model.dart';
 import 'package:my_template/features/home/data/models/edit_permissions_mobile_request_model.dart';
 import 'package:my_template/features/home/data/models/edit_permissions_mobile_response_model.dart';
 import 'package:my_template/features/home/data/models/edit_uniform_request_model.dart';
@@ -74,6 +75,12 @@ abstract interface class HomeRepo {
   Future<Either<Failure, AddHomeworkResponseModel>> addHomework({
     required AddHomeworkModelRequest request,
   });
+
+  Future<Either<Failure, AddHomeworkResponseModel>> editHomework({
+    required AddHomeworkModelRequest request,
+  });
+
+  Future<Either<Failure, ClassHWDelModel>> deleteHomework({required int classCode});
 }
 
 class HomeRepoImpl implements HomeRepo {
@@ -310,6 +317,31 @@ class HomeRepoImpl implements HomeRepo {
       request: () async {
         final response = await apiConsumer.post(EndPoints.addHomeWork, body: request.toJson());
         return AddHomeworkResponseModel.fromJson(response);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, AddHomeworkResponseModel>> editHomework({
+    required AddHomeworkModelRequest request,
+  }) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.put(EndPoints.editHomeWork, body: request.toJson());
+        return AddHomeworkResponseModel.fromJson(response);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, ClassHWDelModel>> deleteHomework({required int classCode}) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.delete(
+          EndPoints.deleteHomeWork,
+          body: {"classcode": classCode},
+        );
+        return ClassHWDelModel.fromJson(response);
       },
     );
   }

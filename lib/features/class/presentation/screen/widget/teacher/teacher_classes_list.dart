@@ -2,11 +2,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/core/utils/common_methods.dart';
+import 'package:my_template/features/class/data/model/get_T_home_work_model.dart';
 import 'package:my_template/features/class/data/model/teacher_classes_models.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/class/presentation/cubit/class_state.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
+import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 import 'package:my_template/features/home/presentation/view/execution/create_assignment_screen.dart';
 
 import 'teacher_class_card.dart';
@@ -108,6 +113,7 @@ class TeacherClassesList extends StatelessWidget {
 
   void _showAssignmentsSheet(BuildContext context, ClassInfo classInfo) {
     final classCubit = context.read<ClassCubit>();
+    final homeCubit = context.read<HomeCubit>();
     DateTime selectedDate = DateTime.now();
 
     // Create a list of dates for the horizontal calendar (7 days before to 14 days after today)
@@ -132,8 +138,11 @@ class TeacherClassesList extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
-        return BlocProvider.value(
-          value: classCubit,
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider.value(value: classCubit),
+            BlocProvider.value(value: homeCubit),
+          ],
           child: StatefulBuilder(
             builder: (context, setState) {
               return DraggableScrollableSheet(
@@ -262,7 +271,7 @@ class TeacherClassesList extends StatelessWidget {
                                           ),
                                           const SizedBox(height: 16),
                                           Text(
-                                            'لا يوجد واجبات لهذا اليوم',
+                                            AppLocalKay.no_task_today.tr(),
                                             style: AppTextStyle.bodyLarge(
                                               context,
                                             ).copyWith(color: Colors.grey[400]),
@@ -311,11 +320,47 @@ class TeacherClassesList extends StatelessWidget {
                                                           ),
                                                     ),
                                                   ),
-                                                  Text(
-                                                    item.hwDate,
-                                                    style: AppTextStyle.bodySmall(
-                                                      context,
-                                                    ).copyWith(color: Colors.grey),
+                                                  Row(
+                                                    children: [
+                                                      IconButton(
+                                                        visualDensity: VisualDensity.compact,
+                                                        icon: const Icon(
+                                                          Icons.edit,
+                                                          color: Colors.blue,
+                                                          size: 20,
+                                                        ),
+                                                        onPressed: () async {
+                                                          final result = await Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  BlocProvider.value(
+                                                                    value: homeCubit,
+                                                                    child: CreateAssignmentScreen(
+                                                                      homework: item,
+                                                                    ),
+                                                                  ),
+                                                            ),
+                                                          );
+                                                          if (result == true) {
+                                                            fetchHomework(selectedDate);
+                                                          }
+                                                        },
+                                                      ),
+                                                      IconButton(
+                                                        visualDensity: VisualDensity.compact,
+                                                        icon: const Icon(
+                                                          Icons.delete,
+                                                          color: Colors.red,
+                                                          size: 20,
+                                                        ),
+                                                        onPressed: () => _showDeleteConfirmation(
+                                                          context,
+                                                          item,
+                                                          () => fetchHomework(selectedDate),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),
@@ -329,12 +374,22 @@ class TeacherClassesList extends StatelessWidget {
                                               if (item.notes.isNotEmpty) ...[
                                                 const SizedBox(height: 8),
                                                 Text(
-                                                  'ملاحظات: ${item.notes}',
+                                                  '${AppLocalKay.note.tr()}: ${item.notes}',
                                                   style: AppTextStyle.bodyMedium(
                                                     context,
                                                   ).copyWith(color: Colors.grey[600]),
                                                 ),
                                               ],
+                                              const SizedBox(height: 8),
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  item.hwDate,
+                                                  style: AppTextStyle.bodySmall(
+                                                    context,
+                                                  ).copyWith(color: Colors.grey),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -352,13 +407,19 @@ class TeacherClassesList extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: CustomButton(
-                                  onPressed: () {
-                                    Navigator.push(
+                                  onPressed: () async {
+                                    final result = await Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => const CreateAssignmentScreen(),
+                                        builder: (context) => BlocProvider.value(
+                                          value: homeCubit,
+                                          child: const CreateAssignmentScreen(),
+                                        ),
                                       ),
                                     );
+                                    if (result == true) {
+                                      fetchHomework(selectedDate);
+                                    }
                                   },
                                   text: AppLocalKay.create_new_assignment.tr(),
                                   radius: 12,
@@ -384,6 +445,55 @@ class TeacherClassesList extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  void _showDeleteConfirmation(BuildContext context, THomeWorkItem item, VoidCallback onSuccess) {
+    final homeCubit = context.read<HomeCubit>();
+    showDialog(
+      context: context,
+      builder: (context) => BlocProvider.value(
+        value: homeCubit,
+        child: BlocConsumer<HomeCubit, HomeState>(
+          listener: (context, state) {
+            if (state.deleteHomeworkStatus.isSuccess) {
+              CommonMethods.showToast(message: state.deleteHomeworkStatus.data?.errorMsg ?? "");
+              context.read<HomeCubit>().resetDeleteHomeworkStatus();
+              Navigator.pop(context);
+
+              onSuccess();
+            } else if (state.deleteHomeworkStatus.isFailure) {
+              CommonMethods.showToast(message: state.deleteHomeworkStatus.error ?? "");
+            }
+          },
+          builder: (context, state) {
+            return AlertDialog(
+              title: Text(AppLocalKay.delete_task.tr(), style: AppTextStyle.titleLarge(context)),
+              content: Text(
+                AppLocalKay.delete_task_alert.tr(),
+                style: AppTextStyle.bodyMedium(context),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text(AppLocalKay.cancel.tr()),
+                ),
+                state.addHomeworkStatus.isLoading
+                    ? const CircularProgressIndicator()
+                    : TextButton(
+                        onPressed: () {
+                          context.read<HomeCubit>().deleteHomework(classCode: item.classCode);
+                        },
+                        child: Text(
+                          AppLocalKay.delete.tr(),
+                          style: TextStyle(color: AppColor.errorColor(context)),
+                        ),
+                      ),
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 

@@ -259,6 +259,34 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  Future<void> editHomework(AddHomeworkModelRequest request) async {
+    emit(state.copyWith(addHomeworkStatus: StatusState.loading()));
+
+    final result = await _homeRepo.editHomework(request: request);
+    result.fold(
+      (error) => emit(state.copyWith(addHomeworkStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(addHomeworkStatus: StatusState.success(success))),
+    );
+  }
+
+  Future<void> deleteHomework({required int classCode}) async {
+    emit(state.copyWith(deleteHomeworkStatus: StatusState.loading()));
+
+    final result = await _homeRepo.deleteHomework(classCode: classCode);
+    result.fold(
+      (error) => emit(state.copyWith(deleteHomeworkStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(deleteHomeworkStatus: StatusState.success(success))),
+    );
+  }
+
+  void resetAddHomeworkStatus() {
+    emit(state.copyWith(addHomeworkStatus: const StatusState.initial()));
+  }
+
+  void resetDeleteHomeworkStatus() {
+    emit(state.copyWith(deleteHomeworkStatus: const StatusState.initial()));
+  }
+
   void resetAddPermissionStatus() {
     if (isClosed) return;
     emit(state.copyWith(addPermissionsStatus: const StatusState.initial()));

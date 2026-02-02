@@ -984,7 +984,11 @@
   "class_name_assigment":"الفصل",
   "user_management_select_classs":"يرجي اختيار الفصل",
   "stage":"المرحلة",
-  "user_management_select_stage":"يرجي اختيار المرحلة"
+  "user_management_select_stage":"يرجي اختيار المرحلة",
+  "no_task_today":"لا يوجد واجبات لهذا اليوم",
+  "edit_task":"تعديل الواجب",
+  "delete_task":"تأكيد الحذف",
+  "delete_task_alert":"هل أنت متأكد من حذف هذا الواجب؟"
 
 
 

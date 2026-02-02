@@ -928,7 +928,11 @@
   "class_name_assigment":"Class Name",
    "user_management_select_classs":"Please select a class",
   "stage":"Stage",
-  "user_management_select_stage":"Please select a stage"
+  "user_management_select_stage":"Please select a stage",
+   "no_task_today":"No tasks for today",
+   "edit_task":"Edit Task",
+    "delete_task":"Delete Task",
+    "delete_task_alert":"Are you sure you want to delete this task?"
 
 
 }

@@ -941,4 +941,8 @@ class AppLocalKay {
   static const String user_management_select_classs = 'user_management_select_classs';
   static const String stage = 'stage';
   static const String user_management_select_stage = 'user_management_select_stage';
+  static const String no_task_today = 'no_task_today';
+  static const String edit_task = 'edit_task';
+  static const String delete_task = 'delete_task';
+  static const String delete_task_alert = 'delete_task_alert';
 }
