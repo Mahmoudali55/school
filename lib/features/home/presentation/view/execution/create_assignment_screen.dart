@@ -9,6 +9,7 @@ import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_dropdown_form_field.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
+import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -125,7 +126,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
           if (state.addHomeworkStatus.isSuccess) {
             CommonMethods.showToast(message: state.addHomeworkStatus.data?.msg ?? "");
             context.read<HomeCubit>().resetAddHomeworkStatus();
-            Navigator.pop(context, true); // Return true to signal success
+            Navigator.pop(context, true);
           } else if (state.addHomeworkStatus.isFailure) {
             CommonMethods.showToast(message: state.addHomeworkStatus.error ?? "");
           }
@@ -146,27 +147,35 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                     style: AppTextStyle.formTitleStyle(context),
                   ),
                   SizedBox(height: 8.h),
-                  CustomDropdownFormField<int>(
-                    value: _selectedLevelCode,
-                    submitted: _submitted,
-                    hint: AppLocalKay.user_management_class.tr(),
-                    errorText: AppLocalKay.user_management_select_class.tr(),
-                    items: levels
-                        .map((e) => DropdownMenuItem(value: e.levelCode, child: Text(e.levelName)))
-                        .toList(),
-                    onChanged: (v) {
-                      setState(() {
-                        _selectedLevelCode = v;
-                        _selectedClassCode = null; // Reset section when level changes
-                      });
-                      if (v != null) {
-                        context.read<HomeCubit>().teacherClasses(
-                          int.parse(HiveMethods.getUserSection().toString()),
-                          int.parse(HiveMethods.getUserStage().toString()),
-                          v,
-                        );
-                      }
-                    },
+                  IgnorePointer(
+                    ignoring: isEdit,
+                    child: Opacity(
+                      opacity: isEdit ? 0.5 : 1,
+                      child: CustomDropdownFormField<int>(
+                        value: _selectedLevelCode,
+                        submitted: _submitted,
+                        hint: AppLocalKay.user_management_class.tr(),
+                        errorText: AppLocalKay.user_management_select_class.tr(),
+                        items: levels
+                            .map(
+                              (e) => DropdownMenuItem(value: e.levelCode, child: Text(e.levelName)),
+                            )
+                            .toList(),
+                        onChanged: (v) {
+                          setState(() {
+                            _selectedLevelCode = v;
+                            _selectedClassCode = null;
+                          });
+                          if (v != null) {
+                            context.read<HomeCubit>().teacherClasses(
+                              int.parse(HiveMethods.getUserSection().toString()),
+                              int.parse(HiveMethods.getUserStage().toString()),
+                              v,
+                            );
+                          }
+                        },
+                      ),
+                    ),
                   ),
 
                   Gap(8.h),
@@ -177,17 +186,24 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                     style: AppTextStyle.formTitleStyle(context),
                   ),
                   SizedBox(height: 8.h),
-                  CustomDropdownFormField<int>(
-                    value: _selectedClassCode,
-                    submitted: _submitted,
-                    hint: AppLocalKay.class_name_assigment.tr(),
-                    errorText: AppLocalKay.user_management_select_classs.tr(),
-                    items: classesList
-                        .map(
-                          (e) => DropdownMenuItem(value: e.classCode, child: Text(e.classNameAr)),
-                        )
-                        .toList(),
-                    onChanged: (v) => setState(() => _selectedClassCode = v),
+                  IgnorePointer(
+                    ignoring: isEdit,
+                    child: Opacity(
+                      opacity: isEdit ? 0.5 : 1,
+                      child: CustomDropdownFormField<int>(
+                        value: _selectedClassCode,
+                        submitted: _submitted,
+                        hint: AppLocalKay.class_name_assigment.tr(),
+                        errorText: AppLocalKay.user_management_select_classs.tr(),
+                        items: classesList
+                            .map(
+                              (e) =>
+                                  DropdownMenuItem(value: e.classCode, child: Text(e.classNameAr)),
+                            )
+                            .toList(),
+                        onChanged: (v) => setState(() => _selectedClassCode = v),
+                      ),
+                    ),
                   ),
 
                   Gap(8.h),
@@ -198,37 +214,56 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                     style: AppTextStyle.formTitleStyle(context),
                   ),
                   SizedBox(height: 8.h),
-                  CustomDropdownFormField<int>(
-                    value: _selectedSubjectCode,
-                    submitted: _submitted,
-                    hint: AppLocalKay.user_management_subject.tr(),
-                    errorText: AppLocalKay.user_management_select_subject.tr(),
-                    items: courses
-                        .map(
-                          (e) => DropdownMenuItem(value: e.courseCode, child: Text(e.courseName)),
-                        )
-                        .toList(),
-                    onChanged: (v) => setState(() => _selectedSubjectCode = v),
+                  IgnorePointer(
+                    ignoring: isEdit,
+                    child: Opacity(
+                      opacity: isEdit ? 0.5 : 1,
+                      child: CustomDropdownFormField<int>(
+                        value: _selectedSubjectCode,
+                        submitted: _submitted,
+                        hint: AppLocalKay.user_management_subject.tr(),
+                        errorText: AppLocalKay.user_management_select_subject.tr(),
+                        items: courses
+                            .map(
+                              (e) =>
+                                  DropdownMenuItem(value: e.courseCode, child: Text(e.courseName)),
+                            )
+                            .toList(),
+                        onChanged: (v) => setState(() => _selectedSubjectCode = v),
+                      ),
+                    ),
                   ),
 
                   Gap(8.h),
 
                   /// تاريخ التسليم
-                  CustomFormField(
-                    readOnly: true,
-                    radius: 12,
-                    title: AppLocalKay.user_management_deadline.tr(),
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.calendar_today),
-                      onPressed: _selectDueDate,
+                  IgnorePointer(
+                    ignoring: isEdit, // يقفل فقط في حالة التعديل
+                    child: Opacity(
+                      opacity: isEdit ? 0.5 : 1,
+                      child: CustomFormField(
+                        readOnly: true,
+                        radius: 12,
+                        title: AppLocalKay.user_management_deadline.tr(),
+                        controller: _dateController,
+
+                        // 👇 الكاليندر يشتغل فقط في الإضافة
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.calendar_today),
+                          onPressed: isEdit ? null : _selectDueDate,
+                        ),
+
+                        // 👇 نسمح بالضغط على الحقل نفسه في الإضافة
+                        onTap: isEdit ? null : _selectDueDate,
+
+                        validator: (_) {
+                          if (_dueDate == null) {
+                            return AppLocalKay.user_management_no_deadline.tr();
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                    controller: _dateController,
-                    validator: (_) {
-                      if (_dueDate == null) {
-                        return AppLocalKay.user_management_no_deadline.tr();
-                      }
-                      return null;
-                    },
                   ),
 
                   Gap(8.h),
@@ -291,45 +326,50 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                   SizedBox(height: 24.h),
 
                   /// زر الإنشاء / التعديل
-                  state.addHomeworkStatus.isLoading
-                      ? const Center(child: CircularProgressIndicator())
-                      : CustomButton(
-                          radius: 12.r,
-                          text: isEdit
-                              ? AppLocalKay.edit_task.tr().tr()
-                              : AppLocalKay.user_management_create_task.tr(),
-                          color: AppColor.accentColor(context),
-                          onPressed: () {
-                            setState(() => _submitted = true);
-                            if (_formKey.currentState!.validate()) {
-                              final request = AddHomeworkModelRequest(
-                                classCodes: isEdit ? _selectedClassCode!.toString() : '',
-                                sectionCode: int.parse(HiveMethods.getUserSection().toString()),
-                                stageCode: int.parse(HiveMethods.getUserStage().toString()),
-                                level: _selectedLevelCode!,
-                                classCode: _selectedClassCode!,
-                                hwDate: DateFormat('yyyy-MM-dd').format(_dueDate!),
-                                notes: _notesController.text,
-                                homeworkDetails: [
-                                  HomeworkDetailsModel(
-                                    levelCode: _selectedLevelCode!,
-                                    classCode: _selectedClassCode!,
-                                    hwDate: DateFormat('yyyy-MM-dd').format(_dueDate!),
-                                    hw: _descriptionController.text,
-                                    notes: _notesController.text,
-                                    courseCode: _selectedSubjectCode!,
-                                  ),
-                                ],
-                              );
+                  CustomButton(
+                    radius: 12.r,
+                    child: state.addHomeworkStatus.isLoading
+                        ? CustomLoading(color: AppColor.whiteColor(context), size: 15.w)
+                        : Text(
+                            isEdit
+                                ? AppLocalKay.edit_task.tr().tr()
+                                : AppLocalKay.user_management_create_task.tr(),
+                            style: AppTextStyle.titleLarge(
+                              context,
+                            ).copyWith(color: AppColor.whiteColor(context)),
+                          ),
+                    color: AppColor.accentColor(context),
+                    onPressed: () {
+                      setState(() => _submitted = true);
+                      if (_formKey.currentState!.validate()) {
+                        final request = AddHomeworkModelRequest(
+                          classCodes: isEdit ? _selectedClassCode!.toString() : '',
+                          sectionCode: int.parse(HiveMethods.getUserSection().toString()),
+                          stageCode: int.parse(HiveMethods.getUserStage().toString()),
+                          level: _selectedLevelCode!,
+                          classCode: _selectedClassCode!,
+                          hwDate: DateFormat('yyyy-MM-dd').format(_dueDate!),
+                          notes: _notesController.text,
+                          homeworkDetails: [
+                            HomeworkDetailsModel(
+                              levelCode: _selectedLevelCode!,
+                              classCode: _selectedClassCode!,
+                              hwDate: DateFormat('yyyy-MM-dd').format(_dueDate!),
+                              hw: _descriptionController.text,
+                              notes: _notesController.text,
+                              courseCode: _selectedSubjectCode!,
+                            ),
+                          ],
+                        );
 
-                              if (isEdit) {
-                                context.read<HomeCubit>().editHomework(request);
-                              } else {
-                                context.read<HomeCubit>().addHomework(request);
-                              }
-                            }
-                          },
-                        ),
+                        if (isEdit) {
+                          context.read<HomeCubit>().editHomework(request);
+                        } else {
+                          context.read<HomeCubit>().addHomework(request);
+                        }
+                      }
+                    },
+                  ),
                 ],
               ),
             ),

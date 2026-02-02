@@ -337,10 +337,7 @@ class HomeRepoImpl implements HomeRepo {
   Future<Either<Failure, ClassHWDelModel>> deleteHomework({required int classCode}) {
     return handleDioRequest(
       request: () async {
-        final response = await apiConsumer.delete(
-          EndPoints.deleteHomeWork,
-          body: {"classcode": classCode},
-        );
+        final response = await apiConsumer.delete(EndPoints.deleteHomeWork, body: {"": classCode});
         return ClassHWDelModel.fromJson(response);
       },
     );

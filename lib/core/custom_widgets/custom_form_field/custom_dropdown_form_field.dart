@@ -5,7 +5,7 @@ import 'package:my_template/core/theme/app_colors.dart';
 class CustomDropdownFormField<T> extends StatelessWidget {
   final T? value;
   final List<DropdownMenuItem<T>> items;
-  final ValueChanged<T?> onChanged;
+  final ValueChanged<T?>? onChanged;
   final String errorText;
   final bool submitted;
   final String? hint;
@@ -14,7 +14,7 @@ class CustomDropdownFormField<T> extends StatelessWidget {
     super.key,
     required this.value,
     required this.items,
-    required this.onChanged,
+    this.onChanged,
     required this.errorText,
     required this.submitted,
     this.hint,
