@@ -293,7 +293,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> addClassAbsent({required AddClassAbsentRequestModel request}) async {
-    emit(state.copyWith(addClassAbsentStatus: const StatusState.loading()));
+    emit(state.copyWith(addClassAbsentStatus: StatusState.loading()));
 
     final result = await _homeRepo.addClassAbsent(request: request);
     result.fold(
@@ -301,6 +301,15 @@ class HomeCubit extends Cubit<HomeState> {
           emit(state.copyWith(addClassAbsentStatus: StatusState.failure(failure.errMessage))),
       (homeWorkList) =>
           emit(state.copyWith(addClassAbsentStatus: StatusState.success(homeWorkList))),
+    );
+  }
+
+  Future<void> getClassAbsent({required int classCode, required String date}) async {
+    emit(state.copyWith(getClassAbsentStatus: StatusState.loading()));
+    final result = await _homeRepo.getClassAbsent(classCode: classCode, date: date);
+    result.fold(
+      (error) => emit(state.copyWith(getClassAbsentStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(getClassAbsentStatus: StatusState.success(success))),
     );
   }
 

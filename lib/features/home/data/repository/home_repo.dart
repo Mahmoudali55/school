@@ -89,6 +89,7 @@ abstract interface class HomeRepo {
   Future<Either<Failure, AddClassAbsentResponseModel>> addClassAbsent({
     required AddClassAbsentRequestModel request,
   });
+  Future<Either<Failure, String>> getClassAbsent({required int classCode, required String date});
 }
 
 class HomeRepoImpl implements HomeRepo {
@@ -368,6 +369,22 @@ class HomeRepoImpl implements HomeRepo {
           headers: {'Content-Type': 'application/json'},
         );
         return AddClassAbsentResponseModel.fromJson(response);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, String>> getClassAbsent({
+    required int classCode,
+    required String date,
+  }) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.Classabsent,
+          queryParameters: {"classcode": classCode, "ABSENTDATE": date},
+        );
+        return response['Data'] ?? "";
       },
     );
   }

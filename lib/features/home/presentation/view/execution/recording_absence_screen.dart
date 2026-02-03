@@ -70,6 +70,8 @@ class _RecordingAbsenceScreenState extends State<RecordingAbsenceScreen> {
       _absences.clear(); // Clear local absences tracking for new class
     });
     if (newValue != null) {
+      final date = DateFormat('yyyy-MM-dd', 'en').format(DateTime.now());
+      context.read<HomeCubit>().getClassAbsent(classCode: newValue.classCode, date: date);
       context.read<HomeCubit>().studentData(code: newValue.classCode);
     }
   }
@@ -84,8 +86,7 @@ class _RecordingAbsenceScreenState extends State<RecordingAbsenceScreen> {
     }
 
     final now = DateTime.now();
-    final date =
-        "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}";
+    final date = DateFormat('yyyy-MM-dd', 'en').format(now);
 
     final List<ClassAbsentItem> absentList = [];
     final studentData = context.read<HomeCubit>().state.studentDataStatus.data;
@@ -96,7 +97,6 @@ class _RecordingAbsenceScreenState extends State<RecordingAbsenceScreen> {
           absentList.add(
             ClassAbsentItem(
               studentCode: student.studentCode,
-
               absentType: record.type,
               notes: record.notes.isEmpty ? AppLocalKay.absence_from_teacher.tr() : record.notes,
             ),
@@ -105,8 +105,14 @@ class _RecordingAbsenceScreenState extends State<RecordingAbsenceScreen> {
       }
     }
 
+    final existingAbsencesString = context.read<HomeCubit>().state.getClassAbsentStatus.data ?? "";
+    final bool hasExistingAbsences =
+        existingAbsencesString.isNotEmpty && existingAbsencesString != "[]";
+
     final request = AddClassAbsentRequestModel(
-      classCodes: "",
+      classCodes: (hasExistingAbsences || absentList.length > 1)
+          ? _selectedClass!.classCode.toString()
+          : "",
       sectionCode: int.tryParse(HiveMethods.getUserSection().toString()) ?? 0,
       stageCode: int.tryParse(HiveMethods.getUserStage().toString()) ?? 0,
       levelCode: _selectedLevel!.levelCode,
@@ -164,10 +170,17 @@ class _RecordingAbsenceScreenState extends State<RecordingAbsenceScreen> {
           if (state.addClassAbsentStatus.isSuccess) {
             CommonMethods.showToast(message: state.addClassAbsentStatus.data?.msg ?? "");
             setState(() => _absences.clear());
+            if (_selectedClass != null) {
+              final date = DateFormat('yyyy-MM-dd', 'en').format(DateTime.now());
+              context.read<HomeCubit>().getClassAbsent(
+                classCode: _selectedClass!.classCode,
+                date: date,
+              );
+            }
           } else if (state.addClassAbsentStatus.isFailure) {
             CommonMethods.showToast(
               message: state.addClassAbsentStatus.error ?? "",
-              backgroundColor: AppColor.errorColor(context),
+              backgroundColor: AppColor.errorColor(context, listen: false),
             );
           }
         },
