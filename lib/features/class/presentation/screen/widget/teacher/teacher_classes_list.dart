@@ -52,6 +52,7 @@ class TeacherClassesList extends StatelessWidget {
   }
 
   void _showStudentsSheet(BuildContext context, ClassInfo classInfo) {
+    final classCubit = context.read<ClassCubit>();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -59,7 +60,10 @@ class TeacherClassesList extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (context) {
-        return StudentsListSheet(classInfo: classInfo);
+        return BlocProvider.value(
+          value: classCubit..studentData(code: int.tryParse(classInfo.id) ?? 0),
+          child: StudentsListSheet(),
+        );
       },
     );
   }

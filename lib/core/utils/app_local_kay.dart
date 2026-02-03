@@ -945,4 +945,5 @@ class AppLocalKay {
   static const String edit_task = 'edit_task';
   static const String delete_task = 'delete_task';
   static const String delete_task_alert = 'delete_task_alert';
+  static const String no_students = 'no_students';
 }

@@ -3,6 +3,7 @@ import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/class/data/model/class_models.dart';
 import 'package:my_template/features/class/data/model/get_T_home_work_model.dart';
 import 'package:my_template/features/class/data/model/home_work_model.dart';
+import 'package:my_template/features/class/data/model/student_class_data_model.dart';
 import 'package:my_template/features/class/data/model/student_courses_model.dart';
 
 class ClassState extends Equatable {
@@ -11,11 +12,13 @@ class ClassState extends Equatable {
   final StatusState<List<StudentCoursesModel>> studentCoursesStatus;
 
   final StatusState<List<THomeWorkItem>> teacherHomeWorkStatus;
+  final StatusState<GetStudentClassData> studentClassesStatus;
   const ClassState({
     this.classesStatus = const StatusState.initial(),
     this.homeWorkStatus = const StatusState.initial(),
     this.studentCoursesStatus = const StatusState.initial(),
     this.teacherHomeWorkStatus = const StatusState.initial(),
+    this.studentClassesStatus = const StatusState.initial(),
   });
 
   @override
@@ -24,6 +27,7 @@ class ClassState extends Equatable {
     homeWorkStatus,
     studentCoursesStatus,
     teacherHomeWorkStatus,
+    studentClassesStatus,
   ];
 
   ClassState copyWith({
@@ -31,12 +35,14 @@ class ClassState extends Equatable {
     StatusState<List<HomeWorkModel>>? homeWorkStatus,
     StatusState<List<StudentCoursesModel>>? studentCoursesStatus,
     StatusState<List<THomeWorkItem>>? teacherHomeWorkStatus,
+    StatusState<GetStudentClassData>? studentClassesStatus,
   }) {
     return ClassState(
       classesStatus: classesStatus ?? this.classesStatus,
       homeWorkStatus: homeWorkStatus ?? this.homeWorkStatus,
       studentCoursesStatus: studentCoursesStatus ?? this.studentCoursesStatus,
       teacherHomeWorkStatus: teacherHomeWorkStatus ?? this.teacherHomeWorkStatus,
+      studentClassesStatus: studentClassesStatus ?? this.studentClassesStatus,
     );
   }
 }

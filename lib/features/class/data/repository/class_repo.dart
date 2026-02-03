@@ -8,6 +8,7 @@ import 'package:my_template/core/network/end_points.dart';
 import 'package:my_template/features/class/data/model/class_models.dart';
 import 'package:my_template/features/class/data/model/get_T_home_work_model.dart';
 import 'package:my_template/features/class/data/model/home_work_model.dart';
+import 'package:my_template/features/class/data/model/student_class_data_model.dart';
 import 'package:my_template/features/class/data/model/student_courses_model.dart';
 
 abstract interface class ClassRepo {
@@ -20,6 +21,8 @@ abstract interface class ClassRepo {
     required String hwDate,
   });
   Future<Either<Failure, List<StudentCoursesModel>>> getStudentCourses({required int level});
+
+  Future<Either<Failure, GetStudentClassData>> studentClasses({required int ClassCode});
   final List<StudentClassModel> _studentClasses = const [
     StudentClassModel(
       id: '1',
@@ -186,6 +189,18 @@ class ClassRepoImpl extends ClassRepo {
 
         final model = GetTHomeWorkModel.fromJson(response);
         return model.data;
+      },
+    );
+  }
+
+  Future<Either<Failure, GetStudentClassData>> studentClasses({required int ClassCode}) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.studentClass,
+          queryParameters: {"classcode": ClassCode},
+        );
+        return GetStudentClassData.fromJson(response);
       },
     );
   }
