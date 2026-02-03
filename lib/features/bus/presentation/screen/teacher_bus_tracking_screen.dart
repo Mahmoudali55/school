@@ -71,7 +71,13 @@ class _TeacherBusTrackingScreenState extends State<TeacherBusTrackingScreen>
           slivers: [
             SliverToBoxAdapter(
               child: Center(
-                child: Text(AppLocalKay.bus_title.tr(), style: AppTextStyle.text16SDark(context)),
+                child: Text(
+                  AppLocalKay.bus_title.tr(),
+                  style: AppTextStyle.titleLarge(
+                    context,
+                    color: AppColor.blackColor(context),
+                  ).copyWith(fontWeight: FontWeight.bold),
+                ),
               ),
             ),
             const SliverToBoxAdapter(child: ClassesSelectorWidget()),

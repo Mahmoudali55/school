@@ -42,7 +42,10 @@ class _TeacherClassesScreenState extends State<TeacherClassesScreen> {
         context,
         title: Text(
           AppLocalKay.classestitle.tr(),
-          style: AppTextStyle.titleMedium(context, color: AppColor.blackColor(context)),
+          style: AppTextStyle.titleLarge(
+            context,
+            color: AppColor.blackColor(context),
+          ).copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         elevation: 0,

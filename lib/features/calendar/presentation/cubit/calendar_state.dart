@@ -9,6 +9,8 @@ class CalendarState extends Equatable {
   final List<TeacherCalendarEvent> events;
   final bool isLoading;
   final String? error;
+  final bool classesLoading;
+  final String? classesError;
 
   const CalendarState({
     required this.selectedDate,
@@ -18,6 +20,8 @@ class CalendarState extends Equatable {
     required this.events,
     this.isLoading = false,
     this.error,
+    this.classesLoading = false,
+    this.classesError,
   });
 
   CalendarState copyWith({
@@ -28,6 +32,8 @@ class CalendarState extends Equatable {
     List<TeacherCalendarEvent>? events,
     bool? isLoading,
     String? error,
+    bool? classesLoading,
+    String? classesError,
   }) {
     return CalendarState(
       selectedDate: selectedDate ?? this.selectedDate,
@@ -37,6 +43,8 @@ class CalendarState extends Equatable {
       events: events ?? this.events,
       isLoading: isLoading ?? this.isLoading,
       error: error,
+      classesLoading: classesLoading ?? this.classesLoading,
+      classesError: classesError,
     );
   }
 
@@ -96,5 +104,7 @@ class CalendarState extends Equatable {
     events,
     isLoading,
     error,
+    classesLoading,
+    classesError,
   ];
 }

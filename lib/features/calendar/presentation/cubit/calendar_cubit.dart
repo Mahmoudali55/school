@@ -1,13 +1,17 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/features/calendar/data/model/calendar_event_model.dart';
 import 'package:my_template/features/calendar/data/repo/calendar_repo.dart';
+import 'package:my_template/features/home/data/models/teacher_class_model.dart';
+import 'package:my_template/features/home/data/repository/home_repo.dart';
 
 import 'calendar_state.dart';
 
 class CalendarCubit extends Cubit<CalendarState> {
   final CalendarRepo _calendarRepo;
+  final HomeRepo _homeRepo;
 
-  CalendarCubit(this._calendarRepo)
+  CalendarCubit(this._calendarRepo, this._homeRepo)
     : super(
         CalendarState(
           selectedDate: DateTime.now(),
@@ -51,6 +55,55 @@ class CalendarCubit extends Cubit<CalendarState> {
     } catch (e) {
       emit(state.copyWith(error: e.toString(), isLoading: false));
     }
+  }
+
+  /// Fetch teacher classes from API and convert to ClassInfo
+  Future<void> loadTeacherClasses() async {
+    emit(state.copyWith(classesLoading: true, classesError: null));
+
+    try {
+      // Get teacher parameters from Hive
+      final sectionCode = int.tryParse(HiveMethods.getUserSection().toString()) ?? 0;
+      final stageCode = int.tryParse(HiveMethods.getUserStage().toString()) ?? 0;
+      final levelCode = 111;
+
+      // Fetch teacher classes from API
+      final result = await _homeRepo.teacherClasses(
+        sectionCode: sectionCode,
+        stageCode: stageCode,
+        levelCode: levelCode,
+      );
+
+      result.fold(
+        (failure) => emit(state.copyWith(classesLoading: false, classesError: failure.errMessage)),
+        (teacherClasses) {
+          // Convert TeacherClassModels to ClassInfo
+          final classInfoList = _mapTeacherClassesToClassInfo(teacherClasses);
+          emit(
+            state.copyWith(
+              classes: classInfoList,
+              selectedClass: classInfoList.isNotEmpty ? classInfoList.first : null,
+              classesLoading: false,
+              classesError: null,
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      emit(state.copyWith(classesLoading: false, classesError: e.toString()));
+    }
+  }
+
+  /// Convert List<TeacherClassModels> to List<ClassInfo>
+  List<ClassInfo> _mapTeacherClassesToClassInfo(List<TeacherClassModels> teacherClasses) {
+    return teacherClasses.map((teacherClass) {
+      return ClassInfo(
+        id: teacherClass.classCode.toString(),
+        name: teacherClass.classNameAr,
+        grade: '',
+        specialization: teacherClass.classNameAr,
+      );
+    }).toList();
   }
 
   void changeDate(DateTime date) {
