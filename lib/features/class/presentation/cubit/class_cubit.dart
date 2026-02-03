@@ -91,4 +91,13 @@ class ClassCubit extends Cubit<ClassState> {
           emit(state.copyWith(studentClassesStatus: StatusState.success(homeWorkList))),
     );
   }
+
+  Future<void> classAbsent({required int classCode, required String HWDATE}) async {
+    emit(state.copyWith(classAbsentStatus: StatusState.loading()));
+    final result = await _classRepo.classAbsent(classCode: classCode, HwDate: HWDATE);
+    result.fold(
+      (error) => emit(state.copyWith(classAbsentStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(classAbsentStatus: StatusState.success(success))),
+    );
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/features/class/data/model/class_absent_model.dart';
 import 'package:my_template/features/class/data/model/class_models.dart';
 import 'package:my_template/features/class/data/model/get_T_home_work_model.dart';
 import 'package:my_template/features/class/data/model/home_work_model.dart';
@@ -13,12 +14,14 @@ class ClassState extends Equatable {
 
   final StatusState<List<THomeWorkItem>> teacherHomeWorkStatus;
   final StatusState<GetStudentClassData> studentClassesStatus;
+  final StatusState<List<ClassAbsentModel>> classAbsentStatus;
   const ClassState({
     this.classesStatus = const StatusState.initial(),
     this.homeWorkStatus = const StatusState.initial(),
     this.studentCoursesStatus = const StatusState.initial(),
     this.teacherHomeWorkStatus = const StatusState.initial(),
     this.studentClassesStatus = const StatusState.initial(),
+    this.classAbsentStatus = const StatusState.initial(),
   });
 
   @override
@@ -28,6 +31,7 @@ class ClassState extends Equatable {
     studentCoursesStatus,
     teacherHomeWorkStatus,
     studentClassesStatus,
+    classAbsentStatus,
   ];
 
   ClassState copyWith({
@@ -36,6 +40,7 @@ class ClassState extends Equatable {
     StatusState<List<StudentCoursesModel>>? studentCoursesStatus,
     StatusState<List<THomeWorkItem>>? teacherHomeWorkStatus,
     StatusState<GetStudentClassData>? studentClassesStatus,
+    StatusState<List<ClassAbsentModel>>? classAbsentStatus,
   }) {
     return ClassState(
       classesStatus: classesStatus ?? this.classesStatus,
@@ -43,6 +48,7 @@ class ClassState extends Equatable {
       studentCoursesStatus: studentCoursesStatus ?? this.studentCoursesStatus,
       teacherHomeWorkStatus: teacherHomeWorkStatus ?? this.teacherHomeWorkStatus,
       studentClassesStatus: studentClassesStatus ?? this.studentClassesStatus,
+      classAbsentStatus: classAbsentStatus ?? this.classAbsentStatus,
     );
   }
 }

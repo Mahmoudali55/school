@@ -962,4 +962,11 @@ class AppLocalKay {
   static const String absent = "absent";
   static const String excused = "excused";
   static const String add_notes = "add_notes";
+  static const String absent_from_class = "absent_from_class";
+  static const String excused_absence = "excused_absence";
+  static const String unexcused_absence = "unexcused_absence";
+  static const String no_absence_today = "no_absence_today";
+  static const String happy_day = "happy_day";
+  static const String loading_data = "loading_data";
+  static const String retry = 'retry';
 }

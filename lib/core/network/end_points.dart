@@ -29,4 +29,5 @@ class EndPoints {
   static const String getTHomeWork = 'DeltagroupService/School/GetTHomeWork';
   static const String studentClass = 'DeltaGroup/Search/GetstudentclassData';
   static const String addClassabsent = 'DeltagroupService/School/AddClassabsent';
+  static const String Classabsent = 'DeltagroupService/School/GetClassabsent';
 }

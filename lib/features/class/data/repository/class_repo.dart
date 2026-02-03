@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:my_template/core/error/failures.dart';
 import 'package:my_template/core/network/api_consumer.dart';
 import 'package:my_template/core/network/end_points.dart';
+import 'package:my_template/features/class/data/model/class_absent_model.dart';
 import 'package:my_template/features/class/data/model/class_models.dart';
 import 'package:my_template/features/class/data/model/get_T_home_work_model.dart';
 import 'package:my_template/features/class/data/model/home_work_model.dart';
@@ -23,6 +24,11 @@ abstract interface class ClassRepo {
   Future<Either<Failure, List<StudentCoursesModel>>> getStudentCourses({required int level});
 
   Future<Either<Failure, GetStudentClassData>> studentClasses({required int ClassCode});
+  Future<Either<Failure, List<ClassAbsentModel>>> classAbsent({
+    required int classCode,
+    required String HwDate,
+  });
+
   final List<StudentClassModel> _studentClasses = const [
     StudentClassModel(
       id: '1',
@@ -201,6 +207,21 @@ class ClassRepoImpl extends ClassRepo {
           queryParameters: {"classcode": ClassCode},
         );
         return GetStudentClassData.fromJson(response);
+      },
+    );
+  }
+
+  Future<Either<Failure, List<ClassAbsentModel>>> classAbsent({
+    required int classCode,
+    required String HwDate,
+  }) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.Classabsent,
+          queryParameters: {"Classcode": classCode, "ABSENTDATE": HwDate},
+        );
+        return ClassAbsentModel.listFromJson(response['Data']);
       },
     );
   }

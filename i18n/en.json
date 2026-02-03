@@ -952,7 +952,12 @@
   "absent":"Absent",
   "no_students": "No students found",
   "excused":"Excused",
-  "add_notes":"Add notes..."
-
-
+  "add_notes":"Add notes...",
+  "absent_from_class":"Absent from class",
+  "excused_absence":"Excused absence",
+  "unexcused_absence":"Unexcused absence",
+  "no_absence_today":"No absence today",
+  "happy_day":"Everyone is present, a happy day!",
+  "loading_data":"Loading data...",
+   "retry":"Retry"
 }
