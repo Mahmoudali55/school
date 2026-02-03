@@ -8,12 +8,15 @@ import 'package:my_template/features/home/data/models/edit_uniform_request_model
 import 'package:my_template/features/home/data/models/home_models.dart';
 
 import '../../data/repository/home_repo.dart';
+import '../../../class/data/repository/class_repo.dart';
+import '../../../class/data/model/student_class_data_model.dart';
 import 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   final HomeRepo _homeRepo;
+  final ClassRepo _classRepo;
 
-  HomeCubit(this._homeRepo) : super(HomeInitial());
+  HomeCubit(this._homeRepo, this._classRepo) : super(HomeInitial());
 
   Future<void> getHomeData(String userTypeId, int code) async {
     if (state.data != null && state.errorMessage == null) return;
@@ -266,6 +269,16 @@ class HomeCubit extends Cubit<HomeState> {
     result.fold(
       (error) => emit(state.copyWith(addHomeworkStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(addHomeworkStatus: StatusState.success(success))),
+    );
+  }
+
+  Future<void> studentData({required int code}) async {
+    emit(state.copyWith(studentDataStatus: const StatusState.loading()));
+
+    final result = await _classRepo.studentClasses(ClassCode: code);
+    result.fold(
+      (failure) => emit(state.copyWith(studentDataStatus: StatusState.failure(failure.errMessage))),
+      (studentList) => emit(state.copyWith(studentDataStatus: StatusState.success(studentList))),
     );
   }
 

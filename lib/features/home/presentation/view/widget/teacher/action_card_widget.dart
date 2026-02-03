@@ -7,9 +7,9 @@ import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/schedule_Item_model.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
-import 'package:my_template/features/home/presentation/view/execution/attendance_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/behavior_report_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/create_assignment_screen.dart';
+import 'package:my_template/features/home/presentation/view/execution/recording_absence_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/reports_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/send_notification_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/upload_lesson_screen.dart';
@@ -54,7 +54,11 @@ class ActionCardWidget extends StatelessWidget {
         screen = const UploadLessonScreen();
         break;
       case AppLocalKay.check_in:
-        screen = const AttendanceScreen();
+        screen = BlocProvider(
+          create: (context) => sl<HomeCubit>(),
+
+          child: const RecordingAbsenceScreen(),
+        );
         break;
       case AppLocalKay.create_todo:
         screen = BlocProvider(

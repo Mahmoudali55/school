@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/features/class/data/model/student_class_data_model.dart';
 import 'package:my_template/features/home/data/models/add_homework_response_model.dart';
 import 'package:my_template/features/home/data/models/add_permissions_response_model.dart';
 import 'package:my_template/features/home/data/models/add_uniform_response_model.dart';
@@ -39,6 +40,7 @@ class HomeState extends Equatable {
     this.teacherCoursesStatus = const StatusState.initial(),
     this.addHomeworkStatus = const StatusState.initial(),
     this.deleteHomeworkStatus = const StatusState.initial(),
+    this.studentDataStatus = const StatusState.initial(),
 
     this.selectedStudent,
     this.data,
@@ -63,6 +65,7 @@ class HomeState extends Equatable {
   final StatusState<List<TeacherCoursesModel>> teacherCoursesStatus;
   final StatusState<AddHomeworkResponseModel> addHomeworkStatus;
   final StatusState<ClassHWDelModel> deleteHomeworkStatus;
+  final StatusState<GetStudentClassData> studentDataStatus;
 
   final StudentMiniInfo? selectedStudent;
 
@@ -94,6 +97,7 @@ class HomeState extends Equatable {
     errorMessage,
     addHomeworkStatus,
     deleteHomeworkStatus,
+    studentDataStatus,
   ];
 
   HomeState copyWith({
@@ -114,6 +118,7 @@ class HomeState extends Equatable {
     StatusState<List<TeacherCoursesModel>>? teacherCoursesStatus,
     StatusState<AddHomeworkResponseModel>? addHomeworkStatus,
     StatusState<ClassHWDelModel>? deleteHomeworkStatus,
+    StatusState<GetStudentClassData>? studentDataStatus,
     StudentMiniInfo? selectedStudent,
     HomeModel? data,
     bool? isLoading,
@@ -141,6 +146,7 @@ class HomeState extends Equatable {
       errorMessage: errorMessage ?? this.errorMessage,
       addHomeworkStatus: addHomeworkStatus ?? this.addHomeworkStatus,
       deleteHomeworkStatus: deleteHomeworkStatus ?? this.deleteHomeworkStatus,
+      studentDataStatus: studentDataStatus ?? this.studentDataStatus,
     );
   }
 }
