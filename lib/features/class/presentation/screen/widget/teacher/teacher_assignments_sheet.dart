@@ -308,7 +308,10 @@ class _TeacherAssignmentsSheetState extends State<TeacherAssignmentsSheet> {
                     ? const CircularProgressIndicator()
                     : TextButton(
                         onPressed: () {
-                          context.read<HomeCubit>().deleteHomework(classCode: item.classCode);
+                          context.read<HomeCubit>().deleteHomework(
+                            classCode: item.classCode,
+                            HWDATE: item.hwDate,
+                          );
                         },
                         child: Text(
                           AppLocalKay.delete.tr(),

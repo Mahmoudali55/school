@@ -20,6 +20,23 @@ class TeacherHomeScreen extends StatefulWidget {
 
 class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
   @override
+  void initState() {
+    super.initState();
+    // Fetch teacher classes and courses for statistics
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        final userCode = int.tryParse(HiveMethods.getUserCode()) ?? 0;
+        final sectionCode = int.tryParse(HiveMethods.getUserSection().toString()) ?? 0;
+        final stageCode = int.tryParse(HiveMethods.getUserStage().toString()) ?? 0;
+        final levelCode = int.tryParse(HiveMethods.getUserLevelCode().toString()) ?? 0;
+
+        context.read<HomeCubit>().teacherCourses(userCode);
+        context.read<HomeCubit>().teacherClasses(sectionCode, stageCode, levelCode);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
@@ -37,10 +54,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    HeaderWidget(
-                      teacherName: HiveMethods.getUserName(),
-                      subjects: teacherData.subjects,
-                    ),
+                    HeaderWidget(teacherName: HiveMethods.getUserName()),
                     SizedBox(height: 25.h),
                     QuickStatsWidget(),
                     SizedBox(height: 25.h),

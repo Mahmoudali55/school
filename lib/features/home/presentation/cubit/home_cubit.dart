@@ -269,10 +269,10 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
-  Future<void> deleteHomework({required int classCode}) async {
+  Future<void> deleteHomework({required int classCode, required String HWDATE}) async {
     emit(state.copyWith(deleteHomeworkStatus: StatusState.loading()));
 
-    final result = await _homeRepo.deleteHomework(classCode: classCode);
+    final result = await _homeRepo.deleteHomework(classCode: classCode, HWDATE: HWDATE);
     result.fold(
       (error) => emit(state.copyWith(deleteHomeworkStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(deleteHomeworkStatus: StatusState.success(success))),

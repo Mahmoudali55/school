@@ -8,10 +8,7 @@ import 'package:my_template/core/utils/app_local_kay.dart';
 
 class HeaderWidget extends StatelessWidget {
   final String teacherName;
-  final List<String> subjects;
-
-  const HeaderWidget({super.key, required this.teacherName, required this.subjects});
-
+  const HeaderWidget({super.key, required this.teacherName});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -24,8 +21,10 @@ class HeaderWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AppLocalKay.welcome.tr(),
-                  style: AppTextStyle.bodyLarge(context).copyWith(color: const Color(0xFF1F2937)),
+                  AppLocalKay.welcome.tr() + ' 👋',
+                  style: AppTextStyle.headlineSmall(
+                    context,
+                  ).copyWith(color: AppColor.primaryColor(context)),
                 ),
                 Text(
                   teacherName,

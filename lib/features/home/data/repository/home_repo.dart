@@ -80,7 +80,10 @@ abstract interface class HomeRepo {
     required AddHomeworkModelRequest request,
   });
 
-  Future<Either<Failure, ClassHWDelModel>> deleteHomework({required int classCode});
+  Future<Either<Failure, ClassHWDelModel>> deleteHomework({
+    required int classCode,
+    required String HWDATE,
+  });
 }
 
 class HomeRepoImpl implements HomeRepo {
@@ -334,10 +337,16 @@ class HomeRepoImpl implements HomeRepo {
   }
 
   @override
-  Future<Either<Failure, ClassHWDelModel>> deleteHomework({required int classCode}) {
+  Future<Either<Failure, ClassHWDelModel>> deleteHomework({
+    required int classCode,
+    required String HWDATE,
+  }) {
     return handleDioRequest(
       request: () async {
-        final response = await apiConsumer.delete(EndPoints.deleteHomeWork, body: {"": classCode});
+        final response = await apiConsumer.delete(
+          EndPoints.deleteHomeWork,
+          body: {"classcodes": classCode, "HWDATE": HWDATE},
+        );
         return ClassHWDelModel.fromJson(response);
       },
     );
