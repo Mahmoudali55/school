@@ -946,4 +946,20 @@ class AppLocalKay {
   static const String delete_task = 'delete_task';
   static const String delete_task_alert = 'delete_task_alert';
   static const String no_students = 'no_students';
+  static const String record_absence = 'record_absence';
+  static const String select_level = 'select_level';
+  static const String select_class = "select_class";
+  static const String select_absent_students = "select_absent_students";
+  static const String total_students = "total_students";
+  static const String absent_students = "absent_students";
+  static const String choose_class_first = "choose_class_first";
+  static const String attendance_saved = "attendance_saved";
+  static const String attendance_failed = "attendance_failed";
+  static const String absence_from_teacher = "absence_from_teacher";
+  static const String attendance_notes = "attendance_notes";
+  static const String select_absence = "select_absence";
+  static const String search_student = "search_student";
+  static const String absent = "absent";
+  static const String excused = "excused";
+  static const String add_notes = "add_notes";
 }

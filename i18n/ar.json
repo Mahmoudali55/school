@@ -292,7 +292,7 @@
     "user_management_attendees":"الحاضرون",
     "user_management_absent":"الغائبون",
     "user_management_percentage":"النسبة",
-    "user_management_save":"حفظ الحضور",
+    "user_management_save":"حفظ الغياب",
    "to": "إلى",
   "select_classes": "اختر الصفوف:",
   "notification_title": "عنوان الإشعار",
@@ -989,7 +989,23 @@
   "edit_task":"تعديل الواجب",
   "delete_task":"تأكيد الحذف",
   "delete_task_alert":"هل أنت متأكد من حذف هذا الواجب؟",
-  "no_students":"لايوجد طلاب"
+  "record_absence": "تسجيل الغياب",
+  "select_level": "اختر المستوى التعليمي",
+  "select_class": "اختر الفصل",
+  "select_absent_students": "تحديد الطلاب الغائبين",
+  "total_students": "إجمالي الطلاب",
+  "absent_students": "الغائبين",
+  "choose_class_first": "يرجى اختيار الفصل أولاً",
+  "attendance_saved": "تم الحفظ بنجاح",
+  "attendance_failed": "فشل الحفظ",
+  "absence_from_teacher": "غياب طالب",
+  "attendance_notes": "تسجيل غياب من تطبيق المعلم",
+  "select_absence": "تحديد الغياب",
+  "search_student": "بحث عن طالب...",
+  "no_students": "لا يوجد طلاب",
+  "absent":"غياب",
+  "excused":"إجازة",
+  "add_notes":"أضف ملاحظات هنا..."
 
 
 

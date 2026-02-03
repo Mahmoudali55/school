@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/class/data/model/student_class_data_model.dart';
+import 'package:my_template/features/home/data/models/add_class_absent_response_model.dart';
 import 'package:my_template/features/home/data/models/add_homework_response_model.dart';
 import 'package:my_template/features/home/data/models/add_permissions_response_model.dart';
 import 'package:my_template/features/home/data/models/add_uniform_response_model.dart';
@@ -41,6 +42,7 @@ class HomeState extends Equatable {
     this.addHomeworkStatus = const StatusState.initial(),
     this.deleteHomeworkStatus = const StatusState.initial(),
     this.studentDataStatus = const StatusState.initial(),
+    this.addClassAbsentStatus = const StatusState.initial(),
 
     this.selectedStudent,
     this.data,
@@ -66,6 +68,7 @@ class HomeState extends Equatable {
   final StatusState<AddHomeworkResponseModel> addHomeworkStatus;
   final StatusState<ClassHWDelModel> deleteHomeworkStatus;
   final StatusState<GetStudentClassData> studentDataStatus;
+  final StatusState<AddClassAbsentResponseModel> addClassAbsentStatus;
 
   final StudentMiniInfo? selectedStudent;
 
@@ -98,6 +101,7 @@ class HomeState extends Equatable {
     addHomeworkStatus,
     deleteHomeworkStatus,
     studentDataStatus,
+    addClassAbsentStatus,
   ];
 
   HomeState copyWith({
@@ -119,6 +123,7 @@ class HomeState extends Equatable {
     StatusState<AddHomeworkResponseModel>? addHomeworkStatus,
     StatusState<ClassHWDelModel>? deleteHomeworkStatus,
     StatusState<GetStudentClassData>? studentDataStatus,
+    StatusState<AddClassAbsentResponseModel>? addClassAbsentStatus,
     StudentMiniInfo? selectedStudent,
     HomeModel? data,
     bool? isLoading,
@@ -147,6 +152,7 @@ class HomeState extends Equatable {
       addHomeworkStatus: addHomeworkStatus ?? this.addHomeworkStatus,
       deleteHomeworkStatus: deleteHomeworkStatus ?? this.deleteHomeworkStatus,
       studentDataStatus: studentDataStatus ?? this.studentDataStatus,
+      addClassAbsentStatus: addClassAbsentStatus ?? this.addClassAbsentStatus,
     );
   }
 }

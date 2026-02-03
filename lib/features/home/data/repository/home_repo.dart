@@ -4,6 +4,8 @@ import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/error/failures.dart';
 import 'package:my_template/core/network/api_consumer.dart';
 import 'package:my_template/core/network/end_points.dart';
+import 'package:my_template/features/home/data/models/add_class_absent_request_model.dart';
+import 'package:my_template/features/home/data/models/add_class_absent_response_model.dart';
 import 'package:my_template/features/home/data/models/add_home_work_request_model.dart';
 import 'package:my_template/features/home/data/models/add_homework_response_model.dart';
 import 'package:my_template/features/home/data/models/add_permissions_mobile_model.dart';
@@ -83,6 +85,9 @@ abstract interface class HomeRepo {
   Future<Either<Failure, ClassHWDelModel>> deleteHomework({
     required int classCode,
     required String HWDATE,
+  });
+  Future<Either<Failure, AddClassAbsentResponseModel>> addClassAbsent({
+    required AddClassAbsentRequestModel request,
   });
 }
 
@@ -348,6 +353,21 @@ class HomeRepoImpl implements HomeRepo {
           body: {"classcodes": classCode, "HWDATE": HWDATE},
         );
         return ClassHWDelModel.fromJson(response);
+      },
+    );
+  }
+
+  Future<Either<Failure, AddClassAbsentResponseModel>> addClassAbsent({
+    required AddClassAbsentRequestModel request,
+  }) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.post(
+          EndPoints.addClassabsent,
+          body: request.toJson(),
+          headers: {'Content-Type': 'application/json'},
+        );
+        return AddClassAbsentResponseModel.fromJson(response);
       },
     );
   }

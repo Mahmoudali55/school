@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/features/home/data/models/add_class_absent_request_model.dart';
 import 'package:my_template/features/home/data/models/add_home_work_request_model.dart';
 import 'package:my_template/features/home/data/models/add_permissions_mobile_model.dart';
 import 'package:my_template/features/home/data/models/add_uniform_request_model.dart';
@@ -7,9 +8,8 @@ import 'package:my_template/features/home/data/models/edit_permissions_mobile_re
 import 'package:my_template/features/home/data/models/edit_uniform_request_model.dart';
 import 'package:my_template/features/home/data/models/home_models.dart';
 
-import '../../data/repository/home_repo.dart';
 import '../../../class/data/repository/class_repo.dart';
-import '../../../class/data/model/student_class_data_model.dart';
+import '../../data/repository/home_repo.dart';
 import 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
@@ -289,6 +289,18 @@ class HomeCubit extends Cubit<HomeState> {
     result.fold(
       (error) => emit(state.copyWith(deleteHomeworkStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(deleteHomeworkStatus: StatusState.success(success))),
+    );
+  }
+
+  Future<void> addClassAbsent({required AddClassAbsentRequestModel request}) async {
+    emit(state.copyWith(addClassAbsentStatus: const StatusState.loading()));
+
+    final result = await _homeRepo.addClassAbsent(request: request);
+    result.fold(
+      (failure) =>
+          emit(state.copyWith(addClassAbsentStatus: StatusState.failure(failure.errMessage))),
+      (homeWorkList) =>
+          emit(state.copyWith(addClassAbsentStatus: StatusState.success(homeWorkList))),
     );
   }
 
