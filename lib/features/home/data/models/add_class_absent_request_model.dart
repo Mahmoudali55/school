@@ -49,26 +49,16 @@ class AddClassAbsentRequestModel extends Equatable {
 
 class ClassAbsentItem extends Equatable {
   final int studentCode;
-  final String absentDate;
+
   final int absentType; // 0 = غياب | 1 = إجازة
   final String notes;
 
-  const ClassAbsentItem({
-    required this.studentCode,
-    required this.absentDate,
-    required this.absentType,
-    required this.notes,
-  });
+  const ClassAbsentItem({required this.studentCode, required this.absentType, required this.notes});
 
   Map<String, dynamic> toJson() {
-    return {
-      "STUDENT_CODE": studentCode,
-      "ABSENTDATE": absentDate,
-      "ABSENT_TYPE": absentType,
-      "NOTES": notes,
-    };
+    return {"STUDENT_CODE": studentCode, "ABSENT_TYPE": absentType, "NOTES": notes};
   }
 
   @override
-  List<Object> get props => [studentCode, absentDate, absentType, notes];
+  List<Object> get props => [studentCode, absentType, notes];
 }

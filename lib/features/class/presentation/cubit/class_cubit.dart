@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/class/data/repository/class_repo.dart';
+import 'package:my_template/features/home/data/models/add_class_absent_request_model.dart';
 
 import 'class_state.dart';
 
@@ -99,5 +100,36 @@ class ClassCubit extends Cubit<ClassState> {
       (error) => emit(state.copyWith(classAbsentStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(classAbsentStatus: StatusState.success(success))),
     );
+  }
+
+  Future<void> editClassAbsent({required AddClassAbsentRequestModel request}) async {
+    emit(state.copyWith(editClassAbsentStatus: StatusState.loading()));
+    final result = await _classRepo.editClassAbsent(request: request);
+    result.fold(
+      (error) => emit(state.copyWith(editClassAbsentStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(editClassAbsentStatus: StatusState.success(success))),
+    );
+  }
+
+  Future<void> deleteClassAbsent({required int classCode, required String HWDATE}) async {
+    emit(state.copyWith(deleteHomeworkStatus: StatusState.loading()));
+    final result = await _classRepo.deleteClassAbsent(classCode: classCode, HWDATE: HWDATE);
+    result.fold(
+      (error) => emit(state.copyWith(deleteHomeworkStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(deleteHomeworkStatus: StatusState.success(success))),
+    );
+  }
+
+  Future<void> updateClassAbsent({
+    required int studentCode,
+    required int absentType,
+    required String notes,
+  }) async {
+    final result = await _classRepo.updateClassAbsent(
+      studentCode: studentCode,
+      absentType: absentType,
+      notes: notes,
+    );
+    result.fold((error) => null, (success) => null);
   }
 }

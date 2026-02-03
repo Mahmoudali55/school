@@ -4,12 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:my_template/core/cache/hive/hive_methods.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
+import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/core/utils/common_methods.dart';
 import 'package:my_template/features/class/data/model/teacher_classes_models.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/class/presentation/cubit/class_state.dart';
+import 'package:my_template/features/home/data/models/add_class_absent_request_model.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class AttendanceSheet extends StatefulWidget {
@@ -33,7 +38,7 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
   }
 
   void _fetchAttendance(DateTime date) {
-    final dateStr = DateFormat('yyyy-MM-dd').format(date);
+    final dateStr = DateFormat('yyyy-MM-dd', 'en').format(date);
     context.read<ClassCubit>().classAbsent(
       classCode: int.tryParse(widget.classInfo.id) ?? 0,
       HWDATE: dateStr,
@@ -55,94 +60,122 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
           ),
         ],
       ),
-      child: Column(
-        children: [
-          Gap(12.h),
-          Container(
-            width: 50.w,
-            height: 5.h,
-            decoration: BoxDecoration(
-              color: AppColor.grey300Color(context).withValues(alpha: 0.5),
-              borderRadius: BorderRadius.circular(10.r),
-            ),
-          ),
-          Gap(24.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.w),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppLocalKay.absent_from_class.tr(),
-                        style: AppTextStyle.bodySmall(context).copyWith(
-                          color: AppColor.primaryColor(context),
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.2,
-                        ),
-                      ),
-                      Text(
-                        widget.classInfo.className,
-                        style: AppTextStyle.headlineSmall(
-                          context,
-                        ).copyWith(fontWeight: FontWeight.w900),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(12.r),
-                  decoration: BoxDecoration(
-                    color: AppColor.primaryColor(context).withValues(alpha: 0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    Icons.calendar_today_rounded,
-                    color: AppColor.primaryColor(context),
-                    size: 24.sp,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Gap(24.h),
-          _buildCalendar(),
-          Gap(16.h),
-          Expanded(
-            child: Container(
-              width: double.infinity,
+      child: BlocListener<ClassCubit, ClassState>(
+        listenWhen: (previous, current) =>
+            previous.editClassAbsentStatus != current.editClassAbsentStatus ||
+            previous.deleteHomeworkStatus != current.deleteHomeworkStatus,
+        listener: (context, state) {
+          if (state.editClassAbsentStatus.isSuccess) {
+            CommonMethods.showToast(message: state.editClassAbsentStatus.data?.msg ?? "");
+            _fetchAttendance(_selectedDay!);
+          }
+          if (state.editClassAbsentStatus.isFailure) {
+            CommonMethods.showToast(
+              message: state.editClassAbsentStatus.error ?? "",
+              backgroundColor: AppColor.errorColor(context, listen: false),
+            );
+          }
+
+          if (state.deleteHomeworkStatus.isSuccess) {
+            CommonMethods.showToast(message: state.deleteHomeworkStatus.data?.errorMsg ?? "");
+            _fetchAttendance(_selectedDay!);
+          }
+          if (state.deleteHomeworkStatus.isFailure) {
+            CommonMethods.showToast(
+              message: state.deleteHomeworkStatus.error ?? "",
+              backgroundColor: AppColor.errorColor(context, listen: false),
+            );
+          }
+        },
+        child: Column(
+          children: [
+            Gap(12.h),
+            Container(
+              width: 50.w,
+              height: 5.h,
               decoration: BoxDecoration(
-                color: AppColor.surfaceColor(context),
-                borderRadius: BorderRadius.vertical(top: Radius.circular(40.r)),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColor.blackColor(context).withValues(alpha: 0.03),
-                    blurRadius: 15,
-                    offset: const Offset(0, -5),
+                color: AppColor.grey300Color(context).withValues(alpha: 0.5),
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+            ),
+            Gap(24.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppLocalKay.absent_from_class.tr(),
+                          style: AppTextStyle.bodySmall(context).copyWith(
+                            color: AppColor.primaryColor(context),
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.2,
+                          ),
+                        ),
+                        Text(
+                          widget.classInfo.className,
+                          style: AppTextStyle.headlineSmall(
+                            context,
+                          ).copyWith(fontWeight: FontWeight.w900),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(12.r),
+                    decoration: BoxDecoration(
+                      color: AppColor.primaryColor(context).withValues(alpha: 0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.calendar_today_rounded,
+                      color: AppColor.primaryColor(context),
+                      size: 24.sp,
+                    ),
                   ),
                 ],
               ),
-              child: BlocBuilder<ClassCubit, ClassState>(
-                builder: (context, state) {
-                  if (state.classAbsentStatus.isLoading) {
-                    return _buildLoadingState();
-                  } else if (state.classAbsentStatus.isFailure) {
-                    return _buildErrorState(state.classAbsentStatus.error);
-                  } else if (state.classAbsentStatus.isSuccess) {
-                    final list = state.classAbsentStatus.data ?? [];
-                    if (list.isEmpty) {
-                      return _buildEmptyState();
+            ),
+            Gap(24.h),
+            _buildCalendar(),
+            Gap(16.h),
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppColor.surfaceColor(context),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(40.r)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColor.blackColor(context).withValues(alpha: 0.03),
+                      blurRadius: 15,
+                      offset: const Offset(0, -5),
+                    ),
+                  ],
+                ),
+                child: BlocBuilder<ClassCubit, ClassState>(
+                  builder: (context, state) {
+                    if (state.classAbsentStatus.isLoading) {
+                      return _buildLoadingState();
+                    } else if (state.classAbsentStatus.isFailure) {
+                      return _buildErrorState(state.classAbsentStatus.error);
+                    } else if (state.classAbsentStatus.isSuccess) {
+                      final list = state.classAbsentStatus.data ?? [];
+                      if (list.isEmpty) {
+                        return _buildEmptyState();
+                      }
+                      return _buildAttendanceList(list);
                     }
-                    return _buildAttendanceList(list);
-                  }
-                  return const SizedBox();
-                },
+                    return const SizedBox();
+                  },
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -283,78 +316,107 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
                   ),
                   Padding(
                     padding: EdgeInsets.all(16.r),
-                    child: Row(
+                    child: Column(
                       children: [
-                        Container(
-                          padding: EdgeInsets.all(10.r),
-                          decoration: BoxDecoration(
-                            color:
-                                (isAbsent
-                                        ? AppColor.errorColor(context)
-                                        : AppColor.infoColor(context))
-                                    .withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(15.r),
-                          ),
-                          child: Icon(
-                            isAbsent ? Icons.person_off_rounded : Icons.beach_access_rounded,
-                            color: isAbsent
-                                ? AppColor.errorColor(context)
-                                : AppColor.infoColor(context),
-                            size: 24.sp,
-                          ),
-                        ),
-                        Gap(16.w),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                item.studentFullName,
-                                style: AppTextStyle.bodyMedium(
-                                  context,
-                                ).copyWith(fontWeight: FontWeight.bold),
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(10.r),
+                              decoration: BoxDecoration(
+                                color:
+                                    (isAbsent
+                                            ? AppColor.errorColor(context)
+                                            : AppColor.infoColor(context))
+                                        .withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(15.r),
                               ),
-                              Gap(4.h),
-                              Text(
-                                item.notes.isEmpty
-                                    ? (isAbsent
-                                          ? AppLocalKay.unexcused_absence.tr()
-                                          : AppLocalKay.excused_absence.tr())
-                                    : item.notes,
-                                style: AppTextStyle.bodySmall(
-                                  context,
-                                ).copyWith(color: AppColor.greyColor(context)),
+                              child: Icon(
+                                isAbsent ? Icons.person_off_rounded : Icons.beach_access_rounded,
+                                color: isAbsent
+                                    ? AppColor.errorColor(context)
+                                    : AppColor.infoColor(context),
+                                size: 24.sp,
                               ),
-                            ],
-                          ),
+                            ),
+                            Gap(16.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item.studentFullName,
+                                    style: AppTextStyle.bodyMedium(
+                                      context,
+                                    ).copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                  Gap(4.h),
+                                  Text(
+                                    item.notes.isEmpty
+                                        ? (isAbsent
+                                              ? AppLocalKay.unexcused_absence.tr()
+                                              : AppLocalKay.excused_absence.tr())
+                                        : item.notes,
+                                    style: AppTextStyle.bodySmall(
+                                      context,
+                                    ).copyWith(color: AppColor.greyColor(context)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                              decoration: BoxDecoration(
+                                color:
+                                    (isAbsent
+                                            ? AppColor.errorColor(context)
+                                            : AppColor.infoColor(context))
+                                        .withValues(alpha: 0.05),
+                                borderRadius: BorderRadius.circular(10.r),
+                                border: Border.all(
+                                  color:
+                                      (isAbsent
+                                              ? AppColor.errorColor(context)
+                                              : AppColor.infoColor(context))
+                                          .withValues(alpha: 0.2),
+                                ),
+                              ),
+                              child: Text(
+                                isAbsent ? AppLocalKay.absent.tr() : AppLocalKay.excused.tr(),
+                                style: TextStyle(
+                                  color: isAbsent
+                                      ? AppColor.errorColor(context)
+                                      : AppColor.infoColor(context),
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                          decoration: BoxDecoration(
-                            color:
-                                (isAbsent
-                                        ? AppColor.errorColor(context)
-                                        : AppColor.infoColor(context))
-                                    .withValues(alpha: 0.05),
-                            borderRadius: BorderRadius.circular(10.r),
-                            border: Border.all(
-                              color:
-                                  (isAbsent
-                                          ? AppColor.errorColor(context)
-                                          : AppColor.infoColor(context))
-                                      .withValues(alpha: 0.2),
+                        Gap(12.h),
+                        Divider(
+                          height: 1,
+                          thickness: 1,
+                          color: AppColor.greyColor(context).withValues(alpha: 0.1),
+                        ),
+                        Gap(12.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            _buildActionButton(
+                              icon: Icons.edit_rounded,
+                              label: AppLocalKay.btn_edit.tr(),
+                              color: AppColor.primaryColor(context),
+                              onTap: () => _showEditDialog(item),
                             ),
-                          ),
-                          child: Text(
-                            isAbsent ? AppLocalKay.absent.tr() : AppLocalKay.excused.tr(),
-                            style: TextStyle(
-                              color: isAbsent
-                                  ? AppColor.errorColor(context)
-                                  : AppColor.infoColor(context),
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.bold,
+                            Gap(12.w),
+                            _buildActionButton(
+                              icon: Icons.delete_outline_rounded,
+                              label: AppLocalKay.delete.tr(),
+                              color: AppColor.errorColor(context),
+                              onTap: () => _showDeleteConfirmation(item),
                             ),
-                          ),
+                          ],
                         ),
                       ],
                     ),
@@ -440,6 +502,206 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.r)),
               ),
               child: Text(AppLocalKay.retry.tr()),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionButton({
+    required IconData icon,
+    required String label,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(10.r),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(10.r),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, color: color, size: 16.sp),
+            Gap(4.w),
+            Text(
+              label,
+              style: TextStyle(color: color, fontSize: 12.sp, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showEditDialog(dynamic item) {
+    final TextEditingController notesController = TextEditingController(text: item.notes);
+    int selectedType = item.absentType;
+    final cubit = context.read<ClassCubit>();
+
+    showDialog(
+      context: context,
+      builder: (context) => BlocProvider.value(
+        value: cubit,
+        child: StatefulBuilder(
+          builder: (context, setDialogState) => AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+            title: Text(AppLocalKay.btn_edit.tr(), textAlign: TextAlign.center),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: _buildTypeOption(
+                        label: AppLocalKay.absent.tr(),
+                        isSelected: selectedType == 0,
+                        color: AppColor.errorColor(context),
+                        onTap: () => setDialogState(() => selectedType = 0),
+                      ),
+                    ),
+                    Gap(12.w),
+                    Expanded(
+                      child: _buildTypeOption(
+                        label: AppLocalKay.excused.tr(),
+                        isSelected: selectedType == 1,
+                        color: AppColor.infoColor(context),
+                        onTap: () => setDialogState(() => selectedType = 1),
+                      ),
+                    ),
+                  ],
+                ),
+                Gap(16.h),
+                CustomFormField(
+                  controller: notesController,
+                  title: AppLocalKay.note.tr(),
+                  maxLines: 2,
+                ),
+              ],
+            ),
+            actions: [
+              Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(AppLocalKay.cancel.tr()),
+                    ),
+                  ),
+                  SizedBox(width: 10.w),
+                  Expanded(
+                    child: CustomButton(
+                      onPressed: () {
+                        final dateStr = DateFormat('yyyy-MM-dd', 'en').format(_selectedDay!);
+                        cubit.editClassAbsent(
+                          request: AddClassAbsentRequestModel(
+                            classCode: item.classCode,
+                            absentDate: dateStr,
+                            classCodes: item.classCodes ?? widget.classInfo.id,
+                            stageCode: int.tryParse(HiveMethods.getUserStage().toString()) ?? 0,
+                            levelCode: item.levelCode,
+                            sectionCode: int.tryParse(HiveMethods.getUserSection().toString()) ?? 0,
+                            notes: notesController.text,
+                            classAbsentList: [
+                              ClassAbsentItem(
+                                studentCode: item.studentCode,
+                                absentType: selectedType,
+                                notes: notesController.text,
+                              ),
+                            ],
+                          ),
+                        );
+                        Navigator.pop(context);
+                      },
+
+                      child: Text(
+                        AppLocalKay.save.tr(),
+                        style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTypeOption({
+    required String label,
+    required bool isSelected,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12.r),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 12.h),
+        decoration: BoxDecoration(
+          color: isSelected ? color.withValues(alpha: 0.1) : Colors.transparent,
+          borderRadius: BorderRadius.circular(12.r),
+          border: Border.all(
+            color: isSelected ? color : AppColor.greyColor(context).withValues(alpha: 0.2),
+          ),
+        ),
+        child: Text(
+          label,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: isSelected ? color : AppColor.greyColor(context),
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showDeleteConfirmation(dynamic item) {
+    final cubit = context.read<ClassCubit>();
+    showDialog(
+      context: context,
+      builder: (context) => BlocProvider.value(
+        value: cubit,
+        child: AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+          title: Text(AppLocalKay.are_you_sure.tr()),
+          content: Text(AppLocalKay.delete_user_message.tr()),
+          actions: [
+            Row(
+              children: [
+                Expanded(
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(AppLocalKay.cancel.tr()),
+                  ),
+                ),
+                Expanded(
+                  child: CustomButton(
+                    color: AppColor.errorColor(context),
+                    onPressed: () {
+                      cubit.deleteClassAbsent(
+                        classCode: item.classCode,
+                        HWDATE: DateFormat('yyyy-MM-dd', 'en').format(_selectedDay!),
+                      );
+                      Navigator.pop(context);
+                    },
+                    child: Text(
+                      AppLocalKay.delete.tr(),
+                      style: AppTextStyle.bodyMedium(
+                        context,
+                      ).copyWith(color: AppColor.whiteColor(context)),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

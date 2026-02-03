@@ -6,6 +6,8 @@ import 'package:my_template/features/class/data/model/get_T_home_work_model.dart
 import 'package:my_template/features/class/data/model/home_work_model.dart';
 import 'package:my_template/features/class/data/model/student_class_data_model.dart';
 import 'package:my_template/features/class/data/model/student_courses_model.dart';
+import 'package:my_template/features/home/data/models/add_class_absent_response_model.dart';
+import 'package:my_template/features/home/data/models/class_hW_del_model.dart';
 
 class ClassState extends Equatable {
   final StatusState<List<ClassModel>> classesStatus;
@@ -15,6 +17,8 @@ class ClassState extends Equatable {
   final StatusState<List<THomeWorkItem>> teacherHomeWorkStatus;
   final StatusState<GetStudentClassData> studentClassesStatus;
   final StatusState<List<ClassAbsentModel>> classAbsentStatus;
+  final StatusState<AddClassAbsentResponseModel> editClassAbsentStatus;
+  final StatusState<ClassHWDelModel> deleteHomeworkStatus;
   const ClassState({
     this.classesStatus = const StatusState.initial(),
     this.homeWorkStatus = const StatusState.initial(),
@@ -22,6 +26,8 @@ class ClassState extends Equatable {
     this.teacherHomeWorkStatus = const StatusState.initial(),
     this.studentClassesStatus = const StatusState.initial(),
     this.classAbsentStatus = const StatusState.initial(),
+    this.editClassAbsentStatus = const StatusState.initial(),
+    this.deleteHomeworkStatus = const StatusState.initial(),
   });
 
   @override
@@ -32,6 +38,8 @@ class ClassState extends Equatable {
     teacherHomeWorkStatus,
     studentClassesStatus,
     classAbsentStatus,
+    editClassAbsentStatus,
+    deleteHomeworkStatus,
   ];
 
   ClassState copyWith({
@@ -41,6 +49,8 @@ class ClassState extends Equatable {
     StatusState<List<THomeWorkItem>>? teacherHomeWorkStatus,
     StatusState<GetStudentClassData>? studentClassesStatus,
     StatusState<List<ClassAbsentModel>>? classAbsentStatus,
+    StatusState<AddClassAbsentResponseModel>? editClassAbsentStatus,
+    StatusState<ClassHWDelModel>? deleteHomeworkStatus,
   }) {
     return ClassState(
       classesStatus: classesStatus ?? this.classesStatus,
@@ -49,6 +59,8 @@ class ClassState extends Equatable {
       teacherHomeWorkStatus: teacherHomeWorkStatus ?? this.teacherHomeWorkStatus,
       studentClassesStatus: studentClassesStatus ?? this.studentClassesStatus,
       classAbsentStatus: classAbsentStatus ?? this.classAbsentStatus,
+      editClassAbsentStatus: editClassAbsentStatus ?? this.editClassAbsentStatus,
+      deleteHomeworkStatus: deleteHomeworkStatus ?? this.deleteHomeworkStatus,
     );
   }
 }

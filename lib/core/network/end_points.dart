@@ -30,4 +30,6 @@ class EndPoints {
   static const String studentClass = 'DeltaGroup/Search/GetstudentclassData';
   static const String addClassabsent = 'DeltagroupService/School/AddClassabsent';
   static const String Classabsent = 'DeltagroupService/School/GetClassabsent';
+  static const String editClassabsent = 'DeltagroupService/School/EditClassabsent';
+  static const String deleteClassabsent = 'DeltagroupService/Transaction/classabsentDel';
 }

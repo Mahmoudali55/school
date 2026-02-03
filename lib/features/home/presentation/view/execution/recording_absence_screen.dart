@@ -96,7 +96,7 @@ class _RecordingAbsenceScreenState extends State<RecordingAbsenceScreen> {
           absentList.add(
             ClassAbsentItem(
               studentCode: student.studentCode,
-              absentDate: date,
+
               absentType: record.type,
               notes: record.notes.isEmpty ? AppLocalKay.absence_from_teacher.tr() : record.notes,
             ),

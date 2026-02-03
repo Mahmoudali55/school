@@ -11,6 +11,9 @@ import 'package:my_template/features/class/data/model/get_T_home_work_model.dart
 import 'package:my_template/features/class/data/model/home_work_model.dart';
 import 'package:my_template/features/class/data/model/student_class_data_model.dart';
 import 'package:my_template/features/class/data/model/student_courses_model.dart';
+import 'package:my_template/features/home/data/models/add_class_absent_request_model.dart';
+import 'package:my_template/features/home/data/models/add_class_absent_response_model.dart';
+import 'package:my_template/features/home/data/models/class_hW_del_model.dart';
 
 abstract interface class ClassRepo {
   Future<Either<Failure, List<HomeWorkModel>>> getHomeWork({
@@ -29,6 +32,18 @@ abstract interface class ClassRepo {
     required String HwDate,
   });
 
+  Future<Either<Failure, String>> updateClassAbsent({
+    required int studentCode,
+    required int absentType,
+    required String notes,
+  });
+  Future<Either<Failure, AddClassAbsentResponseModel>> editClassAbsent({
+    required AddClassAbsentRequestModel request,
+  });
+  Future<Either<Failure, ClassHWDelModel>> deleteClassAbsent({
+    required int classCode,
+    required String HWDATE,
+  });
   final List<StudentClassModel> _studentClasses = const [
     StudentClassModel(
       id: '1',
@@ -224,5 +239,40 @@ class ClassRepoImpl extends ClassRepo {
         return ClassAbsentModel.listFromJson(response['Data']);
       },
     );
+  }
+
+  Future<Either<Failure, AddClassAbsentResponseModel>> editClassAbsent({
+    required AddClassAbsentRequestModel request,
+  }) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.put(EndPoints.editClassabsent, body: request.toJson());
+        return AddClassAbsentResponseModel.fromJson(response);
+      },
+    );
+  }
+
+  Future<Either<Failure, ClassHWDelModel>> deleteClassAbsent({
+    required int classCode,
+    required String HWDATE,
+  }) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.delete(
+          EndPoints.deleteClassabsent,
+          body: {"classcodes": classCode, "ABSENTDATE": HWDATE},
+        );
+        return ClassHWDelModel.fromJson(response);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, String>> updateClassAbsent({
+    required int studentCode,
+    required int absentType,
+    required String notes,
+  }) {
+    return Future.value(const Right("Updated successfully"));
   }
 }

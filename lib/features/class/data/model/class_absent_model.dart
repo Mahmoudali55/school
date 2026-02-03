@@ -9,6 +9,10 @@ class ClassAbsentModel extends Equatable {
   final String notes;
   final int absentType;
   final String studentFullName;
+  final String? absentDate;
+  final String? classCodes;
+  final int? stageCode;
+  final int? sectionCode;
 
   const ClassAbsentModel({
     required this.levelCode,
@@ -17,16 +21,24 @@ class ClassAbsentModel extends Equatable {
     required this.notes,
     required this.absentType,
     required this.studentFullName,
+    this.absentDate,
+    this.classCodes,
+    this.stageCode,
+    this.sectionCode,
   });
 
   factory ClassAbsentModel.fromJson(Map<String, dynamic> json) {
     return ClassAbsentModel(
-      levelCode: json['LEVEL_CODE'] as int,
-      classCode: json['CLASS_CODE'] as int,
-      studentCode: json['STUDENT_CODE'] as int,
+      levelCode: json['LEVEL_CODE'] as int? ?? 0,
+      classCode: json['CLASS_CODE'] as int? ?? 0,
+      studentCode: json['STUDENT_CODE'] as int? ?? 0,
       notes: json['NOTES'] ?? '',
-      absentType: json['ABSENT_TYPE'] as int,
+      absentType: json['ABSENT_TYPE'] as int? ?? 0,
       studentFullName: json['StudentfullName'] ?? '',
+      absentDate: json['ABSENTDATE']?.toString(),
+      classCodes: json['classcodes']?.toString(),
+      stageCode: json['STAGECODE'] as int?,
+      sectionCode: json['SECTIONCODE'] as int?,
     );
   }
 
@@ -43,6 +55,10 @@ class ClassAbsentModel extends Equatable {
       "NOTES": notes,
       "ABSENT_TYPE": absentType,
       "StudentfullName": studentFullName,
+      "ABSENTDATE": absentDate,
+      "classcodes": classCodes,
+      "STAGECODE": stageCode,
+      "SECTIONCODE": sectionCode,
     };
   }
 
@@ -54,5 +70,9 @@ class ClassAbsentModel extends Equatable {
     notes,
     absentType,
     studentFullName,
+    absentDate,
+    classCodes,
+    stageCode,
+    sectionCode,
   ];
 }
