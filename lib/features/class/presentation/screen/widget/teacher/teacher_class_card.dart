@@ -115,49 +115,10 @@ class TeacherClassCard extends StatelessWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: _buildActionButton(
-                    text: AppLocalKay.checkin.tr(),
+                    text: AppLocalKay.absence.tr(),
                     onPressed: onAttendancePressed,
                     context: context,
                   ),
-                ),
-                PopupMenuButton<String>(
-                  icon: Icon(Icons.more_vert, color: Colors.grey[600]),
-                  onSelected: (value) => _handleMenuAction(value, context),
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      value: 'edit',
-                      child: Row(
-                        children: [
-                          Icon(Icons.edit, size: 18),
-                          SizedBox(width: 8),
-                          Text(AppLocalKay.user_management_edit.tr()),
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 'delete',
-                      child: Row(
-                        children: [
-                          const Icon(Icons.delete, size: 18, color: Colors.red),
-                          const SizedBox(width: 8),
-                          Text(
-                            AppLocalKay.dialog_delete_confirm.tr(),
-                            style: AppTextStyle.bodyMedium(context, color: Colors.red),
-                          ),
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 'add_assignment',
-                      child: Row(
-                        children: [
-                          const Icon(Icons.add_circle, size: 18),
-                          const SizedBox(width: 8),
-                          Text(AppLocalKay.create_todo.tr()),
-                        ],
-                      ),
-                    ),
-                  ],
                 ),
               ],
             ),
@@ -197,7 +158,10 @@ class TeacherClassCard extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         padding: EdgeInsets.zero,
       ),
-      child: Text(text, style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10)),
+      child: Text(
+        text,
+        style: AppTextStyle.bodySmall(context).copyWith(fontSize: 14, fontWeight: FontWeight.bold),
+      ),
     );
   }
 
