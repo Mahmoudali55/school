@@ -6,9 +6,9 @@ import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/teacher_classes_models.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
+import 'package:my_template/features/class/presentation/screen/widget/teacher/attendance_sheet.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 
-import 'attendance_sheet.dart';
 import 'students_list_sheet.dart';
 import 'teacher_assignments_sheet.dart';
 import 'teacher_class_card.dart';
