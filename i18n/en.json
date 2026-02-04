@@ -959,5 +959,6 @@
   "no_absence_today":"No absence today",
   "happy_day":"Everyone is present, a happy day!",
   "loading_data":"Loading data...",
-   "retry":"Retry"
+   "retry":"Retry",
+   "delete_all":"Delete all"
 }

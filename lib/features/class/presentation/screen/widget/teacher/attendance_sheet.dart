@@ -7,6 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
+import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -63,7 +64,8 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
       child: BlocListener<ClassCubit, ClassState>(
         listenWhen: (previous, current) =>
             previous.editClassAbsentStatus != current.editClassAbsentStatus ||
-            previous.deleteHomeworkStatus != current.deleteHomeworkStatus,
+            previous.deleteHomeworkStatus != current.deleteHomeworkStatus ||
+            previous.deleteStudentAbsentStatus != current.deleteStudentAbsentStatus,
         listener: (context, state) {
           if (state.editClassAbsentStatus.isSuccess) {
             CommonMethods.showToast(message: state.editClassAbsentStatus.data?.msg ?? "");
@@ -72,6 +74,17 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
           if (state.editClassAbsentStatus.isFailure) {
             CommonMethods.showToast(
               message: state.editClassAbsentStatus.error ?? "",
+              backgroundColor: AppColor.errorColor(context, listen: false),
+            );
+          }
+
+          if (state.deleteStudentAbsentStatus.isSuccess) {
+            CommonMethods.showToast(message: state.deleteStudentAbsentStatus.data?.errorMsg ?? "");
+            _fetchAttendance(_selectedDay!);
+          }
+          if (state.deleteStudentAbsentStatus.isFailure) {
+            CommonMethods.showToast(
+              message: state.deleteStudentAbsentStatus.error ?? "",
               backgroundColor: AppColor.errorColor(context, listen: false),
             );
           }
@@ -167,7 +180,33 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
                       if (list.isEmpty) {
                         return _buildEmptyState();
                       }
-                      return _buildAttendanceList(list);
+                      return Column(
+                        children: [
+                          Expanded(child: _buildAttendanceList(list, state)),
+                          Gap(16.h),
+                          Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: CustomButton(
+                              radius: 12.r,
+                              child: state.deleteHomeworkStatus.isLoading
+                                  ? CustomLoading(color: AppColor.whiteColor(context))
+                                  : Text(
+                                      AppLocalKay.delete_all.tr(),
+                                      style: AppTextStyle.bodyMedium(
+                                        context,
+                                        color: AppColor.whiteColor(context),
+                                      ),
+                                    ),
+                              color: AppColor.errorColor(context),
+                              onPressed: () => context.read<ClassCubit>().deleteClassAbsent(
+                                classCode: int.tryParse(widget.classInfo.id) ?? 0,
+                                HWDATE: DateFormat('yyyy-MM-dd', 'en').format(_selectedDay!),
+                              ),
+                            ),
+                          ),
+                          Gap(16.h),
+                        ],
+                      );
                     }
                     return const SizedBox();
                   },
@@ -264,7 +303,7 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
     );
   }
 
-  Widget _buildAttendanceList(List list) {
+  Widget _buildAttendanceList(List list, ClassState state) {
     return ListView.builder(
       padding: EdgeInsets.all(24.r),
       itemCount: list.length,
@@ -407,14 +446,14 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
                               icon: Icons.edit_rounded,
                               label: AppLocalKay.btn_edit.tr(),
                               color: AppColor.primaryColor(context),
-                              onTap: () => _showEditDialog(item),
+                              onTap: () => _showEditDialog(item, state),
                             ),
                             Gap(12.w),
                             _buildActionButton(
                               icon: Icons.delete_outline_rounded,
                               label: AppLocalKay.delete.tr(),
                               color: AppColor.errorColor(context),
-                              onTap: () => _showDeleteConfirmation(item),
+                              onTap: () => _showDeleteConfirmation(item, state),
                             ),
                           ],
                         ),
@@ -539,7 +578,7 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
     );
   }
 
-  void _showEditDialog(dynamic item) {
+  void _showEditDialog(dynamic item, ClassState state) {
     final TextEditingController notesController = TextEditingController(text: item.notes);
     int selectedType = item.absentType;
     final cubit = context.read<ClassCubit>();
@@ -619,10 +658,14 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
                         Navigator.pop(context);
                       },
 
-                      child: Text(
-                        AppLocalKay.save.tr(),
-                        style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.white),
-                      ),
+                      child: state.editClassAbsentStatus.isLoading
+                          ? CustomLoading(color: AppColor.whiteColor(context), size: 10.sp)
+                          : Text(
+                              AppLocalKay.save.tr(),
+                              style: AppTextStyle.bodyMedium(
+                                context,
+                              ).copyWith(color: AppColor.whiteColor(context)),
+                            ),
                     ),
                   ),
                 ],
@@ -664,7 +707,7 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
     );
   }
 
-  void _showDeleteConfirmation(dynamic item) {
+  void _showDeleteConfirmation(dynamic item, ClassState state) {
     final cubit = context.read<ClassCubit>();
     showDialog(
       context: context,
@@ -687,18 +730,21 @@ class _AttendanceSheetState extends State<AttendanceSheet> {
                   child: CustomButton(
                     color: AppColor.errorColor(context),
                     onPressed: () {
-                      cubit.deleteClassAbsent(
+                      cubit.deleteStudentAbsent(
                         classCode: item.classCode,
                         HWDATE: DateFormat('yyyy-MM-dd', 'en').format(_selectedDay!),
+                        studentCode: item.studentCode,
                       );
                       Navigator.pop(context);
                     },
-                    child: Text(
-                      AppLocalKay.delete.tr(),
-                      style: AppTextStyle.bodyMedium(
-                        context,
-                      ).copyWith(color: AppColor.whiteColor(context)),
-                    ),
+                    child: state.deleteStudentAbsentStatus.isLoading
+                        ? CustomLoading(color: AppColor.whiteColor(context), size: 10.sp)
+                        : Text(
+                            AppLocalKay.delete.tr(),
+                            style: AppTextStyle.bodyMedium(
+                              context,
+                            ).copyWith(color: AppColor.whiteColor(context)),
+                          ),
                   ),
                 ),
               ],

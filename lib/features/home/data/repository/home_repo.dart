@@ -381,7 +381,7 @@ class HomeRepoImpl implements HomeRepo {
     return handleDioRequest(
       request: () async {
         final response = await apiConsumer.get(
-          EndPoints.Classabsent,
+          EndPoints.classabsent,
           queryParameters: {"classcode": classCode, "ABSENTDATE": date},
         );
         return response['Data'] ?? "";

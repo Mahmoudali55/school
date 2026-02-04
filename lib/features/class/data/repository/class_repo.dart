@@ -44,6 +44,11 @@ abstract interface class ClassRepo {
     required int classCode,
     required String HWDATE,
   });
+  Future<Either<Failure, ClassHWDelModel>> deleteStudentAbsent({
+    required int classCode,
+    required String HWDATE,
+    required int studentCode,
+  });
   final List<StudentClassModel> _studentClasses = const [
     StudentClassModel(
       id: '1',
@@ -233,7 +238,7 @@ class ClassRepoImpl extends ClassRepo {
     return handleDioRequest(
       request: () async {
         final response = await apiConsumer.get(
-          EndPoints.Classabsent,
+          EndPoints.classabsent,
           queryParameters: {"Classcode": classCode, "ABSENTDATE": HwDate},
         );
         return ClassAbsentModel.listFromJson(response['Data']);
@@ -261,6 +266,22 @@ class ClassRepoImpl extends ClassRepo {
         final response = await apiConsumer.delete(
           EndPoints.deleteClassabsent,
           body: {"classcodes": classCode, "ABSENTDATE": HWDATE},
+        );
+        return ClassHWDelModel.fromJson(response);
+      },
+    );
+  }
+
+  Future<Either<Failure, ClassHWDelModel>> deleteStudentAbsent({
+    required int classCode,
+    required String HWDATE,
+    required int studentCode,
+  }) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.delete(
+          EndPoints.studentabsentDel,
+          body: {"classcodes": classCode, "ABSENTDATE": HWDATE, "STUDENT_CODE": studentCode},
         );
         return ClassHWDelModel.fromJson(response);
       },

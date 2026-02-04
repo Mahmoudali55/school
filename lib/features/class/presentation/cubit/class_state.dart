@@ -19,6 +19,7 @@ class ClassState extends Equatable {
   final StatusState<List<ClassAbsentModel>> classAbsentStatus;
   final StatusState<AddClassAbsentResponseModel> editClassAbsentStatus;
   final StatusState<ClassHWDelModel> deleteHomeworkStatus;
+  final StatusState<ClassHWDelModel> deleteStudentAbsentStatus;
   const ClassState({
     this.classesStatus = const StatusState.initial(),
     this.homeWorkStatus = const StatusState.initial(),
@@ -28,6 +29,7 @@ class ClassState extends Equatable {
     this.classAbsentStatus = const StatusState.initial(),
     this.editClassAbsentStatus = const StatusState.initial(),
     this.deleteHomeworkStatus = const StatusState.initial(),
+    this.deleteStudentAbsentStatus = const StatusState.initial(),
   });
 
   @override
@@ -40,6 +42,7 @@ class ClassState extends Equatable {
     classAbsentStatus,
     editClassAbsentStatus,
     deleteHomeworkStatus,
+    deleteStudentAbsentStatus,
   ];
 
   ClassState copyWith({
@@ -51,6 +54,7 @@ class ClassState extends Equatable {
     StatusState<List<ClassAbsentModel>>? classAbsentStatus,
     StatusState<AddClassAbsentResponseModel>? editClassAbsentStatus,
     StatusState<ClassHWDelModel>? deleteHomeworkStatus,
+    StatusState<ClassHWDelModel>? deleteStudentAbsentStatus,
   }) {
     return ClassState(
       classesStatus: classesStatus ?? this.classesStatus,
@@ -61,6 +65,7 @@ class ClassState extends Equatable {
       classAbsentStatus: classAbsentStatus ?? this.classAbsentStatus,
       editClassAbsentStatus: editClassAbsentStatus ?? this.editClassAbsentStatus,
       deleteHomeworkStatus: deleteHomeworkStatus ?? this.deleteHomeworkStatus,
+      deleteStudentAbsentStatus: deleteStudentAbsentStatus ?? this.deleteStudentAbsentStatus,
     );
   }
 }

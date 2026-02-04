@@ -969,4 +969,5 @@ class AppLocalKay {
   static const String happy_day = "happy_day";
   static const String loading_data = "loading_data";
   static const String retry = 'retry';
+  static const String delete_all = 'delete_all';
 }

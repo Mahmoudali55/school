@@ -8,6 +8,7 @@ import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_dropdown_form_field.dart';
+import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -208,7 +209,14 @@ class _RecordingAbsenceScreenState extends State<RecordingAbsenceScreen> {
                   FadeInUp(
                     duration: const Duration(milliseconds: 600),
                     child: CustomButton(
-                      text: AppLocalKay.user_management_save.tr(),
+                      child: state.addClassAbsentStatus.isLoading
+                          ? CustomLoading(color: AppColor.whiteColor(context), size: 20.sp)
+                          : Text(
+                              AppLocalKay.user_management_save.tr(),
+                              style: AppTextStyle.titleMedium(
+                                context,
+                              ).copyWith(color: AppColor.whiteColor(context)),
+                            ),
                       radius: 12.r,
                       onPressed: state.addClassAbsentStatus.isLoading ? null : _saveAttendance,
                     ),
