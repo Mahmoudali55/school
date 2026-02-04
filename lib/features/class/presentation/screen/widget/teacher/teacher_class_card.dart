@@ -50,50 +50,24 @@ class TeacherClassCard extends StatelessWidget {
                     color: Colors.green[50],
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Text(
-                    '${classInfo.studentCount} طالب',
-                    style: AppTextStyle.bodySmall(
-                      context,
-                    ).copyWith(color: Colors.green[700], fontWeight: FontWeight.bold),
+                  child: Column(
+                    children: [
+                      Text(
+                        '${classInfo.studentCount} ${AppLocalKay.student.tr()}',
+                        style: AppTextStyle.bodySmall(
+                          context,
+                        ).copyWith(color: Colors.green[700], fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 12),
-            // Class Details
-            _buildDetailRow(context, Icons.calendar_today, classInfo.schedule),
-            const SizedBox(height: 8),
-            _buildDetailRow(context, Icons.access_time, classInfo.time),
-            const SizedBox(height: 8),
-            _buildDetailRow(context, Icons.room, classInfo.room),
-            const SizedBox(height: 12),
-            // Progress Bar
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      AppLocalKay.program.tr(),
-                      style: AppTextStyle.bodyMedium(context, color: Colors.grey[600]),
-                    ),
-                    Text(
-                      '${(classInfo.progress * 100).toInt()}%',
-                      style: AppTextStyle.bodyMedium(context, color: Colors.green[600]),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                LinearProgressIndicator(
-                  value: classInfo.progress,
-                  backgroundColor: Colors.grey[300],
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green[700]!),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-              ],
+            Text(
+              '${AppLocalKay.code.tr()}: ${classInfo.id}',
+              style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey[600]),
             ),
-            const SizedBox(height: 12),
             // Actions Row
             Row(
               children: [
