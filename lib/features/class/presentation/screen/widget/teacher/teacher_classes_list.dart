@@ -11,7 +11,7 @@ import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 
 import 'students_list_sheet.dart';
 import 'teacher_assignments_sheet.dart';
-import 'teacher_class_card.dart';
+import 'teacher_assignments_sheet_widgets/teacher_class_card.dart';
 
 class TeacherClassesList extends StatelessWidget {
   final List<ClassInfo> classes;
