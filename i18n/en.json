@@ -960,5 +960,6 @@
   "happy_day":"Everyone is present, a happy day!",
   "loading_data":"Loading data...",
    "retry":"Retry",
-   "delete_all":"Delete all"
+   "delete_all":"Delete all",
+    "previous_absence_record": "Has a previous absence record"
 }

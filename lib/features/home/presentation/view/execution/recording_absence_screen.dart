@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -81,7 +83,7 @@ class _RecordingAbsenceScreenState extends State<RecordingAbsenceScreen> {
     if (_selectedClass == null || _selectedLevel == null) {
       CommonMethods.showToast(
         message: AppLocalKay.user_management_select_classs.tr(),
-        backgroundColor: AppColor.errorColor(context),
+        backgroundColor: AppColor.errorColor(context, listen: false),
       );
       Navigator.pop(context);
       return;
@@ -134,6 +136,21 @@ class _RecordingAbsenceScreenState extends State<RecordingAbsenceScreen> {
       return;
     }
 
+    final existingAbsencesString = state.getClassAbsentStatus.data ?? "";
+    final Set<int> existingCodes = {};
+    if (existingAbsencesString.isNotEmpty && existingAbsencesString != "[]") {
+      try {
+        final List decode = json.decode(existingAbsencesString);
+        for (var item in decode) {
+          if (item['STUDENT_CODE'] != null) {
+            existingCodes.add(int.tryParse(item['STUDENT_CODE'].toString()) ?? 0);
+          }
+        }
+      } catch (e) {
+        debugPrint("Error parsing existing absences: $e");
+      }
+    }
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -142,6 +159,7 @@ class _RecordingAbsenceScreenState extends State<RecordingAbsenceScreen> {
         return _AbsenceSelectionBottomSheet(
           students: studentData.students,
           initialAbsences: Map.from(_absences),
+          existingAbsentCodes: existingCodes,
           onConfirm: (updatedAbsences) {
             setState(() {
               _absences.clear();
@@ -373,11 +391,13 @@ class _RecordingAbsenceScreenState extends State<RecordingAbsenceScreen> {
 class _AbsenceSelectionBottomSheet extends StatefulWidget {
   final List<StudentItem> students;
   final Map<int, AbsenceRecord> initialAbsences;
+  final Set<int> existingAbsentCodes;
   final Function(Map<int, AbsenceRecord>) onConfirm;
 
   const _AbsenceSelectionBottomSheet({
     required this.students,
     required this.initialAbsences,
+    required this.existingAbsentCodes,
     required this.onConfirm,
   });
 
@@ -505,6 +525,13 @@ class _AbsenceSelectionBottomSheetState extends State<_AbsenceSelectionBottomShe
                           activeColor: AppColor.errorColor(context),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.r)),
                           onChanged: (val) {
+                            if (val == true &&
+                                widget.existingAbsentCodes.contains(student.studentCode)) {
+                              CommonMethods.showToast(
+                                message: AppLocalKay.previous_absence_record.tr(),
+                                backgroundColor: AppColor.errorColor(context, listen: false),
+                              );
+                            }
                             setState(() {
                               if (val == true) {
                                 _localAbsences[student.studentCode] = AbsenceRecord(
@@ -518,6 +545,14 @@ class _AbsenceSelectionBottomSheetState extends State<_AbsenceSelectionBottomShe
                           },
                         ),
                         onTap: () {
+                          final willBeAbsent = !isAbsent;
+                          if (willBeAbsent &&
+                              widget.existingAbsentCodes.contains(student.studentCode)) {
+                            CommonMethods.showToast(
+                              message: AppLocalKay.previous_absence_record.tr(),
+                              backgroundColor: AppColor.errorColor(context, listen: false),
+                            );
+                          }
                           setState(() {
                             if (isAbsent) {
                               _localAbsences.remove(student.studentCode);

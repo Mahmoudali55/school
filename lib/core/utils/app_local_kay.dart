@@ -970,4 +970,5 @@ class AppLocalKay {
   static const String loading_data = "loading_data";
   static const String retry = 'retry';
   static const String delete_all = 'delete_all';
+  static const String previous_absence_record = 'previous_absence_record';
 }
