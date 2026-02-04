@@ -83,6 +83,7 @@ class _RecordingAbsenceScreenState extends State<RecordingAbsenceScreen> {
         message: AppLocalKay.user_management_select_classs.tr(),
         backgroundColor: AppColor.errorColor(context),
       );
+      Navigator.pop(context);
       return;
     }
 
