@@ -967,5 +967,6 @@
   "user_management_select_description_lesson":"Please enter a description",
    "lessons":"Lessons",
    "date_lesson":"Date of Lesson",
-     "no_lesson_today":"Today has no lessons"
+     "no_lesson_today":"Today has no lessons",
+     "file_uploaded":"File uploaded successfully"
 }

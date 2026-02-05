@@ -323,6 +323,22 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  Future<void> uploadFiles(List<String> filePaths) async {
+    emit(state.copyWith(uploadedFilesStatus: const StatusState.loading()));
+
+    final result = await _homeRepo.uploadFile(filePaths: filePaths);
+
+    result.fold(
+      (error) {
+        emit(state.copyWith(uploadedFilesStatus: StatusState.failure(error.errMessage)));
+      },
+      (files) {
+        emit(state.copyWith(uploadedFilesStatus: StatusState.success(files)));
+        emit(state.copyWith(uploadedFilesStatus: const StatusState.initial()));
+      },
+    );
+  }
+
   void resetAddHomeworkStatus() {
     emit(state.copyWith(addHomeworkStatus: const StatusState.initial()));
   }

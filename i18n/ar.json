@@ -1020,5 +1020,6 @@
   "user_management_select_description_lesson":"يرجى إدخال وصف الدرس",
   "lessons":"الدروس",
   "date_lesson":"تاريخ الدرس",
-  "no_lesson_today":"لاتوجد دروس لهذا اليوم"
+  "no_lesson_today":"لاتوجد دروس لهذا اليوم",
+  "file_uploaded":"تم تحميل الملف بنجاح"
 }

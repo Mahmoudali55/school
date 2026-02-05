@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/error/failures.dart';
 import 'package:my_template/core/network/api_consumer.dart';
@@ -93,6 +96,7 @@ abstract interface class HomeRepo {
   });
   Future<Either<Failure, String>> getClassAbsent({required int classCode, required String date});
   Future<Either<Failure, AddLessonsResponse>> addLessons({required AddLessonsRequestModel request});
+  Future<Either<Failure, List<String>>> uploadFile({required List<String> filePaths});
 }
 
 class HomeRepoImpl implements HomeRepo {
@@ -399,6 +403,51 @@ class HomeRepoImpl implements HomeRepo {
       request: () async {
         final response = await apiConsumer.post(EndPoints.addLessons, body: request.toJson());
         return AddLessonsResponse.fromJson(response);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, List<String>>> uploadFile({required List<String> filePaths}) {
+    return handleDioRequest(
+      request: () async {
+        final uri = Uri.parse('https://delta-asg.com:56513/DeltagroupService/School/UploadFiles');
+
+        var request = http.MultipartRequest('POST', uri);
+
+        // إضافة Authorization header
+        final token = HiveMethods.getToken();
+        if (token != null && token.isNotEmpty) {
+          request.headers['Authorization'] = 'Bearer $token';
+        }
+
+        // إضافة الملفات
+        for (var path in filePaths) {
+          request.files.add(
+            await http.MultipartFile.fromPath(
+              'files', // اسم الحقل في الـ API
+              path,
+              filename: path.split('/').last,
+            ),
+          );
+        }
+
+        final streamedResponse = await request.send();
+        final response = await http.Response.fromStream(streamedResponse);
+
+        if (response.statusCode == 200 || response.statusCode == 201) {
+          final decoded = jsonDecode(response.body);
+
+          if (decoded is List) {
+            // ✅ ارجع List<String> فقط
+            final List<String> uploadedFilePaths = decoded.map((path) => path.toString()).toList();
+            return uploadedFilePaths;
+          } else {
+            throw Exception('Unexpected response format: ${response.body}');
+          }
+        } else {
+          throw Exception('Server error: ${response.statusCode}, ${response.body}');
+        }
       },
     );
   }
