@@ -1,13 +1,21 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
+import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/custom_widgets/custom_form_field/custom_dropdown_form_field.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
+import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/core/utils/common_methods.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
+import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 
 class UploadLessonScreen extends StatefulWidget {
   const UploadLessonScreen({super.key});
@@ -19,18 +27,41 @@ class UploadLessonScreen extends StatefulWidget {
 class _UploadLessonScreenState extends State<UploadLessonScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
-  final _descriptionController = TextEditingController();
-  String? _selectedSubject;
-  String? _selectedClass;
+  final _notesController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  bool _submitted = false;
+  int? _selectedLevelCode;
+  int? _selectedClassCode;
+  int? _selectedSubjectCode;
+  DateTime? _dueDate;
+  Future<void> _selectDueDate() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _dueDate ?? DateTime.now().add(const Duration(days: 7)),
+      firstDate: DateTime.now().subtract(const Duration(days: 365)),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null) {
+      setState(() {
+        _dueDate = picked;
+        _dateController.text = DateFormat('yyyy-MM-dd').format(picked);
+      });
+    }
+  }
 
-  List<String> subjects = [
-    'الرياضيات',
-    'العلوم',
-    'اللغة العربية',
-    'اللغة الإنجليزية',
-    'الاجتماعيات',
-  ];
-  List<String> classes = ['الصف الأول', 'الصف الثاني', 'الصف الثالث', 'الصف الرابع', 'الصف الخامس'];
+  @override
+  void initState() {
+    super.initState();
+
+    final stageStr = HiveMethods.getUserStage();
+    if (stageStr != null && stageStr.toString().isNotEmpty) {
+      context.read<HomeCubit>().teacherLevel(int.parse(stageStr.toString()));
+    }
+    final userCodeStr = HiveMethods.getUserCode();
+    if (userCodeStr != null && userCodeStr.toString().isNotEmpty) {
+      context.read<HomeCubit>().teacherCourses(int.parse(userCodeStr.toString()));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,193 +74,210 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 20.sp),
+          icon: const Icon(Icons.arrow_back_ios),
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.w),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  AppLocalKay.user_management_subject.tr(),
-                  style: AppTextStyle.formTitle20Style(context),
-                ),
-                DropdownButtonFormField<String>(
-                  value: _selectedSubject,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                    filled: true,
-                    fillColor: AppColor.textFormFillColor(context),
+      body: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          final levels = state.teacherLevelStatus.data ?? [];
+          final classesList = state.teacherClassesStatus.data ?? [];
+          final courses = state.teacherCoursesStatus.data ?? [];
+
+          return Padding(
+            padding: EdgeInsets.all(16.w),
+            child: Form(
+              key: _formKey,
+              child: ListView(
+                children: [
+                  /// القسم والمرحلة
+                  Text(
+                    AppLocalKay.user_management_class.tr(),
+                    style: AppTextStyle.formTitleStyle(context),
                   ),
-                  items: subjects.map((String subject) {
-                    return DropdownMenuItem<String>(value: subject, child: Text(subject));
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedSubject = newValue;
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return AppLocalKay.user_management_select_subject.tr();
-                    }
-                    return null;
-                  },
-                ),
-                Text(
-                  AppLocalKay.select_section.tr(),
-                  style: AppTextStyle.formTitle20Style(context),
-                ),
-                // اختيار الصف
-                DropdownButtonFormField<String>(
-                  value: _selectedClass,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                    filled: true,
-                    fillColor: AppColor.textFormFillColor(context),
+                  SizedBox(height: 8.h),
+                  CustomDropdownFormField<int>(
+                    value: _selectedLevelCode,
+                    submitted: _submitted,
+                    hint: AppLocalKay.user_management_class.tr(),
+                    errorText: AppLocalKay.user_management_select_class.tr(),
+                    items: levels
+                        .map((e) => DropdownMenuItem(value: e.levelCode, child: Text(e.levelName)))
+                        .toList(),
+                    onChanged: (v) {
+                      setState(() {
+                        _selectedLevelCode = v;
+                        _selectedClassCode = null;
+                      });
+                      if (v != null) {
+                        context.read<HomeCubit>().teacherClasses(
+                          int.parse(HiveMethods.getUserSection().toString()),
+                          int.parse(HiveMethods.getUserStage().toString()),
+                          v,
+                        );
+                      }
+                    },
                   ),
-                  items: classes.map((String classItem) {
-                    return DropdownMenuItem<String>(value: classItem, child: Text(classItem));
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedClass = newValue;
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return AppLocalKay.user_management_select_class.tr();
-                    }
-                    return null;
-                  },
-                ),
 
-                Text(
-                  AppLocalKay.user_management_class.tr(),
-                  style: AppTextStyle.formTitle20Style(context),
-                ),
-                // اختيار الصف
-                DropdownButtonFormField<String>(
-                  value: _selectedClass,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
-                    filled: true,
-                    fillColor: AppColor.textFormFillColor(context),
+                  Gap(16.h),
+
+                  /// الشعبة
+                  Text(
+                    AppLocalKay.class_name_assigment.tr(),
+                    style: AppTextStyle.formTitleStyle(context),
                   ),
-                  items: classes.map((String classItem) {
-                    return DropdownMenuItem<String>(value: classItem, child: Text(classItem));
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedClass = newValue;
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return AppLocalKay.user_management_select_class.tr();
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 16.h),
+                  SizedBox(height: 8.h),
+                  CustomDropdownFormField<int>(
+                    value: _selectedClassCode,
+                    submitted: _submitted,
+                    hint: AppLocalKay.class_name_assigment.tr(),
+                    errorText: AppLocalKay.user_management_select_classs.tr(),
+                    items: classesList
+                        .map(
+                          (e) => DropdownMenuItem(value: e.classCode, child: Text(e.classNameAr)),
+                        )
+                        .toList(),
+                    onChanged: (v) => setState(() => _selectedClassCode = v),
+                  ),
 
-                // عنوان الدرس
-                CustomFormField(
-                  controller: _titleController,
-                  title: AppLocalKay.user_management_title.tr(),
-                  radius: 12.r,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return AppLocalKay.user_management_select_task.tr();
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 16.h),
+                  Gap(16.h),
 
-                // وصف الدرس
-                CustomFormField(
-                  controller: _descriptionController,
-                  maxLines: 4,
-                  title: AppLocalKay.user_management_description.tr(),
-                  radius: 12.r,
-                ),
-                SizedBox(height: 16.h),
+                  /// المادة
+                  Text(
+                    AppLocalKay.user_management_subject.tr(),
+                    style: AppTextStyle.formTitleStyle(context),
+                  ),
+                  SizedBox(height: 8.h),
+                  CustomDropdownFormField<int>(
+                    value: _selectedSubjectCode,
+                    submitted: _submitted,
+                    hint: AppLocalKay.user_management_subject.tr(),
+                    errorText: AppLocalKay.user_management_select_subject.tr(),
+                    items: courses
+                        .map(
+                          (e) => DropdownMenuItem(value: e.courseCode, child: Text(e.courseName)),
+                        )
+                        .toList(),
+                    onChanged: (v) => setState(() => _selectedSubjectCode = v),
+                  ),
 
-                GestureDetector(
-                  onTap: () async {
-                    final result = await FilePicker.platform.pickFiles(
-                      type: FileType.custom,
-                      allowedExtensions: ['pdf', 'ppt', 'pptx', 'doc', 'docx', 'mp4', 'avi'],
-                    );
-
-                    if (result != null) {
-                    } else {}
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(16.w),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    child: Column(
-                      children: [
-                        Icon(Icons.cloud_upload, size: 40.w, color: Colors.grey),
-                        SizedBox(height: 8.h),
-                        Text(
-                          AppLocalKay.user_management_upload_lesson.tr(),
-                          style: AppTextStyle.titleMedium(
-                            context,
-                          ).copyWith(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          'PDF, PPT, Word, Video',
-                          style: AppTextStyle.titleSmall(
-                            context,
-                          ).copyWith(color: AppColor.greyColor(context)),
-                        ),
-                      ],
+                  Gap(16.h),
+                  Opacity(
+                    opacity: 1,
+                    child: CustomFormField(
+                      readOnly: true,
+                      radius: 12,
+                      title: AppLocalKay.user_management_deadline.tr(),
+                      controller: _dateController,
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.calendar_today),
+                        onPressed: _selectDueDate,
+                      ),
+                      onTap: _selectDueDate,
+                      validator: (_) {
+                        if (_dueDate == null) {
+                          return AppLocalKay.user_management_no_deadline_lesson.tr();
+                        }
+                        return null;
+                      },
                     ),
                   ),
-                ),
-                SizedBox(height: 24.h),
+                  Gap(16.h),
+                  CustomFormField(
+                    controller: _titleController,
+                    maxLines: 4,
+                    title: AppLocalKay.class_description.tr(),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return AppLocalKay.user_management_select_description_lesson.tr();
+                      }
+                      return null;
+                    },
+                    radius: 12.r,
+                  ),
+                  Gap(16.h),
+                  CustomFormField(
+                    controller: _notesController,
+                    title: AppLocalKay.note.tr(),
+                    radius: 12.r,
+                  ),
+                  Gap(10.h),
+                  GestureDetector(
+                    onTap: () async {
+                      await FilePicker.platform.pickFiles(
+                        type: FileType.custom,
+                        allowedExtensions: ['pdf', 'ppt', 'pptx', 'doc', 'docx', 'mp4', 'avi'],
+                      );
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(16.w),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey.shade300),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Column(
+                        children: [
+                          Icon(Icons.cloud_upload, size: 40.w, color: Colors.grey),
+                          SizedBox(height: 8.h),
+                          Text(
+                            AppLocalKay.user_management_upload_lesson.tr(),
+                            style: AppTextStyle.titleMedium(
+                              context,
+                            ).copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 8.h),
+                          Text(
+                            'PDF, PPT, Word, Video',
+                            style: AppTextStyle.titleSmall(
+                              context,
+                            ).copyWith(color: AppColor.greyColor(context)),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
 
-                CustomButton(
-                  text: AppLocalKay.user_management_create_lesson.tr(),
-                  radius: 12.r,
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _uploadLesson();
-                    }
-                  },
-                ),
-              ],
+                  SizedBox(height: 24.h),
+
+                  /// زر الرفع
+                  CustomButton(
+                    radius: 12.r,
+                    child: state.isLoading
+                        ? CustomLoading(color: AppColor.whiteColor(context), size: 15.w)
+                        : Text(
+                            AppLocalKay.user_management_create_lesson.tr(),
+                            style: AppTextStyle.titleLarge(
+                              context,
+                            ).copyWith(color: AppColor.whiteColor(context)),
+                          ),
+                    color: AppColor.accentColor(context),
+                    onPressed: () {
+                      setState(() => _submitted = true);
+                      if (_formKey.currentState!.validate()) {
+                        _uploadLesson();
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
 
   void _uploadLesson() {
-    // هنا سيتم رفع الدرس
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text('تم رفع الدرس بنجاح'), backgroundColor: Colors.green));
+    // Mock upload logic
+    CommonMethods.showToast(message: 'تم رفع الدرس بنجاح');
     Navigator.pop(context);
   }
 
   @override
   void dispose() {
     _titleController.dispose();
-    _descriptionController.dispose();
+    _notesController.dispose();
     super.dispose();
   }
 }

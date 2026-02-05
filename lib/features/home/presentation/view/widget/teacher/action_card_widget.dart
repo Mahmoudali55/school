@@ -51,12 +51,14 @@ class ActionCardWidget extends StatelessWidget {
 
     switch (key) {
       case AppLocalKay.new_class:
-        screen = const UploadLessonScreen();
+        screen = BlocProvider(
+          create: (context) => sl<HomeCubit>(),
+          child: const UploadLessonScreen(),
+        );
         break;
       case AppLocalKay.check_in:
         screen = BlocProvider(
           create: (context) => sl<HomeCubit>(),
-
           child: const RecordingAbsenceScreen(),
         );
         break;

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -12,9 +13,12 @@ class TeacherQuickStats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
       children: [
-        Expanded(
+        SizedBox(
+          width: 0.22.sw,
           child: _buildStatCard(
             context: context,
             title: AppLocalKay.studentstitle.tr(),
@@ -23,8 +27,8 @@ class TeacherQuickStats extends StatelessWidget {
             color: AppColor.primaryColor(context),
           ),
         ),
-        const SizedBox(width: 12),
-        Expanded(
+        SizedBox(
+          width: 0.22.sw,
           child: _buildStatCard(
             context: context,
             title: AppLocalKay.todostitle.tr(),
@@ -33,8 +37,18 @@ class TeacherQuickStats extends StatelessWidget {
             color: AppColor.accentColor(context),
           ),
         ),
-        const SizedBox(width: 12),
-        Expanded(
+        SizedBox(
+          width: 0.22.sw,
+          child: _buildStatCard(
+            context: context,
+            title: AppLocalKay.user_management_upload_lesson.tr(),
+            value: '${stats.totalLessons}',
+            icon: Icons.book,
+            color: Colors.orange,
+          ),
+        ),
+        SizedBox(
+          width: 0.22.sw,
           child: _buildStatCard(
             context: context,
             title: AppLocalKay.checkintitle.tr(),

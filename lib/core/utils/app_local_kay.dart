@@ -971,4 +971,9 @@ class AppLocalKay {
   static const String retry = 'retry';
   static const String delete_all = 'delete_all';
   static const String previous_absence_record = 'previous_absence_record';
+  static const String class_description = 'class_description';
+  static const String user_management_no_deadline_lesson = 'user_management_no_deadline_lesson';
+  static const String user_management_select_description_lesson =
+      'user_management_select_description_lesson';
+  static const String lessons = 'lessons';
 }

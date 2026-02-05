@@ -30,18 +30,14 @@ class CreateAssignmentScreen extends StatefulWidget {
 
 class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
   final _formKey = GlobalKey<FormState>();
-
   late final TextEditingController _descriptionController;
   late final TextEditingController _notesController;
   late final TextEditingController _dateController;
-
   bool _submitted = false;
   int? _selectedLevelCode;
   int? _selectedClassCode;
   int? _selectedSubjectCode;
-
   DateTime? _dueDate;
-
   @override
   void initState() {
     super.initState();

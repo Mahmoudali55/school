@@ -47,9 +47,14 @@ class TeacherClassesList extends StatelessWidget {
           onStudentsPressed: () => _showStudentsSheet(context, classInfo),
           onAssignmentsPressed: () => _showAssignmentsSheet(context, classInfo),
           onAttendancePressed: () => _showAttendanceSheet(context, classInfo),
+          onLessonsPressed: () => _showLessonsSheet(context, classInfo),
         );
       },
     );
+  }
+
+  void _showLessonsSheet(BuildContext context, ClassInfo classInfo) {
+    showModalBottomSheet(context: context, builder: (context) => Container());
   }
 
   void _showStudentsSheet(BuildContext context, ClassInfo classInfo) {

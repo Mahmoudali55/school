@@ -1014,5 +1014,9 @@
   "loading_data":"جاري تحميل البيانات...",
   "retry": "إعادة المحاولة",
   "delete_all": "حذف الكل",
-  "previous_absence_record": "له تسجيل غياب سابق"
+  "previous_absence_record": "له تسجيل غياب سابق",
+  "class_description":"وصف الدرس",
+   "user_management_no_deadline_lesson":"يرجى اختيار تاريخ الدرس",
+  "user_management_select_description_lesson":"يرجى إدخال وصف الدرس",
+  "lessons":"الدروس"
 }

@@ -85,21 +85,29 @@ class ClassInfo extends Equatable {
 class ClassStats extends Equatable {
   final int totalStudents;
   final int totalAssignments;
+  final int totalLessons;
   final double attendanceRate;
 
   const ClassStats({
     required this.totalStudents,
     required this.totalAssignments,
+    required this.totalLessons,
     required this.attendanceRate,
   });
 
   @override
-  List<Object?> get props => [totalStudents, totalAssignments, attendanceRate];
+  List<Object?> get props => [totalStudents, totalAssignments, totalLessons, attendanceRate];
 
-  ClassStats copyWith({int? totalStudents, int? totalAssignments, double? attendanceRate}) {
+  ClassStats copyWith({
+    int? totalStudents,
+    int? totalAssignments,
+    int? totalLessons,
+    double? attendanceRate,
+  }) {
     return ClassStats(
       totalStudents: totalStudents ?? this.totalStudents,
       totalAssignments: totalAssignments ?? this.totalAssignments,
+      totalLessons: totalLessons ?? this.totalLessons,
       attendanceRate: attendanceRate ?? this.attendanceRate,
     );
   }

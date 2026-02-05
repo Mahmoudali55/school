@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/teacher_classes_models.dart';
@@ -9,6 +11,7 @@ class TeacherClassCard extends StatelessWidget {
   final VoidCallback onStudentsPressed;
   final VoidCallback onAssignmentsPressed;
   final VoidCallback onAttendancePressed;
+  final VoidCallback onLessonsPressed;
 
   const TeacherClassCard({
     super.key,
@@ -16,6 +19,7 @@ class TeacherClassCard extends StatelessWidget {
     required this.onStudentsPressed,
     required this.onAssignmentsPressed,
     required this.onAttendancePressed,
+    required this.onLessonsPressed,
   });
 
   @override
@@ -96,26 +100,21 @@ class TeacherClassCard extends StatelessWidget {
                 ),
               ],
             ),
+            Gap(8.h),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildActionButton(
+                    text: AppLocalKay.lessons.tr(),
+                    onPressed: onLessonsPressed,
+                    context: context,
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildDetailRow(BuildContext context, IconData icon, String text) {
-    return Row(
-      children: [
-        Icon(icon, size: 16, color: Colors.grey[600]),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(
-            text,
-            style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey[600]),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ],
     );
   }
 
