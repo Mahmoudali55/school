@@ -977,4 +977,6 @@ class AppLocalKay {
       'user_management_select_description_lesson';
   static const String lessons = 'lessons';
   static const String date_lesson = 'date_lesson';
+  static const String no_lesson_today = 'no_lesson_today';
+  static const String no_lessons = 'no_lessons';
 }

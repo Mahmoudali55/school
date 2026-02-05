@@ -8,6 +8,7 @@ import 'package:my_template/core/network/end_points.dart';
 import 'package:my_template/features/class/data/model/class_absent_model.dart';
 import 'package:my_template/features/class/data/model/class_models.dart';
 import 'package:my_template/features/class/data/model/get_T_home_work_model.dart';
+import 'package:my_template/features/class/data/model/get_lessons_model.dart';
 import 'package:my_template/features/class/data/model/home_work_model.dart';
 import 'package:my_template/features/class/data/model/student_class_data_model.dart';
 import 'package:my_template/features/class/data/model/student_courses_model.dart';
@@ -40,6 +41,7 @@ abstract interface class ClassRepo {
   Future<Either<Failure, AddClassAbsentResponseModel>> editClassAbsent({
     required AddClassAbsentRequestModel request,
   });
+  Future<Either<Failure, GetLessonsModel>> getLessons({required int code});
   Future<Either<Failure, ClassHWDelModel>> deleteClassAbsent({
     required int classCode,
     required String HWDATE,
@@ -284,6 +286,15 @@ class ClassRepoImpl extends ClassRepo {
           body: {"classcodes": classCode, "ABSENTDATE": HWDATE, "STUDENT_CODE": studentCode},
         );
         return ClassHWDelModel.fromJson(response);
+      },
+    );
+  }
+
+  Future<Either<Failure, GetLessonsModel>> getLessons({required int code}) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(EndPoints.getLessons, queryParameters: {"id": code});
+        return GetLessonsModel.fromJson(response);
       },
     );
   }

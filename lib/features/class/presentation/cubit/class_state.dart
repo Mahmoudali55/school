@@ -3,6 +3,7 @@ import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/class/data/model/class_absent_model.dart';
 import 'package:my_template/features/class/data/model/class_models.dart';
 import 'package:my_template/features/class/data/model/get_T_home_work_model.dart';
+import 'package:my_template/features/class/data/model/get_lessons_model.dart';
 import 'package:my_template/features/class/data/model/home_work_model.dart';
 import 'package:my_template/features/class/data/model/student_class_data_model.dart';
 import 'package:my_template/features/class/data/model/student_courses_model.dart';
@@ -20,6 +21,7 @@ class ClassState extends Equatable {
   final StatusState<AddClassAbsentResponseModel> editClassAbsentStatus;
   final StatusState<ClassHWDelModel> deleteHomeworkStatus;
   final StatusState<ClassHWDelModel> deleteStudentAbsentStatus;
+  final StatusState<GetLessonsModel> getLessonsStatus;
   const ClassState({
     this.classesStatus = const StatusState.initial(),
     this.homeWorkStatus = const StatusState.initial(),
@@ -30,6 +32,7 @@ class ClassState extends Equatable {
     this.editClassAbsentStatus = const StatusState.initial(),
     this.deleteHomeworkStatus = const StatusState.initial(),
     this.deleteStudentAbsentStatus = const StatusState.initial(),
+    this.getLessonsStatus = const StatusState.initial(),
   });
 
   @override
@@ -43,6 +46,7 @@ class ClassState extends Equatable {
     editClassAbsentStatus,
     deleteHomeworkStatus,
     deleteStudentAbsentStatus,
+    getLessonsStatus,
   ];
 
   ClassState copyWith({
@@ -55,6 +59,7 @@ class ClassState extends Equatable {
     StatusState<AddClassAbsentResponseModel>? editClassAbsentStatus,
     StatusState<ClassHWDelModel>? deleteHomeworkStatus,
     StatusState<ClassHWDelModel>? deleteStudentAbsentStatus,
+    StatusState<GetLessonsModel>? getLessonsStatus,
   }) {
     return ClassState(
       classesStatus: classesStatus ?? this.classesStatus,
@@ -66,6 +71,7 @@ class ClassState extends Equatable {
       editClassAbsentStatus: editClassAbsentStatus ?? this.editClassAbsentStatus,
       deleteHomeworkStatus: deleteHomeworkStatus ?? this.deleteHomeworkStatus,
       deleteStudentAbsentStatus: deleteStudentAbsentStatus ?? this.deleteStudentAbsentStatus,
+      getLessonsStatus: getLessonsStatus ?? this.getLessonsStatus,
     );
   }
 }

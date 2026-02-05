@@ -7,8 +7,8 @@ import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/teacher_classes_models.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/class/presentation/screen/widget/teacher/attendance_sheet.dart';
+import 'package:my_template/features/class/presentation/screen/widget/teacher/teacher_lessons_sheet.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
-import 'package:my_template/features/home/presentation/view/execution/upload_lesson_screen.dart';
 
 import 'students_list_sheet.dart';
 import 'teacher_assignments_sheet.dart';
@@ -55,13 +55,24 @@ class TeacherClassesList extends StatelessWidget {
   }
 
   void _showLessonsSheet(BuildContext context, ClassInfo classInfo) {
+    final classCubit = context.read<ClassCubit>();
     final homeCubit = context.read<HomeCubit>();
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) =>
-            BlocProvider.value(value: homeCubit, child: const UploadLessonScreen()),
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
+      builder: (context) {
+        return BlocProvider.value(
+          value: classCubit..getLessons(code: int.tryParse(classInfo.id) ?? 0),
+          child: TeacherLessonsSheet(
+            classInfo: classInfo,
+            classCubit: classCubit,
+            homeCubit: homeCubit,
+          ),
+        );
+      },
     );
   }
 

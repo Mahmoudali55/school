@@ -34,4 +34,5 @@ class EndPoints {
   static const String deleteClassabsent = 'DeltagroupService/Transaction/classabsentDel';
   static const String studentabsentDel = 'DeltagroupService/School/studentabsentDel';
   static const String addLessons = 'DeltagroupService/School/Addlessons';
+  static const String getLessons = 'DeltagroupService/School/GetLessons';
 }
