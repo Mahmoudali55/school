@@ -3,6 +3,7 @@ import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/class/data/model/student_class_data_model.dart';
 import 'package:my_template/features/home/data/models/add_class_absent_response_model.dart';
 import 'package:my_template/features/home/data/models/add_homework_response_model.dart';
+import 'package:my_template/features/home/data/models/add_lessons_response_model.dart';
 import 'package:my_template/features/home/data/models/add_permissions_response_model.dart';
 import 'package:my_template/features/home/data/models/add_uniform_response_model.dart';
 import 'package:my_template/features/home/data/models/class_hW_del_model.dart';
@@ -44,7 +45,7 @@ class HomeState extends Equatable {
     this.studentDataStatus = const StatusState.initial(),
     this.addClassAbsentStatus = const StatusState.initial(),
     this.getClassAbsentStatus = const StatusState.initial(),
-
+    this.addLessonsStatus = const StatusState.initial(),
     this.selectedStudent,
     this.data,
     this.isLoading = false,
@@ -71,6 +72,7 @@ class HomeState extends Equatable {
   final StatusState<GetStudentClassData> studentDataStatus;
   final StatusState<AddClassAbsentResponseModel> addClassAbsentStatus;
   final StatusState<String> getClassAbsentStatus;
+  final StatusState<AddLessonsResponse> addLessonsStatus;
 
   final StudentMiniInfo? selectedStudent;
 
@@ -105,6 +107,7 @@ class HomeState extends Equatable {
     studentDataStatus,
     addClassAbsentStatus,
     getClassAbsentStatus,
+    addLessonsStatus,
   ];
 
   HomeState copyWith({
@@ -127,6 +130,7 @@ class HomeState extends Equatable {
     StatusState<ClassHWDelModel>? deleteHomeworkStatus,
     StatusState<GetStudentClassData>? studentDataStatus,
     StatusState<AddClassAbsentResponseModel>? addClassAbsentStatus,
+    StatusState<AddLessonsResponse>? addLessonsStatus,
     StatusState<String>? getClassAbsentStatus,
     StudentMiniInfo? selectedStudent,
     HomeModel? data,
@@ -158,6 +162,7 @@ class HomeState extends Equatable {
       studentDataStatus: studentDataStatus ?? this.studentDataStatus,
       addClassAbsentStatus: addClassAbsentStatus ?? this.addClassAbsentStatus,
       getClassAbsentStatus: getClassAbsentStatus ?? this.getClassAbsentStatus,
+      addLessonsStatus: addLessonsStatus ?? this.addLessonsStatus,
     );
   }
 }

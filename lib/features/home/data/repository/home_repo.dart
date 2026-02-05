@@ -8,6 +8,8 @@ import 'package:my_template/features/home/data/models/add_class_absent_request_m
 import 'package:my_template/features/home/data/models/add_class_absent_response_model.dart';
 import 'package:my_template/features/home/data/models/add_home_work_request_model.dart';
 import 'package:my_template/features/home/data/models/add_homework_response_model.dart';
+import 'package:my_template/features/home/data/models/add_lessons_request_model.dart';
+import 'package:my_template/features/home/data/models/add_lessons_response_model.dart';
 import 'package:my_template/features/home/data/models/add_permissions_mobile_model.dart';
 import 'package:my_template/features/home/data/models/add_permissions_response_model.dart';
 import 'package:my_template/features/home/data/models/add_uniform_request_model.dart';
@@ -90,6 +92,7 @@ abstract interface class HomeRepo {
     required AddClassAbsentRequestModel request,
   });
   Future<Either<Failure, String>> getClassAbsent({required int classCode, required String date});
+  Future<Either<Failure, AddLessonsResponse>> addLessons({required AddLessonsRequestModel request});
 }
 
 class HomeRepoImpl implements HomeRepo {
@@ -385,6 +388,17 @@ class HomeRepoImpl implements HomeRepo {
           queryParameters: {"classcode": classCode, "ABSENTDATE": date},
         );
         return response['Data'] ?? "";
+      },
+    );
+  }
+
+  Future<Either<Failure, AddLessonsResponse>> addLessons({
+    required AddLessonsRequestModel request,
+  }) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.post(EndPoints.addLessons, body: request.toJson());
+        return AddLessonsResponse.fromJson(response);
       },
     );
   }

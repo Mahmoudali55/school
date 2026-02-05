@@ -965,5 +965,6 @@
     "class_description":"Class Description",
     "user_management_no_deadline_lesson":"Please select a date",
   "user_management_select_description_lesson":"Please enter a description",
-   "lessons":"Lessons"
+   "lessons":"Lessons",
+   "date_lesson":"Date of Lesson"
 }

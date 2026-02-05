@@ -8,6 +8,7 @@ import 'package:my_template/features/class/data/model/teacher_classes_models.dar
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/class/presentation/screen/widget/teacher/attendance_sheet.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
+import 'package:my_template/features/home/presentation/view/execution/upload_lesson_screen.dart';
 
 import 'students_list_sheet.dart';
 import 'teacher_assignments_sheet.dart';
@@ -54,7 +55,14 @@ class TeacherClassesList extends StatelessWidget {
   }
 
   void _showLessonsSheet(BuildContext context, ClassInfo classInfo) {
-    showModalBottomSheet(context: context, builder: (context) => Container());
+    final homeCubit = context.read<HomeCubit>();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            BlocProvider.value(value: homeCubit, child: const UploadLessonScreen()),
+      ),
+    );
   }
 
   void _showStudentsSheet(BuildContext context, ClassInfo classInfo) {

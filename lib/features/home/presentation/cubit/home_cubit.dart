@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/home/data/models/add_class_absent_request_model.dart';
 import 'package:my_template/features/home/data/models/add_home_work_request_model.dart';
+import 'package:my_template/features/home/data/models/add_lessons_request_model.dart';
 import 'package:my_template/features/home/data/models/add_permissions_mobile_model.dart';
 import 'package:my_template/features/home/data/models/add_uniform_request_model.dart';
 import 'package:my_template/features/home/data/models/edit_permissions_mobile_request_model.dart';
@@ -310,6 +311,15 @@ class HomeCubit extends Cubit<HomeState> {
     result.fold(
       (error) => emit(state.copyWith(getClassAbsentStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(getClassAbsentStatus: StatusState.success(success))),
+    );
+  }
+
+  Future<void> addLessons({required AddLessonsRequestModel request}) async {
+    emit(state.copyWith(addLessonsStatus: StatusState.loading()));
+    final result = await _homeRepo.addLessons(request: request);
+    result.fold(
+      (error) => emit(state.copyWith(addLessonsStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(addLessonsStatus: StatusState.success(success))),
     );
   }
 
