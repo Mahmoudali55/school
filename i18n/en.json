@@ -968,5 +968,6 @@
    "lessons":"Lessons",
    "date_lesson":"Date of Lesson",
      "no_lesson_today":"Today has no lessons",
-     "file_uploaded":"File uploaded successfully"
+     "file_uploaded":"File uploaded successfully",
+     "attachments":"Attachments"
 }

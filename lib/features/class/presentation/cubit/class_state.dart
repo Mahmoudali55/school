@@ -22,6 +22,7 @@ class ClassState extends Equatable {
   final StatusState<ClassHWDelModel> deleteHomeworkStatus;
   final StatusState<ClassHWDelModel> deleteStudentAbsentStatus;
   final StatusState<GetLessonsModel> getLessonsStatus;
+  final StatusState<String>? imageFileNameStatus;
   const ClassState({
     this.classesStatus = const StatusState.initial(),
     this.homeWorkStatus = const StatusState.initial(),
@@ -33,6 +34,7 @@ class ClassState extends Equatable {
     this.deleteHomeworkStatus = const StatusState.initial(),
     this.deleteStudentAbsentStatus = const StatusState.initial(),
     this.getLessonsStatus = const StatusState.initial(),
+    this.imageFileNameStatus = const StatusState.initial(),
   });
 
   @override
@@ -47,6 +49,7 @@ class ClassState extends Equatable {
     deleteHomeworkStatus,
     deleteStudentAbsentStatus,
     getLessonsStatus,
+    imageFileNameStatus,
   ];
 
   ClassState copyWith({
@@ -60,6 +63,7 @@ class ClassState extends Equatable {
     StatusState<ClassHWDelModel>? deleteHomeworkStatus,
     StatusState<ClassHWDelModel>? deleteStudentAbsentStatus,
     StatusState<GetLessonsModel>? getLessonsStatus,
+    StatusState<String>? imageFileNameStatus,
   }) {
     return ClassState(
       classesStatus: classesStatus ?? this.classesStatus,
@@ -72,6 +76,7 @@ class ClassState extends Equatable {
       deleteHomeworkStatus: deleteHomeworkStatus ?? this.deleteHomeworkStatus,
       deleteStudentAbsentStatus: deleteStudentAbsentStatus ?? this.deleteStudentAbsentStatus,
       getLessonsStatus: getLessonsStatus ?? this.getLessonsStatus,
+      imageFileNameStatus: imageFileNameStatus ?? this.imageFileNameStatus,
     );
   }
 }

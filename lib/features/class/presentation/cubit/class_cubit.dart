@@ -1,5 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
 import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/core/utils/common_methods.dart';
 import 'package:my_template/features/class/data/repository/class_repo.dart';
 import 'package:my_template/features/home/data/models/add_class_absent_request_model.dart';
 
@@ -126,6 +131,22 @@ class ClassCubit extends Cubit<ClassState> {
     result.fold(
       (error) => emit(state.copyWith(getLessonsStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(getLessonsStatus: StatusState.success(success))),
+    );
+  }
+
+  Future<void> imageFileName(String filePaths, BuildContext context) async {
+    emit(state.copyWith(imageFileNameStatus: const StatusState.loading()));
+    CommonMethods.showToast(message: AppLocalKay.loading.tr(), type: ToastType.help);
+    final result = await _classRepo.imageFileName(filePath: filePaths);
+
+    result.fold(
+      (error) {
+        emit(state.copyWith(imageFileNameStatus: StatusState.failure(error.errMessage)));
+      },
+      (files) {
+        emit(state.copyWith(imageFileNameStatus: StatusState.success(files)));
+        // emit(state.copyWith(imageFileNameStatus: const StatusState.initial()));
+      },
     );
   }
 

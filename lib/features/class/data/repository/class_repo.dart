@@ -51,6 +51,7 @@ abstract interface class ClassRepo {
     required String HWDATE,
     required int studentCode,
   });
+  Future<Either<Failure, String>> imageFileName({required String filePath});
   final List<StudentClassModel> _studentClasses = const [
     StudentClassModel(
       id: '1',
@@ -295,6 +296,20 @@ class ClassRepoImpl extends ClassRepo {
       request: () async {
         final response = await apiConsumer.get(EndPoints.getLessons, queryParameters: {"id": code});
         return GetLessonsModel.fromJson(response);
+      },
+    );
+  }
+
+  Future<Either<Failure, String>> imageFileName({required String filePath}) async {
+    return handleDioRequest(
+      request: () async {
+        final fileName = filePath.split('/').last.split('\\').last;
+        final url =
+            'https://delta-asg.com:56513/DeltagroupService/School/userimge?imageFileName=$fileName';
+
+        final response = await apiConsumer.get(url);
+
+        return response.toString();
       },
     );
   }

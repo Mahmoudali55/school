@@ -980,4 +980,5 @@ class AppLocalKay {
   static const String no_lesson_today = 'no_lesson_today';
   static const String no_lessons = 'no_lessons';
   static const String file_uploaded = 'file_uploaded';
+  static const String attachments = 'attachments';
 }
