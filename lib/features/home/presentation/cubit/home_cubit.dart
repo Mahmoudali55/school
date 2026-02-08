@@ -332,6 +332,17 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  Future<void> imageFileName(String filePath) async {
+    if (isClosed) return;
+    emit(state.copyWith(imageFileNameStatus: const StatusState.loading()));
+    final result = await _homeRepo.imageFileName(filePath: filePath);
+
+    result.fold(
+      (error) => emit(state.copyWith(imageFileNameStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(imageFileNameStatus: StatusState.success(success))),
+    );
+  }
+
   Future<void> uploadFiles(List<String> filePaths) async {
     emit(state.copyWith(uploadedFilesStatus: const StatusState.loading()));
 
@@ -374,6 +385,11 @@ class HomeCubit extends Cubit<HomeState> {
   void resetEditLessonsStatus() {
     if (isClosed) return;
     emit(state.copyWith(editLessonsStatus: const StatusState.initial()));
+  }
+
+  void resetImageFileNameStatus() {
+    if (isClosed) return;
+    emit(state.copyWith(imageFileNameStatus: const StatusState.initial()));
   }
 
   void resetAddUniformStatus() {

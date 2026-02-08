@@ -970,5 +970,6 @@
      "no_lesson_today":"Today has no lessons",
      "file_uploaded":"File uploaded successfully",
      "attachments":"Attachments",
-     "delete_lesson":"Are you sure you want to delete this lesson?"
+     "delete_lesson":"Are you sure you want to delete this lesson?",
+     "display":"Display"
 }

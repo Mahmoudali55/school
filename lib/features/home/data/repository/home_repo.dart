@@ -100,6 +100,7 @@ abstract interface class HomeRepo {
     required AddLessonsRequestModel request,
   });
   Future<Either<Failure, List<String>>> uploadFile({required List<String> filePaths});
+  Future<Either<Failure, String>> imageFileName({required String filePath});
 }
 
 class HomeRepoImpl implements HomeRepo {
@@ -359,6 +360,21 @@ class HomeRepoImpl implements HomeRepo {
       request: () async {
         final response = await apiConsumer.put(EndPoints.editLessons, body: request.toJson());
         return AddLessonsResponse.fromJson(response);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, String>> imageFileName({required String filePath}) async {
+    return handleDioRequest(
+      request: () async {
+        final fileName = filePath.split('/').last.split('\\').last;
+        final url =
+            'https://delta-asg.com:56513/DeltagroupService/School/userimge?imageFileName=$fileName';
+
+        final response = await apiConsumer.get(url);
+
+        return response.toString();
       },
     );
   }
