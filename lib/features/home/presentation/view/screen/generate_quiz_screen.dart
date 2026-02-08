@@ -374,13 +374,7 @@ class _GenerateQuizScreenState extends State<GenerateQuizScreen> {
                           Clipboard.setData(ClipboardData(text: quiz));
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text(
-                                AppLocalKay.copy_quiz_success.tr(),
-                                style: AppTextStyle.bodySmall(
-                                  context,
-                                ).copyWith(color: AppColor.whiteColor(context)),
-                              ),
-                              backgroundColor: AppColor.secondAppColor(context),
+                              content: Text(AppLocalKay.copy_success.tr()),
                               behavior: SnackBarBehavior.floating,
                             ),
                           );

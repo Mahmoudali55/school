@@ -293,13 +293,7 @@ class _GenerateLessonIdeasScreenState extends State<GenerateLessonIdeasScreen> {
                           Clipboard.setData(ClipboardData(text: ideas));
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text(
-                                AppLocalKay.copy_success.tr(),
-                                style: AppTextStyle.bodySmall(
-                                  context,
-                                ).copyWith(color: AppColor.whiteColor(context)),
-                              ),
-                              backgroundColor: AppColor.secondAppColor(context),
+                              content: Text(AppLocalKay.copy_success.tr()),
                               behavior: SnackBarBehavior.floating,
                             ),
                           );

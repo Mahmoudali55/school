@@ -303,13 +303,7 @@ class _SummarizeNotesScreenState extends State<SummarizeNotesScreen> {
                             Clipboard.setData(ClipboardData(text: summary));
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(
-                                  AppLocalKay.copy_summary_success.tr(),
-                                  style: AppTextStyle.bodySmall(
-                                    context,
-                                  ).copyWith(color: AppColor.whiteColor(context)),
-                                ),
-                                backgroundColor: AppColor.secondAppColor(context),
+                                content: Text(AppLocalKay.copy_success.tr()),
                                 behavior: SnackBarBehavior.floating,
                               ),
                             );
