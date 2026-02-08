@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:my_template/core/services/ai_service.dart';
 import 'package:my_template/core/services/camera_service.dart';
 import 'package:my_template/core/services/face_detection_service.dart';
 import 'package:my_template/features/attendance/cubit/attendance_cubit.dart';
@@ -15,7 +16,9 @@ import 'package:my_template/features/calendar/data/repo/calendar_repo.dart';
 import 'package:my_template/features/calendar/presentation/cubit/calendar_cubit.dart';
 import 'package:my_template/features/class/data/repository/class_repo.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
+import 'package:my_template/features/home/data/repository/ai_repo.dart';
 import 'package:my_template/features/home/data/repository/home_repo.dart';
+import 'package:my_template/features/home/presentation/cubit/ai_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/leave_permission/data/repo/leave_repo.dart';
 import 'package:my_template/features/leave_permission/presentation/cubit/leave_cubit.dart';

@@ -59,4 +59,9 @@ Future<void> initDependencies() async {
     ),
   );
   sl.registerFactory<AttendanceCubit>(() => AttendanceCubit(attendanceRepo: sl()));
+
+  // AI Service
+  sl.registerLazySingleton<AIService>(() => AIService());
+  sl.registerLazySingleton<AIRepo>(() => AIRepoImpl(sl()));
+  sl.registerFactory<AICubit>(() => AICubit(sl()));
 }

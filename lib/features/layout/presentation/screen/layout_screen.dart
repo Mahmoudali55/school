@@ -63,9 +63,9 @@ class _LayoutScreenState extends State<LayoutScreen> {
         showBadge: _showBadge("classes", role),
       ),
       NavItemData(
-        label: AppLocalKay.bus.tr(),
-        icon: Icons.directions_bus_outlined,
-        activeIcon: Icons.directions_bus_rounded,
+        label: role == 'teacher' ? AppLocalKay.smart_assistant.tr() : AppLocalKay.bus.tr(),
+        icon: role == 'teacher' ? Icons.auto_awesome_outlined : Icons.directions_bus_outlined,
+        activeIcon: role == 'teacher' ? Icons.auto_awesome : Icons.directions_bus_rounded,
         screen: getScreen("bus", role),
         showBadge: _showBadge("bus", role),
       ),

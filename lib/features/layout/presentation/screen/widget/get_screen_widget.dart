@@ -15,6 +15,7 @@ import 'package:my_template/features/home/presentation/view/screen/admin_home_sc
 import 'package:my_template/features/home/presentation/view/screen/home_screen.dart';
 import 'package:my_template/features/home/presentation/view/screen/parent_home_screen.dart';
 import 'package:my_template/features/home/presentation/view/screen/teacher_home_screen.dart';
+import 'package:my_template/features/home/presentation/view/screen/ai_lesson_assistant_screen.dart';
 import 'package:my_template/features/setting/presentation/screen/admin_settings_screen.dart';
 import 'package:my_template/features/setting/presentation/screen/student_settings_screen.dart';
 
@@ -54,7 +55,7 @@ Widget getScreen(String tab, String userTypeId) {
 
     case "bus":
       if (role == 'parent') return const ParentBusTrackingScreen();
-      if (role == 'teacher') return const TeacherBusTrackingScreen();
+      if (role == 'teacher') return const AILessonAssistantScreen();
       if (role == 'admin') return const AdminBusTrackingScreen();
       if (role == 'student') return const StudentBusTrackingScreen();
       return const StudentBusTrackingScreen();

@@ -21,6 +21,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> getHomeData(String userTypeId, int code) async {
     if (state.data != null && state.errorMessage == null) return;
+    if (isClosed) return;
     emit(state.copyWith(isLoading: true, errorMessage: null));
 
     // Map numeric types to named types with robust normalization
@@ -38,6 +39,7 @@ class HomeCubit extends Cubit<HomeState> {
 
     if (normalizedType == 'student') {
       final result = await _homeRepo.getStudentHomeData();
+      if (isClosed) return;
       result.fold(
         (failure) => emit(state.copyWith(isLoading: false, errorMessage: failure.errMessage)),
         (data) => emit(state.copyWith(isLoading: false, data: data, errorMessage: null)),
@@ -45,31 +47,37 @@ class HomeCubit extends Cubit<HomeState> {
     } else if (normalizedType == 'parent') {
       // For parents, we fetch the students and return a ParentHomeModel
       final result = await _homeRepo.getParentHomeData(code);
+      if (isClosed) return;
       result.fold(
         (failure) => emit(state.copyWith(isLoading: false, errorMessage: failure.errMessage)),
         (data) => emit(state.copyWith(isLoading: false, data: data, errorMessage: null)),
       );
     } else if (normalizedType == 'teacher') {
       final result = await _homeRepo.getTeacherHomeData();
+      if (isClosed) return;
       result.fold(
         (failure) => emit(state.copyWith(isLoading: false, errorMessage: failure.errMessage)),
         (data) => emit(state.copyWith(isLoading: false, data: data, errorMessage: null)),
       );
     } else if (normalizedType == 'admin') {
       final result = await _homeRepo.getAdminHomeData();
+      if (isClosed) return;
       result.fold(
         (failure) => emit(state.copyWith(isLoading: false, errorMessage: failure.errMessage)),
         (data) => emit(state.copyWith(isLoading: false, data: data, errorMessage: null)),
       );
     } else {
+      if (isClosed) return;
       emit(state.copyWith(isLoading: false, errorMessage: "Invalid User Type"));
     }
   }
 
   Future<void> parentData(int code) async {
+    if (isClosed) return;
     emit(state.copyWith(parentsStudentStatus: StatusState.loading()));
 
     final result = await _homeRepo.ParentsStudent(code: code);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(parentsStudentStatus: StatusState.failure(error.errMessage))),
       (students) {
@@ -91,6 +99,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   // تحديث الطالب المختار
   void changeSelectedStudent(StudentMiniInfo selectedStudent) {
+    if (isClosed) return;
     emit(state.copyWith(selectedStudent: selectedStudent));
 
     // جلب بيانات الطالب الجديد
@@ -102,9 +111,11 @@ class HomeCubit extends Cubit<HomeState> {
 
   // جلب أيام الغياب
   Future<void> studentAbsentCount(int code) async {
+    if (isClosed) return;
     emit(state.copyWith(studentAbsentCountStatus: StatusState.loading()));
 
     final result = await _homeRepo.studentAbsentCount(code: code);
+    if (isClosed) return;
     result.fold(
       (error) =>
           emit(state.copyWith(studentAbsentCountStatus: StatusState.failure(error.errMessage))),
@@ -114,9 +125,11 @@ class HomeCubit extends Cubit<HomeState> {
 
   // جلب درجات الطالب
   Future<void> studentCourseDegree(int code, int? monthNo) async {
+    if (isClosed) return;
     emit(state.copyWith(studentCourseDegreeStatus: StatusState.loading()));
 
     final result = await _homeRepo.studentCourseDegree(code: code, monthNo: monthNo);
+    if (isClosed) return;
     result.fold(
       (error) =>
           emit(state.copyWith(studentCourseDegreeStatus: StatusState.failure(error.errMessage))),
@@ -125,9 +138,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> studentAbsentDataDetails(int code) async {
+    if (isClosed) return;
     emit(state.copyWith(studentAbsentDataStatus: StatusState.loading()));
 
     final result = await _homeRepo.studentAbsentDataDetails(code: code);
+    if (isClosed) return;
     result.fold(
       (error) =>
           emit(state.copyWith(studentAbsentDataStatus: StatusState.failure(error.errMessage))),
@@ -136,9 +151,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> parentBalance(int code) async {
+    if (isClosed) return;
     emit(state.copyWith(parentBalanceStatus: StatusState.loading()));
 
     final result = await _homeRepo.parentBalance(code: code);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(parentBalanceStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(parentBalanceStatus: StatusState.success(success))),
@@ -146,9 +163,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> studentBalance(int code) async {
+    if (isClosed) return;
     emit(state.copyWith(studentBalanceStatus: StatusState.loading()));
 
     final result = await _homeRepo.studentBalance(code: code);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(studentBalanceStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(studentBalanceStatus: StatusState.success(success))),
@@ -168,9 +187,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> getPermissions({required int code}) async {
+    if (isClosed) return;
     emit(state.copyWith(getPermissionsStatus: StatusState.loading()));
 
     final result = await _homeRepo.getPermissions(code: code);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(getPermissionsStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(getPermissionsStatus: StatusState.success(success))),
@@ -190,9 +211,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> addUniform(AddUniformRequestModel request) async {
+    if (isClosed) return;
     emit(state.copyWith(addUniformStatus: StatusState.loading()));
 
     final result = await _homeRepo.addUniform(request: request);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(addUniformStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(addUniformStatus: StatusState.success(success))),
@@ -200,9 +223,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> getUniform({required int code, int? id}) async {
+    if (isClosed) return;
     emit(state.copyWith(getUniformsStatus: StatusState.loading()));
 
     final result = await _homeRepo.getUniforms(code: code, id: id);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(getUniformsStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(getUniformsStatus: StatusState.success(success))),
@@ -210,9 +235,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> editUniform(EditUniformRequestModel request) async {
+    if (isClosed) return;
     emit(state.copyWith(editUniformStatus: StatusState.loading()));
 
     final result = await _homeRepo.editUniform(request: request);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(editUniformStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(editUniformStatus: StatusState.success(success))),
@@ -220,9 +247,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> teacherLevel(int stageCode) async {
+    if (isClosed) return;
     emit(state.copyWith(teacherLevelStatus: StatusState.loading()));
 
     final result = await _homeRepo.teacherLevel(stageCode: stageCode);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(teacherLevelStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(teacherLevelStatus: StatusState.success(success))),
@@ -230,6 +259,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> teacherClasses(int sectionCode, int stageCode, int levelCode) async {
+    if (isClosed) return;
     emit(state.copyWith(teacherClassesStatus: StatusState.loading()));
 
     final result = await _homeRepo.teacherClasses(
@@ -237,6 +267,7 @@ class HomeCubit extends Cubit<HomeState> {
       stageCode: stageCode,
       levelCode: levelCode,
     );
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(teacherClassesStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(teacherClassesStatus: StatusState.success(success))),
@@ -244,9 +275,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> teacherCourses(int code) async {
+    if (isClosed) return;
     emit(state.copyWith(teacherCoursesStatus: StatusState.loading()));
 
     final result = await _homeRepo.teacherCourses(code: code);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(teacherCoursesStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(teacherCoursesStatus: StatusState.success(success))),
@@ -254,9 +287,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> addHomework(AddHomeworkModelRequest request) async {
+    if (isClosed) return;
     emit(state.copyWith(addHomeworkStatus: StatusState.loading()));
 
     final result = await _homeRepo.addHomework(request: request);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(addHomeworkStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(addHomeworkStatus: StatusState.success(success))),
@@ -264,9 +299,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> editHomework(AddHomeworkModelRequest request) async {
+    if (isClosed) return;
     emit(state.copyWith(addHomeworkStatus: StatusState.loading()));
 
     final result = await _homeRepo.editHomework(request: request);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(addHomeworkStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(addHomeworkStatus: StatusState.success(success))),
@@ -274,9 +311,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> studentData({required int code}) async {
+    if (isClosed) return;
     emit(state.copyWith(studentDataStatus: const StatusState.loading()));
 
     final result = await _classRepo.studentClasses(ClassCode: code);
+    if (isClosed) return;
     result.fold(
       (failure) => emit(state.copyWith(studentDataStatus: StatusState.failure(failure.errMessage))),
       (studentList) => emit(state.copyWith(studentDataStatus: StatusState.success(studentList))),
@@ -284,9 +323,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> deleteHomework({required int classCode, required String HWDATE}) async {
+    if (isClosed) return;
     emit(state.copyWith(deleteHomeworkStatus: StatusState.loading()));
 
     final result = await _homeRepo.deleteHomework(classCode: classCode, HWDATE: HWDATE);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(deleteHomeworkStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(deleteHomeworkStatus: StatusState.success(success))),
@@ -294,9 +335,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> addClassAbsent({required AddClassAbsentRequestModel request}) async {
+    if (isClosed) return;
     emit(state.copyWith(addClassAbsentStatus: StatusState.loading()));
 
     final result = await _homeRepo.addClassAbsent(request: request);
+    if (isClosed) return;
     result.fold(
       (failure) =>
           emit(state.copyWith(addClassAbsentStatus: StatusState.failure(failure.errMessage))),
@@ -306,8 +349,10 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> getClassAbsent({required int classCode, required String date}) async {
+    if (isClosed) return;
     emit(state.copyWith(getClassAbsentStatus: StatusState.loading()));
     final result = await _homeRepo.getClassAbsent(classCode: classCode, date: date);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(getClassAbsentStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(getClassAbsentStatus: StatusState.success(success))),
@@ -315,8 +360,10 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> addLessons({required AddLessonsRequestModel request}) async {
+    if (isClosed) return;
     emit(state.copyWith(addLessonsStatus: StatusState.loading()));
     final result = await _homeRepo.addLessons(request: request);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(addLessonsStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(addLessonsStatus: StatusState.success(success))),
@@ -324,8 +371,10 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> editLessons({required AddLessonsRequestModel request}) async {
+    if (isClosed) return;
     emit(state.copyWith(editLessonsStatus: StatusState.loading()));
     final result = await _homeRepo.editLessons(request: request);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(editLessonsStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(editLessonsStatus: StatusState.success(success))),
@@ -336,7 +385,7 @@ class HomeCubit extends Cubit<HomeState> {
     if (isClosed) return;
     emit(state.copyWith(imageFileNameStatus: const StatusState.loading()));
     final result = await _homeRepo.imageFileName(filePath: filePath);
-
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(imageFileNameStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(imageFileNameStatus: StatusState.success(success))),
@@ -344,26 +393,31 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> uploadFiles(List<String> filePaths) async {
+    if (isClosed) return;
     emit(state.copyWith(uploadedFilesStatus: const StatusState.loading()));
 
     final result = await _homeRepo.uploadFile(filePaths: filePaths);
-
+    if (isClosed) return;
     result.fold(
       (error) {
         emit(state.copyWith(uploadedFilesStatus: StatusState.failure(error.errMessage)));
       },
       (files) {
         emit(state.copyWith(uploadedFilesStatus: StatusState.success(files)));
-        emit(state.copyWith(uploadedFilesStatus: const StatusState.initial()));
+        if (!isClosed) {
+          emit(state.copyWith(uploadedFilesStatus: const StatusState.initial()));
+        }
       },
     );
   }
 
   void resetAddHomeworkStatus() {
+    if (isClosed) return;
     emit(state.copyWith(addHomeworkStatus: const StatusState.initial()));
   }
 
   void resetDeleteHomeworkStatus() {
+    if (isClosed) return;
     emit(state.copyWith(deleteHomeworkStatus: const StatusState.initial()));
   }
 
