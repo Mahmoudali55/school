@@ -323,6 +323,15 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  Future<void> editLessons({required AddLessonsRequestModel request}) async {
+    emit(state.copyWith(editLessonsStatus: StatusState.loading()));
+    final result = await _homeRepo.editLessons(request: request);
+    result.fold(
+      (error) => emit(state.copyWith(editLessonsStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(editLessonsStatus: StatusState.success(success))),
+    );
+  }
+
   Future<void> uploadFiles(List<String> filePaths) async {
     emit(state.copyWith(uploadedFilesStatus: const StatusState.loading()));
 
@@ -352,9 +361,19 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(addPermissionsStatus: const StatusState.initial()));
   }
 
+  void resetAddLessonsStatus() {
+    if (isClosed) return;
+    emit(state.copyWith(addLessonsStatus: const StatusState.initial()));
+  }
+
   void resetEditPermissionStatus() {
     if (isClosed) return;
     emit(state.copyWith(editPermissionsStatus: const StatusState.initial()));
+  }
+
+  void resetEditLessonsStatus() {
+    if (isClosed) return;
+    emit(state.copyWith(editLessonsStatus: const StatusState.initial()));
   }
 
   void resetAddUniformStatus() {

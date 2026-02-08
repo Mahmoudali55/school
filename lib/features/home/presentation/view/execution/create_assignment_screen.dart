@@ -38,6 +38,8 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
   int? _selectedClassCode;
   int? _selectedSubjectCode;
   DateTime? _dueDate;
+  String? _uploadedFileUrl;
+  String? _fileName;
   @override
   void initState() {
     super.initState();
@@ -125,6 +127,15 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
             Navigator.pop(context, true);
           } else if (state.addHomeworkStatus.isFailure) {
             CommonMethods.showToast(message: state.addHomeworkStatus.error ?? "");
+          }
+          if (state.uploadedFilesStatus?.isSuccess ?? false) {
+            setState(() {
+              _uploadedFileUrl = state.uploadedFilesStatus?.data?.first;
+            });
+            CommonMethods.showToast(message: AppLocalKay.file_uploaded.tr());
+          }
+          if (state.uploadedFilesStatus?.isFailure ?? false) {
+            CommonMethods.showToast(message: state.uploadedFilesStatus?.error ?? "");
           }
         },
         builder: (context, state) {
@@ -293,29 +304,62 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                   /// رفع ملفات
                   GestureDetector(
                     onTap: () async {
-                      await FilePicker.platform.pickFiles(
+                      final result = await FilePicker.platform.pickFiles(
                         type: FileType.custom,
-                        allowedExtensions: ['pdf', 'ppt', 'pptx', 'doc', 'docx', 'mp4'],
+                        allowedExtensions: ['pdf', 'ppt', 'pptx', 'doc', 'docx', 'mp4', 'avi'],
                       );
+
+                      if (result != null && result.files.single.path != null) {
+                        setState(() {
+                          _fileName = result.files.single.name;
+                        });
+                        if (context.mounted) {
+                          context.read<HomeCubit>().uploadFiles([result.files.single.path!]);
+                        }
+                      }
                     },
                     child: Container(
+                      width: double.infinity,
                       padding: EdgeInsets.all(16.w),
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey.shade300),
                         borderRadius: BorderRadius.circular(12.r),
                       ),
-                      child: Column(
-                        children: [
-                          Icon(Icons.cloud_upload, size: 40.w, color: Colors.grey),
-                          SizedBox(height: 8.h),
-                          Text(
-                            AppLocalKay.user_management_upload_files.tr(),
-                            style: AppTextStyle.titleMedium(
-                              context,
-                            ).copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
+                      child: state.uploadedFilesStatus?.isLoading ?? false
+                          ? Column(
+                              children: [
+                                CustomLoading(color: AppColor.accentColor(context), size: 30.w),
+                                SizedBox(height: 8.h),
+                                Text(AppLocalKay.loading.tr()),
+                              ],
+                            )
+                          : Column(
+                              children: [
+                                Icon(
+                                  _uploadedFileUrl != null
+                                      ? Icons.check_circle
+                                      : Icons.cloud_upload,
+                                  size: 40.w,
+                                  color: _uploadedFileUrl != null ? Colors.green : Colors.grey,
+                                ),
+                                SizedBox(height: 8.h),
+                                Text(
+                                  _fileName ?? AppLocalKay.user_management_upload_lesson.tr(),
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyle.titleMedium(
+                                    context,
+                                  ).copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(height: 8.h),
+                                if (_fileName == null)
+                                  Text(
+                                    'PDF, PPT, Word, Video',
+                                    style: AppTextStyle.titleSmall(
+                                      context,
+                                    ).copyWith(color: AppColor.greyColor(context)),
+                                  ),
+                              ],
+                            ),
                     ),
                   ),
 

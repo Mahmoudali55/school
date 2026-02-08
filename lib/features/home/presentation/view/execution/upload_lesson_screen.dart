@@ -14,12 +14,14 @@ import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/common_methods.dart';
+import 'package:my_template/features/class/data/model/lesson_item_model.dart';
 import 'package:my_template/features/home/data/models/add_lessons_request_model.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 
 class UploadLessonScreen extends StatefulWidget {
-  const UploadLessonScreen({super.key});
+  final LessonItemModel? lesson;
+  const UploadLessonScreen({super.key, this.lesson});
 
   @override
   State<UploadLessonScreen> createState() => _UploadLessonScreenState();
@@ -37,6 +39,8 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
   DateTime? _dueDate;
   String? _uploadedFileUrl;
   String? _fileName;
+
+  bool get isEdit => widget.lesson != null;
   Future<void> _selectDueDate() async {
     final picked = await showDatePicker(
       context: context,
@@ -56,6 +60,26 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
   void initState() {
     super.initState();
 
+    if (isEdit) {
+      final lesson = widget.lesson!;
+      _titleController.text = lesson.lesson;
+      _notesController.text = lesson.notes;
+      _uploadedFileUrl = lesson.lessonPath;
+      if (lesson.lessonPath != null && lesson.lessonPath!.isNotEmpty) {
+        _fileName = lesson.lessonPath!.split('/').last;
+      }
+
+      _dateController.text = lesson.lessonDate;
+      try {
+        _dueDate = DateFormat('yyyy-MM-dd').parse(lesson.lessonDate.split(' ').first);
+      } catch (e) {
+        _dueDate = DateTime.now();
+      }
+
+      _selectedLevelCode = lesson.levelCode;
+      _selectedClassCode = lesson.classCode;
+    }
+
     final stageStr = HiveMethods.getUserStage();
     if (stageStr != null && stageStr.toString().isNotEmpty) {
       context.read<HomeCubit>().teacherLevel(int.parse(stageStr.toString()));
@@ -64,6 +88,16 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
     if (userCodeStr != null && userCodeStr.toString().isNotEmpty) {
       context.read<HomeCubit>().teacherCourses(int.parse(userCodeStr.toString()));
     }
+
+    if (isEdit && _selectedLevelCode != null) {
+      context.read<HomeCubit>().teacherClasses(
+        int.parse(HiveMethods.getUserSection().toString()),
+        int.parse(HiveMethods.getUserStage().toString()),
+        _selectedLevelCode!,
+      );
+    }
+    context.read<HomeCubit>().resetAddLessonsStatus();
+    context.read<HomeCubit>().resetEditLessonsStatus();
   }
 
   @override
@@ -72,7 +106,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
       appBar: CustomAppBar(
         context,
         title: Text(
-          AppLocalKay.new_class.tr(),
+          isEdit ? AppLocalKay.edit.tr() : AppLocalKay.new_class.tr(),
           style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -91,12 +125,20 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
             padding: EdgeInsets.all(16.w),
             child: BlocListener<HomeCubit, HomeState>(
               listener: (context, state) {
-                if (state.addLessonsStatus.isSuccess) {
-                  CommonMethods.showToast(message: state.addLessonsStatus.data?.msg ?? "");
+                if (state.addLessonsStatus.isSuccess || state.editLessonsStatus.isSuccess) {
+                  CommonMethods.showToast(
+                    message: state.addLessonsStatus.isSuccess
+                        ? (state.addLessonsStatus.data?.msg ?? "")
+                        : (state.editLessonsStatus.data?.msg ?? ""),
+                  );
                   Navigator.pop(context, true);
                 }
-                if (state.addLessonsStatus.isFailure) {
-                  CommonMethods.showToast(message: state.addLessonsStatus.error ?? "");
+                if (state.addLessonsStatus.isFailure || state.editLessonsStatus.isFailure) {
+                  CommonMethods.showToast(
+                    message: state.addLessonsStatus.isFailure
+                        ? (state.addLessonsStatus.error ?? "")
+                        : (state.editLessonsStatus.error ?? ""),
+                  );
                 }
                 if (state.uploadedFilesStatus?.isSuccess ?? false) {
                   setState(() {
@@ -128,19 +170,21 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                             (e) => DropdownMenuItem(value: e.levelCode, child: Text(e.levelName)),
                           )
                           .toList(),
-                      onChanged: (v) {
-                        setState(() {
-                          _selectedLevelCode = v;
-                          _selectedClassCode = null;
-                        });
-                        if (v != null) {
-                          context.read<HomeCubit>().teacherClasses(
-                            int.parse(HiveMethods.getUserSection().toString()),
-                            int.parse(HiveMethods.getUserStage().toString()),
-                            v,
-                          );
-                        }
-                      },
+                      onChanged: isEdit
+                          ? null
+                          : (v) {
+                              setState(() {
+                                _selectedLevelCode = v;
+                                _selectedClassCode = null;
+                              });
+                              if (v != null) {
+                                context.read<HomeCubit>().teacherClasses(
+                                  int.parse(HiveMethods.getUserSection().toString()),
+                                  int.parse(HiveMethods.getUserStage().toString()),
+                                  v,
+                                );
+                              }
+                            },
                     ),
 
                     Gap(16.h),
@@ -161,7 +205,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                             (e) => DropdownMenuItem(value: e.classCode, child: Text(e.classNameAr)),
                           )
                           .toList(),
-                      onChanged: (v) => setState(() => _selectedClassCode = v),
+                      onChanged: isEdit ? null : (v) => setState(() => _selectedClassCode = v),
                     ),
 
                     Gap(16.h),
@@ -182,29 +226,26 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                             (e) => DropdownMenuItem(value: e.courseCode, child: Text(e.courseName)),
                           )
                           .toList(),
-                      onChanged: (v) => setState(() => _selectedSubjectCode = v),
+                      onChanged: isEdit ? null : (v) => setState(() => _selectedSubjectCode = v),
                     ),
 
                     Gap(16.h),
-                    Opacity(
-                      opacity: 1,
-                      child: CustomFormField(
-                        readOnly: true,
-                        radius: 12,
-                        title: AppLocalKay.date_lesson.tr(),
-                        controller: _dateController,
-                        suffixIcon: IconButton(
-                          icon: const Icon(Icons.calendar_today),
-                          onPressed: _selectDueDate,
-                        ),
-                        onTap: _selectDueDate,
-                        validator: (_) {
-                          if (_dueDate == null) {
-                            return AppLocalKay.user_management_no_deadline_lesson.tr();
-                          }
-                          return null;
-                        },
+                    CustomFormField(
+                      readOnly: true,
+                      radius: 12,
+                      title: AppLocalKay.date_lesson.tr(),
+                      controller: _dateController,
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.calendar_today),
+                        onPressed: isEdit ? null : _selectDueDate,
                       ),
+                      onTap: isEdit ? null : _selectDueDate,
+                      validator: (_) {
+                        if (_dueDate == null) {
+                          return AppLocalKay.user_management_no_deadline_lesson.tr();
+                        }
+                        return null;
+                      },
                     ),
                     Gap(16.h),
                     CustomFormField(
@@ -292,10 +333,12 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                     /// زر الرفع
                     CustomButton(
                       radius: 12.r,
-                      child: state.addLessonsStatus.isLoading
+                      child: (state.addLessonsStatus.isLoading || state.editLessonsStatus.isLoading)
                           ? CustomLoading(color: AppColor.whiteColor(context), size: 15.w)
                           : Text(
-                              AppLocalKay.user_management_create_lesson.tr(),
+                              isEdit
+                                  ? AppLocalKay.edit.tr()
+                                  : AppLocalKay.user_management_create_lesson.tr(),
                               style: AppTextStyle.titleLarge(
                                 context,
                               ).copyWith(color: AppColor.whiteColor(context)),
@@ -304,20 +347,24 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                       onPressed: () {
                         setState(() => _submitted = true);
                         if (_formKey.currentState!.validate()) {
-                          context.read<HomeCubit>().addLessons(
-                            request: AddLessonsRequestModel(
-                              id: "",
-                              sectionCode: int.parse(HiveMethods.getUserSection()),
-                              stageCode: int.parse(HiveMethods.getUserStage()),
-                              levelCode: _selectedLevelCode!,
-                              classCode: _selectedClassCode!,
-                              lesson: _titleController.text,
-                              lessonPath: _uploadedFileUrl ?? "",
-                              lessonDate: DateFormat('yyyy-MM-dd').format(_dueDate!),
-                              teacherCode: int.parse(HiveMethods.getUserCode()),
-                              notes: _notesController.text,
-                            ),
+                          final request = AddLessonsRequestModel(
+                            id: isEdit ? widget.lesson!.id.toString() : "",
+                            sectionCode: int.parse(HiveMethods.getUserSection()),
+                            stageCode: int.parse(HiveMethods.getUserStage()),
+                            levelCode: _selectedLevelCode!,
+                            classCode: _selectedClassCode!,
+                            lesson: _titleController.text,
+                            lessonPath: _uploadedFileUrl ?? "",
+                            lessonDate: DateFormat('yyyy-MM-dd').format(_dueDate!),
+                            teacherCode: int.parse(HiveMethods.getUserCode()),
+                            notes: _notesController.text,
                           );
+
+                          if (isEdit) {
+                            context.read<HomeCubit>().editLessons(request: request);
+                          } else {
+                            context.read<HomeCubit>().addLessons(request: request);
+                          }
                         }
                       },
                     ),

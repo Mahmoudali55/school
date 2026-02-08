@@ -47,6 +47,7 @@ class HomeState extends Equatable {
     this.getClassAbsentStatus = const StatusState.initial(),
     this.addLessonsStatus = const StatusState.initial(),
     this.uploadedFilesStatus = const StatusState.initial(),
+    this.editLessonsStatus = const StatusState.initial(),
     this.selectedStudent,
     this.data,
     this.isLoading = false,
@@ -75,6 +76,7 @@ class HomeState extends Equatable {
   final StatusState<String> getClassAbsentStatus;
   final StatusState<AddLessonsResponse> addLessonsStatus;
   final StatusState<List<String>>? uploadedFilesStatus;
+  final StatusState<AddLessonsResponse> editLessonsStatus;
   final StudentMiniInfo? selectedStudent;
 
   /// Main home data (TeacherHomeModel, StudentHomeModel, etc.)
@@ -110,6 +112,7 @@ class HomeState extends Equatable {
     getClassAbsentStatus,
     addLessonsStatus,
     uploadedFilesStatus,
+    editLessonsStatus,
   ];
 
   HomeState copyWith({
@@ -135,6 +138,7 @@ class HomeState extends Equatable {
     StatusState<AddLessonsResponse>? addLessonsStatus,
     StatusState<String>? getClassAbsentStatus,
     StatusState<List<String>>? uploadedFilesStatus,
+    StatusState<AddLessonsResponse>? editLessonsStatus,
     StudentMiniInfo? selectedStudent,
     HomeModel? data,
     bool? isLoading,
@@ -167,6 +171,7 @@ class HomeState extends Equatable {
       getClassAbsentStatus: getClassAbsentStatus ?? this.getClassAbsentStatus,
       addLessonsStatus: addLessonsStatus ?? this.addLessonsStatus,
       uploadedFilesStatus: uploadedFilesStatus ?? this.uploadedFilesStatus,
+      editLessonsStatus: editLessonsStatus ?? this.editLessonsStatus,
     );
   }
 }

@@ -9,11 +9,14 @@ import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/class/presentation/screen/widget/teacher/teacher_lessons_sheet_widgets/attachment_button_widget.dart';
 import 'package:my_template/features/class/presentation/screen/widget/teacher/teacher_lessons_sheet_widgets/info_chip.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
+import 'package:my_template/features/home/presentation/view/execution/upload_lesson_screen.dart';
 
 class LessonCard extends StatelessWidget {
   final lesson;
+  final VoidCallback? onEditSuccess;
 
-  const LessonCard({super.key, required this.lesson});
+  const LessonCard({super.key, required this.lesson, this.onEditSuccess});
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +47,36 @@ class LessonCard extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.w700),
+                ),
+              ),
+              Gap(8.w),
+              Material(
+                color: AppColor.accentColor(context).withOpacity(0.08),
+                shape: const CircleBorder(),
+                child: InkWell(
+                  onTap: () async {
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => BlocProvider.value(
+                          value: context.read<HomeCubit>(),
+                          child: UploadLessonScreen(lesson: lesson),
+                        ),
+                      ),
+                    );
+                    if (result == true && onEditSuccess != null) {
+                      onEditSuccess!();
+                    }
+                  },
+                  borderRadius: BorderRadius.circular(20),
+                  child: Padding(
+                    padding: EdgeInsets.all(8.w),
+                    child: Icon(
+                      Icons.edit_rounded,
+                      color: AppColor.accentColor(context),
+                      size: 20.w,
+                    ),
+                  ),
                 ),
               ),
               Gap(8.w),

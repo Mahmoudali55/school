@@ -10,7 +10,8 @@ import 'package:my_template/features/class/presentation/screen/widget/teacher/te
 import 'package:my_template/features/class/presentation/screen/widget/teacher/teacher_lessons_sheet_widgets/lesson_card_widget.dart';
 
 class LessonsList extends StatelessWidget {
-  const LessonsList({super.key});
+  final VoidCallback? onRefresh;
+  const LessonsList({super.key, this.onRefresh});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class LessonsList extends StatelessWidget {
           separatorBuilder: (_, __) => Gap(12.h),
           itemBuilder: (_, index) {
             final lesson = lessons[index];
-            return LessonCard(lesson: lesson);
+            return LessonCard(lesson: lesson, onEditSuccess: onRefresh);
           },
         );
       },

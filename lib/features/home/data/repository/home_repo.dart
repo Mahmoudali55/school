@@ -96,6 +96,9 @@ abstract interface class HomeRepo {
   });
   Future<Either<Failure, String>> getClassAbsent({required int classCode, required String date});
   Future<Either<Failure, AddLessonsResponse>> addLessons({required AddLessonsRequestModel request});
+  Future<Either<Failure, AddLessonsResponse>> editLessons({
+    required AddLessonsRequestModel request,
+  });
   Future<Either<Failure, List<String>>> uploadFile({required List<String> filePaths});
 }
 
@@ -345,6 +348,17 @@ class HomeRepoImpl implements HomeRepo {
       request: () async {
         final response = await apiConsumer.put(EndPoints.editHomeWork, body: request.toJson());
         return AddHomeworkResponseModel.fromJson(response);
+      },
+    );
+  }
+
+  Future<Either<Failure, AddLessonsResponse>> editLessons({
+    required AddLessonsRequestModel request,
+  }) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.put(EndPoints.editLessons, body: request.toJson());
+        return AddLessonsResponse.fromJson(response);
       },
     );
   }

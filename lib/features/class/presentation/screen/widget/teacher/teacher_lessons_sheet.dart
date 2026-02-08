@@ -43,59 +43,66 @@ class _TeacherLessonsSheetState extends State<TeacherLessonsSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ClassCubit, ClassState>(
-      listenWhen: (previous, current) => previous.deleteLessonStatus != current.deleteLessonStatus,
-      listener: (context, state) {
-        if (state.deleteLessonStatus.isSuccess) {
-          CommonMethods.showToast(
-            message: state.deleteLessonStatus.data?.errorMsg ?? '',
-            type: ToastType.success,
-          );
-          _fetchLessons();
-        } else if (state.deleteLessonStatus.isFailure) {
-          CommonMethods.showToast(
-            message: state.deleteLessonStatus.error ?? '',
-            type: ToastType.error,
-          );
-        }
-      },
-      child: DraggableScrollableSheet(
-        expand: false,
-        initialChildSize: 0.85,
-        minChildSize: 0.6,
-        maxChildSize: 0.95,
-        builder: (_, scrollController) {
-          return Container(
-            decoration: BoxDecoration(
-              color: AppColor.whiteColor(context),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-            ),
-            padding: EdgeInsets.all(16.w),
-            child: Column(
-              children: [
-                const LessonsHeader(),
-                Gap(16.h),
-                const Expanded(child: LessonsList()),
-                Gap(12.h),
-                LessonsActionButtons(
-                  onCreate: () async {
-                    final result = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => BlocProvider.value(
-                          value: widget.homeCubit,
-                          child: const UploadLessonScreen(),
-                        ),
-                      ),
-                    );
-                    if (result == true) _fetchLessons();
-                  },
-                  onCancel: () => Navigator.pop(context),
-                ),
-              ],
-            ),
-          );
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: widget.classCubit),
+        BlocProvider.value(value: widget.homeCubit),
+      ],
+      child: BlocListener<ClassCubit, ClassState>(
+        listenWhen: (previous, current) =>
+            previous.deleteLessonStatus != current.deleteLessonStatus,
+        listener: (context, state) {
+          if (state.deleteLessonStatus.isSuccess) {
+            CommonMethods.showToast(
+              message: state.deleteLessonStatus.data?.errorMsg ?? '',
+              type: ToastType.success,
+            );
+            _fetchLessons();
+          } else if (state.deleteLessonStatus.isFailure) {
+            CommonMethods.showToast(
+              message: state.deleteLessonStatus.error ?? '',
+              type: ToastType.error,
+            );
+          }
         },
+        child: DraggableScrollableSheet(
+          expand: false,
+          initialChildSize: 0.85,
+          minChildSize: 0.6,
+          maxChildSize: 0.95,
+          builder: (_, scrollController) {
+            return Container(
+              decoration: BoxDecoration(
+                color: AppColor.whiteColor(context),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+              ),
+              padding: EdgeInsets.all(16.w),
+              child: Column(
+                children: [
+                  const LessonsHeader(),
+                  Gap(16.h),
+                  Expanded(child: LessonsList(onRefresh: _fetchLessons)),
+                  Gap(12.h),
+                  LessonsActionButtons(
+                    onCreate: () async {
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => BlocProvider.value(
+                            value: widget.homeCubit,
+                            child: const UploadLessonScreen(),
+                          ),
+                        ),
+                      );
+                      if (result == true) _fetchLessons();
+                    },
+                    onCancel: () => Navigator.pop(context),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
