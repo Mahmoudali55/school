@@ -168,6 +168,15 @@ class ClassCubit extends Cubit<ClassState> {
     );
   }
 
+  Future<void> deleteStudent({required int studentCode}) async {
+    emit(state.copyWith(deleteLessonStatus: StatusState.loading()));
+    final result = await _classRepo.deleteLesson(lessonCode: studentCode);
+    result.fold(
+      (error) => emit(state.copyWith(deleteLessonStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(deleteLessonStatus: StatusState.success(success))),
+    );
+  }
+
   Future<void> updateClassAbsent({
     required int studentCode,
     required int absentType,

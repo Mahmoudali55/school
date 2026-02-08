@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class LessonItemModel extends Equatable {
+  final int id;
   final int sectionCode;
   final int stageCode;
   final int levelCode;
@@ -14,6 +15,7 @@ class LessonItemModel extends Equatable {
   final String levelName;
 
   const LessonItemModel({
+    required this.id,
     required this.sectionCode,
     required this.stageCode,
     required this.levelCode,
@@ -29,6 +31,7 @@ class LessonItemModel extends Equatable {
 
   factory LessonItemModel.fromJson(Map<String, dynamic> json) {
     return LessonItemModel(
+      id: json['id'] ?? 0,
       sectionCode: json['SectionCode'] ?? 0,
       stageCode: json['StageCode'] ?? 0,
       levelCode: json['LevelCode'] ?? 0,
@@ -45,6 +48,7 @@ class LessonItemModel extends Equatable {
 
   @override
   List<Object?> get props => [
+    id,
     sectionCode,
     stageCode,
     levelCode,

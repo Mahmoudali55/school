@@ -52,6 +52,8 @@ abstract interface class ClassRepo {
     required int studentCode,
   });
   Future<Either<Failure, String>> imageFileName({required String filePath});
+  Future<Either<Failure, ClassHWDelModel>> deleteLesson({required int lessonCode});
+
   final List<StudentClassModel> _studentClasses = const [
     StudentClassModel(
       id: '1',
@@ -310,6 +312,18 @@ class ClassRepoImpl extends ClassRepo {
         final response = await apiConsumer.get(url);
 
         return response.toString();
+      },
+    );
+  }
+
+  Future<Either<Failure, ClassHWDelModel>> deleteLesson({required int lessonCode}) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.delete(
+          EndPoints.deleteLessons,
+          body: {"Code": lessonCode},
+        );
+        return ClassHWDelModel.fromJson(response);
       },
     );
   }

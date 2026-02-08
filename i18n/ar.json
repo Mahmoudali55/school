@@ -1022,5 +1022,6 @@
   "date_lesson":"تاريخ الدرس",
   "no_lesson_today":"لاتوجد دروس لهذا اليوم",
   "file_uploaded":"تم تحميل الملف بنجاح",
-  "attachments":"عرض المرفقات"
+  "attachments":"عرض المرفقات",
+  "delete_lesson":"هل تريد حذف هذا الدرس؟"
 }

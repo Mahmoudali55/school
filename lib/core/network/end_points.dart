@@ -36,4 +36,7 @@ class EndPoints {
   static const String addLessons = 'DeltagroupService/School/Addlessons';
   static const String getLessons = 'DeltagroupService/School/GetLessons';
   static const String upload = 'DeltagroupService/School/UploadFiles';
+  static const String image = 'DeltagroupService/School/userimge';
+  static const String deleteLessons = 'DeltagroupService/School/LessonDel';
+  static const String editLessons = 'DeltagroupService/School/Editlessons';
 }
