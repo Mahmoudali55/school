@@ -1028,4 +1028,5 @@ class AppLocalKay {
   static const String summary_result_header = 'summary_result_header';
   static const String copy_summary_success = 'copy_summary_success';
   static const String notes_validation_error = 'notes_validation_error';
+  static const String lesson_ideas_info_card = 'lesson_ideas_info_card';
 }

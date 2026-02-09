@@ -1,4 +1,3 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -50,41 +49,216 @@ class _SummarizeNotesScreenState extends State<SummarizeNotesScreen> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: BlocBuilder<AICubit, AIState>(
-        builder: (context, state) {
-          return SingleChildScrollView(
-            padding: EdgeInsets.all(20.w),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _buildInfoCard(),
-                  Gap(20.h),
-                  _buildInputField(
-                    controller: _subjectController,
-                    label: AppLocalKay.subject_label.tr(),
-                    hint: AppLocalKay.summarize_subject_hint.tr(),
-                    icon: Icons.book_outlined,
-                    maxLines: 1,
-                  ),
-                  Gap(15.h),
-                  _buildInputField(
-                    controller: _notesController,
-                    label: AppLocalKay.notes_label.tr(),
-                    hint: AppLocalKay.notes_hint.tr(),
-                    icon: Icons.note_outlined,
-                    maxLines: 10,
-                  ),
-                  Gap(25.h),
-                  _buildGenerateButton(state),
-                  Gap(20.h),
-                  _buildResultSection(state),
-                ],
-              ),
-            ),
-          );
+      body: BlocListener<AICubit, AIState>(
+        listenWhen: (previous, current) => previous.summaryStatus != current.summaryStatus,
+        listener: (context, state) {
+          if (state.summaryStatus.isSuccess) {
+            _showSummaryResultBottomSheet(context, state.summaryStatus.data ?? '');
+          }
         },
+        child: BlocBuilder<AICubit, AIState>(
+          builder: (context, state) {
+            return SingleChildScrollView(
+              padding: EdgeInsets.all(20.w),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _buildInfoCard(),
+                    Gap(20.h),
+                    _buildInputField(
+                      controller: _subjectController,
+                      label: AppLocalKay.subject_label.tr(),
+                      hint: AppLocalKay.summarize_subject_hint.tr(),
+                      icon: Icons.book_outlined,
+                      maxLines: 1,
+                    ),
+                    Gap(15.h),
+                    _buildInputField(
+                      controller: _notesController,
+                      label: AppLocalKay.notes_label.tr(),
+                      hint: AppLocalKay.notes_hint.tr(),
+                      icon: Icons.note_outlined,
+                      maxLines: 10,
+                    ),
+                    Gap(25.h),
+                    _buildGenerateButton(state),
+                    Gap(20.h),
+                    _buildResultLoaderOrError(state),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  void _showSummaryResultBottomSheet(BuildContext context, String summary) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          height: 0.85.sh,
+          decoration: BoxDecoration(
+            color: AppColor.whiteColor(context),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25.r),
+              topRight: Radius.circular(25.r),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Handle
+              Center(
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 12.h),
+                  width: 40.w,
+                  height: 4.h,
+                  decoration: BoxDecoration(
+                    color: AppColor.greyColor(context).withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(2.r),
+                  ),
+                ),
+              ),
+              // Header
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(6.w),
+                          decoration: BoxDecoration(
+                            color: AppColor.secondAppColor(context).withValues(alpha: (0.1)),
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: Icon(
+                            Icons.summarize_outlined,
+                            color: AppColor.secondAppColor(context),
+                            size: 20.w,
+                          ),
+                        ),
+                        Gap(10.w),
+                        Text(
+                          AppLocalKay.summary_result_header.tr(),
+                          style: AppTextStyle.titleMedium(context).copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: AppColor.blackColor(context),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        _buildBottomSheetActionButton(
+                          icon: Icons.copy_rounded,
+                          onTap: () {
+                            Clipboard.setData(ClipboardData(text: summary));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(AppLocalKay.copy_success.tr()),
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
+                          },
+                          tooltip: AppLocalKay.copy.tr(),
+                        ),
+                        Gap(8.w),
+                        _buildBottomSheetActionButton(
+                          icon: Icons.share_rounded,
+                          onTap: () => Share.share(summary),
+                          tooltip: AppLocalKay.share.tr(),
+                        ),
+                        Gap(8.w),
+                        _buildBottomSheetActionButton(
+                          icon: Icons.print_rounded,
+                          onTap: () => PrintHelper.printDocument(
+                            title: AppLocalKay.summary_result_header.tr(),
+                            content: summary,
+                          ),
+                          tooltip: AppLocalKay.print.tr(),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.all(20.w),
+                  child: MarkdownBody(
+                    data: summary,
+                    selectable: true,
+                    styleSheet: MarkdownStyleSheet(
+                      h1: AppTextStyle.titleLarge(context).copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: AppColor.blackColor(context),
+                        height: 1.8,
+                      ),
+                      h2: AppTextStyle.titleMedium(context).copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: AppColor.blackColor(context),
+                        height: 1.8,
+                      ),
+                      p: AppTextStyle.bodyMedium(context).copyWith(
+                        color: AppColor.blackColor(context).withValues(alpha: 0.8),
+                        height: 1.8,
+                        fontSize: 15.sp,
+                      ),
+                      listBullet: AppTextStyle.bodyMedium(context).copyWith(
+                        color: AppColor.secondAppColor(context),
+                        fontWeight: FontWeight.bold,
+                      ),
+                      strong: AppTextStyle.bodyMedium(
+                        context,
+                      ).copyWith(fontWeight: FontWeight.bold, color: AppColor.blackColor(context)),
+                      blockSpacing: 15.h,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildBottomSheetActionButton({
+    required IconData icon,
+    required VoidCallback onTap,
+    required String tooltip,
+  }) {
+    return Tooltip(
+      message: tooltip,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(10.r),
+        child: Container(
+          padding: EdgeInsets.all(10.w),
+          decoration: BoxDecoration(
+            color: AppColor.whiteColor(context),
+            shape: BoxShape.circle,
+            border: Border.all(color: AppColor.greyColor(context).withValues(alpha: 0.1)),
+            boxShadow: [
+              BoxShadow(
+                color: AppColor.blackColor(context).withValues(alpha: 0.02),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Icon(icon, color: AppColor.grey600Color(context), size: 18.w),
+        ),
       ),
     );
   }
@@ -95,12 +269,12 @@ class _SummarizeNotesScreenState extends State<SummarizeNotesScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            const Color(0xFF10B981).withOpacity(0.1),
-            const Color(0xFF10B981).withOpacity(0.05),
+            const Color(0xFF10B981).withValues(alpha: 0.1),
+            const Color(0xFF10B981).withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(15.r),
-        border: Border.all(color: const Color(0xFF10B981).withOpacity(0.3)),
+        border: Border.all(color: const Color(0xFF10B981).withValues(alpha: 0.3)),
       ),
       child: Row(
         children: [
@@ -144,11 +318,11 @@ class _SummarizeNotesScreenState extends State<SummarizeNotesScreen> {
             fillColor: Colors.white,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
+              borderSide: BorderSide(color: Colors.grey.withAlpha(51)),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
+              borderSide: BorderSide(color: Colors.grey.withAlpha(51)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
@@ -159,7 +333,8 @@ class _SummarizeNotesScreenState extends State<SummarizeNotesScreen> {
             if (value == null || value.trim().isEmpty) {
               return '';
             }
-            if (label == 'الملاحظات' && value.trim().length < 50) {
+            if (label == 'الملاحظات' && value.trim().length < 1) {
+              // Adjusted validation
               return AppLocalKay.notes_validation_error.tr();
             }
             return null;
@@ -215,11 +390,10 @@ class _SummarizeNotesScreenState extends State<SummarizeNotesScreen> {
     );
   }
 
-  Widget _buildResultSection(AIState state) {
+  Widget _buildResultLoaderOrError(AIState state) {
     if (state.summaryStatus.isLoading) {
       return Container(
         padding: EdgeInsets.all(20.w),
-        margin: EdgeInsets.only(top: 20.h),
         decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15.r)),
         child: Column(
           children: [
@@ -234,142 +408,8 @@ class _SummarizeNotesScreenState extends State<SummarizeNotesScreen> {
       );
     }
 
-    if (state.summaryStatus.isSuccess) {
-      final summary = state.summaryStatus.data ?? '';
-      return FadeInUp(
-        duration: const Duration(milliseconds: 500),
-        child: Container(
-          margin: EdgeInsets.only(top: 10.h),
-          decoration: BoxDecoration(
-            color: AppColor.whiteColor(context),
-            borderRadius: BorderRadius.circular(16.r),
-            boxShadow: [
-              BoxShadow(
-                color: AppColor.blackColor(context).withValues(alpha: 0.05),
-                blurRadius: 15,
-                offset: const Offset(0, 8),
-              ),
-            ],
-            border: Border.all(color: AppColor.greyColor(context).withValues(alpha: (0.1))),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Header
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
-                decoration: BoxDecoration(
-                  color: AppColor.grey200Color(context).withValues(alpha: (0.2)),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(16.r),
-                    topRight: Radius.circular(16.r),
-                  ),
-                  border: Border(
-                    bottom: BorderSide(color: AppColor.greyColor(context).withValues(alpha: (0.1))),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(6.w),
-                          decoration: BoxDecoration(
-                            color: AppColor.secondAppColor(context).withValues(alpha: (0.1)),
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                          child: Icon(
-                            Icons.summarize_outlined,
-                            color: AppColor.secondAppColor(context),
-                            size: 20.w,
-                          ),
-                        ),
-                        Gap(10.w),
-                        Text(
-                          AppLocalKay.summary_result_header.tr(),
-                          style: AppTextStyle.titleMedium(context).copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: AppColor.blackColor(context),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        _buildActionButton(
-                          icon: Icons.copy_rounded,
-                          onTap: () {
-                            Clipboard.setData(ClipboardData(text: summary));
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(AppLocalKay.copy_success.tr()),
-                                behavior: SnackBarBehavior.floating,
-                              ),
-                            );
-                          },
-                          tooltip: AppLocalKay.copy.tr(),
-                        ),
-                        Gap(8.w),
-                        _buildActionButton(
-                          icon: Icons.share_rounded,
-                          onTap: () => SharePlus.instance.share(ShareParams(text: summary)),
-                          tooltip: AppLocalKay.share.tr(),
-                        ),
-                        Gap(8.w),
-                        _buildActionButton(
-                          icon: Icons.print_rounded,
-                          onTap: () => PrintHelper.printDocument(
-                            title: AppLocalKay.summary_result_header.tr(),
-                            content: summary,
-                          ),
-                          tooltip: AppLocalKay.print.tr(),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              // Content
-              Padding(
-                padding: EdgeInsets.all(20.w),
-                child: MarkdownBody(
-                  data: summary,
-                  selectable: true,
-                  styleSheet: MarkdownStyleSheet(
-                    h1: AppTextStyle.titleLarge(context).copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: AppColor.blackColor(context),
-                      height: 1.8,
-                    ),
-                    h2: AppTextStyle.titleMedium(context).copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: AppColor.blackColor(context),
-                      height: 1.8,
-                    ),
-                    p: AppTextStyle.bodyMedium(context).copyWith(
-                      color: AppColor.blackColor(context).withValues(alpha: 0.8),
-                      height: 1.8,
-                      fontSize: 15.sp,
-                    ),
-                    listBullet: AppTextStyle.bodyMedium(context).copyWith(
-                      color: AppColor.secondAppColor(context),
-                      fontWeight: FontWeight.bold,
-                    ),
-                    strong: AppTextStyle.bodyMedium(
-                      context,
-                    ).copyWith(fontWeight: FontWeight.bold, color: AppColor.blackColor(context)),
-                    blockSpacing: 15.h,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    } else if (state.summaryStatus.isFailure) {
+    if (state.summaryStatus.isFailure) {
       return Container(
-        margin: EdgeInsets.only(top: 20.h),
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
           color: AppColor.errorColor(context).withValues(alpha: (0.05)),
@@ -393,35 +433,5 @@ class _SummarizeNotesScreenState extends State<SummarizeNotesScreen> {
       );
     }
     return const SizedBox.shrink();
-  }
-
-  Widget _buildActionButton({
-    required IconData icon,
-    required VoidCallback onTap,
-    required String tooltip,
-  }) {
-    return Tooltip(
-      message: tooltip,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(10.r),
-        child: Container(
-          padding: EdgeInsets.all(10.w),
-          decoration: BoxDecoration(
-            color: AppColor.whiteColor(context),
-            shape: BoxShape.circle,
-            border: Border.all(color: AppColor.greyColor(context).withValues(alpha: 0.1)),
-            boxShadow: [
-              BoxShadow(
-                color: AppColor.blackColor(context).withValues(alpha: 0.02),
-                blurRadius: 4,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Icon(icon, color: AppColor.grey600Color(context), size: 18.w),
-        ),
-      ),
-    );
   }
 }

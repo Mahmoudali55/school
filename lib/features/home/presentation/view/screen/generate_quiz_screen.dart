@@ -58,67 +58,200 @@ class _GenerateQuizScreenState extends State<GenerateQuizScreen> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: BlocBuilder<AICubit, AIState>(
-        builder: (context, state) {
-          return SingleChildScrollView(
-            padding: EdgeInsets.all(20.w),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _buildInfoCard(),
-                  Gap(20.h),
-                  _buildInputField(
-                    controller: _subjectController,
-                    label: AppLocalKay.subject_label.tr(),
-                    hint: AppLocalKay.quiz_subject_hint.tr(),
-                    icon: Icons.book_outlined,
-                  ),
-                  Gap(15.h),
-                  _buildInputField(
-                    controller: _topicController,
-                    label: AppLocalKay.topic_label.tr(),
-                    hint: AppLocalKay.quiz_topic_hint.tr(),
-                    icon: Icons.topic_outlined,
-                  ),
-                  Gap(15.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildInputField(
-                          controller: _questionCountController,
-                          label: AppLocalKay.number_of_questions_label.tr(),
-                          hint: '5',
-                          icon: Icons.numbers,
-                          isNumber: true,
-                        ),
-                      ),
-                      Gap(15.w),
-                      Expanded(
-                        child: _buildDropdownField(
-                          label: AppLocalKay.question_type_label.tr(),
-                          value: _quizTypes[_selectedQuizTypeIndex],
-                          items: _quizTypes,
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedQuizTypeIndex = _quizTypes.indexOf(value!);
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  Gap(25.h),
-                  _buildGenerateButton(state),
-                  Gap(20.h),
-                  _buildResultSection(state),
-                ],
-              ),
-            ),
-          );
+      body: BlocListener<AICubit, AIState>(
+        listenWhen: (previous, current) => previous.quizStatus != current.quizStatus,
+        listener: (context, state) {
+          if (state.quizStatus.isSuccess) {
+            _showQuizResultBottomSheet(context, state.quizStatus.data ?? '');
+          }
         },
+        child: BlocBuilder<AICubit, AIState>(
+          builder: (context, state) {
+            return SingleChildScrollView(
+              padding: EdgeInsets.all(20.w),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _buildInfoCard(),
+                    Gap(20.h),
+                    _buildInputField(
+                      controller: _subjectController,
+                      label: AppLocalKay.subject_label.tr(),
+                      hint: AppLocalKay.quiz_subject_hint.tr(),
+                      icon: Icons.book_outlined,
+                    ),
+                    Gap(15.h),
+                    _buildInputField(
+                      controller: _topicController,
+                      label: AppLocalKay.topic_label.tr(),
+                      hint: AppLocalKay.quiz_topic_hint.tr(),
+                      icon: Icons.topic_outlined,
+                    ),
+                    Gap(15.h),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildInputField(
+                            controller: _questionCountController,
+                            label: AppLocalKay.number_of_questions_label.tr(),
+                            hint: '5',
+                            icon: Icons.numbers,
+                            isNumber: true,
+                          ),
+                        ),
+                        Gap(15.w),
+                        Expanded(
+                          child: _buildDropdownField(
+                            label: AppLocalKay.question_type_label.tr(),
+                            value: _quizTypes[_selectedQuizTypeIndex],
+                            items: _quizTypes,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedQuizTypeIndex = _quizTypes.indexOf(value!);
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    Gap(25.h),
+                    _buildGenerateButton(state),
+                    Gap(20.h),
+                    _buildResultLoaderOrError(state),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
       ),
+    );
+  }
+
+  void _showQuizResultBottomSheet(BuildContext context, String quiz) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          height: 0.85.sh,
+          decoration: BoxDecoration(
+            color: AppColor.whiteColor(context),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25.r),
+              topRight: Radius.circular(25.r),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Handle
+              Center(
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 12.h),
+                  width: 40.w,
+                  height: 4.h,
+                  decoration: BoxDecoration(
+                    color: AppColor.greyColor(context).withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(2.r),
+                  ),
+                ),
+              ),
+              // Header
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.quiz_outlined, color: AppColor.infoColor(context), size: 24.w),
+                        Gap(10.w),
+                        Text(
+                          AppLocalKay.quiz_result_header.tr(),
+                          style: AppTextStyle.titleMedium(
+                            context,
+                          ).copyWith(fontWeight: FontWeight.bold, color: Colors.black87),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Clipboard.setData(ClipboardData(text: quiz));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(AppLocalKay.copy_success.tr()),
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
+                          },
+                          icon: Icon(
+                            Icons.copy_rounded,
+                            color: AppColor.grey600Color(context),
+                            size: 22.w,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () => Share.share(quiz),
+                          icon: Icon(
+                            Icons.share_rounded,
+                            color: AppColor.grey600Color(context),
+                            size: 22.w,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () => PrintHelper.printDocument(
+                            title: AppLocalKay.quiz_result_header.tr(),
+                            content: quiz,
+                          ),
+                          icon: Icon(
+                            Icons.print_rounded,
+                            color: AppColor.grey600Color(context),
+                            size: 22.w,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.all(20.w),
+                  child: MarkdownBody(
+                    data: quiz,
+                    selectable: true,
+                    styleSheet: MarkdownStyleSheet(
+                      h1: AppTextStyle.titleLarge(
+                        context,
+                      ).copyWith(fontWeight: FontWeight.bold, color: Colors.black87, height: 1.5),
+                      h2: AppTextStyle.titleMedium(
+                        context,
+                      ).copyWith(fontWeight: FontWeight.bold, color: Colors.black87, height: 1.5),
+                      p: AppTextStyle.bodyMedium(
+                        context,
+                      ).copyWith(color: AppColor.blackColor(context), height: 1.6, fontSize: 16.sp),
+                      listBullet: AppTextStyle.bodyMedium(
+                        context,
+                      ).copyWith(color: const Color(0xFF3B82F6), fontWeight: FontWeight.bold),
+                      strong: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: AppColor.blackColor(context),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -128,12 +261,12 @@ class _GenerateQuizScreenState extends State<GenerateQuizScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            const Color(0xFF3B82F6).withOpacity(0.1),
-            const Color(0xFF3B82F6).withOpacity(0.05),
+            const Color(0xFF3B82F6).withValues(alpha: 0.1),
+            const Color(0xFF3B82F6).withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(15.r),
-        border: Border.all(color: const Color(0xFF3B82F6).withOpacity(0.3)),
+        border: Border.all(color: const Color(0xFF3B82F6).withValues(alpha: 0.3)),
       ),
       child: Row(
         children: [
@@ -212,7 +345,7 @@ class _GenerateQuizScreenState extends State<GenerateQuizScreen> {
         Gap(8.h),
         DropdownButtonFormField<String>(
           isExpanded: true,
-          value: value,
+          initialValue: value,
           items: items
               .map(
                 (item) => DropdownMenuItem(
@@ -296,11 +429,10 @@ class _GenerateQuizScreenState extends State<GenerateQuizScreen> {
     );
   }
 
-  Widget _buildResultSection(AIState state) {
+  Widget _buildResultLoaderOrError(AIState state) {
     if (state.quizStatus.isLoading) {
       return Container(
         padding: EdgeInsets.all(20.w),
-        margin: EdgeInsets.only(top: 20.h),
         decoration: BoxDecoration(
           color: AppColor.whiteColor(context),
           borderRadius: BorderRadius.circular(15.r),
@@ -320,130 +452,8 @@ class _GenerateQuizScreenState extends State<GenerateQuizScreen> {
       );
     }
 
-    if (state.quizStatus.isSuccess) {
-      final quiz = state.quizStatus.data ?? '';
+    if (state.quizStatus.isFailure) {
       return Container(
-        margin: EdgeInsets.only(top: 10.h),
-        decoration: BoxDecoration(
-          color: AppColor.whiteColor(context),
-          borderRadius: BorderRadius.circular(20.r),
-          boxShadow: [
-            BoxShadow(
-              color: AppColor.infoColor(context).withValues(alpha: (0.1)),
-              blurRadius: 20,
-              offset: const Offset(0, 5),
-            ),
-          ],
-          border: Border.all(color: AppColor.infoColor(context).withValues(alpha: (0.1))),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Header
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-              decoration: BoxDecoration(
-                color: AppColor.infoColor(context).withValues(alpha: 0.05),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20.r),
-                  topRight: Radius.circular(20.r),
-                ),
-                border: Border(
-                  bottom: BorderSide(color: AppColor.infoColor(context).withValues(alpha: (0.1))),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.quiz_outlined, color: AppColor.infoColor(context), size: 22.w),
-                      Gap(8.w),
-                      Text(
-                        AppLocalKay.quiz_result_header.tr(),
-                        style: AppTextStyle.titleMedium(
-                          context,
-                        ).copyWith(fontWeight: FontWeight.bold, color: Colors.black87),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Clipboard.setData(ClipboardData(text: quiz));
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(AppLocalKay.copy_success.tr()),
-                              behavior: SnackBarBehavior.floating,
-                            ),
-                          );
-                        },
-                        icon: Icon(
-                          Icons.copy_rounded,
-                          color: AppColor.grey600Color(context),
-                          size: 20.w,
-                        ),
-                        tooltip: AppLocalKay.copy.tr(),
-                      ),
-                      IconButton(
-                        onPressed: () => SharePlus.instance.share(ShareParams(text: quiz)),
-                        icon: Icon(
-                          Icons.share_rounded,
-                          color: AppColor.grey600Color(context),
-                          size: 20.w,
-                        ),
-                        tooltip: AppLocalKay.share.tr(),
-                      ),
-                      IconButton(
-                        onPressed: () => PrintHelper.printDocument(
-                          title: AppLocalKay.quiz_result_header.tr(),
-                          content: quiz,
-                        ),
-                        icon: Icon(
-                          Icons.print_rounded,
-                          color: AppColor.grey600Color(context),
-                          size: 20.w,
-                        ),
-                        tooltip: AppLocalKay.print.tr(),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            // Content
-            Padding(
-              padding: EdgeInsets.all(20.w),
-              child: MarkdownBody(
-                data: quiz,
-                selectable: true,
-                styleSheet: MarkdownStyleSheet(
-                  h1: AppTextStyle.titleLarge(
-                    context,
-                  ).copyWith(fontWeight: FontWeight.bold, color: Colors.black87, height: 1.5),
-                  h2: AppTextStyle.titleMedium(
-                    context,
-                  ).copyWith(fontWeight: FontWeight.bold, color: Colors.black87, height: 1.5),
-                  p: AppTextStyle.bodyMedium(
-                    context,
-                  ).copyWith(color: AppColor.blackColor(context), height: 1.6, fontSize: 16.sp),
-                  listBullet: AppTextStyle.bodyMedium(
-                    context,
-                  ).copyWith(color: const Color(0xFF3B82F6), fontWeight: FontWeight.bold),
-                  strong: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    color: AppColor.blackColor(context),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    } else if (state.quizStatus.isFailure) {
-      return Container(
-        margin: EdgeInsets.only(top: 20.h),
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
           color: AppColor.errorColor(context).withValues(alpha: (0.05)),
