@@ -6,12 +6,13 @@ class AddLessonsRequestModel extends Equatable {
   final int stageCode;
   final int levelCode;
   final int classCode;
+  final int courseCode;
   final String lesson;
   final String lessonPath;
   final String lessonDate;
   final int teacherCode;
   final String notes;
-  final int CourseCode;
+  final String? username; // اختياري
 
   const AddLessonsRequestModel({
     required this.id,
@@ -19,12 +20,13 @@ class AddLessonsRequestModel extends Equatable {
     required this.stageCode,
     required this.levelCode,
     required this.classCode,
+    required this.courseCode,
     required this.lesson,
     required this.lessonPath,
     required this.lessonDate,
     required this.teacherCode,
     required this.notes,
-    required this.CourseCode,
+    this.username,
   });
 
   factory AddLessonsRequestModel.fromJson(Map<String, dynamic> json) {
@@ -34,29 +36,32 @@ class AddLessonsRequestModel extends Equatable {
       stageCode: json['StageCode'] ?? 0,
       levelCode: json['LevelCode'] ?? 0,
       classCode: json['ClassCode'] ?? 0,
+      courseCode: json['CourseCode'] ?? 0,
       lesson: json['lesson'] ?? '',
       lessonPath: json['lesson_path'] ?? '',
       lessonDate: json['lessonDate'] ?? '',
       teacherCode: json['Teacher_code'] ?? 0,
       notes: json['NOTES'] ?? '',
-      CourseCode: json['CourseCode'] ?? 0,
+      username: json['username'], // يمكن أن يكون null
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    final data = {
       'id': id,
       'SectionCode': sectionCode,
       'StageCode': stageCode,
       'LevelCode': levelCode,
       'ClassCode': classCode,
+      'CourseCode': courseCode,
       'lesson': lesson,
       'lesson_path': lessonPath,
       'lessonDate': lessonDate,
       'Teacher_code': teacherCode,
       'NOTES': notes,
-      'CourseCode': CourseCode,
     };
+
+    return data;
   }
 
   AddLessonsRequestModel copyWith({
@@ -65,12 +70,13 @@ class AddLessonsRequestModel extends Equatable {
     int? stageCode,
     int? levelCode,
     int? classCode,
+    int? courseCode,
     String? lesson,
     String? lessonPath,
     String? lessonDate,
     int? teacherCode,
     String? notes,
-    int? CourseCode,
+    String? username,
   }) {
     return AddLessonsRequestModel(
       id: id ?? this.id,
@@ -78,12 +84,13 @@ class AddLessonsRequestModel extends Equatable {
       stageCode: stageCode ?? this.stageCode,
       levelCode: levelCode ?? this.levelCode,
       classCode: classCode ?? this.classCode,
+      courseCode: courseCode ?? this.courseCode,
       lesson: lesson ?? this.lesson,
       lessonPath: lessonPath ?? this.lessonPath,
       lessonDate: lessonDate ?? this.lessonDate,
       teacherCode: teacherCode ?? this.teacherCode,
       notes: notes ?? this.notes,
-      CourseCode: CourseCode ?? this.CourseCode,
+      username: username ?? this.username,
     );
   }
 
@@ -94,11 +101,12 @@ class AddLessonsRequestModel extends Equatable {
     stageCode,
     levelCode,
     classCode,
+    courseCode,
     lesson,
     lessonPath,
     lessonDate,
     teacherCode,
     notes,
-    CourseCode,
+    username,
   ];
 }

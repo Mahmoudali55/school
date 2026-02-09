@@ -10,6 +10,8 @@ import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.da
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_dropdown_form_field.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
+import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
+import 'package:my_template/core/services/file_viewer_utils.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -137,6 +139,22 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
           if (state.uploadedFilesStatus?.isFailure ?? false) {
             CommonMethods.showToast(message: state.uploadedFilesStatus?.error ?? "");
           }
+
+          if (state.imageFileNameStatus.isSuccess && _uploadedFileUrl != null) {
+            FileViewerUtils.displayFile(
+              context,
+              state.imageFileNameStatus.data!,
+              _uploadedFileUrl!,
+            );
+            context.read<HomeCubit>().resetImageFileNameStatus();
+          }
+          if (state.imageFileNameStatus.isFailure) {
+            CommonMethods.showToast(
+              message: state.imageFileNameStatus.error ?? "",
+              type: ToastType.error,
+            );
+            context.read<HomeCubit>().resetImageFileNameStatus();
+          }
         },
         builder: (context, state) {
           final levels = state.teacherLevelStatus.data ?? [];
@@ -237,9 +255,16 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                         hint: AppLocalKay.user_management_subject.tr(),
                         errorText: AppLocalKay.user_management_select_subject.tr(),
                         items: courses
+                            .fold<Map<int, String>>({}, (map, e) {
+                              if (!map.containsKey(e.courseCode)) {
+                                map[e.courseCode] = e.courseName;
+                              }
+                              return map;
+                            })
+                            .entries
                             .map(
-                              (e) =>
-                                  DropdownMenuItem(value: e.courseCode, child: Text(e.courseName)),
+                              (entry) =>
+                                  DropdownMenuItem(value: entry.key, child: Text(entry.value)),
                             )
                             .toList(),
                         onChanged: (v) => setState(() => _selectedSubjectCode = v),
@@ -346,7 +371,9 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                                       ? Icons.check_circle
                                       : Icons.cloud_upload,
                                   size: 40.w,
-                                  color: _uploadedFileUrl != null ? Colors.green : Colors.grey,
+                                  color: _uploadedFileUrl != null
+                                      ? AppColor.secondAppColor(context)
+                                      : AppColor.greyColor(context),
                                 ),
                                 SizedBox(height: 8.h),
                                 Text(
@@ -357,13 +384,32 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                                   ).copyWith(fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(height: 8.h),
-                                if (_fileName == null)
-                                  Text(
-                                    'PDF, PPT, Word, Video',
-                                    style: AppTextStyle.titleSmall(
-                                      context,
-                                    ).copyWith(color: AppColor.greyColor(context)),
+                                if (_uploadedFileUrl != null && _uploadedFileUrl!.isNotEmpty) ...[
+                                  Gap(12.h),
+                                  CustomButton(
+                                    radius: 12.r,
+                                    onPressed: () {
+                                      context.read<HomeCubit>().imageFileName(_uploadedFileUrl!);
+                                    },
+                                    child:
+                                        context
+                                                .watch<HomeCubit>()
+                                                .state
+                                                .imageFileNameStatus
+                                                ?.isLoading ??
+                                            false
+                                        ? CustomLoading(
+                                            color: AppColor.whiteColor(context),
+                                            size: 15.w,
+                                          )
+                                        : Text(
+                                            AppLocalKay.display.tr(),
+                                            style: AppTextStyle.titleLarge(
+                                              context,
+                                            ).copyWith(color: AppColor.whiteColor(context)),
+                                          ),
                                   ),
+                                ],
                               ],
                             ),
                     ),

@@ -250,11 +250,16 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                           hint: AppLocalKay.user_management_subject.tr(),
                           errorText: AppLocalKay.user_management_select_subject.tr(),
                           items: courses
+                              .fold<Map<int, String>>({}, (map, e) {
+                                if (!map.containsKey(e.courseCode)) {
+                                  map[e.courseCode] = e.courseName;
+                                }
+                                return map;
+                              })
+                              .entries
                               .map(
-                                (e) => DropdownMenuItem(
-                                  value: e.courseCode,
-                                  child: Text(e.courseName),
-                                ),
+                                (entry) =>
+                                    DropdownMenuItem(value: entry.key, child: Text(entry.value)),
                               )
                               .toList(),
                           onChanged: (v) => setState(() => _selectedSubjectCode = v),
@@ -411,7 +416,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                             lessonDate: DateFormat('yyyy-MM-dd').format(_dueDate!),
                             teacherCode: int.parse(HiveMethods.getUserCode()),
                             notes: _notesController.text,
-                            CourseCode: _selectedSubjectCode!,
+                            courseCode: _selectedSubjectCode!,
                           );
 
                           if (isEdit) {
