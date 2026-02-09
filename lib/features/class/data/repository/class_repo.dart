@@ -41,7 +41,7 @@ abstract interface class ClassRepo {
   Future<Either<Failure, AddClassAbsentResponseModel>> editClassAbsent({
     required AddClassAbsentRequestModel request,
   });
-  Future<Either<Failure, GetLessonsModel>> getLessons({required int code});
+  Future<Either<Failure, GetLessonsModel>> getLessons({int? code});
   Future<Either<Failure, ClassHWDelModel>> deleteClassAbsent({
     required int classCode,
     required String HWDATE,
@@ -293,10 +293,13 @@ class ClassRepoImpl extends ClassRepo {
     );
   }
 
-  Future<Either<Failure, GetLessonsModel>> getLessons({required int code}) async {
+  Future<Either<Failure, GetLessonsModel>> getLessons({int? code}) async {
     return handleDioRequest(
       request: () async {
-        final response = await apiConsumer.get(EndPoints.getLessons, queryParameters: {"id": code});
+        final response = await apiConsumer.get(
+          EndPoints.getLessons,
+          queryParameters: {"Code": code},
+        );
         return GetLessonsModel.fromJson(response);
       },
     );

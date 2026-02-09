@@ -125,7 +125,7 @@ class ClassCubit extends Cubit<ClassState> {
     );
   }
 
-  Future<void> getLessons({required int code}) async {
+  Future<void> getLessons({int? code}) async {
     emit(state.copyWith(getLessonsStatus: StatusState.loading()));
     final result = await _classRepo.getLessons(code: code);
     result.fold(

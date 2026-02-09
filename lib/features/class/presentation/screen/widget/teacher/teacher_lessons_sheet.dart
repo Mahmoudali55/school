@@ -38,7 +38,7 @@ class _TeacherLessonsSheetState extends State<TeacherLessonsSheet> {
   }
 
   void _fetchLessons() {
-    widget.classCubit.getLessons(code: int.tryParse(widget.classInfo.id) ?? 0);
+    widget.classCubit.getLessons();
   }
 
   @override

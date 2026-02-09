@@ -65,7 +65,7 @@ class TeacherClassesList extends StatelessWidget {
       ),
       builder: (context) {
         return BlocProvider.value(
-          value: classCubit..getLessons(code: int.tryParse(classInfo.id) ?? 0),
+          value: classCubit..getLessons(),
           child: TeacherLessonsSheet(
             classInfo: classInfo,
             classCubit: classCubit,
