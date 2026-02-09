@@ -11,6 +11,7 @@ class AddLessonsRequestModel extends Equatable {
   final String lessonDate;
   final int teacherCode;
   final String notes;
+  final int CourseCode;
 
   const AddLessonsRequestModel({
     required this.id,
@@ -23,6 +24,7 @@ class AddLessonsRequestModel extends Equatable {
     required this.lessonDate,
     required this.teacherCode,
     required this.notes,
+    required this.CourseCode,
   });
 
   factory AddLessonsRequestModel.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,7 @@ class AddLessonsRequestModel extends Equatable {
       lessonDate: json['lessonDate'] ?? '',
       teacherCode: json['Teacher_code'] ?? 0,
       notes: json['NOTES'] ?? '',
+      CourseCode: json['CourseCode'] ?? 0,
     );
   }
 
@@ -52,6 +55,7 @@ class AddLessonsRequestModel extends Equatable {
       'lessonDate': lessonDate,
       'Teacher_code': teacherCode,
       'NOTES': notes,
+      'CourseCode': CourseCode,
     };
   }
 
@@ -66,6 +70,7 @@ class AddLessonsRequestModel extends Equatable {
     String? lessonDate,
     int? teacherCode,
     String? notes,
+    int? CourseCode,
   }) {
     return AddLessonsRequestModel(
       id: id ?? this.id,
@@ -78,6 +83,7 @@ class AddLessonsRequestModel extends Equatable {
       lessonDate: lessonDate ?? this.lessonDate,
       teacherCode: teacherCode ?? this.teacherCode,
       notes: notes ?? this.notes,
+      CourseCode: CourseCode ?? this.CourseCode,
     );
   }
 
@@ -93,5 +99,6 @@ class AddLessonsRequestModel extends Equatable {
     lessonDate,
     teacherCode,
     notes,
+    CourseCode,
   ];
 }

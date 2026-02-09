@@ -30,6 +30,7 @@ class THomeWorkItem extends Equatable {
   final String hw;
   final String hwDate;
   final String courseName;
+  final String hW_path;
 
   const THomeWorkItem({
     required this.sectionCode,
@@ -41,19 +42,41 @@ class THomeWorkItem extends Equatable {
     required this.hw,
     required this.hwDate,
     required this.courseName,
+    required this.hW_path,
   });
 
   factory THomeWorkItem.fromJson(Map<String, dynamic> json) {
     return THomeWorkItem(
-      sectionCode: json['SECTION_CODE'],
-      stageCode: json['Stage_Code'],
-      levelCode: json['LEVEL_CODE'],
-      classCode: json['CLASS_CODE'],
-      courseCode: json['COURSE_CODE'],
-      notes: json['NOTES'],
-      hw: json['HW'],
-      hwDate: json['HW_DATE'],
-      courseName: json['COURSE_Name'],
+      sectionCode: int.tryParse(json['SECTION_CODE']?.toString() ?? '0') ?? 0,
+      stageCode: int.tryParse(json['Stage_Code']?.toString() ?? '0') ?? 0,
+      levelCode: int.tryParse(json['LEVEL_CODE']?.toString() ?? '0') ?? 0,
+      classCode: int.tryParse(json['CLASS_CODE']?.toString() ?? '0') ?? 0,
+      hW_path: json['HW_path']?.toString() ?? '',
+      courseCode:
+          int.tryParse(
+            (json['COURSE_CODE'] ??
+                        json['CourseCode'] ??
+                        json['SubjectCode'] ??
+                        json['SUBJECT_CODE'] ??
+                        json['subject_code'] ??
+                        json['Course_Code'] ??
+                        json['course_code'])
+                    ?.toString() ??
+                '0',
+          ) ??
+          0,
+      notes: json['NOTES']?.toString() ?? '',
+      hw: json['HW']?.toString() ?? '',
+      hwDate: json['HW_DATE']?.toString() ?? '',
+
+      courseName:
+          (json['COURSE_Name'] ??
+                  json['COURSE_NAME'] ??
+                  json['CourseName'] ??
+                  json['Coursename'] ??
+                  json['course_name'])
+              ?.toString() ??
+          '',
     );
   }
 
@@ -68,5 +91,6 @@ class THomeWorkItem extends Equatable {
     hw,
     hwDate,
     courseName,
+    hW_path,
   ];
 }

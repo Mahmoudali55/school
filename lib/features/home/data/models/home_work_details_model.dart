@@ -7,6 +7,7 @@ class HomeworkDetailsModel extends Equatable {
   final String hwDate;
   final String hw;
   final String? notes;
+  final String? hW_path;
 
   const HomeworkDetailsModel({
     required this.levelCode,
@@ -14,17 +15,31 @@ class HomeworkDetailsModel extends Equatable {
     required this.courseCode,
     required this.hwDate,
     required this.hw,
+    this.hW_path,
     this.notes,
   });
 
   factory HomeworkDetailsModel.fromJson(Map<String, dynamic> json) {
     return HomeworkDetailsModel(
-      levelCode: json['LEVELCODE'] as int,
-      classCode: json['classcode'] as int,
-      courseCode: json['COURSE_CODE'] as int,
-      hwDate: json['HWDATE'] as String,
-      hw: json['HW'] as String,
-      notes: json['NOTES'],
+      levelCode: int.tryParse(json['LEVELCODE']?.toString() ?? '0') ?? 0,
+      classCode: int.tryParse(json['classcode']?.toString() ?? '0') ?? 0,
+      courseCode:
+          int.tryParse(
+            (json['COURSE_CODE'] ??
+                        json['CourseCode'] ??
+                        json['SubjectCode'] ??
+                        json['SUBJECT_CODE'] ??
+                        json['subject_code'] ??
+                        json['Course_Code'] ??
+                        json['course_code'])
+                    ?.toString() ??
+                '0',
+          ) ??
+          0,
+      hwDate: json['HWDATE']?.toString() ?? '',
+      hw: json['HW']?.toString() ?? '',
+      notes: json['NOTES']?.toString(),
+      hW_path: json['HW_path']?.toString(),
     );
   }
 
@@ -36,9 +51,10 @@ class HomeworkDetailsModel extends Equatable {
       'HWDATE': hwDate,
       'HW': hw,
       'NOTES': notes,
+      'HW_path': hW_path,
     };
   }
 
   @override
-  List<Object?> get props => [levelCode, classCode, courseCode, hwDate, hw, notes];
+  List<Object?> get props => [levelCode, classCode, courseCode, hwDate, hw, notes, hW_path];
 }

@@ -80,6 +80,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
 
       _selectedLevelCode = lesson.levelCode;
       _selectedClassCode = lesson.classCode;
+      _selectedSubjectCode = lesson.courseCode;
     }
 
     final stageStr = HiveMethods.getUserStage();
@@ -178,7 +179,9 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                     ),
                     SizedBox(height: 8.h),
                     CustomDropdownFormField<int>(
-                      value: _selectedLevelCode,
+                      value: levels.any((e) => e.levelCode == _selectedLevelCode)
+                          ? _selectedLevelCode
+                          : null,
                       submitted: _submitted,
                       hint: AppLocalKay.user_management_class.tr(),
                       errorText: AppLocalKay.user_management_select_class.tr(),
@@ -213,7 +216,9 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                     ),
                     SizedBox(height: 8.h),
                     CustomDropdownFormField<int>(
-                      value: _selectedClassCode,
+                      value: classesList.any((e) => e.classCode == _selectedClassCode)
+                          ? _selectedClassCode
+                          : null,
                       submitted: _submitted,
                       hint: AppLocalKay.class_name_assigment.tr(),
                       errorText: AppLocalKay.user_management_select_classs.tr(),
@@ -227,24 +232,35 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
 
                     Gap(16.h),
 
-                    /// المادة
-                    // Text(
-                    //   AppLocalKay.user_management_subject.tr(),
-                    //   style: AppTextStyle.formTitleStyle(context),
-                    // ),
-                    // SizedBox(height: 8.h),
-                    // CustomDropdownFormField<int>(
-                    //   value: _selectedSubjectCode,
-                    //   submitted: _submitted,
-                    //   hint: AppLocalKay.user_management_subject.tr(),
-                    //   errorText: AppLocalKay.user_management_select_subject.tr(),
-                    //   items: courses
-                    //       .map(
-                    //         (e) => DropdownMenuItem(value: e.courseCode, child: Text(e.courseName)),
-                    //       )
-                    //       .toList(),
-                    //   onChanged: isEdit ? null : (v) => setState(() => _selectedSubjectCode = v),
-                    // ),
+                    // المادة
+                    Text(
+                      AppLocalKay.user_management_subject.tr(),
+                      style: AppTextStyle.formTitleStyle(context),
+                    ),
+                    SizedBox(height: 8.h),
+                    IgnorePointer(
+                      ignoring: isEdit,
+                      child: Opacity(
+                        opacity: isEdit ? 0.5 : 1,
+                        child: CustomDropdownFormField<int>(
+                          value: courses.any((e) => e.courseCode == _selectedSubjectCode)
+                              ? _selectedSubjectCode
+                              : null,
+                          submitted: _submitted,
+                          hint: AppLocalKay.user_management_subject.tr(),
+                          errorText: AppLocalKay.user_management_select_subject.tr(),
+                          items: courses
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  value: e.courseCode,
+                                  child: Text(e.courseName),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (v) => setState(() => _selectedSubjectCode = v),
+                        ),
+                      ),
+                    ),
                     Gap(16.h),
                     CustomFormField(
                       readOnly: true,
@@ -395,6 +411,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                             lessonDate: DateFormat('yyyy-MM-dd').format(_dueDate!),
                             teacherCode: int.parse(HiveMethods.getUserCode()),
                             notes: _notesController.text,
+                            CourseCode: _selectedSubjectCode!,
                           );
 
                           if (isEdit) {

@@ -159,7 +159,9 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                     child: Opacity(
                       opacity: isEdit ? 0.5 : 1,
                       child: CustomDropdownFormField<int>(
-                        value: _selectedLevelCode,
+                        value: levels.any((e) => e.levelCode == _selectedLevelCode)
+                            ? _selectedLevelCode
+                            : null,
                         submitted: _submitted,
                         hint: AppLocalKay.user_management_class.tr(),
                         errorText: AppLocalKay.user_management_select_class.tr(),
@@ -198,7 +200,9 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                     child: Opacity(
                       opacity: isEdit ? 0.5 : 1,
                       child: CustomDropdownFormField<int>(
-                        value: _selectedClassCode,
+                        value: classesList.any((e) => e.classCode == _selectedClassCode)
+                            ? _selectedClassCode
+                            : null,
                         submitted: _submitted,
                         hint: AppLocalKay.class_name_assigment.tr(),
                         errorText: AppLocalKay.user_management_select_classs.tr(),
@@ -226,7 +230,9 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                     child: Opacity(
                       opacity: isEdit ? 0.5 : 1,
                       child: CustomDropdownFormField<int>(
-                        value: _selectedSubjectCode,
+                        value: courses.any((e) => e.courseCode == _selectedSubjectCode)
+                            ? _selectedSubjectCode
+                            : null,
                         submitted: _submitted,
                         hint: AppLocalKay.user_management_subject.tr(),
                         errorText: AppLocalKay.user_management_select_subject.tr(),
@@ -398,6 +404,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                               hw: _descriptionController.text,
                               notes: _notesController.text,
                               courseCode: _selectedSubjectCode!,
+                              hW_path: _uploadedFileUrl,
                             ),
                           ],
                         );

@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/get_T_home_work_model.dart';
+import 'package:my_template/features/class/presentation/screen/widget/teacher/teacher_lessons_sheet_widgets/attachment_button_widget.dart';
 
 class HomeworkCard extends StatelessWidget {
   final THomeWorkItem item;
@@ -186,6 +188,8 @@ class HomeworkCard extends StatelessWidget {
                       ),
                     ],
                   ),
+                  Gap(10.h),
+                  AttachmentButton(lessonPath: item.hW_path),
                 ],
               ),
             ),
