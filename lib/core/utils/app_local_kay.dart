@@ -1029,4 +1029,10 @@ class AppLocalKay {
   static const String copy_summary_success = 'copy_summary_success';
   static const String notes_validation_error = 'notes_validation_error';
   static const String lesson_ideas_info_card = 'lesson_ideas_info_card';
+  static const String student_ai_assistant = 'student_ai_assistant';
+  static const String student_ai_welcome_subtitle = 'student_ai_welcome_subtitle';
+  static const String summarize_lesson_title = 'summarize_lesson_title';
+  static const String summarize_lesson_subtitle = 'summarize_lesson_subtitle';
+  static const String study_practice_title = 'study_practice_title';
+  static const String study_practice_subtitle = 'study_practice_subtitle';
 }

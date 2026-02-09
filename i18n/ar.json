@@ -1069,5 +1069,12 @@
   "generating_summary_loading": "جاري تلخيص الملاحظات...",
   "summary_result_header": "الملخص",
   "copy_summary_success": "تم نسخ الملخص إلى الحافظة",
-  "notes_validation_error": "يرجى إدخال ملاحظات كافية للتلخيص (50 حرفاً على الأقل)"
+  "notes_validation_error": "يرجى إدخال ملاحظات كافية للتلخيص (50 حرفاً على الأقل)",
+  "lesson_ideas_info_card": "احصل على أفكار إبداعية وأنشطة تفاعلية لدرسك القادم",
+  "student_ai_assistant": "المساعد الدراسي الذكي",
+  "student_ai_welcome_subtitle": "كيف يمكنني مساعدتك اليوم في مذاكرة دروسك؟",
+  "summarize_lesson_title": "تلخيص الدروس",
+  "summarize_lesson_subtitle": "حول دروسك الطويلة إلى ملخصات ذكية وسهلة المذاكرة",
+  "study_practice_title": "ممارسة واختبار ذاتي",
+  "study_practice_subtitle": "اختبر معلوماتك عبر توليد أسئلة ممارسة ذكية لدروسك"
 }

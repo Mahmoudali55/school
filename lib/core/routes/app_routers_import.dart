@@ -14,6 +14,7 @@ import 'package:my_template/features/home/presentation/view/execution/schedule_s
 import 'package:my_template/features/home/presentation/view/execution/show_student_balance_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/uniform_parent_screen.dart';
 import 'package:my_template/features/home/presentation/view/screen/home_screen.dart';
+import 'package:my_template/features/home/presentation/view/screen/student_ai_assistant_screen.dart';
 import 'package:my_template/features/layout/presentation/screen/layout_screen.dart';
 import 'package:my_template/features/leave_permission/presentation/cubit/leave_cubit.dart';
 import 'package:my_template/features/leave_permission/presentation/screen/leave_admin_screen.dart';

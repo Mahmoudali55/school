@@ -128,6 +128,8 @@ class AppRouters {
             child: const PickUpAdminScreen(),
           ),
         );
+      case RoutesName.studentAIAssistantScreen:
+        return MaterialPageRoute(builder: (_) => const StudentAIAssistantScreen());
       default:
         return null;
     }

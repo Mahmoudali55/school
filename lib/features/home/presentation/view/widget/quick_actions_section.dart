@@ -32,6 +32,12 @@ class QuickActionsSection extends StatelessWidget {
         RoutesName.scheduleScreen,
       ),
       (AppLocalKay.grades.tr(), Icons.bar_chart, Colors.purple, RoutesName.gradesScreen),
+      (
+        AppLocalKay.student_ai_assistant.tr(),
+        Icons.auto_awesome,
+        const Color(0xFF10B981),
+        RoutesName.studentAIAssistantScreen,
+      ),
     ];
 
     return Column(
@@ -42,35 +48,44 @@ class QuickActionsSection extends StatelessWidget {
           style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 16.h),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        Wrap(
+          spacing: 16.w,
+          runSpacing: 16.h,
+          alignment: WrapAlignment.start,
           children: List.generate(actions.length, (i) {
             final item = actions[i];
-            return Column(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    NavigatorMethods.pushNamed(context, item.$4);
-                  },
-                  child: Container(
-                    width: 60.w,
-                    height: 60.w,
-                    decoration: BoxDecoration(
-                      color: item.$3.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(18),
+            return SizedBox(
+              width: 95.w, // Fixed width for each item to ensure alignment
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      NavigatorMethods.pushNamed(context, item.$4);
+                    },
+                    child: Container(
+                      width: 60.w,
+                      height: 60.w,
+                      decoration: BoxDecoration(
+                        color: item.$3.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: Icon(item.$2, color: item.$3, size: 28.w),
                     ),
-                    child: Icon(item.$2, color: item.$3, size: 28.w),
                   ),
-                ),
-                SizedBox(height: 8.h),
-                Text(
-                  item.$1,
-                  style: AppTextStyle.labelSmall(
-                    context,
-                    color: AppColor.textColor(context),
-                  ).copyWith(fontWeight: FontWeight.w600),
-                ),
-              ],
+                  SizedBox(height: 8.h),
+                  Text(
+                    item.$1,
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyle.labelSmall(context, color: AppColor.textColor(context))
+                        .copyWith(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 10.sp, // Slightly smaller to fit overflow
+                        ),
+                  ),
+                ],
+              ),
             );
           }),
         ),
