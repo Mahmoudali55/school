@@ -80,7 +80,6 @@ class ActionCardWidget extends StatelessWidget {
       default:
         screen = const UploadLessonScreen();
     }
-
     Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
+import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/features/calendar/data/model/add_event_request_model.dart';
 import 'package:my_template/features/calendar/data/model/calendar_event_model.dart';
 import 'package:my_template/features/calendar/data/repo/calendar_repo.dart';
 import 'package:my_template/features/home/data/models/teacher_class_model.dart';
@@ -12,62 +14,62 @@ class CalendarCubit extends Cubit<CalendarState> {
   final HomeRepo _homeRepo;
 
   CalendarCubit(this._calendarRepo, this._homeRepo)
-    : super(
-        CalendarState(
-          selectedDate: DateTime.now(),
-          currentView: CalendarView.monthly,
-          classes: const [],
-          events: const [],
-        ),
-      );
+    : super(CalendarState(selectedDate: DateTime.now(), currentView: CalendarView.monthly));
 
+  // ================== LOAD CALENDAR DATA ==================
   Future<void> getCalendarData(String userTypeId) async {
-    if (state.classes.isNotEmpty || state.events.isNotEmpty) return;
+    if (state.classesStatus.isSuccess && state.eventsStatus.isSuccess) return;
 
-    if (state.classes.isEmpty && state.events.isEmpty) {
-      emit(state.copyWith(isLoading: true));
-    }
+    emit(
+      state.copyWith(
+        classesStatus: const StatusState.loading(),
+        eventsStatus: const StatusState.loading(),
+      ),
+    );
 
-    // Map numeric types to named types with robust normalization
     final cleanType = userTypeId.trim();
-    String normalizedType;
-    if (cleanType == '1' || cleanType == 'student') {
-      normalizedType = 'student';
-    } else if (cleanType == '2' || cleanType == 'parent') {
-      normalizedType = 'parent';
-    } else if (cleanType == '3' || cleanType == 'teacher') {
-      normalizedType = 'teacher';
-    } else {
-      normalizedType = 'admin';
-    }
+    final normalizedType = switch (cleanType) {
+      '1' || 'student' => 'student',
+      '2' || 'parent' => 'parent',
+      '3' || 'teacher' => 'teacher',
+      _ => 'admin',
+    };
 
-    try {
-      final classes = await _calendarRepo.getClasses(normalizedType);
-      final events = await _calendarRepo.getEvents(normalizedType);
-      emit(
-        state.copyWith(
-          classes: classes,
-          events: events,
-          selectedClass: state.selectedClass ?? (classes.isNotEmpty ? classes.first : null),
-          isLoading: false,
-        ),
-      );
-    } catch (e) {
-      emit(state.copyWith(error: e.toString(), isLoading: false));
-    }
+    final classesResult = await _calendarRepo.getClasses(userTypeId: normalizedType);
+    final eventsResult = await _calendarRepo.getEvents(userTypeId: normalizedType);
+
+    classesResult.fold(
+      (failure) {
+        emit(state.copyWith(classesStatus: StatusState.failure(failure.errMessage)));
+      },
+      (classes) {
+        eventsResult.fold(
+          (failure) {
+            emit(state.copyWith(eventsStatus: StatusState.failure(failure.errMessage)));
+          },
+          (events) {
+            emit(
+              state.copyWith(
+                classesStatus: StatusState.success(classes),
+                eventsStatus: StatusState.success(events),
+                selectedClass: state.selectedClass ?? (classes.isNotEmpty ? classes.first : null),
+              ),
+            );
+          },
+        );
+      },
+    );
   }
 
-  /// Fetch teacher classes from API and convert to ClassInfo
+  // ================== LOAD TEACHER CLASSES ==================
   Future<void> loadTeacherClasses() async {
-    emit(state.copyWith(classesLoading: true, classesError: null));
+    emit(state.copyWith(classesStatus: const StatusState.loading()));
 
     try {
-      // Get teacher parameters from Hive
       final sectionCode = int.tryParse(HiveMethods.getUserSection().toString()) ?? 0;
       final stageCode = int.tryParse(HiveMethods.getUserStage().toString()) ?? 0;
       final levelCode = 111;
 
-      // Fetch teacher classes from API
       final result = await _homeRepo.teacherClasses(
         sectionCode: sectionCode,
         stageCode: stageCode,
@@ -75,37 +77,38 @@ class CalendarCubit extends Cubit<CalendarState> {
       );
 
       result.fold(
-        (failure) => emit(state.copyWith(classesLoading: false, classesError: failure.errMessage)),
+        (failure) {
+          emit(state.copyWith(classesStatus: StatusState.failure(failure.errMessage)));
+        },
         (teacherClasses) {
-          // Convert TeacherClassModels to ClassInfo
           final classInfoList = _mapTeacherClassesToClassInfo(teacherClasses);
           emit(
             state.copyWith(
-              classes: classInfoList,
+              classesStatus: StatusState.success(classInfoList),
               selectedClass: classInfoList.isNotEmpty ? classInfoList.first : null,
-              classesLoading: false,
-              classesError: null,
             ),
           );
         },
       );
     } catch (e) {
-      emit(state.copyWith(classesLoading: false, classesError: e.toString()));
+      emit(state.copyWith(classesStatus: StatusState.failure(e.toString())));
     }
   }
 
-  /// Convert List<TeacherClassModels> to List<ClassInfo>
   List<ClassInfo> _mapTeacherClassesToClassInfo(List<TeacherClassModels> teacherClasses) {
-    return teacherClasses.map((teacherClass) {
-      return ClassInfo(
-        id: teacherClass.classCode.toString(),
-        name: teacherClass.classNameAr,
-        grade: '',
-        specialization: teacherClass.classNameAr,
-      );
-    }).toList();
+    return teacherClasses
+        .map(
+          (teacherClass) => ClassInfo(
+            id: teacherClass.classCode.toString(),
+            name: teacherClass.classNameAr,
+            grade: '',
+            specialization: teacherClass.classNameAr,
+          ),
+        )
+        .toList();
   }
 
+  // ================== UI ACTIONS ==================
   void changeDate(DateTime date) {
     emit(state.copyWith(selectedDate: date));
   }
@@ -119,72 +122,66 @@ class CalendarCubit extends Cubit<CalendarState> {
   }
 
   void goToPrevious() {
-    DateTime newDate;
-    switch (state.currentView) {
-      case CalendarView.monthly:
-        newDate = DateTime(state.selectedDate.year, state.selectedDate.month - 1);
-        break;
-      case CalendarView.weekly:
-        newDate = state.selectedDate.subtract(const Duration(days: 7));
-        break;
-      case CalendarView.daily:
-        newDate = state.selectedDate.subtract(const Duration(days: 1));
-        break;
-    }
+    final newDate = switch (state.currentView) {
+      CalendarView.monthly => DateTime(state.selectedDate.year, state.selectedDate.month - 1),
+      CalendarView.weekly => state.selectedDate.subtract(const Duration(days: 7)),
+      CalendarView.daily => state.selectedDate.subtract(const Duration(days: 1)),
+    };
     emit(state.copyWith(selectedDate: newDate));
   }
 
   void goToNext() {
-    DateTime newDate;
-    switch (state.currentView) {
-      case CalendarView.monthly:
-        newDate = DateTime(state.selectedDate.year, state.selectedDate.month + 1);
-        break;
-      case CalendarView.weekly:
-        newDate = state.selectedDate.add(const Duration(days: 7));
-        break;
-      case CalendarView.daily:
-        newDate = state.selectedDate.add(const Duration(days: 1));
-        break;
-    }
+    final newDate = switch (state.currentView) {
+      CalendarView.monthly => DateTime(state.selectedDate.year, state.selectedDate.month + 1),
+      CalendarView.weekly => state.selectedDate.add(const Duration(days: 7)),
+      CalendarView.daily => state.selectedDate.add(const Duration(days: 1)),
+    };
     emit(state.copyWith(selectedDate: newDate));
   }
 
-  void addEvent(TeacherCalendarEvent event) {
-    final newEvents = List<TeacherCalendarEvent>.from(state.events)..add(event);
-    emit(state.copyWith(events: newEvents));
+  // ================== LOCAL EVENTS ==================
+  void addEventLocal(TeacherCalendarEvent event) {
+    final List<TeacherCalendarEvent> events = [
+      ...state.eventsStatus.data ?? <TeacherCalendarEvent>[],
+      event,
+    ];
+    emit(state.copyWith(eventsStatus: StatusState.success(events)));
   }
 
-  void updateEvent(TeacherCalendarEvent event) {
-    final newEvents = state.events.map((e) => e.id == event.id ? event : e).toList();
-    emit(state.copyWith(events: newEvents));
+  void updateEventLocal(TeacherCalendarEvent event) {
+    final List<TeacherCalendarEvent> events = (state.eventsStatus.data ?? <TeacherCalendarEvent>[])
+        .map((e) => e.id == event.id ? event : e)
+        .toList();
+    emit(state.copyWith(eventsStatus: StatusState.success(events)));
   }
 
-  void deleteEvent(String eventId) {
-    final newEvents = state.events.where((e) => e.id != eventId).toList();
-    emit(state.copyWith(events: newEvents));
+  void deleteEventLocal(String eventId) {
+    final List<TeacherCalendarEvent> events = (state.eventsStatus.data ?? <TeacherCalendarEvent>[])
+        .where((e) => e.id != eventId)
+        .toList();
+    emit(state.copyWith(eventsStatus: StatusState.success(events)));
   }
 
   void toggleTaskStatus(String eventId) {
-    final newEvents = state.events.map((event) {
-      if (event.id == eventId) {
-        final newStatus = event.status == "مكتمل" ? "مخطط" : "مكتمل";
-        return TeacherCalendarEvent(
-          id: event.id,
-          title: event.title,
-          date: event.date,
-          startTime: event.startTime,
-          endTime: event.endTime,
-          type: event.type,
-          location: event.location,
-          description: event.description,
-          className: event.className,
-          subject: event.subject,
-          status: newStatus,
-        );
-      }
-      return event;
-    }).toList();
-    emit(state.copyWith(events: newEvents));
+    final List<TeacherCalendarEvent> events = (state.eventsStatus.data ?? <TeacherCalendarEvent>[])
+        .map((event) {
+          if (event.id == eventId) {
+            return event.copyWith(status: event.status == 'مكتمل' ? 'مخطط' : 'مكتمل');
+          }
+          return event;
+        })
+        .toList();
+
+    emit(state.copyWith(eventsStatus: StatusState.success(events)));
+  }
+
+  Future<void> addEvent(AddEventRequestModel event) async {
+    emit(state.copyWith(addEventStatus: StatusState.loading()));
+
+    final result = await _calendarRepo.addEvent(event);
+    result.fold(
+      (error) => emit(state.copyWith(addEventStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(addEventStatus: StatusState.success(success))),
+    );
   }
 }

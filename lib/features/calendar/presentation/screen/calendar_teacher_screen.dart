@@ -38,12 +38,12 @@ class CalendarTeacherScreen extends StatelessWidget {
   Widget _buildCalendarContent() {
     return BlocBuilder<CalendarCubit, CalendarState>(
       builder: (context, state) {
-        if (state.isLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (state.error != null) {
-          return Center(child: Text(state.error!));
-        }
+        // if (state.isLoading) {
+        //   return const Center(child: CircularProgressIndicator());
+        // }
+        // if (state.error != null) {
+        //   return Center(child: Text(state.error!));
+        // }
         switch (state.currentView) {
           case CalendarView.monthly:
             return const MonthlyViewWidget();
@@ -61,7 +61,12 @@ class CalendarTeacherScreen extends StatelessWidget {
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => AddEventScreen(color: AppColor.accentColor(context))),
+          MaterialPageRoute(
+            builder: (_) => BlocProvider.value(
+              value: context.read<CalendarCubit>(),
+              child: AddEventScreen(color: AppColor.accentColor(context)),
+            ),
+          ),
         );
       },
       backgroundColor: AppColor.accentColor(context),

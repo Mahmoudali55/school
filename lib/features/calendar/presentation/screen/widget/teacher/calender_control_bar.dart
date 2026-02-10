@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
-import 'package:my_template/features/calendar/presentation/screen/widget/teacher/class_selector_widget.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/teacher/view_selector_widget.dart';
 
 import '../../../cubit/calendar_cubit.dart';
@@ -37,7 +36,7 @@ class _ControlBarWidgetState extends State<ControlBarWidget> {
           child: Column(
             children: [
               // اختيار الصف مع معالجة حالة التحميل
-              _buildClassSelector(context, state),
+              //_buildClassSelector(context, state),
               SizedBox(height: 12.h),
               // شريط العرض والتنقل
               Row(
@@ -61,71 +60,71 @@ class _ControlBarWidgetState extends State<ControlBarWidget> {
     );
   }
 
-  Widget _buildClassSelector(BuildContext context, CalendarState state) {
-    // Show loading indicator while fetching classes
-    if (state.classesLoading) {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
-        decoration: BoxDecoration(
-          color: AppColor.whiteColor(context),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColor.accentColor(context).withOpacity(0.3)),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 16.w,
-              height: 16.h,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(AppColor.accentColor(context)),
-              ),
-            ),
-            SizedBox(width: 8.w),
-            Text('جاري تحميل الصفوف...', style: TextStyle(fontSize: 14.sp)),
-          ],
-        ),
-      );
-    }
+  // Widget _buildClassSelector(BuildContext context, CalendarState state) {
+  //   // Show loading indicator while fetching classes
+  //   if (state.classesLoading) {
+  //     return Container(
+  //       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+  //       decoration: BoxDecoration(
+  //         color: AppColor.whiteColor(context),
+  //         borderRadius: BorderRadius.circular(8),
+  //         border: Border.all(color: AppColor.accentColor(context).withOpacity(0.3)),
+  //       ),
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           SizedBox(
+  //             width: 16.w,
+  //             height: 16.h,
+  //             child: CircularProgressIndicator(
+  //               strokeWidth: 2,
+  //               valueColor: AlwaysStoppedAnimation<Color>(AppColor.accentColor(context)),
+  //             ),
+  //           ),
+  //           SizedBox(width: 8.w),
+  //           Text('جاري تحميل الصفوف...', style: TextStyle(fontSize: 14.sp)),
+  //         ],
+  //       ),
+  //     );
+  //   }
 
-    // Show error message if fetching failed
-    if (state.classesError != null) {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
-        decoration: BoxDecoration(
-          color: Colors.red.shade50,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.red.shade200),
-        ),
-        child: Row(
-          children: [
-            Icon(Icons.error_outline, color: Colors.red, size: 20.w),
-            SizedBox(width: 8.w),
-            Expanded(
-              child: Text(
-                state.classesError!,
-                style: TextStyle(fontSize: 12.sp, color: Colors.red.shade700),
-              ),
-            ),
-            IconButton(
-              icon: Icon(Icons.refresh, color: Colors.red, size: 20.w),
-              onPressed: () => context.read<CalendarCubit>().loadTeacherClasses(),
-            ),
-          ],
-        ),
-      );
-    }
+  //   // Show error message if fetching failed
+  //   if (state.classesError != null) {
+  //     return Container(
+  //       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+  //       decoration: BoxDecoration(
+  //         color: Colors.red.shade50,
+  //         borderRadius: BorderRadius.circular(8),
+  //         border: Border.all(color: Colors.red.shade200),
+  //       ),
+  //       child: Row(
+  //         children: [
+  //           Icon(Icons.error_outline, color: Colors.red, size: 20.w),
+  //           SizedBox(width: 8.w),
+  //           Expanded(
+  //             child: Text(
+  //               state.classesError!,
+  //               style: TextStyle(fontSize: 12.sp, color: Colors.red.shade700),
+  //             ),
+  //           ),
+  //           IconButton(
+  //             icon: Icon(Icons.refresh, color: Colors.red, size: 20.w),
+  //             onPressed: () => context.read<CalendarCubit>().loadTeacherClasses(),
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  //   }
 
-    // Show class selector when data is loaded
-    return ClassSelectorWidget(
-      selectedClass: state.selectedClass,
-      classes: state.classes,
-      onChanged: (classInfo) {
-        context.read<CalendarCubit>().changeClass(classInfo);
-      },
-    );
-  }
+  // Show class selector when data is loaded
+  //   return ClassSelectorWidget(
+  //     selectedClass: state.selectedClass,
+  //     classes: state.classes,
+  //     onChanged: (classInfo) {
+  //       context.read<CalendarCubit>().changeClass(classInfo);
+  //     },
+  //   );
+  // }
 
   Widget _buildNavigationButtons(BuildContext context) {
     return Container(

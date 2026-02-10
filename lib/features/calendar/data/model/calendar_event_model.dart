@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 enum EventType { classEvent, exam, meeting, correction, preparation }
@@ -51,7 +52,7 @@ extension EventTypeExtension on EventType {
 
 enum CalendarView { monthly, weekly, daily }
 
-class TeacherCalendarEvent {
+class TeacherCalendarEvent extends Equatable {
   final String id;
   final String title;
   final DateTime date;
@@ -65,7 +66,7 @@ class TeacherCalendarEvent {
   final String status;
   final DateTime? reminder;
 
-  TeacherCalendarEvent({
+  const TeacherCalendarEvent({
     required this.id,
     required this.title,
     required this.date,
@@ -80,6 +81,38 @@ class TeacherCalendarEvent {
     this.reminder,
   });
 
+  // ===== copyWith =====
+  TeacherCalendarEvent copyWith({
+    String? id,
+    String? title,
+    DateTime? date,
+    TimeOfDay? startTime,
+    TimeOfDay? endTime,
+    EventType? type,
+    String? location,
+    String? description,
+    String? className,
+    String? subject,
+    String? status,
+    DateTime? reminder,
+  }) {
+    return TeacherCalendarEvent(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      date: date ?? this.date,
+      startTime: startTime ?? this.startTime,
+      endTime: endTime ?? this.endTime,
+      type: type ?? this.type,
+      location: location ?? this.location,
+      description: description ?? this.description,
+      className: className ?? this.className,
+      subject: subject ?? this.subject,
+      status: status ?? this.status,
+      reminder: reminder ?? this.reminder,
+    );
+  }
+
+  // ===== UI helpers =====
   Color get color => type.color;
   IconData get icon => type.icon;
   String get typeName => type.name;
@@ -98,6 +131,24 @@ class TeacherCalendarEvent {
     final end = DateTime(date.year, date.month, date.day, endTime.hour, endTime.minute);
     return end.difference(start);
   }
+
+  @override
+  List<Object?> get props => [
+    id,
+    title,
+    date,
+    startTime.hour,
+    startTime.minute,
+    endTime.hour,
+    endTime.minute,
+    type,
+    location,
+    description,
+    className,
+    subject,
+    status,
+    reminder,
+  ];
 }
 
 class ClassInfo {

@@ -1,52 +1,61 @@
 import 'package:equatable/equatable.dart';
+import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/features/calendar/data/model/add_event_response_model.dart';
 import 'package:my_template/features/calendar/data/model/calendar_event_model.dart';
 
 class CalendarState extends Equatable {
+  /// UI State
   final DateTime selectedDate;
   final CalendarView currentView;
   final ClassInfo? selectedClass;
-  final List<ClassInfo> classes;
-  final List<TeacherCalendarEvent> events;
-  final bool isLoading;
-  final String? error;
-  final bool classesLoading;
-  final String? classesError;
+
+  /// Data Status
+  final StatusState<List<ClassInfo>> classesStatus;
+  final StatusState<List<TeacherCalendarEvent>> eventsStatus;
+  final StatusState<AddEventResponseModel> addEventStatus;
 
   const CalendarState({
     required this.selectedDate,
     required this.currentView,
     this.selectedClass,
-    required this.classes,
-    required this.events,
-    this.isLoading = false,
-    this.error,
-    this.classesLoading = false,
-    this.classesError,
+    this.classesStatus = const StatusState.initial(),
+    this.eventsStatus = const StatusState.initial(),
+    this.addEventStatus = const StatusState.initial(),
   });
+
+  /// Convenience Getters
+  List<ClassInfo> get classes => classesStatus.data ?? const [];
+  List<TeacherCalendarEvent> get events => eventsStatus.data ?? const [];
+
+  @override
+  List<Object?> get props => [
+    selectedDate,
+    currentView,
+    selectedClass,
+    classesStatus,
+    eventsStatus,
+    addEventStatus,
+  ];
 
   CalendarState copyWith({
     DateTime? selectedDate,
     CalendarView? currentView,
     ClassInfo? selectedClass,
-    List<ClassInfo>? classes,
-    List<TeacherCalendarEvent>? events,
-    bool? isLoading,
-    String? error,
-    bool? classesLoading,
-    String? classesError,
+    StatusState<List<ClassInfo>>? classesStatus,
+    StatusState<List<TeacherCalendarEvent>>? eventsStatus,
+    StatusState<AddEventResponseModel>? addEventStatus,
   }) {
     return CalendarState(
       selectedDate: selectedDate ?? this.selectedDate,
       currentView: currentView ?? this.currentView,
       selectedClass: selectedClass ?? this.selectedClass,
-      classes: classes ?? this.classes,
-      events: events ?? this.events,
-      isLoading: isLoading ?? this.isLoading,
-      error: error,
-      classesLoading: classesLoading ?? this.classesLoading,
-      classesError: classesError,
+      classesStatus: classesStatus ?? this.classesStatus,
+      eventsStatus: eventsStatus ?? this.eventsStatus,
+      addEventStatus: addEventStatus ?? this.addEventStatus,
     );
   }
+
+  /* ================= Helpers ================= */
 
   List<TeacherCalendarEvent> getEventsForDay(DateTime day) {
     return events
@@ -86,7 +95,7 @@ class CalendarState extends Equatable {
         .toList();
   }
 
-  Map<String, dynamic> getMonthlyStats(DateTime month) {
+  Map<String, int> getMonthlyStats(DateTime month) {
     final monthEvents = getEventsForMonth(month);
     return {
       'classes': monthEvents.where((e) => e.type == EventType.classEvent).length,
@@ -94,17 +103,4 @@ class CalendarState extends Equatable {
       'meetings': monthEvents.where((e) => e.type == EventType.meeting).length,
     };
   }
-
-  @override
-  List<Object?> get props => [
-    selectedDate,
-    currentView,
-    selectedClass,
-    classes,
-    events,
-    isLoading,
-    error,
-    classesLoading,
-    classesError,
-  ];
 }
