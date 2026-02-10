@@ -178,4 +178,30 @@ class CalendarCubit extends Cubit<CalendarState> {
       (success) => emit(state.copyWith(getEventsStatus: StatusState.success(success))),
     );
   }
+
+  Future<void> editEvent(AddEventRequestModel event) async {
+    emit(state.copyWith(editEventStatus: const StatusState.loading()));
+
+    final result = await _calendarRepo.editEvent(event);
+    result.fold(
+      (error) => emit(state.copyWith(editEventStatus: StatusState.failure(error.errMessage))),
+      (success) {
+        getEvents();
+        emit(state.copyWith(editEventStatus: StatusState.success(success)));
+      },
+    );
+  }
+
+  Future<void> deleteEvent(int eventId) async {
+    emit(state.copyWith(deleteEventStatus: const StatusState.loading()));
+
+    final result = await _calendarRepo.deleteEvent(eventId);
+    result.fold(
+      (error) => emit(state.copyWith(deleteEventStatus: StatusState.failure(error.errMessage))),
+      (success) {
+        getEvents();
+        emit(state.copyWith(deleteEventStatus: StatusState.success(success)));
+      },
+    );
+  }
 }

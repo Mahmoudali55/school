@@ -3,6 +3,7 @@ import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/calendar/data/model/Events_response_model.dart';
 import 'package:my_template/features/calendar/data/model/add_event_response_model.dart';
 import 'package:my_template/features/calendar/data/model/calendar_event_model.dart';
+import 'package:my_template/features/calendar/data/model/events_del_model.dart';
 
 class CalendarState extends Equatable {
   /// UI State
@@ -15,6 +16,8 @@ class CalendarState extends Equatable {
   final StatusState<List<TeacherCalendarEvent>> eventsStatus;
   final StatusState<AddEventResponseModel> addEventStatus;
   final StatusState<GetEventsResponse> getEventsStatus;
+  final StatusState<AddEventResponseModel> editEventStatus;
+  final StatusState<EventsDelModel> deleteEventStatus;
 
   const CalendarState({
     required this.selectedDate,
@@ -24,6 +27,8 @@ class CalendarState extends Equatable {
     this.eventsStatus = const StatusState.initial(),
     this.addEventStatus = const StatusState.initial(),
     this.getEventsStatus = const StatusState.initial(),
+    this.editEventStatus = const StatusState.initial(),
+    this.deleteEventStatus = const StatusState.initial(),
   });
 
   /// Convenience Getters
@@ -39,6 +44,8 @@ class CalendarState extends Equatable {
     eventsStatus,
     addEventStatus,
     getEventsStatus,
+    editEventStatus,
+    deleteEventStatus,
   ];
 
   CalendarState copyWith({
@@ -49,6 +56,8 @@ class CalendarState extends Equatable {
     StatusState<List<TeacherCalendarEvent>>? eventsStatus,
     StatusState<AddEventResponseModel>? addEventStatus,
     StatusState<GetEventsResponse>? getEventsStatus,
+    StatusState<AddEventResponseModel>? editEventStatus,
+    StatusState<EventsDelModel>? deleteEventStatus,
   }) {
     return CalendarState(
       selectedDate: selectedDate ?? this.selectedDate,
@@ -58,6 +67,8 @@ class CalendarState extends Equatable {
       eventsStatus: eventsStatus ?? this.eventsStatus,
       addEventStatus: addEventStatus ?? this.addEventStatus,
       getEventsStatus: getEventsStatus ?? this.getEventsStatus,
+      editEventStatus: editEventStatus ?? this.editEventStatus,
+      deleteEventStatus: deleteEventStatus ?? this.deleteEventStatus,
     );
   }
 

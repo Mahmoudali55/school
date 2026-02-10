@@ -6,6 +6,7 @@ import 'package:my_template/core/network/end_points.dart';
 import 'package:my_template/features/calendar/data/model/Events_response_model.dart';
 import 'package:my_template/features/calendar/data/model/add_event_request_model.dart';
 import 'package:my_template/features/calendar/data/model/add_event_response_model.dart';
+import 'package:my_template/features/calendar/data/model/events_del_model.dart';
 
 import '../model/calendar_event_model.dart';
 
@@ -14,6 +15,8 @@ abstract interface class CalendarRepo {
 
   Future<Either<Failure, GetEventsResponse>> getEvents({required String date});
   Future<Either<Failure, AddEventResponseModel>> addEvent(AddEventRequestModel event);
+  Future<Either<Failure, AddEventResponseModel>> editEvent(AddEventRequestModel event);
+  Future<Either<Failure, EventsDelModel>> deleteEvent(int eventId);
 }
 
 class CalendarRepoImpl implements CalendarRepo {
@@ -85,6 +88,26 @@ class CalendarRepoImpl implements CalendarRepo {
       request: () async {
         final response = await apiConsumer.post(EndPoints.addEvents, body: event.toJson());
         return AddEventResponseModel.fromJson(response);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, AddEventResponseModel>> editEvent(AddEventRequestModel event) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.put(EndPoints.editEvents, body: event.toJson());
+        return AddEventResponseModel.fromJson(response);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, EventsDelModel>> deleteEvent(int eventId) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.delete(EndPoints.deleteEvents, body: {"Code": eventId});
+        return EventsDelModel.fromJson(response);
       },
     );
   }

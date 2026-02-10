@@ -11,13 +11,16 @@ import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/common_methods.dart';
+import 'package:my_template/features/calendar/data/model/Events_response_model.dart';
 import 'package:my_template/features/calendar/data/model/add_event_request_model.dart';
 import 'package:my_template/features/calendar/presentation/cubit/calendar_cubit.dart';
 import 'package:my_template/features/calendar/presentation/cubit/calendar_state.dart';
 
 class AddEventScreen extends StatefulWidget {
-  const AddEventScreen({super.key, required this.color});
+  const AddEventScreen({super.key, required this.color, this.eventToEdit});
   final Color color;
+  final Event? eventToEdit;
+
   @override
   State<AddEventScreen> createState() => _AddEventScreenState();
 }
@@ -39,6 +42,59 @@ class _AddEventScreenState extends State<AddEventScreen> {
     Colors.teal,
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    if (widget.eventToEdit != null) {
+      final event = widget.eventToEdit!;
+      titleController.text = event.eventTitel;
+      descriptionController.text = event.eventDesc;
+      try {
+        selectedDate = DateTime.parse(event.eventDate);
+      } catch (_) {
+        selectedDate = DateTime.now();
+      }
+      try {
+        // As time comes as string (e.g. "08:00"), we need to parse it
+        final timeParts = event.eventTime.split(':');
+        if (timeParts.length == 2) {
+          selectedTime = TimeOfDay(hour: int.parse(timeParts[0]), minute: int.parse(timeParts[1]));
+        }
+      } catch (_) {
+        selectedTime = TimeOfDay.now();
+      }
+      selectedColor = _getColorFromString(event.eventColore);
+    }
+  }
+
+  Color _getColorFromString(String colorStr) {
+    switch (colorStr.toLowerCase()) {
+      case 'red':
+        return Colors.red;
+      case 'green':
+        return Colors.green;
+      case 'blue':
+        return Colors.blue;
+      case 'orange':
+        return Colors.orange;
+      case 'purple':
+        return Colors.purple;
+      case 'yellow':
+        return Colors.yellow;
+      case 'teal':
+        return Colors.teal;
+      default:
+        if (colorStr.startsWith('#')) {
+          try {
+            return Color(int.parse(colorStr.replaceFirst('#', '0xFF')));
+          } catch (e) {
+            return Colors.grey;
+          }
+        }
+        return Colors.grey;
+    }
+  }
+
   String _getColorName(Color? color) {
     if (color == Colors.red) return "red";
     if (color == Colors.blue) return "blue";
@@ -54,13 +110,16 @@ class _AddEventScreenState extends State<AddEventScreen> {
       context: context,
       firstDate: DateTime.now(),
       lastDate: DateTime(2030),
-      initialDate: DateTime.now(),
+      initialDate: selectedDate ?? DateTime.now(),
     );
     if (date != null) setState(() => selectedDate = date);
   }
 
   Future<void> _pickTime() async {
-    final time = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    final time = await showTimePicker(
+      context: context,
+      initialTime: selectedTime ?? TimeOfDay.now(),
+    );
     if (time != null) setState(() => selectedTime = time);
   }
 
@@ -80,6 +139,19 @@ class _AddEventScreenState extends State<AddEventScreen> {
             backgroundColor: AppColor.errorColor(context, listen: false),
           );
         }
+
+        if (state.editEventStatus.isSuccess) {
+          CommonMethods.showToast(
+            message: state.editEventStatus.data?.msg ?? "",
+            backgroundColor: AppColor.successColor(context, listen: false),
+          );
+          Navigator.pop(context);
+        } else if (state.editEventStatus.isFailure) {
+          CommonMethods.showToast(
+            message: state.editEventStatus.error ?? "",
+            backgroundColor: AppColor.errorColor(context, listen: false),
+          );
+        }
       },
       builder: (context, state) {
         return Scaffold(
@@ -88,7 +160,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
             context,
             centerTitle: true,
             title: Text(
-              AppLocalKay.new_event.tr(),
+              widget.eventToEdit != null ? "تعديل الحدث" : AppLocalKay.new_event.tr(),
               style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
             ),
             leading: IconButton(
@@ -96,7 +168,6 @@ class _AddEventScreenState extends State<AddEventScreen> {
               onPressed: () => Navigator.pop(context),
             ),
           ),
-
           body: SingleChildScrollView(
             padding: EdgeInsets.all(18.w),
             child: Form(
@@ -111,17 +182,13 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     hintText: AppLocalKay.event_title_hint.tr(),
                     validator: (value) => value!.isEmpty ? AppLocalKay.required.tr() : null,
                   ),
-
                   Gap(20.h),
-
-                  /// Description
                   CustomFormField(
                     radius: 12.r,
                     title: AppLocalKay.event_description.tr(),
                     controller: descriptionController,
                     hintText: AppLocalKay.event_description_hint.tr(),
                     validator: (value) => value!.isEmpty ? AppLocalKay.required.tr() : null,
-
                     maxLines: 3,
                   ),
                   Gap(20.h),
@@ -136,7 +203,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           controller: TextEditingController(
                             text: selectedDate == null
                                 ? ''
-                                : selectedDate!.toLocal().toString().split(' ')[0],
+                                : selectedDate!.toIso8601String().split('T')[0],
                           ),
                           title: AppLocalKay.select_date.tr(),
                           prefixIcon: Icon(
@@ -194,20 +261,22 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   Gap(100.h),
                   CustomButton(
                     color: widget.color,
-                    child: context.watch<CalendarCubit>().state.addEventStatus.isLoading
+                    child:
+                        (widget.eventToEdit != null
+                            ? context.watch<CalendarCubit>().state.editEventStatus.isLoading
+                            : context.watch<CalendarCubit>().state.addEventStatus.isLoading)
                         ? CustomLoading(color: AppColor.whiteColor(context), size: 15.w)
                         : Text(
-                            AppLocalKay.add.tr(),
+                            widget.eventToEdit != null ? "تعديل" : AppLocalKay.add.tr(),
                             style: AppTextStyle.bodyMedium(
                               context,
                             ).copyWith(color: AppColor.whiteColor(context)),
                           ),
                     radius: 12.r,
-
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
                         final request = AddEventRequestModel(
-                          id: "",
+                          id: widget.eventToEdit?.id.toString() ?? "",
                           eventTitel: titleController.text,
                           eventDesc: descriptionController.text,
                           eventDate: selectedDate!.toIso8601String().split('T')[0],
@@ -216,7 +285,11 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           eventColor: _getColorName(selectedColor),
                         );
 
-                        context.read<CalendarCubit>().addEvent(request);
+                        if (widget.eventToEdit != null) {
+                          context.read<CalendarCubit>().editEvent(request);
+                        } else {
+                          context.read<CalendarCubit>().addEvent(request);
+                        }
                       }
                     },
                   ),

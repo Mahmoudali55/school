@@ -12,7 +12,6 @@ import 'api_event_item_widget.dart';
 
 class UpcomingTasksWidget extends StatelessWidget {
   const UpcomingTasksWidget({super.key});
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CalendarCubit, CalendarState>(
@@ -20,9 +19,7 @@ class UpcomingTasksWidget extends StatelessWidget {
         if (state.getEventsStatus.isLoading) {
           return const Center(child: CircularProgressIndicator());
         }
-
         final events = state.getEventsStatus.data?.events ?? [];
-
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
