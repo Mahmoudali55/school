@@ -1035,4 +1035,5 @@ class AppLocalKay {
   static const String summarize_lesson_subtitle = 'summarize_lesson_subtitle';
   static const String study_practice_title = 'study_practice_title';
   static const String study_practice_subtitle = 'study_practice_subtitle';
+  static const String required = 'required';
 }

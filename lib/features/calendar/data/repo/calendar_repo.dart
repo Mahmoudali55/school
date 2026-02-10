@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:my_template/core/error/failures.dart';
 import 'package:my_template/core/network/api_consumer.dart';
 import 'package:my_template/core/network/end_points.dart';
+import 'package:my_template/features/calendar/data/model/Events_response_model.dart';
 import 'package:my_template/features/calendar/data/model/add_event_request_model.dart';
 import 'package:my_template/features/calendar/data/model/add_event_response_model.dart';
 
@@ -11,7 +12,7 @@ import '../model/calendar_event_model.dart';
 abstract interface class CalendarRepo {
   Future<Either<Failure, List<ClassInfo>>> getClasses({required String userTypeId});
 
-  Future<Either<Failure, List<TeacherCalendarEvent>>> getEvents({required String userTypeId});
+  Future<Either<Failure, GetEventsResponse>> getEvents({required String date});
   Future<Either<Failure, AddEventResponseModel>> addEvent(AddEventRequestModel event);
 }
 
@@ -66,11 +67,14 @@ class CalendarRepoImpl implements CalendarRepo {
   }
 
   @override
-  Future<Either<Failure, List<TeacherCalendarEvent>>> getEvents({required String userTypeId}) {
+  Future<Either<Failure, GetEventsResponse>> getEvents({required String date}) {
     return handleDioRequest(
       request: () async {
-        // 🔜 role-based filtering ممكن يتحط هنا
-        return _teacherEvents;
+        final response = await apiConsumer.get(
+          EndPoints.getEvents,
+          queryParameters: {"EVENTDATE": date},
+        );
+        return GetEventsResponse.fromJson(response);
       },
     );
   }

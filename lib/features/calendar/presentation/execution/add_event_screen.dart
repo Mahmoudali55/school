@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
@@ -51,7 +52,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
   Future<void> _pickDate() async {
     final date = await showDatePicker(
       context: context,
-      firstDate: DateTime(2020),
+      firstDate: DateTime.now(),
       lastDate: DateTime(2030),
       initialDate: DateTime.now(),
     );
@@ -108,10 +109,10 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     title: AppLocalKay.event_title.tr(),
                     controller: titleController,
                     hintText: AppLocalKay.event_title_hint.tr(),
-                    validator: (value) => value!.isEmpty ? AppLocalKay.event_title_hint.tr() : null,
+                    validator: (value) => value!.isEmpty ? AppLocalKay.required.tr() : null,
                   ),
 
-                  SizedBox(height: 20.h),
+                  Gap(20.h),
 
                   /// Description
                   CustomFormField(
@@ -119,14 +120,11 @@ class _AddEventScreenState extends State<AddEventScreen> {
                     title: AppLocalKay.event_description.tr(),
                     controller: descriptionController,
                     hintText: AppLocalKay.event_description_hint.tr(),
-                    validator: (value) =>
-                        value!.isEmpty ? AppLocalKay.event_description_hint.tr() : null,
+                    validator: (value) => value!.isEmpty ? AppLocalKay.required.tr() : null,
 
                     maxLines: 3,
                   ),
-
-                  SizedBox(height: 20.h),
-
+                  Gap(20.h),
                   Row(
                     children: [
                       Expanded(
@@ -170,18 +168,13 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       ),
                     ],
                   ),
-
-                  SizedBox(height: 20.h),
-
-                  /// ---------------- Event Color ----------------
+                  Gap(20.h),
                   Text(AppLocalKay.event_Color.tr(), style: AppTextStyle.titleSmall(context)),
-                  SizedBox(height: 10.h),
-
+                  Gap(10.h),
                   Wrap(
                     spacing: 12.w,
                     children: eventColors.map((color) {
                       final bool isSelected = selectedColor == color;
-
                       return GestureDetector(
                         onTap: () => setState(() => selectedColor = color),
                         child: Container(
@@ -190,14 +183,15 @@ class _AddEventScreenState extends State<AddEventScreen> {
                           decoration: BoxDecoration(
                             color: color,
                             shape: BoxShape.circle,
-                            border: isSelected ? Border.all(color: Colors.black, width: 2.5) : null,
+                            border: isSelected
+                                ? Border.all(color: AppColor.blackColor(context), width: 2.5)
+                                : null,
                           ),
                         ),
                       );
                     }).toList(),
                   ),
-
-                  SizedBox(height: 100.h),
+                  Gap(100.h),
                   CustomButton(
                     color: widget.color,
                     child: context.watch<CalendarCubit>().state.addEventStatus.isLoading

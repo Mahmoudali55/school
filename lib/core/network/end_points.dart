@@ -40,4 +40,5 @@ class EndPoints {
   static const String deleteLessons = 'DeltagroupService/School/LessonDel';
   static const String editLessons = 'DeltagroupService/School/Editlessons';
   static const String addEvents = 'DeltagroupService/School/Addevents';
+  static const String getEvents = 'DeltagroupService/School/Getevents';
 }

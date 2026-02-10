@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/features/calendar/data/model/Events_response_model.dart';
 import 'package:my_template/features/calendar/data/model/add_event_response_model.dart';
 import 'package:my_template/features/calendar/data/model/calendar_event_model.dart';
 
@@ -13,6 +14,7 @@ class CalendarState extends Equatable {
   final StatusState<List<ClassInfo>> classesStatus;
   final StatusState<List<TeacherCalendarEvent>> eventsStatus;
   final StatusState<AddEventResponseModel> addEventStatus;
+  final StatusState<GetEventsResponse> getEventsStatus;
 
   const CalendarState({
     required this.selectedDate,
@@ -21,6 +23,7 @@ class CalendarState extends Equatable {
     this.classesStatus = const StatusState.initial(),
     this.eventsStatus = const StatusState.initial(),
     this.addEventStatus = const StatusState.initial(),
+    this.getEventsStatus = const StatusState.initial(),
   });
 
   /// Convenience Getters
@@ -35,6 +38,7 @@ class CalendarState extends Equatable {
     classesStatus,
     eventsStatus,
     addEventStatus,
+    getEventsStatus,
   ];
 
   CalendarState copyWith({
@@ -44,6 +48,7 @@ class CalendarState extends Equatable {
     StatusState<List<ClassInfo>>? classesStatus,
     StatusState<List<TeacherCalendarEvent>>? eventsStatus,
     StatusState<AddEventResponseModel>? addEventStatus,
+    StatusState<GetEventsResponse>? getEventsStatus,
   }) {
     return CalendarState(
       selectedDate: selectedDate ?? this.selectedDate,
@@ -52,6 +57,7 @@ class CalendarState extends Equatable {
       classesStatus: classesStatus ?? this.classesStatus,
       eventsStatus: eventsStatus ?? this.eventsStatus,
       addEventStatus: addEventStatus ?? this.addEventStatus,
+      getEventsStatus: getEventsStatus ?? this.getEventsStatus,
     );
   }
 

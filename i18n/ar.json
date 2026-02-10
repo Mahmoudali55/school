@@ -1076,5 +1076,6 @@
   "summarize_lesson_title": "تلخيص الدروس",
   "summarize_lesson_subtitle": "حول دروسك الطويلة إلى ملخصات ذكية وسهلة المذاكرة",
   "study_practice_title": "ممارسة واختبار ذاتي",
-  "study_practice_subtitle": "اختبر معلوماتك عبر توليد أسئلة ممارسة ذكية لدروسك"
+  "study_practice_subtitle": "اختبر معلوماتك عبر توليد أسئلة ممارسة ذكية لدروسك",
+  "required":"الحقل مطلوب"
 }

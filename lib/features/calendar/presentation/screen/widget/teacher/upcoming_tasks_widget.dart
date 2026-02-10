@@ -5,10 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
-import 'package:my_template/features/calendar/presentation/screen/widget/teacher/calendar_event_item_widget.dart';
+import 'package:my_template/features/calendar/presentation/cubit/calendar_cubit.dart';
+import 'package:my_template/features/calendar/presentation/cubit/calendar_state.dart';
 
-import '../../../cubit/calendar_cubit.dart';
-import '../../../cubit/calendar_state.dart';
+import 'api_event_item_widget.dart';
 
 class UpcomingTasksWidget extends StatelessWidget {
   const UpcomingTasksWidget({super.key});
@@ -17,7 +17,11 @@ class UpcomingTasksWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CalendarCubit, CalendarState>(
       builder: (context, state) {
-        final upcomingTasks = _getUpcomingTasks(state);
+        if (state.getEventsStatus.isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final events = state.getEventsStatus.data?.events ?? [];
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,46 +33,19 @@ class UpcomingTasksWidget extends StatelessWidget {
                   AppLocalKay.upcoming.tr(),
                   style: AppTextStyle.titleMedium(context).copyWith(color: const Color(0xFF1F2937)),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    // TODO: عرض جميع المهام
-                  },
-                  child: Text(
-                    AppLocalKay.show_all.tr(),
-                    style: AppTextStyle.bodyMedium(
-                      context,
-                    ).copyWith(color: AppColor.accentColor(context)),
-                  ),
-                ),
               ],
             ),
             SizedBox(height: 12.h),
-            if (upcomingTasks.isEmpty)
+            if (events.isEmpty)
               _buildEmptyTasks(context)
             else
               Column(
-                children: upcomingTasks
-                    .take(5)
-                    .map((task) => CalendarEventItemWidget(task: task))
-                    .toList(),
+                children: events.take(5).map((event) => ApiEventItemWidget(event: event)).toList(),
               ),
           ],
         );
       },
     );
-  }
-
-  List _getUpcomingTasks(CalendarState state) {
-    // الحصول على الأحداث القادمة في الأيام السبعة القادمة
-    final now = DateTime.now();
-    final nextWeek = now.add(const Duration(days: 7));
-
-    return state.events.where((event) {
-      return event.date.isAfter(now.subtract(const Duration(days: 1))) &&
-          event.date.isBefore(nextWeek.add(const Duration(days: 1))) &&
-          (event.type.name == AppLocalKay.complete.tr() ||
-              event.type.name == AppLocalKay.prepare.tr());
-    }).toList();
   }
 
   Widget _buildEmptyTasks(BuildContext context) {

@@ -8,8 +8,6 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../../cubit/calendar_cubit.dart';
 import '../../../cubit/calendar_state.dart';
-import 'calendar_event_dots.dart';
-import 'monthly_stats_widget.dart';
 import 'upcoming_tasks_widget.dart';
 
 class MonthlyViewWidget extends StatelessWidget {
@@ -23,13 +21,10 @@ class MonthlyViewWidget extends StatelessWidget {
           padding: EdgeInsets.all(16.w),
           child: Column(
             children: [
-              // التقويم
               _buildTableCalendar(context, state),
               SizedBox(height: 20.h),
-              // إحصائيات الشهر
-              MonthlyStatsWidget(selectedDate: state.selectedDate),
+              // MonthlyStatsWidget(selectedDate: state.selectedDate),
               SizedBox(height: 20.h),
-              // المهام القادمة
               const UpcomingTasksWidget(),
             ],
           ),
@@ -95,18 +90,67 @@ class MonthlyViewWidget extends StatelessWidget {
         ),
         calendarBuilders: CalendarBuilders(
           markerBuilder: (context, date, events) {
-            if (events.isNotEmpty) {
-              final dayEvents = state.getEventsForDay(date);
-              return CalendarEventDots(events: dayEvents);
+            // we will only show markers for the selected day since the API only returns events for one day at a time
+            if (isSameDay(date, state.selectedDate) &&
+                state.getEventsStatus.isSuccess &&
+                state.getEventsStatus.data != null) {
+              final apiEvents = state.getEventsStatus.data!.events;
+              if (apiEvents.isNotEmpty) {
+                return Positioned(
+                  bottom: 2,
+                  right: 0,
+                  left: 0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: apiEvents
+                        .take(3)
+                        .map(
+                          (event) => Container(
+                            width: 6.w,
+                            height: 6.w,
+                            margin: EdgeInsets.symmetric(horizontal: 1.w),
+                            decoration: BoxDecoration(
+                              color: _getColorFromString(event.eventColore),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                );
+              }
             }
             return null;
           },
         ),
-        eventLoader: (date) {
-          final events = state.getEventsForDay(date);
-          return events;
-        },
       ),
     );
+  }
+
+  Color _getColorFromString(String colorStr) {
+    switch (colorStr.toLowerCase()) {
+      case 'red':
+        return Colors.red;
+      case 'green':
+        return Colors.green;
+      case 'blue':
+        return Colors.blue;
+      case 'orange':
+        return Colors.orange;
+      case 'purple':
+        return Colors.purple;
+      case 'yellow':
+        return Colors.yellow;
+      default:
+        // Handle hex if provided
+        if (colorStr.startsWith('#')) {
+          try {
+            return Color(int.parse(colorStr.replaceFirst('#', '0xFF')));
+          } catch (e) {
+            return Colors.grey;
+          }
+        }
+        return Colors.grey;
+    }
   }
 }

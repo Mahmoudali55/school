@@ -14,7 +14,9 @@ class CalendarCubit extends Cubit<CalendarState> {
   final HomeRepo _homeRepo;
 
   CalendarCubit(this._calendarRepo, this._homeRepo)
-    : super(CalendarState(selectedDate: DateTime.now(), currentView: CalendarView.monthly));
+    : super(CalendarState(selectedDate: DateTime.now(), currentView: CalendarView.monthly)) {
+    getEvents();
+  }
 
   // ================== LOAD CALENDAR DATA ==================
   Future<void> getCalendarData(String userTypeId) async {
@@ -34,31 +36,6 @@ class CalendarCubit extends Cubit<CalendarState> {
       '3' || 'teacher' => 'teacher',
       _ => 'admin',
     };
-
-    final classesResult = await _calendarRepo.getClasses(userTypeId: normalizedType);
-    final eventsResult = await _calendarRepo.getEvents(userTypeId: normalizedType);
-
-    classesResult.fold(
-      (failure) {
-        emit(state.copyWith(classesStatus: StatusState.failure(failure.errMessage)));
-      },
-      (classes) {
-        eventsResult.fold(
-          (failure) {
-            emit(state.copyWith(eventsStatus: StatusState.failure(failure.errMessage)));
-          },
-          (events) {
-            emit(
-              state.copyWith(
-                classesStatus: StatusState.success(classes),
-                eventsStatus: StatusState.success(events),
-                selectedClass: state.selectedClass ?? (classes.isNotEmpty ? classes.first : null),
-              ),
-            );
-          },
-        );
-      },
-    );
   }
 
   // ================== LOAD TEACHER CLASSES ==================
@@ -111,6 +88,7 @@ class CalendarCubit extends Cubit<CalendarState> {
   // ================== UI ACTIONS ==================
   void changeDate(DateTime date) {
     emit(state.copyWith(selectedDate: date));
+    getEvents();
   }
 
   void changeView(CalendarView view) {
@@ -128,6 +106,7 @@ class CalendarCubit extends Cubit<CalendarState> {
       CalendarView.daily => state.selectedDate.subtract(const Duration(days: 1)),
     };
     emit(state.copyWith(selectedDate: newDate));
+    getEvents();
   }
 
   void goToNext() {
@@ -137,6 +116,7 @@ class CalendarCubit extends Cubit<CalendarState> {
       CalendarView.daily => state.selectedDate.add(const Duration(days: 1)),
     };
     emit(state.copyWith(selectedDate: newDate));
+    getEvents();
   }
 
   // ================== LOCAL EVENTS ==================
@@ -182,6 +162,20 @@ class CalendarCubit extends Cubit<CalendarState> {
     result.fold(
       (error) => emit(state.copyWith(addEventStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(addEventStatus: StatusState.success(success))),
+    );
+  }
+
+  Future<void> getEvents() async {
+    emit(state.copyWith(getEventsStatus: const StatusState.loading()));
+
+    // Format date as YYYY-MM-DD
+    final dateStr =
+        "${state.selectedDate.year}-${state.selectedDate.month.toString().padLeft(2, '0')}-${state.selectedDate.day.toString().padLeft(2, '0')}";
+
+    final result = await _calendarRepo.getEvents(date: dateStr);
+    result.fold(
+      (error) => emit(state.copyWith(getEventsStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(getEventsStatus: StatusState.success(success))),
     );
   }
 }

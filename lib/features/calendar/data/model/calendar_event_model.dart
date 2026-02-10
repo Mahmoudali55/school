@@ -66,6 +66,8 @@ class TeacherCalendarEvent extends Equatable {
   final String status;
   final DateTime? reminder;
 
+  final String? hexColor;
+
   const TeacherCalendarEvent({
     required this.id,
     required this.title,
@@ -78,6 +80,7 @@ class TeacherCalendarEvent extends Equatable {
     required this.className,
     required this.subject,
     this.status = "مخطط",
+    this.hexColor,
     this.reminder,
   });
 
@@ -94,6 +97,7 @@ class TeacherCalendarEvent extends Equatable {
     String? className,
     String? subject,
     String? status,
+    String? hexColor,
     DateTime? reminder,
   }) {
     return TeacherCalendarEvent(
@@ -108,12 +112,24 @@ class TeacherCalendarEvent extends Equatable {
       className: className ?? this.className,
       subject: subject ?? this.subject,
       status: status ?? this.status,
+      hexColor: hexColor ?? this.hexColor,
       reminder: reminder ?? this.reminder,
     );
   }
 
   // ===== UI helpers =====
-  Color get color => type.color;
+  Color get color {
+    if (hexColor != null && hexColor!.isNotEmpty) {
+      try {
+        final colorStr = hexColor!.replaceAll('#', '');
+        return Color(int.parse('FF$colorStr', radix: 16));
+      } catch (e) {
+        return type.color;
+      }
+    }
+    return type.color;
+  }
+
   IconData get icon => type.icon;
   String get typeName => type.name;
 
@@ -147,6 +163,7 @@ class TeacherCalendarEvent extends Equatable {
     className,
     subject,
     status,
+    hexColor,
     reminder,
   ];
 }

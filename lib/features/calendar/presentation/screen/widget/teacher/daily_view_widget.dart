@@ -5,10 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
-import 'package:my_template/features/calendar/data/model/calendar_event_model.dart';
 
 import '../../../cubit/calendar_cubit.dart';
 import '../../../cubit/calendar_state.dart';
+import 'api_event_item_widget.dart';
 
 class DailyViewWidget extends StatelessWidget {
   const DailyViewWidget({super.key});
@@ -17,20 +17,19 @@ class DailyViewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CalendarCubit, CalendarState>(
       builder: (context, state) {
-        final dailyEvents = state.getEventsForDay(state.selectedDate);
-        final dailyClasses = state.getDailyClasses(state.selectedDate);
-        final dailyTasks = state.getDailyTasks(state.selectedDate);
+        final events = state.getEventsStatus.data?.events ?? [];
 
         return SingleChildScrollView(
           padding: EdgeInsets.all(16.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildDailyHeader(state, dailyEvents.length, context: context),
+              _buildDailyHeader(state, events.length, context: context),
               SizedBox(height: 16.h),
-              _buildDailyTimetable(dailyClasses, context),
-              SizedBox(height: 20.h),
-              _buildDailyTasks(dailyTasks),
+              if (events.isEmpty)
+                _buildEmptySchedule(context)
+              else
+                Column(children: events.map((event) => ApiEventItemWidget(event: event)).toList()),
             ],
           ),
         );
@@ -130,54 +129,7 @@ class DailyViewWidget extends StatelessWidget {
   }
 
   String _getTeachingHours(CalendarState state) {
-    final dailyClasses = state.getDailyClasses(state.selectedDate);
-    double totalHours = 0;
-    for (var classEvent in dailyClasses) {
-      totalHours += classEvent.duration.inMinutes / 60;
-    }
-    return totalHours.toStringAsFixed(1);
-  }
-
-  Widget _buildDailyTimetable(List<TeacherCalendarEvent> dailyClasses, BuildContext context) {
-    if (dailyClasses.isEmpty) {
-      return _buildEmptySchedule(context);
-    }
-
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: AppColor.whiteColor(context),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: AppColor.whiteColor(context).withOpacity(0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 1),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            AppLocalKay.schedule_title.tr(),
-            style: AppTextStyle.titleMedium(context).copyWith(color: Color(0xFF1F2937)),
-          ),
-          SizedBox(height: 12.h),
-          Column(children: dailyClasses.map((classEvent) => _buildClassItem(classEvent)).toList()),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildClassItem(TeacherCalendarEvent classEvent) {
-    // ... كود عرض الحصة الفردية
-    return Container();
-  }
-
-  Widget _buildDailyTasks(List<TeacherCalendarEvent> dailyTasks) {
-    // ... كود المهام اليومية
-    return Container();
+    return "0.0";
   }
 
   Widget _buildEmptySchedule(BuildContext context) {
