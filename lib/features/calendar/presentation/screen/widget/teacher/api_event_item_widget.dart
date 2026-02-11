@@ -19,134 +19,184 @@ class ApiEventItemWidget extends StatelessWidget {
     final color = _getColorFromString(event.eventColore);
 
     return Container(
-      margin: EdgeInsets.only(bottom: 8.h),
-      padding: EdgeInsets.all(12.w),
+      margin: EdgeInsets.only(bottom: 12.h),
       decoration: BoxDecoration(
         color: AppColor.whiteColor(context),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: AppColor.blackColor(context).withValues(alpha: (0.03)),
-            blurRadius: 2,
-            offset: const Offset(0, 1),
+            color: AppColor.blackColor(context).withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Row(
-        children: [
-          Container(
-            width: 8.w,
-            height: 8.w,
-            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-          ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  event.eventTitel,
-                  style: AppTextStyle.bodyMedium(
-                    context,
-                  ).copyWith(color: AppColor.blackColor(context)),
-                ),
-                SizedBox(height: 2.h),
-                Text(
-                  event.eventDesc,
-                  style: AppTextStyle.bodySmall(
-                    context,
-                  ).copyWith(color: AppColor.greyColor(context)),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(height: 4.h),
-                Text(
-                  "${event.eventDate} • ${event.eventTime}",
-                  style: AppTextStyle.bodySmall(
-                    context,
-                  ).copyWith(color: AppColor.accentColor(context)),
-                ),
-              ],
-            ),
-          ),
-          PopupMenuButton<String>(
-            onSelected: (value) {
-              if (value == 'edit') {
-                final calendarCubit = context.read<CalendarCubit>();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BlocProvider.value(
-                      value: calendarCubit,
-                      child: AddEventScreen(
-                        color: AppColor.primaryColor(context, listen: false),
-                        eventToEdit: event,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: IntrinsicHeight(
+          child: Row(
+            children: [
+              // Colored Strip
+              Container(width: 6.w, color: color),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.all(16.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              event.eventTitel,
+                              style: AppTextStyle.titleSmall(
+                                context,
+                              ).copyWith(fontWeight: FontWeight.bold, fontSize: 16.sp),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          _buildActionMenu(context),
+                        ],
                       ),
-                    ),
-                  ),
-                );
-              } else if (value == 'delete') {
-                showDialog(
-                  context: context,
-                  builder: (ctx) => AlertDialog(
-                    title: Text(AppLocalKay.delete.tr(), style: AppTextStyle.titleLarge(context)),
-                    content: Text(
-                      AppLocalKay.delete_event_message.tr(),
-                      style: AppTextStyle.bodyMedium(context),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(ctx).pop(),
-                        child: Text(AppLocalKay.cancel.tr()),
+                      SizedBox(height: 8.h),
+                      Text(
+                        event.eventDesc,
+                        style: AppTextStyle.bodySmall(
+                          context,
+                        ).copyWith(color: AppColor.greyColor(context), height: 1.5),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      TextButton(
-                        onPressed: () {
-                          context.read<CalendarCubit>().deleteEvent(event.id);
-                          Navigator.of(ctx).pop();
-                        },
-                        child: Text(
-                          AppLocalKay.delete.tr(),
-                          style: TextStyle(color: AppColor.errorColor(context)),
-                        ),
+                      SizedBox(height: 12.h),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.access_time_rounded,
+                            size: 14.sp,
+                            color: AppColor.greyColor(context),
+                          ),
+                          SizedBox(width: 4.w),
+                          Text(
+                            "${event.eventDate} • ${event.eventTime}",
+                            style: AppTextStyle.bodySmall(context).copyWith(
+                              color: AppColor.greyColor(context),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                );
-              }
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              PopupMenuItem<String>(
-                value: 'edit',
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.edit,
-                      color: AppColor.primaryColor(context, listen: false),
-                      size: 18,
-                    ),
-                    SizedBox(width: 8.w),
-                    Text(AppLocalKay.edit.tr()),
-                  ],
-                ),
-              ),
-              PopupMenuItem<String>(
-                value: 'delete',
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.delete,
-                      color: AppColor.errorColor(context, listen: false),
-                      size: 18,
-                    ),
-                    SizedBox(width: 8.w),
-                    Text(AppLocalKay.delete.tr()),
-                  ],
                 ),
               ),
             ],
-            icon: Icon(Icons.more_vert, color: AppColor.greyColor(context)),
           ),
-        ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionMenu(BuildContext context) {
+    return PopupMenuButton<String>(
+      padding: EdgeInsets.zero,
+      constraints: BoxConstraints(minWidth: 120.w),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      onSelected: (value) {
+        if (value == 'edit') {
+          final calendarCubit = context.read<CalendarCubit>();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BlocProvider.value(
+                value: calendarCubit,
+                child: AddEventScreen(
+                  color: AppColor.primaryColor(context, listen: false),
+                  eventToEdit: event,
+                ),
+              ),
+            ),
+          );
+        } else if (value == 'delete') {
+          showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              title: Text(
+                AppLocalKay.delete.tr(),
+                style: AppTextStyle.titleLarge(context, listen: false),
+              ),
+              content: Text(
+                AppLocalKay.delete_event_message.tr(),
+                style: AppTextStyle.bodyMedium(context, listen: false),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(ctx).pop(),
+                  child: Text(
+                    AppLocalKay.cancel.tr(),
+                    style: AppTextStyle.bodyMedium(
+                      context,
+                      listen: false,
+                    ).copyWith(color: AppColor.greyColor(context, listen: false)),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    context.read<CalendarCubit>().deleteEvent(event.id);
+                    Navigator.of(ctx).pop();
+                  },
+                  child: Text(
+                    AppLocalKay.delete.tr(),
+                    style: AppTextStyle.bodyMedium(context, listen: false).copyWith(
+                      color: AppColor.errorColor(context, listen: false),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        PopupMenuItem<String>(
+          value: 'edit',
+          child: Row(
+            children: [
+              Icon(
+                Icons.edit_rounded,
+                color: AppColor.primaryColor(context, listen: false),
+                size: 20,
+              ),
+              SizedBox(width: 12.w),
+              Text(AppLocalKay.edit.tr(), style: AppTextStyle.bodyMedium(context, listen: false)),
+            ],
+          ),
+        ),
+        PopupMenuItem<String>(
+          value: 'delete',
+          child: Row(
+            children: [
+              Icon(
+                Icons.delete_rounded,
+                color: AppColor.errorColor(context, listen: false),
+                size: 20,
+              ),
+              SizedBox(width: 12.w),
+              Text(AppLocalKay.delete.tr(), style: AppTextStyle.bodyMedium(context, listen: false)),
+            ],
+          ),
+        ),
+      ],
+      child: Container(
+        padding: EdgeInsets.all(4.w),
+        decoration: BoxDecoration(
+          color: AppColor.greyColor(context).withOpacity(0.1),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(Icons.more_horiz_rounded, color: AppColor.greyColor(context), size: 20.sp),
       ),
     );
   }
