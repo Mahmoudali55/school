@@ -10,6 +10,11 @@ class Event extends Equatable {
   final String eventTime;
   final String eventColore;
 
+  final int sectionCode;
+  final int stageCode;
+  final int levelCode;
+  final int classCode;
+
   const Event({
     required this.id,
     required this.eventTitel,
@@ -17,21 +22,27 @@ class Event extends Equatable {
     required this.eventDate,
     required this.eventTime,
     required this.eventColore,
+    required this.sectionCode,
+    required this.stageCode,
+    required this.levelCode,
+    required this.classCode,
   });
 
-  // لتحويل JSON إلى كائن Event
   factory Event.fromJson(Map<String, dynamic> json) {
     return Event(
-      id: json['id'] as int,
-      eventTitel: json['event_titel'] as String,
-      eventDesc: json['event_Desc'] as String,
-      eventDate: json['event_date'] as String,
-      eventTime: json['event_time'] as String,
-      eventColore: json['event_colore'] as String,
+      id: json['id'] ?? 0,
+      eventTitel: json['event_titel'] ?? '',
+      eventDesc: json['event_Desc'] ?? '',
+      eventDate: json['event_date'] ?? '',
+      eventTime: json['event_time'] ?? '',
+      eventColore: json['event_colore'] ?? '',
+      sectionCode: json['SectionCode'] ?? 0,
+      stageCode: json['StageCode'] ?? 0,
+      levelCode: json['LevelCode'] ?? 0,
+      classCode: json['ClassCode'] ?? 0,
     );
   }
 
-  // لتحويل كائن Event إلى JSON
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -40,11 +51,26 @@ class Event extends Equatable {
       'event_date': eventDate,
       'event_time': eventTime,
       'event_colore': eventColore,
+      'SectionCode': sectionCode,
+      'StageCode': stageCode,
+      'LevelCode': levelCode,
+      'ClassCode': classCode,
     };
   }
 
   @override
-  List<Object?> get props => [id, eventTitel, eventDesc, eventDate, eventTime, eventColore];
+  List<Object?> get props => [
+    id,
+    eventTitel,
+    eventDesc,
+    eventDate,
+    eventTime,
+    eventColore,
+    sectionCode,
+    stageCode,
+    levelCode,
+    classCode,
+  ];
 }
 
 class GetEventsResponse extends Equatable {
@@ -53,9 +79,10 @@ class GetEventsResponse extends Equatable {
   const GetEventsResponse({required this.events});
 
   factory GetEventsResponse.fromJson(Map<String, dynamic> json) {
-    final dataString = json['Data'] as String;
+    final dataString = json['Data'] ?? '[]';
     final List<dynamic> dataList = jsonDecode(dataString);
-    final events = dataList.map((e) => Event.fromJson(e)).toList();
+    final events = dataList.map((e) => Event.fromJson(e as Map<String, dynamic>)).toList();
+
     return GetEventsResponse(events: events);
   }
 

@@ -8,6 +8,7 @@ import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/calendar/data/model/Events_response_model.dart';
 import 'package:my_template/features/calendar/presentation/cubit/calendar_cubit.dart';
 import 'package:my_template/features/calendar/presentation/execution/add_event_screen.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 
 class ApiEventItemWidget extends StatelessWidget {
   final Event event;
@@ -106,11 +107,16 @@ class ApiEventItemWidget extends StatelessWidget {
       onSelected: (value) {
         if (value == 'edit') {
           final calendarCubit = context.read<CalendarCubit>();
+          final homeCubit = context.read<HomeCubit>();
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => BlocProvider.value(
-                value: calendarCubit,
+              builder: (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(value: calendarCubit),
+                  BlocProvider.value(value: homeCubit),
+                ],
+
                 child: AddEventScreen(
                   color: AppColor.primaryColor(context, listen: false),
                   eventToEdit: event,

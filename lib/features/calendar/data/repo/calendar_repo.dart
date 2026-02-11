@@ -13,7 +13,10 @@ import '../model/calendar_event_model.dart';
 abstract interface class CalendarRepo {
   Future<Either<Failure, List<ClassInfo>>> getClasses({required String userTypeId});
 
-  Future<Either<Failure, GetEventsResponse>> getEvents({required String date});
+  Future<Either<Failure, GetEventsResponse>> getEvents({
+    required String date,
+    required int Classcode,
+  });
   Future<Either<Failure, AddEventResponseModel>> addEvent(AddEventRequestModel event);
   Future<Either<Failure, AddEventResponseModel>> editEvent(AddEventRequestModel event);
   Future<Either<Failure, EventsDelModel>> deleteEvent(int eventId);
@@ -70,12 +73,15 @@ class CalendarRepoImpl implements CalendarRepo {
   }
 
   @override
-  Future<Either<Failure, GetEventsResponse>> getEvents({required String date}) {
+  Future<Either<Failure, GetEventsResponse>> getEvents({
+    required String date,
+    required int Classcode,
+  }) {
     return handleDioRequest(
       request: () async {
         final response = await apiConsumer.get(
           EndPoints.getEvents,
-          queryParameters: {"EVENTDATE": date},
+          queryParameters: {"EVENTDATE": date, "Classcode": Classcode},
         );
         return GetEventsResponse.fromJson(response);
       },

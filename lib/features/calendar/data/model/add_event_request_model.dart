@@ -8,6 +8,11 @@ class AddEventRequestModel extends Equatable {
   final String eventTime;
   final String eventColor;
 
+  final int sectionCode;
+  final int stageCode;
+  final int levelCode;
+  final int classCode;
+
   const AddEventRequestModel({
     required this.id,
     required this.eventTitel,
@@ -15,6 +20,10 @@ class AddEventRequestModel extends Equatable {
     required this.eventDate,
     required this.eventTime,
     required this.eventColor,
+    required this.sectionCode,
+    required this.stageCode,
+    required this.levelCode,
+    required this.classCode,
   });
 
   Map<String, dynamic> toJson() {
@@ -25,6 +34,10 @@ class AddEventRequestModel extends Equatable {
       "eventdate": eventDate,
       "eventtime": eventTime,
       "eventcolore": eventColor,
+      "SectionCode": sectionCode,
+      "StageCode": stageCode,
+      "LevelCode": levelCode,
+      "ClassCode": classCode,
     };
   }
 
@@ -36,9 +49,24 @@ class AddEventRequestModel extends Equatable {
       eventDate: json["eventdate"] ?? "",
       eventTime: json["eventtime"] ?? "",
       eventColor: json["eventcolore"] ?? "",
+      sectionCode: json["SectionCode"] ?? 0,
+      stageCode: json["StageCode"] ?? 0,
+      levelCode: json["LevelCode"] ?? 0,
+      classCode: json["ClassCode"] ?? 0,
     );
   }
 
   @override
-  List<Object?> get props => [id, eventTitel, eventDesc, eventDate, eventTime, eventColor];
+  List<Object?> get props => [
+    id,
+    eventTitel,
+    eventDesc,
+    eventDate,
+    eventTime,
+    eventColor,
+    sectionCode,
+    stageCode,
+    levelCode,
+    classCode,
+  ];
 }
