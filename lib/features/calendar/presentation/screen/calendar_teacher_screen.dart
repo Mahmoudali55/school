@@ -1,11 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
-import 'package:my_template/core/custom_widgets/custom_form_field/custom_dropdown_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
-import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/calendar/data/model/calendar_event_model.dart';
 import 'package:my_template/features/calendar/presentation/cubit/calendar_cubit.dart';
 import 'package:my_template/features/calendar/presentation/cubit/calendar_state.dart';
@@ -16,7 +13,6 @@ import 'package:my_template/features/calendar/presentation/screen/widget/teacher
 import 'package:my_template/features/calendar/presentation/screen/widget/teacher/monthly_view_widget.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/teacher/weekly_view_widget.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
-import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 
 class CalendarTeacherScreen extends StatefulWidget {
   const CalendarTeacherScreen({super.key});
@@ -57,40 +53,6 @@ class _CalendarTeacherScreenState extends State<CalendarTeacherScreen> {
             const CalendarHeaderWidget(),
 
             // Level Dropdown
-            BlocBuilder<HomeCubit, HomeState>(
-              builder: (context, homeState) {
-                final levels = homeState.teacherLevelStatus.data ?? [];
-                if (levels.isEmpty) return const SizedBox.shrink();
-
-                return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: Column(
-                    children: [
-                      CustomDropdownFormField<int>(
-                        value: levels.any((e) => e.levelCode == _selectedLevelCode)
-                            ? _selectedLevelCode
-                            : null,
-                        hint: AppLocalKay.user_management_class.tr(),
-                        items: levels
-                            .map(
-                              (e) => DropdownMenuItem(value: e.levelCode, child: Text(e.levelName)),
-                            )
-                            .toList(),
-                        onChanged: (v) {
-                          setState(() {
-                            _selectedLevelCode = v;
-                          });
-                          _fetchClasses();
-                        },
-                        errorText: '',
-                        submitted: false,
-                      ),
-                      SizedBox(height: 16.h),
-                    ],
-                  ),
-                );
-              },
-            ),
 
             // اختيار الصف وشريط التحكم
             const ControlBarWidget(),

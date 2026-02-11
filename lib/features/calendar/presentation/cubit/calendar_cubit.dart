@@ -85,7 +85,7 @@ class CalendarCubit extends Cubit<CalendarState> {
         .toList();
   }
 
-  // ================== UI ACTIONS ==================
+  /* ================= UI ACTIONS ================= */
   void changeDate(DateTime date) {
     emit(state.copyWith(selectedDate: date));
     getEvents();
@@ -97,6 +97,7 @@ class CalendarCubit extends Cubit<CalendarState> {
 
   void changeClass(ClassInfo? selectedClass) {
     emit(state.copyWith(selectedClass: selectedClass));
+    getEvents();
   }
 
   void goToPrevious() {
@@ -119,7 +120,7 @@ class CalendarCubit extends Cubit<CalendarState> {
     getEvents();
   }
 
-  // ================== LOCAL EVENTS ==================
+  /* ================= LOCAL EVENTS ================= */
   void addEventLocal(TeacherCalendarEvent event) {
     final List<TeacherCalendarEvent> events = [
       ...state.eventsStatus.data ?? <TeacherCalendarEvent>[],
@@ -156,7 +157,7 @@ class CalendarCubit extends Cubit<CalendarState> {
   }
 
   Future<void> addEvent(AddEventRequestModel event) async {
-    emit(state.copyWith(addEventStatus: StatusState.loading()));
+    emit(state.copyWith(addEventStatus: const StatusState.loading()));
 
     final result = await _calendarRepo.addEvent(event);
     result.fold(
@@ -172,7 +173,9 @@ class CalendarCubit extends Cubit<CalendarState> {
     final dateStr =
         "${state.selectedDate.year}-${state.selectedDate.month.toString().padLeft(2, '0')}-${state.selectedDate.day.toString().padLeft(2, '0')}";
 
-    final result = await _calendarRepo.getEvents(date: dateStr);
+    final classCode = int.tryParse(state.selectedClass?.id ?? '0') ?? 0;
+
+    final result = await _calendarRepo.getEvents(date: dateStr, Classcode: classCode);
     result.fold(
       (error) => emit(state.copyWith(getEventsStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(getEventsStatus: StatusState.success(success))),
