@@ -645,6 +645,7 @@
   "school_calendar":"تقويم المدرسة",
   "school_statistics":"إحصائيات الشهر",
   "school_events":"اجتماعات",
+  "delete_event_message": "هل أنت متأكد من أنك تريد حذف هذا الحدث؟",
   "school_activities":"فعاليات",
   "school_exams":"اختبارات",
   "school_holidays":"عطلات",
@@ -1077,5 +1078,6 @@
   "summarize_lesson_subtitle": "حول دروسك الطويلة إلى ملخصات ذكية وسهلة المذاكرة",
   "study_practice_title": "ممارسة واختبار ذاتي",
   "study_practice_subtitle": "اختبر معلوماتك عبر توليد أسئلة ممارسة ذكية لدروسك",
-  "required":"الحقل مطلوب"
+  "required":"الحقل مطلوب",
+  "event":"احداث"
 }

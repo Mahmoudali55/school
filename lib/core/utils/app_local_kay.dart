@@ -602,6 +602,7 @@ class AppLocalKay {
   static const String school_calendar = "school_calendar";
   static const String school_statistics = "school_statistics";
   static const String school_events = "school_events";
+  static const String delete_event_message = "delete_event_message";
   static const String school_activities = "school_activities";
   static const String school_exams = "school_exams";
   static const String school_holidays = "school_holidays";
@@ -1036,4 +1037,5 @@ class AppLocalKay {
   static const String study_practice_title = 'study_practice_title';
   static const String study_practice_subtitle = 'study_practice_subtitle';
   static const String required = 'required';
+  static const String event = 'event';
 }

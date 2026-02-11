@@ -27,7 +27,7 @@ class UpcomingTasksWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  AppLocalKay.upcoming.tr(),
+                  "${AppLocalKay.upcoming.tr()} (${events.length} ${AppLocalKay.event.tr()})",
                   style: AppTextStyle.titleMedium(context).copyWith(color: const Color(0xFF1F2937)),
                 ),
               ],

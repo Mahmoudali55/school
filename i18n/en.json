@@ -1014,5 +1014,6 @@
   "summarize_lesson_subtitle": "Turn long lessons into smart, easy-to-study summaries",
   "study_practice_title": "Practice & Self-Quiz",
   "study_practice_subtitle": "Test your knowledge with smart practice questions",
-  "required": "Required"
+  "required": "Required",
+   "event": "Event"
 }
