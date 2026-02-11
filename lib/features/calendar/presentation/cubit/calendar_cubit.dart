@@ -14,8 +14,23 @@ class CalendarCubit extends Cubit<CalendarState> {
   final HomeRepo _homeRepo;
 
   CalendarCubit(this._calendarRepo, this._homeRepo)
-    : super(CalendarState(selectedDate: DateTime.now(), currentView: CalendarView.monthly)) {
-    getEvents();
+    : super(
+        CalendarState(
+          selectedDate: DateTime.now(),
+          currentView: CalendarView.monthly,
+          selectedClass: HiveMethods.getUserClassCode().toString().isNotEmpty
+              ? ClassInfo(
+                  id: HiveMethods.getUserClassCode().toString(),
+                  name: '',
+                  grade: '',
+                  specialization: '',
+                )
+              : null,
+        ),
+      ) {
+    if (state.selectedClass != null) {
+      getEvents();
+    }
   }
 
   // ================== LOAD CALENDAR DATA ==================
@@ -28,14 +43,6 @@ class CalendarCubit extends Cubit<CalendarState> {
         eventsStatus: const StatusState.loading(),
       ),
     );
-
-    final cleanType = userTypeId.trim();
-    final normalizedType = switch (cleanType) {
-      '1' || 'student' => 'student',
-      '2' || 'parent' => 'parent',
-      '3' || 'teacher' => 'teacher',
-      _ => 'admin',
-    };
   }
 
   // ================== LOAD TEACHER CLASSES ==================
@@ -97,6 +104,26 @@ class CalendarCubit extends Cubit<CalendarState> {
 
   void changeClass(ClassInfo? selectedClass) {
     emit(state.copyWith(selectedClass: selectedClass));
+    getEvents();
+  }
+
+  void updateParentClasses(List<ClassInfo> classes) {
+    if (classes.isEmpty) return;
+    emit(state.copyWith(classesStatus: StatusState.success(classes), selectedClass: classes.first));
+    getEvents();
+  }
+
+  void changeStudent(int studentClassCode) {
+    emit(
+      state.copyWith(
+        selectedClass: ClassInfo(
+          id: studentClassCode.toString(),
+          name: '',
+          grade: '',
+          specialization: '',
+        ),
+      ),
+    );
     getEvents();
   }
 

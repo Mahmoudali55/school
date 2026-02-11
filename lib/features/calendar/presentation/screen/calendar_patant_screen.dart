@@ -1,7 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/features/calendar/data/model/calendar_event_model.dart';
+import 'package:my_template/features/calendar/presentation/cubit/calendar_cubit.dart';
+import 'package:my_template/features/calendar/presentation/cubit/calendar_state.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/parent/parent_calendar_control_bar.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/parent/parent_calendar_header.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/parent/parent_calendar_models.dart';
@@ -10,6 +14,10 @@ import 'package:my_template/features/calendar/presentation/screen/widget/parent/
 import 'package:my_template/features/calendar/presentation/screen/widget/parent/parent_weekly_view.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
+import 'package:my_template/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:my_template/features/profile/presentation/cubit/profile_state.dart';
+
+import '../../data/model/Events_response_model.dart';
 
 class CalendarPatentScreen extends StatefulWidget {
   const CalendarPatentScreen({super.key});
@@ -19,123 +27,171 @@ class CalendarPatentScreen extends StatefulWidget {
 }
 
 class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
-  DateTime _selectedDate = DateTime.now();
-  int _currentView = 0; // 0: شهري, 1: أسبوعي, 2: يومي
   String _selectedStudent = "";
+  bool _isInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final homeState = context.read<HomeCubit>().state;
+    if (homeState.parentsStudentStatus.isSuccess) {
+      final students = homeState.parentsStudentStatus.data!;
+      if (students.isNotEmpty) {
+        _isInitialized = true;
+        _selectedStudent = students.first.studentName;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          context.read<CalendarCubit>().changeStudent(students.first.classCode);
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
-      builder: (context, state) {
-        List<String> students = [];
-        if (state.parentsStudentStatus.isSuccess) {
-          students = state.parentsStudentStatus.data!.map((e) => e.studentName).toList();
-          if (students.isNotEmpty && _selectedStudent.isEmpty) {
-            // Initialize selected student if empty
-            _selectedStudent = students.first;
-          } else if (students.isNotEmpty && !students.contains(_selectedStudent)) {
-            // Reset if selected student is not in the new list
-            _selectedStudent = students.first;
-          }
-        }
-
-        // Ensure "جميع الأبناء" or similar option if needed, but for now matching previous logic
-        // logic says: String _selectedStudent = "أحمد"; // initially
-
-        return Scaffold(
-          backgroundColor: AppColor.whiteColor(context),
-          body: SafeArea(
-            child: Column(
-              children: [
-                ParentCalendarHeader(
-                  selectedDate: _selectedDate,
-                  getFormattedDate: _getFormattedDate,
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<HomeCubit, HomeState>(
+          listener: (context, homeState) {
+            if (homeState.parentsStudentStatus.isSuccess && !_isInitialized) {
+              final students = homeState.parentsStudentStatus.data!;
+              if (students.isNotEmpty) {
+                _isInitialized = true;
+                _selectedStudent = students.first.studentName;
+                context.read<ProfileCubit>().StudentProfile(students.first.studentCode);
+              }
+            }
+          },
+        ),
+        BlocListener<ProfileCubit, ProfileState>(
+          listener: (context, profileState) {
+            if (profileState.studentProfileStatus.isSuccess) {
+              final profile = profileState.studentProfileStatus.data!;
+              final classInfo = ClassInfo(
+                id: profile.classCode.toString(),
+                name: profile.className,
+                grade: profile.levelName,
+                specialization: profile.className,
+              );
+              context.read<CalendarCubit>().emit(
+                context.read<CalendarCubit>().state.copyWith(
+                  classesStatus: StatusState.success([classInfo]),
+                  selectedClass: classInfo,
                 ),
-                ParentCalendarControlBar(
-                  selectedStudent: _selectedStudent.isEmpty && students.isNotEmpty
-                      ? students.first
-                      : _selectedStudent,
-                  students: students,
-                  currentView: _currentView,
-                  onStudentChanged: (student) => setState(() => _selectedStudent = student),
-                  onViewSelected: (index) => setState(() => _currentView = index),
-                  onPrevious: _goToPrevious,
-                  onNext: _goToNext,
+              );
+              context.read<CalendarCubit>().getEvents();
+            }
+          },
+        ),
+      ],
+      child: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, homeState) {
+          return BlocBuilder<CalendarCubit, CalendarState>(
+            builder: (context, calendarState) {
+              final calendarCubit = context.read<CalendarCubit>();
+              List<String> studentNames = [];
+
+              if (homeState.parentsStudentStatus.isSuccess) {
+                final students = homeState.parentsStudentStatus.data!;
+                for (var s in students) {
+                  studentNames.add(s.studentName);
+                }
+
+                if (studentNames.isNotEmpty && _selectedStudent.isEmpty) {
+                  _selectedStudent = studentNames.first;
+                }
+              }
+
+              return Scaffold(
+                backgroundColor: AppColor.whiteColor(context),
+                body: SafeArea(
+                  child: Column(
+                    children: [
+                      ParentCalendarHeader(
+                        selectedDate: calendarState.selectedDate,
+                        getFormattedDate: _getFormattedDate,
+                      ),
+                      ParentCalendarControlBar(
+                        selectedStudent: _selectedStudent,
+                        students: studentNames,
+                        classes: calendarState.classesStatus.data ?? [],
+                        selectedClass: calendarState.selectedClass,
+                        currentView: calendarState.currentView.index,
+                        onStudentChanged: (studentName) {
+                          setState(() {
+                            _selectedStudent = studentName;
+                          });
+                          final student = homeState.parentsStudentStatus.data!.firstWhere(
+                            (s) => s.studentName == studentName,
+                          );
+                          context.read<ProfileCubit>().StudentProfile(student.studentCode);
+                        },
+                        onClassChanged: (selectedClass) {
+                          calendarCubit.changeClass(selectedClass);
+                        },
+                        onViewSelected: (index) =>
+                            calendarCubit.changeView(CalendarView.values[index]),
+                        onPrevious: calendarCubit.goToPrevious,
+                        onNext: calendarCubit.goToNext,
+                      ),
+                      if (homeState.parentsStudentStatus.isLoading) const LinearProgressIndicator(),
+                      Expanded(
+                        child: _buildCalendarContent(calendarState, calendarCubit, studentNames),
+                      ),
+                    ],
+                  ),
                 ),
-                if (state.parentsStudentStatus.isLoading && students.isEmpty)
-                  const LinearProgressIndicator(),
-                Expanded(child: _buildCalendarContent(students)),
-              ],
-            ),
-          ),
-        );
-      },
+              );
+            },
+          );
+        },
+      ),
     );
   }
 
-  Widget _buildCalendarContent(List<String> students) {
-    switch (_currentView) {
-      case 0:
+  Widget _buildCalendarContent(
+    CalendarState state,
+    CalendarCubit cubit,
+    List<String> studentNames,
+  ) {
+    switch (state.currentView) {
+      case CalendarView.monthly:
         return ParentMonthlyView(
-          selectedDate: _selectedDate,
-          onDateSelected: (date) => setState(() => _selectedDate = date),
-          getEventsForDay: _getEventsForDay,
-          getEventsForMonth: _getEventsForMonth,
-          upcomingEvents: _getUpcomingEvents(),
+          selectedDate: state.selectedDate,
+          onDateSelected: cubit.changeDate,
+          getEventsForDay: (day) => _mapToParentEvents(state.getEventsForDay(day)),
+          getEventsForMonth: (month) => _mapToParentEvents(state.getEventsForMonth(month)),
+          upcomingEvents: _mapToParentEvents(state.getEventsForMonth(state.selectedDate)),
         );
-      case 1:
+      case CalendarView.weekly:
         return ParentWeeklyView(
-          selectedDate: _selectedDate,
-          students: students,
-          onDateSelected: (date) => setState(() => _selectedDate = date),
-          getEventsForDay: _getEventsForDay,
-          getEventsForStudent: _getEventsForStudent,
+          selectedDate: state.selectedDate,
+          students: studentNames,
+          onDateSelected: cubit.changeDate,
+          getEventsForDay: (day) => _mapToParentEvents(state.getEventsForDay(day)),
+          getEventsForStudent: (student) =>
+              _mapToParentEvents(state.getEventsForDay(state.selectedDate)), // Simplified
           getDayName: _getDayName,
           isSameDay: _isSameDay,
         );
-      case 2:
+      case CalendarView.daily:
         return ParentDailyView(
-          selectedDate: _selectedDate,
-          dailyEvents: _getEventsForDay(_selectedDate),
+          selectedDate: state.selectedDate,
+          dailyEvents: _mapToParentEvents(state.getEventsForDay(state.selectedDate)),
           getFormattedDate: _getFormattedDate,
         );
       default:
         return ParentMonthlyView(
-          selectedDate: _selectedDate,
-          onDateSelected: (date) => setState(() => _selectedDate = date),
-          getEventsForDay: _getEventsForDay,
-          getEventsForMonth: _getEventsForMonth,
-          upcomingEvents: _getUpcomingEvents(),
+          selectedDate: state.selectedDate,
+          onDateSelected: cubit.changeDate,
+          getEventsForDay: (day) => _mapToParentEvents(state.getEventsForDay(day)),
+          getEventsForMonth: (month) => _mapToParentEvents(state.getEventsForMonth(month)),
+          upcomingEvents: _mapToParentEvents(state.getEventsForMonth(state.selectedDate)),
         );
     }
   }
 
   String _getFormattedDate(DateTime date) {
     return DateFormat('EEEE, d MMMM y', 'ar').format(date);
-  }
-
-  void _goToPrevious() {
-    setState(() {
-      if (_currentView == 2) {
-        _selectedDate = _selectedDate.subtract(const Duration(days: 1));
-      } else if (_currentView == 1) {
-        _selectedDate = _selectedDate.subtract(const Duration(days: 7));
-      } else {
-        _selectedDate = DateTime(_selectedDate.year, _selectedDate.month - 1, _selectedDate.day);
-      }
-    });
-  }
-
-  void _goToNext() {
-    setState(() {
-      if (_currentView == 2) {
-        _selectedDate = _selectedDate.add(const Duration(days: 1));
-      } else if (_currentView == 1) {
-        _selectedDate = _selectedDate.add(const Duration(days: 7));
-      } else {
-        _selectedDate = DateTime(_selectedDate.year, _selectedDate.month + 1, _selectedDate.day);
-      }
-    });
   }
 
   String _getDayName(int weekday) {
@@ -147,55 +203,30 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
     return a.year == b.year && a.month == b.month && a.day == b.day;
   }
 
-  // بيانات تجريبية للأحداث
-  List<ParentCalendarEvent> _getEventsForDay(DateTime day) {
-    List<ParentCalendarEvent> allEvents = [
-      ParentCalendarEvent(
-        title: "اختبار مادة العلوم",
-        date: "١٥ نوفمبر",
-        time: "٨:٣٠ ص - ١٠:٠٠ ص",
-        type: "امتحان",
-        color: const Color(0xFFDC2626),
-        location: "مبنى ب - الطابق الثاني",
-        description: "اختبار الفصل الأول في مادة العلوم العامة",
-        student: "أحمد",
-      ),
-      ParentCalendarEvent(
-        title: "اجتماع أولياء الأمور",
-        date: "١٥ نوفمبر",
-        time: "١:٠٠ م - ٢:٠٠ م",
-        type: "اجتماع",
-        color: const Color(0xFFF59E0B),
-        location: "قاعة الاجتماعات",
-        description: "مناقشة المستوى الدراسي",
-        student: "جميع الأبناء",
-      ),
-      ParentCalendarEvent(
-        title: "رحلة علمية",
-        date: "٢٠ نوفمبر",
-        time: "٨:٠٠ ص - ١٢:٠٠ م",
-        type: "نشاط",
-        color: const Color(0xFF7C3AED),
-        location: "متحف العلوم",
-        description: "زيارة إلى متحف العلوم الوطني",
-        student: "محمد",
-      ),
-    ];
-
-    return allEvents.where((event) => event.date.contains('${day.day}')).toList();
-  }
-
-  List<ParentCalendarEvent> _getEventsForMonth(DateTime month) {
-    return _getEventsForDay(month);
-  }
-
-  List<ParentCalendarEvent> _getEventsForStudent(String student) {
-    return _getEventsForDay(
-      _selectedDate,
-    ).where((event) => event.student == student || event.student == "جميع الأبناء").toList();
-  }
-
-  List<ParentCalendarEvent> _getUpcomingEvents() {
-    return _getEventsForDay(_selectedDate);
+  List<ParentCalendarEvent> _mapToParentEvents(List<dynamic> events) {
+    return events.map((e) {
+      if (e is Event) {
+        return ParentCalendarEvent(
+          title: e.eventTitel,
+          date: e.eventDate,
+          time: e.eventTime,
+          type: "حدث",
+          color: Color(int.tryParse(e.eventColore.replaceFirst('#', '0xFF')) ?? 0xFF10B981),
+          location: "",
+          description: e.eventDesc,
+          student: _selectedStudent,
+        );
+      }
+      return ParentCalendarEvent(
+        title: "حدث غير معروف",
+        date: "",
+        time: "",
+        type: "",
+        color: Colors.grey,
+        location: "",
+        description: "",
+        student: "",
+      );
+    }).toList();
   }
 }

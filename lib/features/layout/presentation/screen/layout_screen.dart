@@ -13,6 +13,7 @@ import 'package:my_template/features/layout/presentation/screen/widget/bottom_na
 import 'package:my_template/features/layout/presentation/screen/widget/get_screen_widget.dart';
 import 'package:my_template/features/layout/presentation/screen/widget/nav_Item_data_widget.dart';
 import 'package:my_template/features/notifications/presentation/cubit/notification_cubit.dart';
+import 'package:my_template/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:my_template/features/setting/presentation/cubit/settings_cubit.dart';
 
 class LayoutScreen extends StatefulWidget {
@@ -98,6 +99,7 @@ class _LayoutScreenState extends State<LayoutScreen> {
         ),
         BlocProvider(create: (context) => sl<NotificationCubit>()..loadNotifications()),
         BlocProvider(create: (context) => sl<SettingsCubit>()..loadSettings()),
+        BlocProvider(create: (context) => sl<ProfileCubit>(), lazy: true),
       ],
       child: Scaffold(
         backgroundColor: AppColor.scaffoldColor(context),

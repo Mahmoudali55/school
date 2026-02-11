@@ -74,8 +74,8 @@ class CalendarState extends Equatable {
 
   /* ================= Helpers ================= */
 
-  List<TeacherCalendarEvent> getEventsForDay(DateTime day) {
-    return events
+  List<dynamic> getEventsForDay(DateTime day) {
+    final teacherEvents = events
         .where(
           (event) =>
               event.date.year == day.year &&
@@ -83,41 +83,83 @@ class CalendarState extends Equatable {
               event.date.day == day.day,
         )
         .toList();
+
+    final apiEventsList = getEventsStatus.data?.events ?? [];
+    final apiEvents = apiEventsList
+        .where(
+          (event) =>
+              event.date.year == day.year &&
+              event.date.month == day.month &&
+              event.date.day == day.day,
+        )
+        .toList();
+
+    return [...teacherEvents, ...apiEvents];
   }
 
-  List<TeacherCalendarEvent> getEventsForWeek(DateTime startOfWeek) {
+  List<dynamic> getEventsForWeek(DateTime startOfWeek) {
     final endOfWeek = startOfWeek.add(const Duration(days: 6));
-    return events
+    final teacherEvents = events
         .where(
           (event) =>
               event.date.isAfter(startOfWeek.subtract(const Duration(days: 1))) &&
               event.date.isBefore(endOfWeek.add(const Duration(days: 1))),
         )
         .toList();
+
+    final apiEventsList = getEventsStatus.data?.events ?? [];
+    final apiEvents = apiEventsList
+        .where(
+          (event) =>
+              event.date.isAfter(startOfWeek.subtract(const Duration(days: 1))) &&
+              event.date.isBefore(endOfWeek.add(const Duration(days: 1))),
+        )
+        .toList();
+
+    return [...teacherEvents, ...apiEvents];
   }
 
-  List<TeacherCalendarEvent> getEventsForMonth(DateTime month) {
-    return events
+  List<dynamic> getEventsForMonth(DateTime month) {
+    final teacherEvents = events
         .where((event) => event.date.year == month.year && event.date.month == month.month)
+        .toList();
+
+    final apiEventsList = getEventsStatus.data?.events ?? [];
+    final apiEvents = apiEventsList
+        .where((event) => event.date.year == month.year && event.date.month == month.month)
+        .toList();
+
+    return [...teacherEvents, ...apiEvents];
+  }
+
+  List<dynamic> getDailyClasses(DateTime day) {
+    return getEventsForDay(day)
+        .where((event) => event is TeacherCalendarEvent && event.type == EventType.classEvent)
         .toList();
   }
 
-  List<TeacherCalendarEvent> getDailyClasses(DateTime day) {
-    return getEventsForDay(day).where((event) => event.type == EventType.classEvent).toList();
-  }
-
-  List<TeacherCalendarEvent> getDailyTasks(DateTime day) {
+  List<dynamic> getDailyTasks(DateTime day) {
     return getEventsForDay(day)
-        .where((event) => event.type == EventType.correction || event.type == EventType.preparation)
+        .where(
+          (event) =>
+              event is TeacherCalendarEvent &&
+              (event.type == EventType.correction || event.type == EventType.preparation),
+        )
         .toList();
   }
 
   Map<String, int> getMonthlyStats(DateTime month) {
     final monthEvents = getEventsForMonth(month);
     return {
-      'classes': monthEvents.where((e) => e.type == EventType.classEvent).length,
-      'exams': monthEvents.where((e) => e.type == EventType.exam).length,
-      'meetings': monthEvents.where((e) => e.type == EventType.meeting).length,
+      'classes': monthEvents
+          .where((e) => e is TeacherCalendarEvent && e.type == EventType.classEvent)
+          .length,
+      'exams': monthEvents
+          .where((e) => e is TeacherCalendarEvent && e.type == EventType.exam)
+          .length,
+      'meetings': monthEvents
+          .where((e) => e is TeacherCalendarEvent && e.type == EventType.meeting)
+          .length,
     };
   }
 }

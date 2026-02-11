@@ -58,6 +58,16 @@ class Event extends Equatable {
     };
   }
 
+  DateTime get date {
+    try {
+      final parts = eventDate.split('/');
+      if (parts.length == 3) {
+        return DateTime(int.parse(parts[2]), int.parse(parts[1]), int.parse(parts[0]));
+      }
+    } catch (_) {}
+    return DateTime.now();
+  }
+
   @override
   List<Object?> get props => [
     id,

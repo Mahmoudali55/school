@@ -78,6 +78,14 @@ class HiveMethods {
     _box.put('sectionCode', sectionCode);
   }
 
+  static void updateUserClassCode(String classCode) {
+    _box.put('classCode', classCode);
+  }
+
+  static getUserClassCode() {
+    return _box.get('classCode', defaultValue: '');
+  }
+
   static getUserLevelCode() {
     return _box.get('levelCode', defaultValue: '');
   }

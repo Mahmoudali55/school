@@ -4,12 +4,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/calendar/data/model/calendar_event_model.dart';
 
 class ParentCalendarControlBar extends StatelessWidget {
   final String? selectedStudent;
   final List<String> students;
+  final List<ClassInfo> classes;
+  final ClassInfo? selectedClass;
   final int currentView;
   final Function(String) onStudentChanged;
+  final Function(ClassInfo) onClassChanged;
   final Function(int) onViewSelected;
   final VoidCallback onPrevious;
   final VoidCallback onNext;
@@ -18,8 +22,11 @@ class ParentCalendarControlBar extends StatelessWidget {
     super.key,
     this.selectedStudent,
     required this.students,
+    required this.classes,
+    this.selectedClass,
     required this.currentView,
     required this.onStudentChanged,
+    required this.onClassChanged,
     required this.onViewSelected,
     required this.onPrevious,
     required this.onNext,
@@ -34,6 +41,7 @@ class ParentCalendarControlBar extends StatelessWidget {
         children: [
           // اختيار الطالب
           _buildStudentSelector(context),
+          if (classes.isNotEmpty) ...[SizedBox(height: 8.h), _buildClassSelector(context)],
           SizedBox(height: 12.h),
           // شريط العرض والتنقل
           Row(
@@ -144,6 +152,46 @@ class ParentCalendarControlBar extends StatelessWidget {
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildClassSelector(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: const Color(0xFFF0FDF4),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: const Color(0xFF22C55E).withOpacity(0.3)),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<ClassInfo>(
+          value: selectedClass,
+          hint: Text(AppLocalKay.classes.tr(), style: AppTextStyle.bodySmall(context)),
+          icon: const Icon(Icons.arrow_drop_down_rounded, color: Color(0xFF22C55E)),
+          isExpanded: true,
+          style: AppTextStyle.bodyMedium(
+            context,
+          ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
+          onChanged: (ClassInfo? newValue) {
+            if (newValue != null) {
+              onClassChanged(newValue);
+            }
+          },
+          items: classes.map<DropdownMenuItem<ClassInfo>>((ClassInfo value) {
+            return DropdownMenuItem<ClassInfo>(
+              value: value,
+              child: Row(
+                children: [
+                  Icon(Icons.class_outlined, size: 16.w, color: const Color(0xFF22C55E)),
+                  SizedBox(width: 6.w),
+                  Text(value.name),
+                ],
+              ),
+            );
+          }).toList(),
         ),
       ),
     );

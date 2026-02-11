@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/features/calendar/data/model/calendar_event_model.dart';
+import 'package:my_template/features/calendar/presentation/cubit/calendar_cubit.dart';
+import 'package:my_template/features/calendar/presentation/cubit/calendar_state.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/student/student_calendar_control_bar.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/student/student_calendar_header.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/student/student_calendar_models.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/student/student_daily_view.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/student/student_monthly_view.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/student/student_weekly_view.dart';
+
+import '../../data/model/Events_response_model.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
@@ -15,91 +21,71 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  DateTime _selectedDate = DateTime.now();
-  int _currentView = 0; // 0: شهري, 1: أسبوعي, 2: يومي
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.whiteColor(context),
-      body: SafeArea(
-        child: Column(
-          children: [
-            // رأس الصفحة
-            StudentCalendarHeader(selectedDate: _selectedDate, getFormattedDate: _getFormattedDate),
-            // شريط التحكم
-            StudentCalendarControlBar(
-              currentView: _currentView,
-              onViewSelected: (index) => setState(() => _currentView = index),
-              onPrevious: _goToPrevious,
-              onNext: _goToNext,
+    return BlocBuilder<CalendarCubit, CalendarState>(
+      builder: (context, state) {
+        final cubit = context.read<CalendarCubit>();
+        return Scaffold(
+          backgroundColor: AppColor.whiteColor(context),
+          body: SafeArea(
+            child: Column(
+              children: [
+                // رأس الصفحة
+                StudentCalendarHeader(
+                  selectedDate: state.selectedDate,
+                  getFormattedDate: _getFormattedDate,
+                ),
+                // شريط التحكم
+                StudentCalendarControlBar(
+                  currentView: state.currentView.index,
+                  onViewSelected: (index) => cubit.changeView(CalendarView.values[index]),
+                  onPrevious: cubit.goToPrevious,
+                  onNext: cubit.goToNext,
+                ),
+                // عرض التقويم
+                Expanded(child: _buildCalendarContent(state, cubit)),
+              ],
             ),
-            // عرض التقويم
-            Expanded(child: _buildCalendarContent()),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildCalendarContent() {
-    switch (_currentView) {
-      case 0:
+  Widget _buildCalendarContent(CalendarState state, CalendarCubit cubit) {
+    switch (state.currentView) {
+      case CalendarView.monthly:
         return StudentMonthlyView(
-          selectedDate: _selectedDate,
-          onDateSelected: (date) => setState(() => _selectedDate = date),
-          getEventsForDay: _getEventsForDay,
-          upcomingEvents: _getUpcomingEvents(),
+          selectedDate: state.selectedDate,
+          onDateSelected: cubit.changeDate,
+          getEventsForDay: (day) => _mapToStudentEvents(state.getEventsForDay(day)),
+          upcomingEvents: _mapToStudentEvents(state.getEventsForMonth(state.selectedDate)),
         );
-      case 1:
+      case CalendarView.weekly:
         return StudentWeeklyView(
-          selectedDate: _selectedDate,
-          onDateSelected: (date) => setState(() => _selectedDate = date),
-          getEventsForDay: _getEventsForDay,
+          selectedDate: state.selectedDate,
+          onDateSelected: cubit.changeDate,
+          getEventsForDay: (day) => _mapToStudentEvents(state.getEventsForDay(day)),
           getDayName: _getDayName,
           isSameDay: _isSameDay,
-          upcomingEvents: _getUpcomingEvents(),
+          upcomingEvents: _mapToStudentEvents(state.getEventsForWeek(state.selectedDate)),
         );
-      case 2:
+      case CalendarView.daily:
         return StudentDailyView(
-          selectedDate: _selectedDate,
-          dailyEvents: _getEventsForDay(_selectedDate),
+          selectedDate: state.selectedDate,
+          dailyEvents: _mapToStudentEvents(state.getEventsForDay(state.selectedDate)),
           getFormattedDate: _getFormattedDate,
           getDayName: _getDayName,
         );
       default:
         return StudentMonthlyView(
-          selectedDate: _selectedDate,
-          onDateSelected: (date) => setState(() => _selectedDate = date),
-          getEventsForDay: _getEventsForDay,
-          upcomingEvents: _getUpcomingEvents(),
+          selectedDate: state.selectedDate,
+          onDateSelected: cubit.changeDate,
+          getEventsForDay: (day) => _mapToStudentEvents(state.getEventsForDay(day)),
+          upcomingEvents: _mapToStudentEvents(state.getEventsForMonth(state.selectedDate)),
         );
     }
-  }
-
-  // الدوال المساعدة
-  void _goToPrevious() {
-    setState(() {
-      if (_currentView == 0) {
-        _selectedDate = DateTime(_selectedDate.year, _selectedDate.month - 1, 1);
-      } else if (_currentView == 1) {
-        _selectedDate = _selectedDate.subtract(const Duration(days: 7));
-      } else {
-        _selectedDate = _selectedDate.subtract(const Duration(days: 1));
-      }
-    });
-  }
-
-  void _goToNext() {
-    setState(() {
-      if (_currentView == 0) {
-        _selectedDate = DateTime(_selectedDate.year, _selectedDate.month + 1, 1);
-      } else if (_currentView == 1) {
-        _selectedDate = _selectedDate.add(const Duration(days: 7));
-      } else {
-        _selectedDate = _selectedDate.add(const Duration(days: 1));
-      }
-    });
   }
 
   String _getFormattedDate(DateTime date) {
@@ -129,51 +115,29 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return a.year == b.year && a.month == b.month && a.day == b.day;
   }
 
-  // بيانات تجريبية للأحداث
-  List<StudentCalendarEvent> _getEventsForDay(DateTime day) {
-    List<StudentCalendarEvent> allEvents = [
-      StudentCalendarEvent(
-        title: "اختبار الرياضيات",
-        date: "١٥ نوفمبر",
-        time: "٨:٠٠ ص - ٩:٣٠ ص",
-        type: "امتحان",
-        color: const Color(0xFFDC2626),
-        location: "القاعة ١٠١",
-        description: "الوحدة الثالثة - الجبر",
-      ),
-      StudentCalendarEvent(
-        title: "حصة العلوم",
-        date: "١٥ نوفمبر",
-        time: "١٠:٠٠ ص - ١٠:٤٥ ص",
-        type: "حصّة",
-        color: const Color(0xFF10B981),
-        location: "المعمل",
-        description: "تجربة التفاعلات الكيميائية",
-      ),
-      StudentCalendarEvent(
-        title: "رحلة علمية",
-        date: "١٨ نوفمبر",
-        time: "٨:٠٠ ص - ١٢:٠٠ م",
-        type: "نشاط",
-        color: const Color(0xFFF59E0B),
-        location: "متحف العلوم",
-        description: "زيارة إلى متحف العلوم الوطني",
-      ),
-      StudentCalendarEvent(
-        title: "مسابقة القرآن",
-        date: "٢٠ نوفمبر",
-        time: "٩:٠٠ ص - ١١:٠٠ ص",
-        type: "مسابقة",
-        color: const Color(0xFF7C3AED),
-        location: "المسجد",
-        description: "المسابقة السنوية لحفظ القرآن",
-      ),
-    ];
-
-    return allEvents.where((event) => event.date.contains('${day.day}')).toList();
-  }
-
-  List<StudentCalendarEvent> _getUpcomingEvents() {
-    return _getEventsForDay(_selectedDate);
+  List<StudentCalendarEvent> _mapToStudentEvents(List<dynamic> events) {
+    // Check if they are of type Event or something else
+    return events.map((e) {
+      if (e is Event) {
+        return StudentCalendarEvent(
+          title: e.eventTitel,
+          date: e.eventDate,
+          time: e.eventTime,
+          type: "حدث",
+          color: Color(int.tryParse(e.eventColore.replaceFirst('#', '0xFF')) ?? 0xFF10B981),
+          location: "",
+          description: e.eventDesc,
+        );
+      }
+      return StudentCalendarEvent(
+        title: "حدث غير معروف",
+        date: "",
+        time: "",
+        type: "",
+        color: Colors.grey,
+        location: "",
+        description: "",
+      );
+    }).toList();
   }
 }
