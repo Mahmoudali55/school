@@ -30,7 +30,7 @@ class StudentMonthlyView extends StatelessWidget {
           _buildDaysHeader(context),
           SizedBox(height: 8.h),
           _buildMonthGrid(context),
-          SizedBox(height: 20.h),
+          SizedBox(height: 5.h),
           _buildUpcomingEventsSection(context),
         ],
       ),
@@ -168,12 +168,6 @@ class StudentMonthlyView extends StatelessWidget {
               style: AppTextStyle.titleMedium(
                 context,
               ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
-            ),
-            Text(
-              AppLocalKay.show_all.tr(),
-              style: AppTextStyle.bodySmall(
-                context,
-              ).copyWith(color: const Color(0xFF4CAF50), fontWeight: FontWeight.w600),
             ),
           ],
         ),

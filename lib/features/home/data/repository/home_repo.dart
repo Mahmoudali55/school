@@ -115,9 +115,8 @@ class HomeRepoImpl implements HomeRepo {
           EndPoints.studentData,
           queryParameters: {"Code": code},
         );
-        final String dataString = response['Data'];
-        if (dataString.isEmpty || dataString == "[]") return [];
-        return ParentsStudentData.listFromDataString(dataString);
+
+        return ParentsStudentData.listFromResponse(response);
       },
     );
   }

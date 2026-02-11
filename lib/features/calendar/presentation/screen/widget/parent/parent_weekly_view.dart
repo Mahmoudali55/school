@@ -30,20 +30,12 @@ class ParentWeeklyView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: EdgeInsets.all(16.w),
-      child: Column(
-        children: [
-          _buildWeekDays(context),
-          SizedBox(height: 20.h),
-          _buildChildrenSchedule(context),
-        ],
-      ),
+      child: Column(children: [_buildWeekDays(context)]),
     );
   }
 
   Widget _buildWeekDays(BuildContext context) {
-    DateTime startOfWeek = selectedDate.subtract(
-      Duration(days: selectedDate.weekday % 7),
-    );
+    DateTime startOfWeek = selectedDate.subtract(Duration(days: selectedDate.weekday % 7));
 
     return Column(
       children: List.generate(7, (index) {
@@ -92,10 +84,9 @@ class ParentWeeklyView extends StatelessWidget {
                       SizedBox(height: 2.h),
                       Text(
                         '${day.day}',
-                        style: AppTextStyle.bodyLarge(context).copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFF1F2937),
-                        ),
+                        style: AppTextStyle.bodyLarge(
+                          context,
+                        ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
                       ),
                     ],
                   ),
@@ -128,22 +119,19 @@ class ParentWeeklyView extends StatelessWidget {
                                 Expanded(
                                   child: Text(
                                     event.title,
-                                    style: AppTextStyle.bodySmall(context)
-                                        .copyWith(
-                                          color: const Color(0xFF1F2937),
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                    style: AppTextStyle.bodySmall(context).copyWith(
+                                      color: const Color(0xFF1F2937),
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                                 Text(
                                   event.time,
-                                  style: AppTextStyle.bodySmall(context)
-                                      .copyWith(
-                                        fontSize: 10.sp,
-                                        color: const Color(0xFF6B7280),
-                                      ),
+                                  style: AppTextStyle.bodySmall(
+                                    context,
+                                  ).copyWith(fontSize: 10.sp, color: const Color(0xFF6B7280)),
                                 ),
                               ],
                             ),
@@ -154,10 +142,7 @@ class ParentWeeklyView extends StatelessWidget {
                 ),
                 if (dayEvents.length > 2)
                   Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 6.w,
-                      vertical: 2.h,
-                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                     decoration: BoxDecoration(
                       color: const Color(0xFF2196F3).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(4),
@@ -201,10 +186,9 @@ class ParentWeeklyView extends StatelessWidget {
             children: [
               Text(
                 AppLocalKay.child_schedule.tr(),
-                style: AppTextStyle.titleMedium(context).copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleMedium(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
@@ -225,9 +209,7 @@ class ParentWeeklyView extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           Column(
-            children: students
-                .map((student) => _buildChildSchedule(context, student))
-                .toList(),
+            children: students.map((student) => _buildChildSchedule(context, student)).toList(),
           ),
         ],
       ),
@@ -251,19 +233,14 @@ class ParentWeeklyView extends StatelessWidget {
                   color: const Color(0xFF2196F3).withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  Icons.person_rounded,
-                  size: 14.w,
-                  color: const Color(0xFF2196F3),
-                ),
+                child: Icon(Icons.person_rounded, size: 14.w, color: const Color(0xFF2196F3)),
               ),
               SizedBox(width: 8.w),
               Text(
                 studentName,
-                style: AppTextStyle.bodyMedium(context).copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.bodyMedium(
+                  context,
+                ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
               ),
               SizedBox(width: 8.w),
               Container(
@@ -311,10 +288,7 @@ class ParentWeeklyView extends StatelessWidget {
           Container(
             width: 8.w,
             height: 8.w,
-            decoration: BoxDecoration(
-              color: event.color,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(color: event.color, shape: BoxShape.circle),
           ),
           SizedBox(width: 8.w),
           Expanded(
@@ -323,10 +297,9 @@ class ParentWeeklyView extends StatelessWidget {
               children: [
                 Text(
                   event.title,
-                  style: AppTextStyle.bodySmall(context).copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF1F2937),
-                  ),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
                 ),
                 SizedBox(height: 2.h),
                 Text(
@@ -346,11 +319,9 @@ class ParentWeeklyView extends StatelessWidget {
             ),
             child: Text(
               event.type,
-              style: AppTextStyle.bodySmall(context).copyWith(
-                fontSize: 9.sp,
-                color: event.color,
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppTextStyle.bodySmall(
+                context,
+              ).copyWith(fontSize: 9.sp, color: event.color, fontWeight: FontWeight.w600),
             ),
           ),
         ],
@@ -363,17 +334,11 @@ class ParentWeeklyView extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 16.h),
       child: Row(
         children: [
-          Icon(
-            Icons.event_busy_rounded,
-            size: 16.w,
-            color: const Color(0xFF9CA3AF),
-          ),
+          Icon(Icons.event_busy_rounded, size: 16.w, color: const Color(0xFF9CA3AF)),
           SizedBox(width: 8.w),
           Text(
             AppLocalKay.no_events_this_week.tr(),
-            style: AppTextStyle.bodySmall(
-              context,
-            ).copyWith(color: const Color(0xFF9CA3AF)),
+            style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF9CA3AF)),
           ),
         ],
       ),

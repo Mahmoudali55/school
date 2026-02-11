@@ -41,41 +41,34 @@ class StudentEventCard extends StatelessWidget {
               children: [
                 Text(
                   event.title,
-                  style: AppTextStyle.bodyMedium(
+                  style: AppTextStyle.bodyLarge(
                     context,
                   ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
                 ),
                 SizedBox(height: 4.h),
-                Row(
-                  children: [
-                    Icon(Icons.access_time_rounded, size: 12.w, color: const Color(0xFF6B7280)),
-                    SizedBox(width: 4.w),
-                    Text(
-                      event.time,
-                      style: AppTextStyle.bodySmall(
-                        context,
-                      ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
-                    ),
-                    SizedBox(width: 12.w),
-                    Icon(Icons.location_on_rounded, size: 12.w, color: const Color(0xFF6B7280)),
-                    SizedBox(width: 4.w),
-                    Text(
-                      event.location,
-                      style: AppTextStyle.bodySmall(
-                        context,
-                      ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
-                    ),
-                  ],
-                ),
+
                 if (event.description.isNotEmpty) ...[
                   SizedBox(height: 4.h),
                   Text(
                     event.description,
-                    style: AppTextStyle.bodySmall(
+                    style: AppTextStyle.bodyMedium(
                       context,
-                    ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
+                    ).copyWith(color: const Color(0xFF6B7280)),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
+                  ),
+                  Row(
+                    children: [
+                      Icon(Icons.access_time_rounded, size: 12.w, color: const Color(0xFF6B7280)),
+                      SizedBox(width: 4.w),
+                      Text(
+                        event.time + " - " + event.date,
+                        style: AppTextStyle.bodySmall(
+                          context,
+                        ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
+                      ),
+                      SizedBox(width: 12.w),
+                    ],
                   ),
                 ],
               ],

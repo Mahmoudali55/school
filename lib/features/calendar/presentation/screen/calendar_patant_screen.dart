@@ -113,8 +113,6 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                       ParentCalendarControlBar(
                         selectedStudent: _selectedStudent,
                         students: studentNames,
-                        classes: calendarState.classesStatus.data ?? [],
-                        selectedClass: calendarState.selectedClass,
                         currentView: calendarState.currentView.index,
                         onStudentChanged: (studentName) {
                           setState(() {
@@ -124,9 +122,6 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                             (s) => s.studentName == studentName,
                           );
                           context.read<ProfileCubit>().StudentProfile(student.studentCode);
-                        },
-                        onClassChanged: (selectedClass) {
-                          calendarCubit.changeClass(selectedClass);
                         },
                         onViewSelected: (index) =>
                             calendarCubit.changeView(CalendarView.values[index]),

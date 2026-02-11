@@ -38,11 +38,9 @@ class ParentEventCard extends StatelessWidget {
                 ),
                 child: Text(
                   event.type,
-                  style: AppTextStyle.bodySmall(context).copyWith(
-                    color: event.color,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 10.sp,
-                  ),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(color: event.color, fontWeight: FontWeight.bold, fontSize: 10.sp),
                 ),
               ),
               const Spacer(),
@@ -54,11 +52,7 @@ class ParentEventCard extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Icon(
-                      Icons.person_outline_rounded,
-                      color: const Color(0xFF2196F3),
-                      size: 10.w,
-                    ),
+                    Icon(Icons.person_outline_rounded, color: const Color(0xFF2196F3), size: 10.w),
                     SizedBox(width: 4.w),
                     Text(
                       event.student,
@@ -73,50 +67,16 @@ class ParentEventCard extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 12.h),
+
           Text(
             event.title,
-            style: AppTextStyle.titleMedium(context).copyWith(
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF1F2937),
-            ),
+            style: AppTextStyle.titleMedium(
+              context,
+            ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
           ),
           SizedBox(height: 8.h),
-          Row(
-            children: [
-              Icon(
-                Icons.access_time_rounded,
-                size: 14.w,
-                color: const Color(0xFF6B7280),
-              ),
-              SizedBox(width: 4.w),
-              Text(
-                event.time,
-                style: AppTextStyle.bodySmall(
-                  context,
-                ).copyWith(color: const Color(0xFF6B7280)),
-              ),
-              SizedBox(width: 16.w),
-              Icon(
-                Icons.location_on_outlined,
-                size: 14.w,
-                color: const Color(0xFF6B7280),
-              ),
-              SizedBox(width: 4.w),
-              Expanded(
-                child: Text(
-                  event.location,
-                  style: AppTextStyle.bodySmall(
-                    context,
-                  ).copyWith(color: const Color(0xFF6B7280)),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
+
           if (event.description.isNotEmpty) ...[
-            SizedBox(height: 12.h),
             Text(
               event.description,
               style: AppTextStyle.bodySmall(
@@ -126,6 +86,16 @@ class ParentEventCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ],
+          Row(
+            children: [
+              Icon(Icons.access_time_rounded, size: 14.w, color: const Color(0xFF6B7280)),
+              SizedBox(width: 4.w),
+              Text(
+                event.time + " • " + event.date,
+                style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -148,10 +118,7 @@ class ParentEmptyState extends StatelessWidget {
           children: [
             Container(
               padding: EdgeInsets.all(20.w),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF3F4F6),
-                shape: BoxShape.circle,
-              ),
+              decoration: BoxDecoration(color: const Color(0xFFF3F4F6), shape: BoxShape.circle),
               child: Icon(
                 Icons.event_available_rounded,
                 color: const Color(0xFF2196F3).withOpacity(0.3),
@@ -161,18 +128,15 @@ class ParentEmptyState extends StatelessWidget {
             SizedBox(height: 16.h),
             Text(
               "لا توجد أحداث مجدولة",
-              style: AppTextStyle.titleMedium(context).copyWith(
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF4B5563),
-              ),
+              style: AppTextStyle.titleMedium(
+                context,
+              ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF4B5563)),
             ),
             SizedBox(height: 8.h),
             Text(
               "استمتع بيوم هادئ مع أبنائك",
               textAlign: TextAlign.center,
-              style: AppTextStyle.bodySmall(
-                context,
-              ).copyWith(color: const Color(0xFF6B7280)),
+              style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
             ),
           ],
         ),

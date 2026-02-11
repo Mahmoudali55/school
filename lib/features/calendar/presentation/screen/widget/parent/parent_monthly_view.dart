@@ -34,10 +34,7 @@ class ParentMonthlyView extends StatelessWidget {
           SizedBox(height: 8.h),
           // شبكة الأيام
           _buildMonthGrid(context),
-          SizedBox(height: 20.h),
-          // ملخص الشهر
-          _buildMonthlySummary(context),
-          SizedBox(height: 20.h),
+          SizedBox(height: 10.h),
           // الأحداث القادمة
           _buildUpcomingEvents(context),
         ],
@@ -161,87 +158,6 @@ class ParentMonthlyView extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildMonthlySummary(BuildContext context) {
-    List<ParentCalendarEvent> monthEvents = getEventsForMonth(selectedDate);
-
-    Map<String, int> eventCounts = {};
-    for (var event in monthEvents) {
-      eventCounts[event.type] = (eventCounts[event.type] ?? 0) + 1;
-    }
-
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: AppColor.whiteColor(context),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: AppColor.blackColor(context).withOpacity(0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 1),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            AppLocalKay.stats.tr(),
-            style: AppTextStyle.titleMedium(
-              context,
-            ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
-          ),
-          SizedBox(height: 12.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildSummaryItem(
-                context,
-                AppLocalKay.exams.tr(),
-                eventCounts["امتحان"] ?? 0,
-                const Color(0xFFDC2626),
-              ),
-              _buildSummaryItem(
-                context,
-                AppLocalKay.school_activities.tr(),
-                eventCounts["فعالية"] ?? 0,
-                const Color(0xFF10B981),
-              ),
-              _buildSummaryItem(
-                context,
-                AppLocalKay.meetings.tr(),
-                eventCounts["اجتماع"] ?? 0,
-                const Color(0xFFF59E0B),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSummaryItem(BuildContext context, String title, int count, Color color) {
-    return Column(
-      children: [
-        Container(
-          padding: EdgeInsets.all(12.w),
-          decoration: BoxDecoration(color: color.withOpacity(0.1), shape: BoxShape.circle),
-          child: Text(
-            '$count',
-            style: AppTextStyle.bodyMedium(
-              context,
-            ).copyWith(fontWeight: FontWeight.bold, color: color),
-          ),
-        ),
-        SizedBox(height: 4.h),
-        Text(
-          title,
-          style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
-        ),
-      ],
     );
   }
 

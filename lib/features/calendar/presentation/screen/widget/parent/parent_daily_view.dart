@@ -1,9 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
-import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/parent/parent_calendar_models.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/parent/parent_event_widgets.dart';
 
@@ -33,14 +31,8 @@ class ParentDailyView extends StatelessWidget {
           if (dailyEvents.isEmpty)
             const ParentEmptyState()
           else
-            Column(
-              children: dailyEvents
-                  .map((event) => ParentEventCard(event: event))
-                  .toList(),
-            ),
+            Column(children: dailyEvents.map((event) => ParentEventCard(event: event)).toList()),
           SizedBox(height: 20.h),
-          // ملاحظات اليوم
-          _buildDailyNotes(context),
         ],
       ),
     );
@@ -68,11 +60,7 @@ class ParentDailyView extends StatelessWidget {
               color: const Color(0xFF2196F3).withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(
-              Icons.today_rounded,
-              color: const Color(0xFF2196F3),
-              size: 24.w,
-            ),
+            child: Icon(Icons.today_rounded, color: const Color(0xFF2196F3), size: 24.w),
           ),
           SizedBox(width: 12.w),
           Expanded(
@@ -81,17 +69,14 @@ class ParentDailyView extends StatelessWidget {
               children: [
                 Text(
                   getFormattedDate(selectedDate),
-                  style: AppTextStyle.titleMedium(context).copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF1F2937),
-                  ),
+                  style: AppTextStyle.titleMedium(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
                 ),
                 SizedBox(height: 2.h),
                 Text(
                   "$eventCount أحداث مجدولة لليوم",
-                  style: AppTextStyle.bodySmall(
-                    context,
-                  ).copyWith(color: const Color(0xFF6B7280)),
+                  style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
                 ),
               ],
             ),
@@ -101,65 +86,10 @@ class ParentDailyView extends StatelessWidget {
     );
   }
 
-  Widget _buildDailyNotes(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20.w),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFF2196F3), Color(0xFF1976D2)],
-        ),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF2196F3).withOpacity(0.3),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            AppLocalKay.daily_notes.tr(),
-            style: AppTextStyle.titleMedium(context).copyWith(
-              color: AppColor.whiteColor(context),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 12.h),
-          _buildNoteRow(
-            context,
-            Icons.info_outline_rounded,
-            "يرجى إحضار الأدوات الفنية لمحمد غداً",
-          ),
-          SizedBox(height: 8.h),
-          _buildNoteRow(
-            context,
-            Icons.notification_important_rounded,
-            "موعد اجتماع أولياء الأمور لليلي الساعة ١ ظهراً",
-          ),
-          SizedBox(height: 8.h),
-          _buildNoteRow(
-            context,
-            Icons.check_circle_outline_rounded,
-            "تم استكمال متطلبات الرحلة المدرسية لأحمد",
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildNoteRow(BuildContext context, IconData icon, String text) {
     return Row(
       children: [
-        Icon(
-          icon,
-          color: AppColor.whiteColor(context).withOpacity(0.8),
-          size: 16.w,
-        ),
+        Icon(icon, color: AppColor.whiteColor(context).withOpacity(0.8), size: 16.w),
         SizedBox(width: 8.w),
         Expanded(
           child: Text(
