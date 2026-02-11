@@ -1015,5 +1015,6 @@
   "study_practice_title": "Practice & Self-Quiz",
   "study_practice_subtitle": "Test your knowledge with smart practice questions",
   "required": "Required",
-   "event": "Event"
+   "event": "Event",
+   "no_grades_available": "No grades available at the moment"
 }

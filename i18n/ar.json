@@ -1079,5 +1079,6 @@
   "study_practice_title": "ممارسة واختبار ذاتي",
   "study_practice_subtitle": "اختبر معلوماتك عبر توليد أسئلة ممارسة ذكية لدروسك",
   "required":"الحقل مطلوب",
-  "event":"احداث"
+  "event":"احداث",
+  "no_grades_available":"لا توجد درجات متاحة حالياً"
 }

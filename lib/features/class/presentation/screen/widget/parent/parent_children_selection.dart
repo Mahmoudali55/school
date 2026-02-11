@@ -29,6 +29,7 @@ class ParentChildrenSelection extends StatelessWidget {
         const SizedBox(height: 8),
         SizedBox(
           height: 80,
+          width: double.maxFinite,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: children.length,
@@ -60,11 +61,13 @@ class ParentChildrenSelection extends StatelessWidget {
   }) {
     return Container(
       padding: const EdgeInsets.all(10),
-      width: 160,
+      width: MediaQuery.of(context).size.width / 1.5,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: isSelected ? Colors.blue[50] : AppColor.whiteColor(context),
-        border: Border.all(color: isSelected ? Colors.blue : Colors.grey.shade300),
+        border: Border.all(
+          color: isSelected ? AppColor.infoColor(context) : AppColor.grey300Color(context),
+        ),
       ),
       child: Row(
         children: [
@@ -87,7 +90,9 @@ class ParentChildrenSelection extends StatelessWidget {
                 ),
                 Text(
                   int.tryParse(grade.toString())?.toString() ?? '',
-                  style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey[600]),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(color: AppColor.greyColor(context)),
                 ),
               ],
             ),

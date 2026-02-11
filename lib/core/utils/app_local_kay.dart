@@ -1038,4 +1038,5 @@ class AppLocalKay {
   static const String study_practice_subtitle = 'study_practice_subtitle';
   static const String required = 'required';
   static const String event = 'event';
+  static const String no_grades_available = 'no_grades_available';
 }

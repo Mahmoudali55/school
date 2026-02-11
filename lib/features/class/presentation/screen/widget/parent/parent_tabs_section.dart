@@ -71,16 +71,19 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
         Container(
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
-            color: Colors.grey[200],
+            color: AppColor.grey200Color(context),
             borderRadius: BorderRadius.circular(10),
           ),
           child: TabBar(
             controller: _tabController,
             labelColor: AppColor.whiteColor(context),
-            unselectedLabelColor: Colors.black54,
-            isScrollable: true,
-            tabAlignment: TabAlignment.start,
-            indicator: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(8)),
+            unselectedLabelColor: AppColor.blackColor(context),
+            isScrollable: false, // مهم
+            indicatorSize: TabBarIndicatorSize.tab, // يخلي المؤشر بعرض التاب
+            indicator: BoxDecoration(
+              color: AppColor.infoColor(context),
+              borderRadius: BorderRadius.circular(8),
+            ),
             tabs: [
               Tab(text: AppLocalKay.scheduls.tr()),
               Tab(text: AppLocalKay.grades.tr()),
@@ -119,7 +122,11 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.error_outline, size: 48, color: Colors.red[300]),
+                Icon(
+                  Icons.error_outline,
+                  size: 48,
+                  color: AppColor.errorColor(context).withValues(alpha: (0.2)),
+                ),
                 const Gap(16),
                 Text(status.error ?? "حدث خطأ أثناء جلب الدرجات", textAlign: TextAlign.center),
               ],
@@ -134,11 +141,13 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.bar_chart_outlined, size: 64, color: Colors.grey[300]),
+                  Icon(Icons.bar_chart_outlined, size: 64, color: AppColor.grey300Color(context)),
                   const Gap(16),
                   Text(
-                    "لا توجد درجات متاحة حالياً",
-                    style: AppTextStyle.bodyLarge(context).copyWith(color: Colors.grey),
+                    AppLocalKay.no_grades_available.tr(),
+                    style: AppTextStyle.bodyLarge(
+                      context,
+                    ).copyWith(color: AppColor.greyColor(context)),
                   ),
                 ],
               ),
@@ -154,11 +163,11 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
               return Container(
                 clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AppColor.whiteColor(context),
                   borderRadius: BorderRadius.circular(20.r),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.04),
+                      color: AppColor.blackColor(context).withValues(alpha: (0.04)),
                       blurRadius: 20,
                       offset: const Offset(0, 10),
                     ),
@@ -168,13 +177,16 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
                   child: Row(
                     children: [
                       // Status Accent Bar
-                      Container(width: 6.w, color: Colors.blueAccent),
+                      Container(width: 6.w, color: AppColor.infoColor(context)),
                       Expanded(
                         child: Container(
                           padding: EdgeInsets.all(16.w),
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
-                              colors: [Colors.white, Colors.blue.withOpacity(0.01)],
+                              colors: [
+                                AppColor.whiteColor(context),
+                                AppColor.infoColor(context).withValues(alpha: (0.01)),
+                              ],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
@@ -185,12 +197,12 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
                               Container(
                                 padding: EdgeInsets.all(12.w),
                                 decoration: BoxDecoration(
-                                  color: Colors.blue.withOpacity(0.08),
+                                  color: AppColor.infoColor(context).withValues(alpha: (0.08)),
                                   borderRadius: BorderRadius.circular(16.r),
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.assignment_outlined,
-                                  color: Colors.blueAccent,
+                                  color: AppColor.infoColor(context),
                                   size: 26,
                                 ),
                               ),
@@ -209,7 +221,11 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
                                     const Gap(4),
                                     Row(
                                       children: [
-                                        Icon(Icons.tag, size: 14, color: Colors.grey[400]),
+                                        Icon(
+                                          Icons.tag,
+                                          size: 14,
+                                          color: AppColor.grey400Color(context),
+                                        ),
                                         const Gap(4),
                                         Text(
                                           "${AppLocalKay.code.tr()}: ${grade.courseCode}",
@@ -230,9 +246,15 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
                                   Container(
                                     padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.h),
                                     decoration: BoxDecoration(
-                                      color: Colors.green.withOpacity(0.1),
+                                      color: AppColor.secondAppColor(
+                                        context,
+                                      ).withValues(alpha: (0.1)),
                                       borderRadius: BorderRadius.circular(14.r),
-                                      border: Border.all(color: Colors.green.withOpacity(0.2)),
+                                      border: Border.all(
+                                        color: AppColor.secondAppColor(
+                                          context,
+                                        ).withValues(alpha: (0.2)),
+                                      ),
                                     ),
                                     child: RichText(
                                       text: TextSpan(
@@ -240,14 +262,14 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
                                           TextSpan(
                                             text: grade.courseDegree.toString(),
                                             style: AppTextStyle.titleLarge(context).copyWith(
-                                              color: Colors.green[700],
+                                              color: AppColor.secondAppColor(context),
                                               fontWeight: FontWeight.w900,
                                             ),
                                           ),
                                           TextSpan(
                                             text: "/${grade.studentDegree}",
                                             style: AppTextStyle.titleLarge(context).copyWith(
-                                              color: Colors.grey[600],
+                                              color: AppColor.grey600Color(context),
                                               fontWeight: FontWeight.w900,
                                             ),
                                           ),
@@ -259,7 +281,7 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
                                   Text(
                                     "${AppLocalKay.this_month.tr()} ${grade.monthNo}",
                                     style: AppTextStyle.labelSmall(context).copyWith(
-                                      color: Colors.blue[400],
+                                      color: AppColor.infoColor(context),
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -337,7 +359,10 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16.r),
                 gradient: LinearGradient(
-                  colors: [Colors.white, Colors.blue.withOpacity(0.02)],
+                  colors: [
+                    AppColor.whiteColor(context),
+                    AppColor.infoColor(context).withValues(alpha: (0.02)),
+                  ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -350,10 +375,14 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
                       Container(
                         padding: EdgeInsets.all(8.w),
                         decoration: BoxDecoration(
-                          color: Colors.blue.withOpacity(0.1),
+                          color: AppColor.infoColor(context).withValues(alpha: (0.1)),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.book_outlined, color: Colors.blue, size: 20),
+                        child: Icon(
+                          Icons.book_outlined,
+                          color: AppColor.infoColor(context),
+                          size: 20,
+                        ),
                       ),
                       const Gap(12),
                       Expanded(
@@ -368,7 +397,9 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
                             ),
                             Text(
                               hw.hwDate,
-                              style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey),
+                              style: AppTextStyle.bodySmall(
+                                context,
+                              ).copyWith(color: AppColor.greyColor(context)),
                             ),
                           ],
                         ),
@@ -381,10 +412,10 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
                     children: [
                       Padding(
                         padding: EdgeInsets.only(top: 2.h),
-                        child: const Icon(
+                        child: Icon(
                           Icons.assignment_outlined,
                           size: 16,
-                          color: Colors.orange,
+                          color: AppColor.accentColor(context),
                         ),
                       ),
                       const Gap(8),
@@ -412,7 +443,11 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
                       children: [
                         Padding(
                           padding: EdgeInsets.only(top: 2.h),
-                          child: const Icon(Icons.notes_outlined, size: 16, color: Colors.grey),
+                          child: Icon(
+                            Icons.notes_outlined,
+                            size: 16,
+                            color: AppColor.greyColor(context),
+                          ),
                         ),
                         const Gap(8),
                         Expanded(
@@ -421,9 +456,10 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
                             children: [
                               Text(
                                 AppLocalKay.note.tr(),
-                                style: AppTextStyle.bodySmall(
-                                  context,
-                                ).copyWith(fontWeight: FontWeight.bold, color: Colors.grey[700]),
+                                style: AppTextStyle.bodySmall(context).copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.grey600Color(context),
+                                ),
                               ),
                               const Gap(4),
                               Text(hw.notes, style: AppTextStyle.bodySmall(context)),
