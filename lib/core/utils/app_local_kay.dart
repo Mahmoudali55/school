@@ -599,6 +599,9 @@ class AppLocalKay {
   static const String resetSystemDialogText = 'reset_system_dialog_text';
   static const String reset = 'reset';
   static const String resetSuccess = 'reset_success';
+  static const String academic_calendar_teacher = 'academic_calendar_teacher';
+  static const String full_schedule_teacher = 'full_schedule_teacher';
+  static const String grades_exams_teacher = 'grades_exams_teacher';
   static const String school_calendar = "school_calendar";
   static const String school_statistics = "school_statistics";
   static const String school_events = "school_events";

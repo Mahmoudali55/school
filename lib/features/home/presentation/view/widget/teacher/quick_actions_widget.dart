@@ -32,22 +32,22 @@ class QuickActionsWidget extends StatelessWidget {
         color: AppColor.accentColor(context),
       ),
       QuickAction(
-        key: AppLocalKay.send_notification,
-        title: AppLocalKay.send_notification.tr(),
-        icon: Icons.notification_important,
-        color: Color(0xFFEC4899),
+        key: AppLocalKay.digital_library,
+        title: AppLocalKay.digital_library.tr(),
+        icon: Icons.library_books_rounded,
+        color: const Color(0xFF10B981), // Emerald/Clean
       ),
       QuickAction(
-        key: AppLocalKay.behavior,
-        title: AppLocalKay.behavior.tr(),
-        icon: Icons.report,
+        key: AppLocalKay.schedule,
+        title: AppLocalKay.full_schedule_teacher.tr(),
+        icon: Icons.calendar_today,
         color: AppColor.errorColor(context),
       ),
       QuickAction(
-        key: AppLocalKay.report,
-        title: AppLocalKay.report.tr(),
-        icon: Icons.analytics,
-        color: Color(0xFF7C3AED),
+        key: AppLocalKay.grades,
+        title: AppLocalKay.grades_exams_teacher.tr(),
+        icon: Icons.grade,
+        color: const Color(0xFF7C3AED),
       ),
     ];
 
@@ -56,7 +56,9 @@ class QuickActionsWidget extends StatelessWidget {
       children: [
         Text(
           AppLocalKay.quick_actions.tr(),
-          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
+          style: AppTextStyle.titleLarge(
+            context,
+          ).copyWith(fontWeight: FontWeight.bold),
         ),
         SizedBox(height: 16.h),
         GridView.builder(

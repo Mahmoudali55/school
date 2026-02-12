@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
-class ReportsScreen extends StatelessWidget {
-  ReportsScreen({super.key});
+class ReportsAdminScreen extends StatelessWidget {
+  ReportsAdminScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
