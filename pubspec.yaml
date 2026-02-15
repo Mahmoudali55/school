@@ -70,6 +70,7 @@ dependencies:
   url_launcher: ^6.3.0
   open_filex: ^4.7.0
   google_generative_ai: ^0.4.5
+  firebase_core:
 
   flutter:
     sdk: flutter
