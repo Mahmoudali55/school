@@ -112,76 +112,121 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
   }
 
   Widget _buildAssignmentCard(HomeWorkModel assignment) {
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
       margin: EdgeInsets.only(bottom: 16.h),
-      padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: AppColor.whiteColor(context),
-        borderRadius: BorderRadius.circular(16.r),
+        borderRadius: BorderRadius.circular(20.r),
+        gradient: LinearGradient(
+          colors: [AppColor.primaryColor(context).withOpacity(0.05), AppColor.whiteColor(context)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         boxShadow: [
           BoxShadow(
-            color: AppColor.blackColor(context).withValues(alpha: (0.05)),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
-                decoration: BoxDecoration(
-                  color: AppColor.primaryColor(context).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8.r),
+      child: Container(
+        padding: EdgeInsets.all(18.w),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.r),
+          border: Border.all(color: AppColor.primaryColor(context).withOpacity(0.15)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            /// 🔵 Top Row
+            Row(
+              children: [
+                /// Icon Circle
+                Container(
+                  padding: EdgeInsets.all(10.w),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColor.primaryColor(context).withOpacity(0.1),
+                  ),
+                  child: Icon(
+                    Icons.menu_book_rounded,
+                    color: AppColor.primaryColor(context),
+                    size: 20,
+                  ),
                 ),
-                child: Text(
-                  assignment.courseName,
-                  style: AppTextStyle.bodySmall(
-                    context,
-                  ).copyWith(color: AppColor.primaryColor(context), fontWeight: FontWeight.bold),
+                SizedBox(width: 10.w),
+
+                /// Course Name
+                Expanded(
+                  child: Text(
+                    assignment.courseName,
+                    style: AppTextStyle.bodyLarge(context).copyWith(fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
+
+                /// Date Badge
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+                  decoration: BoxDecoration(
+                    color: AppColor.primaryColor(context),
+                    borderRadius: BorderRadius.circular(30.r),
+                  ),
+                  child: Text(
+                    assignment.hwDate,
+                    style: AppTextStyle.bodySmall(
+                      context,
+                    ).copyWith(color: Colors.white, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ],
+            ),
+
+            SizedBox(height: 16.h),
+
+            /// Homework Title
+            Text(
+              assignment.hw,
+              style: AppTextStyle.bodyMedium(
+                context,
+              ).copyWith(fontWeight: FontWeight.w600, height: 1.4),
+            ),
+
+            if (assignment.notes.isNotEmpty) ...[
+              SizedBox(height: 8.h),
               Text(
-                assignment.hwDate,
+                assignment.notes,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
                 style: AppTextStyle.bodySmall(
                   context,
                 ).copyWith(color: AppColor.grey600Color(context)),
               ),
             ],
-          ),
-          SizedBox(height: 12.h),
-          Text(
-            assignment.hw,
-            style: AppTextStyle.bodyLarge(context).copyWith(fontWeight: FontWeight.bold),
-          ),
-          if (assignment.notes.isNotEmpty) ...[
+
+            SizedBox(height: 16.h),
+
+            Divider(color: AppColor.grey300Color(context)),
+
             SizedBox(height: 8.h),
-            Text(
-              assignment.notes,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: AppTextStyle.bodyMedium(context).copyWith(color: AppColor.blackColor(context)),
+
+            /// Bottom Row
+            Row(
+              children: [
+                Icon(Icons.class_, size: 16, color: AppColor.greyColor(context)),
+                SizedBox(width: 6.w),
+                Text(
+                  "${AppLocalKay.code.tr()}: ${assignment.classCode}",
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(color: AppColor.greyColor(context)),
+                ),
+                const Spacer(),
+                Icon(Icons.arrow_forward_ios_rounded, size: 14, color: AppColor.greyColor(context)),
+              ],
             ),
           ],
-          SizedBox(height: 16.h),
-          const Divider(),
-          SizedBox(height: 8.h),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(Icons.school_outlined, size: 16, color: AppColor.greyColor(context)),
-              SizedBox(width: 4.w),
-              Text(
-                "${AppLocalKay.code.tr()}: ${assignment.classCode}",
-                style: AppTextStyle.bodySmall(context).copyWith(color: AppColor.greyColor(context)),
-              ),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }
