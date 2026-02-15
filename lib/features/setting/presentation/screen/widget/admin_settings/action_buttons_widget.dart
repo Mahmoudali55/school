@@ -64,38 +64,52 @@ logout(BuildContext context) {
     final settingsCubit = context.read<SettingsCubit>();
     showDialog(
       context: context,
+
       builder: (BuildContext dialogContext) {
         return BlocProvider.value(
           value: settingsCubit,
           child: AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
             title: Text(
               AppLocalKay.logout.tr(),
-              style: AppTextStyle.bodyMedium(
+              style: AppTextStyle.bodyLarge(
                 dialogContext,
-                color: AppColor.errorColor(dialogContext),
-              ),
+                color: AppColor.blackColor(dialogContext),
+              ).copyWith(fontWeight: FontWeight.bold),
             ),
             content: Text(
               AppLocalKay.are_you_sure.tr(),
-              style: AppTextStyle.bodyLarge(dialogContext),
+              style: AppTextStyle.bodyMedium(dialogContext).copyWith(fontWeight: FontWeight.bold),
             ),
             actions: [
-              TextButton(
-                onPressed: () => Navigator.of(dialogContext).pop(),
-                child: Text(AppLocalKay.cancel.tr(), style: AppTextStyle.bodyLarge(dialogContext)),
-              ),
-              TextButton(
-                onPressed: () {
-                  settingsCubit.logout();
-                  Navigator.of(dialogContext).pop();
-                },
-                child: Text(
-                  AppLocalKay.logout.tr(),
-                  style: AppTextStyle.bodyMedium(
-                    dialogContext,
-                    color: AppColor.errorColor(dialogContext),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () => Navigator.of(dialogContext).pop(),
+                      child: Text(
+                        AppLocalKay.cancel.tr(),
+                        style: AppTextStyle.bodyLarge(dialogContext),
+                      ),
+                    ),
                   ),
-                ),
+                  Expanded(
+                    child: CustomButton(
+                      color: AppColor.errorColor(dialogContext),
+                      onPressed: () {
+                        settingsCubit.logout();
+                        Navigator.of(dialogContext).pop();
+                      },
+                      child: Text(
+                        AppLocalKay.logout.tr(),
+                        style: AppTextStyle.bodyMedium(
+                          dialogContext,
+                          color: AppColor.whiteColor(dialogContext),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

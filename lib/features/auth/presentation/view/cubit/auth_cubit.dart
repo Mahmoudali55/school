@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/auth/data/repository/auth_repo.dart';
 import 'package:my_template/features/auth/presentation/view/cubit/auth_state.dart';
@@ -133,9 +134,53 @@ class AuthCubit extends Cubit<AuthState> {
       },
       (success) {
         if (!isClosed) {
+          _saveUserData(success);
+          usernameLoginController.clear();
+          passwordLoginController.clear();
           emit(state.copyWith(loginStatus: StatusState.success(success)));
         }
       },
     );
+  }
+
+  void _saveUserData(dynamic data) {
+    final token = data?.accessToken ?? "";
+    HiveMethods.updateToken(token);
+
+    final type = (data?.type ?? "").trim();
+    HiveMethods.updateType(type);
+
+    final name = data?.name ?? "";
+    HiveMethods.updateName(name);
+
+    final code = data?.code ?? "";
+    HiveMethods.updateUserCode(code);
+
+    final compneyName = data?.compneyName ?? "";
+    HiveMethods.updateUserCompanyName(compneyName);
+
+    final levelCode = data?.levelCode ?? "";
+    HiveMethods.updateUserLevelCode(levelCode);
+
+    final sectionCode = data?.sectionCode ?? "";
+    HiveMethods.updateUserSection(sectionCode);
+
+    final stageCode = data?.stageCode ?? "";
+    HiveMethods.updateUserStage(stageCode);
+
+    final classCode = data?.classCode ?? "";
+    HiveMethods.updateUserClassCode(classCode);
+  }
+
+  String getRouteType() {
+    final type = (state.loginStatus.data?.type ?? "").trim();
+    if (type == "1" || type == "student") {
+      return "student";
+    } else if (type == "2" || type == "parent") {
+      return "parent";
+    } else if (type == "3" || type == "teacher") {
+      return "teacher";
+    }
+    return "admin";
   }
 }
