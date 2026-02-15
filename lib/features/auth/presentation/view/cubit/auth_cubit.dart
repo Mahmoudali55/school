@@ -41,6 +41,12 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
+  void clearLoginFields() {
+    usernameLoginController.clear();
+    passwordLoginController.clear();
+    emit(state.copyWith(loginStatus: const StatusState.initial()));
+  }
+
   void validateRegisterPassword(String value) {
     emit(
       state.copyWith(

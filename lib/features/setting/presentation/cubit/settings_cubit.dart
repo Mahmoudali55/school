@@ -75,4 +75,18 @@ class SettingsCubit extends Cubit<SettingsState> {
       },
     );
   }
+
+  Future<void> logout() async {
+    emit(state.copyWith(logoutStatus: StatusState.loading()));
+
+    final result = await _settingsRepo.logout();
+    result.fold(
+      (error) {
+        emit(state.copyWith(logoutStatus: StatusState.failure(error.errMessage)));
+      },
+      (success) {
+        emit(state.copyWith(logoutStatus: StatusState.success(success)));
+      },
+    );
+  }
 }

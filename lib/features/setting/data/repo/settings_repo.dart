@@ -13,6 +13,7 @@ abstract class SettingsRepo {
     required String newPassword,
     required String confirmNewPassword,
   });
+  Future<Either<Failure, String>> logout();
   SettingsModel getSettings() {
     return SettingsModel(
       languageCode: HiveMethods.getLang(),
@@ -54,6 +55,16 @@ class SettingsRepoImpl extends SettingsRepo {
           },
         );
         return ChangePasswordResponseModel.fromJson(response);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, String>> logout() {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.post(EndPoints.logout);
+        return response;
       },
     );
   }

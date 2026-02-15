@@ -1042,4 +1042,5 @@ class AppLocalKay {
   static const String required = 'required';
   static const String event = 'event';
   static const String no_grades_available = 'no_grades_available';
+  static const String sign_out = 'sign_out';
 }

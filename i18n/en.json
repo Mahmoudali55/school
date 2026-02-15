@@ -1016,5 +1016,6 @@
   "study_practice_subtitle": "Test your knowledge with smart practice questions",
   "required": "Required",
    "event": "Event",
-   "no_grades_available": "No grades available at the moment"
+   "no_grades_available": "No grades available at the moment",
+   "sign_out": "Signed out successfully"
 }

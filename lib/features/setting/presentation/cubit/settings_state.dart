@@ -5,22 +5,29 @@ import 'package:my_template/features/setting/data/model/settings_model.dart';
 
 class SettingsState extends Equatable {
   final StatusState<ChangePasswordResponseModel> changePasswordStatus;
+  final StatusState<String> logoutStatus;
   final SettingsModel? settings;
 
-  const SettingsState({this.changePasswordStatus = const StatusState.initial(), this.settings});
+  const SettingsState({
+    this.changePasswordStatus = const StatusState.initial(),
+    this.settings,
+    this.logoutStatus = const StatusState.initial(),
+  });
 
   SettingsState copyWith({
     StatusState<ChangePasswordResponseModel>? changePasswordStatus,
+    StatusState<String>? logoutStatus,
     SettingsModel? settings,
   }) {
     return SettingsState(
       changePasswordStatus: changePasswordStatus ?? this.changePasswordStatus,
       settings: settings ?? this.settings,
+      logoutStatus: logoutStatus ?? this.logoutStatus,
     );
   }
 
   @override
-  List<Object?> get props => [changePasswordStatus, settings];
+  List<Object?> get props => [changePasswordStatus, settings, logoutStatus];
 }
 
 class SettingsInitial extends SettingsState {}

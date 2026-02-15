@@ -43,4 +43,5 @@ class EndPoints {
   static const String getEvents = 'DeltagroupService/School/Getevents';
   static const String deleteEvents = 'DeltagroupService/School/eventsDel';
   static const String editEvents = 'DeltagroupService/School/Editevents';
+  static const String logout = 'api/Account/Logout';
 }

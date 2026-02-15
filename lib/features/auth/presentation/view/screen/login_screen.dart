@@ -44,20 +44,18 @@ class LoginScreen extends StatelessWidget {
                   if (state.loginStatus.isSuccess) {
                     final token = cubit.state.loginStatus.data?.accessToken ?? "";
                     HiveMethods.updateToken(token);
-
+                    cubit.passwordLoginController.clear();
+                    cubit.usernameLoginController.clear();
                     final type = (cubit.state.loginStatus.data?.type ?? "").trim();
                     HiveMethods.updateType(type);
-
                     String name = cubit.state.loginStatus.data?.name ?? "";
                     HiveMethods.updateName(name);
                     String code = cubit.state.loginStatus.data?.code ?? "";
                     HiveMethods.updateUserCode(code);
                     String compneyname = cubit.state.loginStatus.data?.compneyName ?? "";
                     HiveMethods.updateUserCompanyName(compneyname);
-
                     String levelCode = cubit.state.loginStatus.data?.levelCode ?? "";
                     HiveMethods.updateUserLevelCode(levelCode);
-                    ;
                     String section = cubit.state.loginStatus.data?.sectionCode ?? "";
                     HiveMethods.updateUserSection(section);
                     String stage = cubit.state.loginStatus.data?.stageCode ?? "";
@@ -65,7 +63,6 @@ class LoginScreen extends StatelessWidget {
                     String classCode = cubit.state.loginStatus.data?.classCode ?? "";
                     HiveMethods.updateUserClassCode(classCode);
                     String routeType = "admin";
-
                     if (type == "1" || type == "student") {
                       routeType = "student";
                     } else if (type == "2" || type == "parent") {
@@ -73,7 +70,6 @@ class LoginScreen extends StatelessWidget {
                     } else if (type == "3" || type == "teacher") {
                       routeType = "teacher";
                     }
-
                     NavigatorMethods.pushNamed(
                       context,
                       RoutesName.layoutScreen,
