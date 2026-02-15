@@ -58,10 +58,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
   void initState() {
     super.initState();
     // Initialize HomeCubit data
-    final stageStr = HiveMethods.getUserStage();
-    if (stageStr != null && stageStr.toString().isNotEmpty) {
-      context.read<HomeCubit>().teacherLevel(int.parse(stageStr.toString()));
-    }
+    final stageCode = int.tryParse(HiveMethods.getUserStage().toString()) ?? 0;
+    context.read<HomeCubit>().teacherLevel(stageCode);
 
     if (widget.eventToEdit != null) {
       final event = widget.eventToEdit!;
@@ -73,8 +71,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
 
       if (_selectedLevelCode != null) {
         context.read<HomeCubit>().teacherClasses(
-          int.parse(HiveMethods.getUserSection().toString()),
-          int.parse(HiveMethods.getUserStage().toString()),
+          int.tryParse(HiveMethods.getUserSection().toString()) ?? 0,
+          int.tryParse(HiveMethods.getUserStage().toString()) ?? 0,
           _selectedLevelCode!,
         );
       }
@@ -242,8 +240,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
                               });
                               if (v != null) {
                                 context.read<HomeCubit>().teacherClasses(
-                                  int.parse(HiveMethods.getUserSection().toString()),
-                                  int.parse(HiveMethods.getUserStage().toString()),
+                                  int.tryParse(HiveMethods.getUserSection().toString()) ?? 0,
+                                  int.tryParse(HiveMethods.getUserStage().toString()) ?? 0,
                                   v,
                                 );
                               }
@@ -378,7 +376,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                 : context.watch<CalendarCubit>().state.addEventStatus.isLoading)
                             ? CustomLoading(color: AppColor.whiteColor(context), size: 15.w)
                             : Text(
-                                widget.eventToEdit != null ? "تعديل" : AppLocalKay.add.tr(),
+                                widget.eventToEdit != null
+                                    ? AppLocalKay.edit.tr()
+                                    : AppLocalKay.add.tr(),
                                 style: AppTextStyle.bodyMedium(
                                   context,
                                 ).copyWith(color: AppColor.whiteColor(context)),
@@ -395,8 +395,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
                               eventTime:
                                   "${selectedTime!.hour.toString().padLeft(2, '0')}:${selectedTime!.minute.toString().padLeft(2, '0')}",
                               eventColor: _getColorName(selectedColor),
-                              sectionCode: int.parse(HiveMethods.getUserSection().toString()),
-                              stageCode: int.parse(HiveMethods.getUserStage().toString()),
+                              sectionCode:
+                                  int.tryParse(HiveMethods.getUserSection().toString()) ?? 0,
+                              stageCode: int.tryParse(HiveMethods.getUserStage().toString()) ?? 0,
                               levelCode: int.parse(_selectedLevelCode.toString()),
                               classCode: int.parse(_selectedClassCode.toString()),
                             );

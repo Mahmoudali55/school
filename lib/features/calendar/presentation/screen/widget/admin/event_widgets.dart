@@ -1,10 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/calendar/presentation/cubit/calendar_cubit.dart';
+import 'package:my_template/features/calendar/presentation/execution/add_event_screen.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/admin/admin_calendar_models.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 
 class EventCard extends StatelessWidget {
   final AdminCalendarEvent event;
@@ -206,27 +211,42 @@ class CalendarEmptyState extends StatelessWidget {
             ),
             SizedBox(height: 16.h),
             Text(
-              "لا توجد أحداث اليوم",
+              AppLocalKay.no_events.tr(),
               style: AppTextStyle.titleMedium(
                 context,
               ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF4B5563)),
             ),
             SizedBox(height: 8.h),
             Text(
-              "استغل هذا الوقت في التخطيط أو إنجاز مهام أخرى",
+              AppLocalKay.free_time.tr(),
               textAlign: TextAlign.center,
               style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
             ),
             SizedBox(height: 20.h),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF9C27B0),
-                foregroundColor: AppColor.whiteColor(context),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+            CustomButton(
+              radius: 12.r,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => MultiBlocProvider(
+                      providers: [
+                        BlocProvider.value(value: context.read<CalendarCubit>()),
+                        BlocProvider.value(value: context.read<HomeCubit>()),
+                      ],
+                      child: AddEventScreen(color: const Color(0xFF9C27B0)),
+                    ),
+                  ),
+                );
+              },
+
+              color: const Color(0xFF9C27B0),
+              child: Text(
+                AppLocalKay.new_event.tr(),
+                style: AppTextStyle.bodyMedium(
+                  context,
+                ).copyWith(color: AppColor.whiteColor(context), fontWeight: FontWeight.bold),
               ),
-              child: Text(AppLocalKay.new_event.tr()),
             ),
           ],
         ),

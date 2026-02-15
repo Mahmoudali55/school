@@ -1017,5 +1017,6 @@
   "required": "Required",
    "event": "Event",
    "no_grades_available": "No grades available at the moment",
-   "sign_out": "Signed out successfully"
+   "sign_out": "Signed out successfully",
+   "free_time": "Use this time to plan or complete other tasks"
 }

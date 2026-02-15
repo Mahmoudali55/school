@@ -1,9 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
-import 'package:my_template/features/calendar/presentation/execution/add_event_screen.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/admin/admin_calendar_models.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/admin/calendar_control_bar.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/admin/calendar_header.dart';
@@ -54,11 +52,11 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _addNewEvent,
-        backgroundColor: const Color(0xFF9C27B0),
-        child: Icon(Icons.add_rounded, color: AppColor.whiteColor(context), size: 24.w),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _addNewEvent,
+      //   backgroundColor: const Color(0xFF9C27B0),
+      //   child: Icon(Icons.add_rounded, color: AppColor.whiteColor(context), size: 24.w),
+      // ),
     );
   }
 
@@ -107,7 +105,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
 
   // دوال مساعدة
   String _getFormattedDate(DateTime date) {
-    return DateFormat('EEEE, d MMMM y', 'ar').format(date);
+    return DateFormat('EEEE, d MMMM y', 'en').format(date);
   }
 
   void _goToPrevious() {
@@ -150,12 +148,6 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
   }
 
   // دوال الإجراءات
-  void _addNewEvent() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const AddEventScreen(color: Color(0xFF9C27B0))),
-    );
-  }
 
   void _editEvent(AdminCalendarEvent event) {}
 
