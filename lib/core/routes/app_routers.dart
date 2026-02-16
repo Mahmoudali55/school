@@ -117,7 +117,7 @@ class AppRouters {
       case RoutesName.leaveAdminScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => sl<LeaveCubit>()..fetchAllLeaves(),
+            create: (context) => sl<HomeCubit>()..getPermissions(),
             child: const LeaveAdminScreen(),
           ),
         );

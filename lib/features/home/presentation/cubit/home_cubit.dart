@@ -186,7 +186,7 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
-  Future<void> getPermissions({required int code}) async {
+  Future<void> getPermissions({int? code}) async {
     if (isClosed) return;
     emit(state.copyWith(getPermissionsStatus: StatusState.loading()));
 

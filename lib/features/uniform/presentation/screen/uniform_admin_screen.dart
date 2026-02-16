@@ -100,14 +100,11 @@ class UniformAdminScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 6),
-
                 Text(
                   "${AppLocalKay.code.tr()} : ${order.studentCode}",
                   style: TextStyle(color: AppColor.grey600Color(context)),
                 ),
-
                 const SizedBox(height: 18),
 
                 /// Measurements Row

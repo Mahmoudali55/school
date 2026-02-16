@@ -5,10 +5,11 @@ import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/features/home/data/models/get_permissions_mobile_model.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
+import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 
 import '../../../../core/utils/app_local_kay.dart';
-import '../../data/model/leave_model.dart';
-import '../cubit/leave_cubit.dart';
 import '../cubit/leave_state.dart';
 
 class LeaveAdminScreen extends StatelessWidget {
@@ -26,14 +27,14 @@ class LeaveAdminScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: BlocBuilder<LeaveCubit, LeaveState>(
+      body: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
-          if (state is LeaveLoading) {
+          if (state.getPermissionsStatus.isLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is LeaveLoaded) {
-            return _buildBody(context, state.leaves);
+          } else if (state.getPermissionsStatus.isSuccess) {
+            return _buildBody(context, state.getPermissionsStatus.data?.data ?? []);
           } else if (state is LeaveError) {
-            return Center(child: Text(state.message));
+            return Center(child: Text(state.getPermissionsStatus.error ?? ''));
           }
           return const SizedBox.shrink();
         },
@@ -41,7 +42,7 @@ class LeaveAdminScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(BuildContext context, List<LeaveRequest> leaves) {
+  Widget _buildBody(BuildContext context, List<PermissionItem> leaves) {
     if (leaves.isEmpty) {
       return Center(
         child: Column(
@@ -70,148 +71,117 @@ class LeaveAdminScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAdminLeaveCard(BuildContext context, LeaveRequest request) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+  Widget _buildAdminLeaveCard(BuildContext context, PermissionItem request) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 18),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(18),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            /// Header
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        request.studentName,
-                        style: AppTextStyle.appBarStyle(
-                          context,
-                        ).copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'ID: ${request.studentId}',
-                        style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey),
-                      ),
-                    ],
+                  child: Text(
+                    request.studentName,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
-                _buildStatusBadge(request.status, context),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: AppColor.primaryColor(context).withOpacity(.1),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    "#${request.id}",
+                    style: TextStyle(
+                      color: AppColor.primaryColor(context),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ],
             ),
-            const Divider(height: 24),
+
+            const SizedBox(height: 16),
+
+            /// Reason
             Text(
-              '${AppLocalKay.leave_reason.tr()}: ${request.reason}',
-              style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
+              AppLocalKay.leave_reason.tr(),
+              style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey),
             ),
-            const Gap(12),
+            const SizedBox(height: 6),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(request.reason, style: const TextStyle(fontWeight: FontWeight.w600)),
+            ),
+
+            const SizedBox(height: 16),
+
+            /// Date & Notes
             Row(
               children: [
-                _buildInfoItem(
-                  Icons.calendar_today,
-                  DateFormat('yyyy-MM-dd').format(request.date),
-                  context,
-                ),
-                const Gap(16),
-                _buildInfoItem(Icons.access_time, request.startTime, context),
+                _infoChip(context, Icons.calendar_today, _formatDate(request.requestDate, context)),
+                const SizedBox(width: 12),
+                if (request.notes.isNotEmpty)
+                  Expanded(child: _infoChip(context, Icons.notes, request.notes)),
               ],
             ),
-            if (request.status == LeaveStatus.pending) ...[
-              const Gap(20),
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () => context.read<LeaveCubit>().updateLeaveStatus(
-                        request.id,
-                        LeaveStatus.rejected,
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColor.errorColor(context),
-                        side: BorderSide(color: AppColor.errorColor(context)),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      child: Text(AppLocalKay.status_rejected.tr()),
-                    ),
-                  ),
-                  const Gap(12),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () => context.read<LeaveCubit>().updateLeaveStatus(
-                        request.id,
-                        LeaveStatus.approved,
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColor.secondAppColor(context),
-                        foregroundColor: AppColor.whiteColor(context),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      child: Text(AppLocalKay.status_approved.tr()),
-                    ),
-                  ),
-                ],
-              ),
-            ],
           ],
         ),
       ),
     );
   }
 
-  Widget _buildStatusBadge(LeaveStatus status, BuildContext context) {
-    final color = _getStatusColor(status, context);
-    final text = _getStatusText(status);
+  String _formatDate(String date, BuildContext context) {
+    try {
+      final parsed = DateFormat('dd/MM/yyyy').parse(date);
+      return DateFormat.yMMMMd(context.locale.toString()).format(parsed);
+    } catch (e) {
+      return date;
+    }
+  }
 
+  Widget _infoChip(BuildContext context, IconData icon, String value) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color),
+        color: AppColor.infoColor(context).withOpacity(.08),
+        borderRadius: BorderRadius.circular(14),
       ),
-      child: Text(
-        text,
-        style: AppTextStyle.bodySmall(
-          context,
-        ).copyWith(color: color, fontWeight: FontWeight.bold, fontSize: 12),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 16, color: AppColor.infoColor(context)),
+          const SizedBox(width: 6),
+          Flexible(
+            child: Text(
+              value,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontWeight: FontWeight.w500),
+            ),
+          ),
+        ],
       ),
     );
-  }
-
-  Widget _buildInfoItem(IconData icon, String value, BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, size: 16, color: AppColor.infoColor(context)),
-        const Gap(6),
-        Text(value, style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey)),
-      ],
-    );
-  }
-
-  Color _getStatusColor(LeaveStatus status, BuildContext context) {
-    switch (status) {
-      case LeaveStatus.pending:
-        return AppColor.warningColor(context);
-      case LeaveStatus.approved:
-        return AppColor.secondAppColor(context);
-      case LeaveStatus.rejected:
-        return AppColor.errorColor(context);
-    }
-  }
-
-  String _getStatusText(LeaveStatus status) {
-    switch (status) {
-      case LeaveStatus.pending:
-        return AppLocalKay.status_pending.tr();
-      case LeaveStatus.approved:
-        return AppLocalKay.status_approved.tr();
-      case LeaveStatus.rejected:
-        return AppLocalKay.status_rejected.tr();
-    }
   }
 }

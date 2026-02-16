@@ -54,7 +54,7 @@ abstract interface class HomeRepo {
     required int code,
     int? monthNo,
   });
-  Future<Either<Failure, GetPermissionsMobile>> getPermissions({required int code});
+  Future<Either<Failure, GetPermissionsMobile>> getPermissions({int? code});
 
   Future<Either<Failure, EditPermissionsMobileResponse>> editPermissions({
     required EditPermissionsMobileRequest request,
@@ -254,7 +254,7 @@ class HomeRepoImpl implements HomeRepo {
   }
 
   @override
-  Future<Either<Failure, GetPermissionsMobile>> getPermissions({required int code}) async {
+  Future<Either<Failure, GetPermissionsMobile>> getPermissions({int? code}) async {
     return handleDioRequest(
       request: () async {
         final response = await apiConsumer.get(
