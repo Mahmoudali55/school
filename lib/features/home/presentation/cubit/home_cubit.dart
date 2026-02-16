@@ -411,6 +411,18 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  Future getData() async {
+    if (isClosed) return;
+    emit(state.copyWith(busDataStatus: StatusState.loading()));
+
+    final result = await _homeRepo.busData();
+    if (isClosed) return;
+    result.fold(
+      (error) => emit(state.copyWith(busDataStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(busDataStatus: StatusState.success(success))),
+    );
+  }
+
   void resetAddHomeworkStatus() {
     if (isClosed) return;
     emit(state.copyWith(addHomeworkStatus: const StatusState.initial()));

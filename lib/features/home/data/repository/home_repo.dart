@@ -17,6 +17,7 @@ import 'package:my_template/features/home/data/models/add_permissions_mobile_mod
 import 'package:my_template/features/home/data/models/add_permissions_response_model.dart';
 import 'package:my_template/features/home/data/models/add_uniform_request_model.dart';
 import 'package:my_template/features/home/data/models/add_uniform_response_model.dart';
+import 'package:my_template/features/home/data/models/bus_data_model.dart';
 import 'package:my_template/features/home/data/models/class_hW_del_model.dart';
 import 'package:my_template/features/home/data/models/edit_permissions_mobile_request_model.dart';
 import 'package:my_template/features/home/data/models/edit_permissions_mobile_response_model.dart';
@@ -101,6 +102,7 @@ abstract interface class HomeRepo {
   });
   Future<Either<Failure, List<String>>> uploadFile({required List<String> filePaths});
   Future<Either<Failure, String>> imageFileName({required String filePath});
+  Future<Either<Failure, List<BusDataModel>>> busData();
 }
 
 class HomeRepoImpl implements HomeRepo {
@@ -477,6 +479,17 @@ class HomeRepoImpl implements HomeRepo {
         } else {
           throw Exception('Server error: ${response.statusCode}, ${response.body}');
         }
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, List<BusDataModel>>> busData() async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(EndPoints.getBus);
+        final dataString = response['Data'];
+        return BusDataModel.listFromJson(dataString);
       },
     );
   }

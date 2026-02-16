@@ -1,11 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/routes/routes_name.dart';
+import 'package:my_template/core/services/services_locator.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/alert_model.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/view/execution/financial_settings_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/reports_page.dart';
 import 'package:my_template/features/home/presentation/view/execution/transport_management_screen.dart';
@@ -28,7 +31,12 @@ class ManagementShortcuts extends StatelessWidget {
       color: Colors.purple,
       onTap: (context) => Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => TransportManagementScreen()),
+        MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => sl<HomeCubit>()..getData(),
+            child: TransportManagementScreen(),
+          ),
+        ),
       ),
     ),
     ManagementShortcut(

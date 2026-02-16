@@ -1018,5 +1018,13 @@
    "event": "Event",
    "no_grades_available": "No grades available at the moment",
    "sign_out": "Signed out successfully",
-   "free_time": "Use this time to plan or complete other tasks"
+   "free_time": "Use this time to plan or complete other tasks",
+  "total_buses": "Total Buses",
+  "active": "Active",
+  "maintenance": "Maintenance",
+  "no_buses_found": "No buses found",
+  "bus_code": "Bus Code",
+  "plate_no": "Plate No",
+  "bus_seats": "Seats",
+  "no_line": "No Line"
 }

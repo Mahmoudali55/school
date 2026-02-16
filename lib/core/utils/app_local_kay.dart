@@ -1044,4 +1044,12 @@ class AppLocalKay {
   static const String no_grades_available = 'no_grades_available';
   static const String sign_out = 'sign_out';
   static const String free_time = 'free_time';
+  static const String total_buses = 'total_buses';
+  static const String active = 'active';
+  static const String maintenance = 'maintenance';
+  static const String no_buses_found = 'no_buses_found';
+  static const String bus_code = 'bus_code';
+  static const String plate_no = 'plate_no';
+  static const String bus_seats = 'bus_seats';
+  static const String no_line = 'no_line';
 }

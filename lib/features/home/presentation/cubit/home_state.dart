@@ -6,6 +6,7 @@ import 'package:my_template/features/home/data/models/add_homework_response_mode
 import 'package:my_template/features/home/data/models/add_lessons_response_model.dart';
 import 'package:my_template/features/home/data/models/add_permissions_response_model.dart';
 import 'package:my_template/features/home/data/models/add_uniform_response_model.dart';
+import 'package:my_template/features/home/data/models/bus_data_model.dart';
 import 'package:my_template/features/home/data/models/class_hW_del_model.dart';
 import 'package:my_template/features/home/data/models/edit_permissions_mobile_response_model.dart';
 import 'package:my_template/features/home/data/models/edit_uniform_response_model.dart';
@@ -49,6 +50,7 @@ class HomeState extends Equatable {
     this.uploadedFilesStatus = const StatusState.initial(),
     this.editLessonsStatus = const StatusState.initial(),
     this.imageFileNameStatus = const StatusState.initial(),
+    this.busDataStatus = const StatusState.initial(),
     this.selectedStudent,
     this.data,
     this.isLoading = false,
@@ -78,6 +80,7 @@ class HomeState extends Equatable {
   final StatusState<AddLessonsResponse> addLessonsStatus;
   final StatusState<List<String>>? uploadedFilesStatus;
   final StatusState<AddLessonsResponse> editLessonsStatus;
+  final StatusState<List<BusDataModel>> busDataStatus;
   final StatusState<String> imageFileNameStatus;
   final StudentMiniInfo? selectedStudent;
 
@@ -116,6 +119,7 @@ class HomeState extends Equatable {
     uploadedFilesStatus,
     editLessonsStatus,
     imageFileNameStatus,
+    busDataStatus,
   ];
 
   HomeState copyWith({
@@ -143,6 +147,7 @@ class HomeState extends Equatable {
     StatusState<List<String>>? uploadedFilesStatus,
     StatusState<AddLessonsResponse>? editLessonsStatus,
     StatusState<String>? imageFileNameStatus,
+    StatusState<List<BusDataModel>>? busDataStatus,
     StudentMiniInfo? selectedStudent,
     HomeModel? data,
     bool? isLoading,
@@ -177,6 +182,7 @@ class HomeState extends Equatable {
       uploadedFilesStatus: uploadedFilesStatus ?? this.uploadedFilesStatus,
       editLessonsStatus: editLessonsStatus ?? this.editLessonsStatus,
       imageFileNameStatus: imageFileNameStatus ?? this.imageFileNameStatus,
+      busDataStatus: busDataStatus ?? this.busDataStatus,
     );
   }
 }
