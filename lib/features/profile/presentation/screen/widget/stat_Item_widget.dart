@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
 class StatItem extends StatelessWidget {
@@ -12,14 +13,14 @@ class StatItem extends StatelessWidget {
     return Column(
       children: [
         Icon(icon, color: Colors.blue, size: 32),
-        const SizedBox(height: 6),
+        const Gap(6),
         Text(
           value,
           style: AppTextStyle.titleLarge(
             context,
           ).copyWith(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(height: 2),
+        const Gap(2),
         Text(
           label,
           style: AppTextStyle.bodySmall(context, color: Colors.grey).copyWith(fontSize: 13),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
 
 class QuickActionsWidget extends StatelessWidget {
@@ -35,7 +36,7 @@ class QuickActionsWidget extends StatelessWidget {
               color: const Color(0xFF1F2937),
             ),
           ),
-          SizedBox(height: 16.h),
+          Gap(16.h),
           GridView.count(
             crossAxisCount: 3,
             shrinkWrap: true,
@@ -104,7 +105,7 @@ class QuickActionsWidget extends StatelessWidget {
               decoration: BoxDecoration(color: color.withOpacity(0.2), shape: BoxShape.circle),
               child: Icon(icon, size: 24.w, color: color),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
             Text(
               title,
               style: TextStyle(fontSize: 12.sp, color: color, fontWeight: FontWeight.w600),

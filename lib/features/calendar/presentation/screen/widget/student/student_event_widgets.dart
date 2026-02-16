@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -34,7 +35,7 @@ class StudentEventCard extends StatelessWidget {
             height: 40.h,
             decoration: BoxDecoration(color: event.color, borderRadius: BorderRadius.circular(2)),
           ),
-          SizedBox(width: 12.w),
+          Gap( 12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,10 +46,10 @@ class StudentEventCard extends StatelessWidget {
                     context,
                   ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
                 ),
-                SizedBox(height: 4.h),
+                Gap(4.h),
 
                 if (event.description.isNotEmpty) ...[
-                  SizedBox(height: 4.h),
+                  Gap(4.h),
                   Text(
                     event.description,
                     style: AppTextStyle.bodyMedium(
@@ -60,14 +61,14 @@ class StudentEventCard extends StatelessWidget {
                   Row(
                     children: [
                       Icon(Icons.access_time_rounded, size: 12.w, color: const Color(0xFF6B7280)),
-                      SizedBox(width: 4.w),
+                      Gap( 4.w),
                       Text(
                         event.time + " - " + event.date,
                         style: AppTextStyle.bodySmall(
                           context,
                         ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
                       ),
-                      SizedBox(width: 12.w),
+                      Gap( 12.w),
                     ],
                   ),
                 ],
@@ -121,7 +122,7 @@ class StudentUpcomingEventItem extends StatelessWidget {
             height: 8.w,
             decoration: BoxDecoration(color: event.color, shape: BoxShape.circle),
           ),
-          SizedBox(width: 12.w),
+          Gap( 12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,7 +133,7 @@ class StudentUpcomingEventItem extends StatelessWidget {
                     context,
                   ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
                 ),
-                SizedBox(height: 2.h),
+                Gap(2.h),
                 Text(
                   "${event.date} • ${event.time}",
                   style: AppTextStyle.bodySmall(
@@ -171,14 +172,14 @@ class StudentEmptyState extends StatelessWidget {
       child: Column(
         children: [
           Icon(Icons.event_available_rounded, size: 48.w, color: const Color(0xFF9CA3AF)),
-          SizedBox(height: 12.h),
+          Gap(12.h),
           Text(
             AppLocalKay.no_events.tr(),
             style: AppTextStyle.bodyMedium(
               context,
             ).copyWith(color: const Color(0xFF6B7280), fontWeight: FontWeight.w600),
           ),
-          SizedBox(height: 4.h),
+          Gap(4.h),
           Text(
             AppLocalKay.no_events_today.tr(),
             style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF9CA3AF)),

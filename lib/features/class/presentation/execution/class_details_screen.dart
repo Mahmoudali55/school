@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/services/services_locator.dart';
 import 'package:my_template/core/theme/app_colors.dart';
@@ -63,7 +64,7 @@ class ClassDetailsScreen extends StatelessWidget {
                         context,
                       ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
                     ),
-                    SizedBox(height: 16.h),
+                    Gap(16.h),
 
                     _buildDetailItem(
                       AppLocalKay.user_management_class.tr(),
@@ -96,7 +97,7 @@ class ClassDetailsScreen extends StatelessWidget {
                       context,
                     ),
 
-                    SizedBox(height: 16.h),
+                    Gap(16.h),
 
                     // إحصائيات السعة
                     Container(
@@ -129,7 +130,7 @@ class ClassDetailsScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(height: 8.h),
+                          Gap(8.h),
                           LinearProgressIndicator(
                             value: schoolClass.currentStudents / schoolClass.capacity,
                             backgroundColor: Colors.grey[200],
@@ -143,7 +144,7 @@ class ClassDetailsScreen extends StatelessWidget {
                             minHeight: 12.h,
                             borderRadius: BorderRadius.circular(6.r),
                           ),
-                          SizedBox(height: 8.h),
+                          Gap(8.h),
                           Text(
                             '${fillPercentage.toStringAsFixed(1)}% ${AppLocalKay.stats_fill_rate.tr()}',
                             style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey),
@@ -155,7 +156,7 @@ class ClassDetailsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 24.h),
+            Gap(24.h),
 
             Text(
               AppLocalKay.quick_actions.tr(),
@@ -163,7 +164,7 @@ class ClassDetailsScreen extends StatelessWidget {
                 context,
               ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
 
             GridView(
               shrinkWrap: true,
@@ -289,7 +290,7 @@ class ClassDetailsScreen extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, size: 20.w, color: Colors.grey),
-          SizedBox(width: 12.w),
+          Gap( 12.w),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -322,7 +323,7 @@ class ClassDetailsScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(icon, size: 30.w, color: color),
-              SizedBox(height: 8.h),
+              Gap(8.h),
               Text(
                 title,
                 textAlign: TextAlign.center,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/parent/parent_calendar_models.dart';
@@ -53,7 +54,7 @@ class ParentEventCard extends StatelessWidget {
                 child: Row(
                   children: [
                     Icon(Icons.person_outline_rounded, color: const Color(0xFF2196F3), size: 10.w),
-                    SizedBox(width: 4.w),
+                    Gap(4.w),
                     Text(
                       event.student,
                       style: AppTextStyle.bodySmall(context).copyWith(
@@ -74,7 +75,7 @@ class ParentEventCard extends StatelessWidget {
               context,
             ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
           ),
-          SizedBox(height: 8.h),
+          Gap(8.h),
 
           if (event.description.isNotEmpty) ...[
             Text(
@@ -89,7 +90,7 @@ class ParentEventCard extends StatelessWidget {
           Row(
             children: [
               Icon(Icons.access_time_rounded, size: 14.w, color: const Color(0xFF6B7280)),
-              SizedBox(width: 4.w),
+              Gap(4.w),
               Text(
                 event.time + " • " + event.date,
                 style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
@@ -125,14 +126,14 @@ class ParentEmptyState extends StatelessWidget {
                 size: 48.w,
               ),
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             Text(
               "لا توجد أحداث مجدولة",
               style: AppTextStyle.titleMedium(
                 context,
               ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF4B5563)),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
             Text(
               "استمتع بيوم هادئ مع أبنائك",
               textAlign: TextAlign.center,

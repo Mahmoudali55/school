@@ -210,7 +210,7 @@ class _LeaveParentScreenState extends State<LeaveParentScreen> {
     return Row(
       children: [
         Icon(icon, size: 16, color: AppColor.infoColor(context)),
-        const SizedBox(width: 8),
+        const Gap(8),
         Text(
           '$label: ',
           style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.w500),
@@ -299,7 +299,7 @@ class _LeaveParentScreenState extends State<LeaveParentScreen> {
                                 ).copyWith(fontWeight: FontWeight.bold, fontSize: 20),
                                 textAlign: TextAlign.center,
                               ),
-                              const SizedBox(height: 20),
+                              const Gap(20),
                               if (students.isNotEmpty) ...[
                                 Align(
                                   alignment: Alignment.centerRight,
@@ -310,7 +310,7 @@ class _LeaveParentScreenState extends State<LeaveParentScreen> {
                                     ).copyWith(fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                const SizedBox(height: 8),
+                                const Gap(8),
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 12),
                                   decoration: BoxDecoration(
@@ -335,7 +335,7 @@ class _LeaveParentScreenState extends State<LeaveParentScreen> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 16),
+                                const Gap(16),
                               ],
                               CustomFormField(
                                 controller: reasonController,
@@ -348,7 +348,7 @@ class _LeaveParentScreenState extends State<LeaveParentScreen> {
                                   return null;
                                 },
                               ),
-                              const SizedBox(height: 16),
+                              const Gap(16),
                               CustomFormField(
                                 controller: notesController,
                                 title: AppLocalKay.note.tr(),
@@ -360,7 +360,7 @@ class _LeaveParentScreenState extends State<LeaveParentScreen> {
                                   return null;
                                 },
                               ),
-                              const SizedBox(height: 16),
+                              const Gap(16),
                               Card(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
@@ -384,7 +384,7 @@ class _LeaveParentScreenState extends State<LeaveParentScreen> {
                                   },
                                 ),
                               ),
-                              const SizedBox(height: 20),
+                              const Gap(20),
                               Row(
                                 children: [
                                   Expanded(
@@ -399,7 +399,7 @@ class _LeaveParentScreenState extends State<LeaveParentScreen> {
                                       child: Text(AppLocalKay.cancel.tr()),
                                     ),
                                   ),
-                                  const SizedBox(width: 12),
+                                  const Gap(12),
                                   Expanded(
                                     child: CustomButton(
                                       radius: 12,
@@ -443,7 +443,7 @@ class _LeaveParentScreenState extends State<LeaveParentScreen> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 20),
+                              const Gap(20),
                             ],
                           ),
                         ),

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -30,11 +31,7 @@ class StudentWeeklyView extends StatelessWidget {
     return SingleChildScrollView(
       padding: EdgeInsets.all(16.w),
       child: Column(
-        children: [
-          _buildWeekDays(context),
-          SizedBox(height: 20.h),
-          _buildUpcomingEventsSection(context),
-        ],
+        children: [_buildWeekDays(context), Gap(20.h), _buildUpcomingEventsSection(context)],
       ),
     );
   }
@@ -86,7 +83,7 @@ class StudentWeeklyView extends StatelessWidget {
                           context,
                         ).copyWith(color: const Color(0xFF6B7280)),
                       ),
-                      SizedBox(height: 2.h),
+                      Gap(2.h),
                       Text(
                         '${day.day}',
                         style: AppTextStyle.bodyLarge(
@@ -96,7 +93,7 @@ class StudentWeeklyView extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(width: 12.w),
+                Gap( 12.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,7 +112,7 @@ class StudentWeeklyView extends StatelessWidget {
                                     shape: BoxShape.circle,
                                   ),
                                 ),
-                                SizedBox(width: 8.w),
+                                Gap( 8.w),
                                 Expanded(
                                   child: Text(
                                     event.title,
@@ -168,7 +165,7 @@ class StudentWeeklyView extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 12.h),
+        Gap(12.h),
         if (upcomingEvents.isEmpty)
           const StudentEmptyState()
         else

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -26,14 +27,14 @@ class ParentChildrenSelection extends StatelessWidget {
           AppLocalKay.select_child.tr(),
           style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
         ),
-        const SizedBox(height: 8),
+        const Gap(8),
         SizedBox(
           height: 80,
           width: double.maxFinite,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: children.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 12),
+            separatorBuilder: (_, __) => const Gap( 12),
             itemBuilder: (_, index) {
               final c = children[index];
               final selected = selectedIndex == index;
@@ -75,7 +76,7 @@ class ParentChildrenSelection extends StatelessWidget {
             backgroundColor: Colors.blue[100],
             child: Icon(Icons.person, color: Colors.blue[700]),
           ),
-          const SizedBox(width: 8),
+          const Gap( 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

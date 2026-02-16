@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/routes/routes_name.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -47,7 +48,7 @@ class QuickActionsSection extends StatelessWidget {
           AppLocalKay.quick_actions.tr(),
           style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 16.h),
+        Gap(16.h),
         Wrap(
           spacing: 16.w,
           runSpacing: 16.h,
@@ -72,7 +73,7 @@ class QuickActionsSection extends StatelessWidget {
                       child: Icon(item.$2, color: item.$3, size: 28.w),
                     ),
                   ),
-                  SizedBox(height: 8.h),
+                  Gap(8.h),
                   Text(
                     item.$1,
                     textAlign: TextAlign.center,

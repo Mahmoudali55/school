@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -26,7 +27,7 @@ class AdminHeader extends StatelessWidget {
                   color: const Color(0xFF1F2937),
                 ).copyWith(fontSize: 20.sp, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 4.h),
+              Gap(4.h),
               Text(
                 "$name - $role",
                 style: AppTextStyle.bodySmall(

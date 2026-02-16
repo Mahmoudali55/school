@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/bus/data/model/bus_tracking_models.dart';
@@ -69,7 +70,7 @@ class _ClassesSelectorWidgetState extends State<ClassesSelectorWidget> {
                     Row(
                       children: [
                         Icon(Icons.class_rounded, color: AppColor.accentColor(context), size: 20.w),
-                        SizedBox(width: 8.w),
+                        Gap(8.w),
                         Text(
                           AppLocalKay.classetitle.tr(),
                           style: TextStyle(
@@ -80,7 +81,7 @@ class _ClassesSelectorWidgetState extends State<ClassesSelectorWidget> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 12.h),
+                    Gap(12.h),
                     if (homeState.teacherClassesStatus.isLoading)
                       const Center(child: CircularProgressIndicator())
                     else if (teacherClasses.isEmpty)
@@ -121,7 +122,7 @@ class _ClassesSelectorWidgetState extends State<ClassesSelectorWidget> {
             size: 16.w,
             color: isSelected ? AppColor.whiteColor(context) : AppColor.accentColor(context),
           ),
-          SizedBox(width: 6.w),
+          Gap(6.w),
           Text(teacherClass.classNameAr ?? "فصل"),
         ],
       ),
@@ -159,7 +160,7 @@ class _ClassesSelectorWidgetState extends State<ClassesSelectorWidget> {
             size: 16.w,
             color: isSelected ? AppColor.whiteColor(context) : busClass.classColor,
           ),
-          SizedBox(width: 6.w),
+          Gap(6.w),
           Text(busClass.className),
         ],
       ),

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -45,13 +46,13 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                 ),
               ),
               ProfileCardWidget(),
-              SizedBox(height: 24.h),
+              Gap( 24.h),
               SectionTitleWidget(title: AppLocalKay.setting_account.tr()),
-              SizedBox(height: 16.h),
+              Gap( 16.h),
               AccountSettingsWidget(),
-              SizedBox(height: 24.h),
+              Gap( 24.h),
               SectionTitleWidget(title: AppLocalKay.setting_school.tr()),
-              SizedBox(height: 16.h),
+              Gap( 16.h),
               BlocBuilder<SettingsCubit, SettingsState>(
                 builder: (context, state) {
                   final String currentLangCode = state is SettingsLoaded
@@ -91,15 +92,15 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                 },
               ),
               SchoolSettingsWidget(),
-              SizedBox(height: 24.h),
+              Gap( 24.h),
               SectionTitleWidget(title: AppLocalKay.setting_app.tr()),
-              SizedBox(height: 16.h),
+              Gap( 16.h),
               AppSettingsWidget(),
-              SizedBox(height: 24.h),
+              Gap( 24.h),
               SectionTitleWidget(title: AppLocalKay.setting_info.tr()),
-              SizedBox(height: 16.h),
+              Gap( 16.h),
               AppInfoWidget(),
-              SizedBox(height: 32.h),
+              Gap( 32.h),
               ActionButtonsWidget(),
             ],
           ),

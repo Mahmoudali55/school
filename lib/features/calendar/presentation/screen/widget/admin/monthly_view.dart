@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -30,13 +31,13 @@ class MonthlyView extends StatelessWidget {
         children: [
           // رأس الأيام
           _buildDaysHeader(context),
-          SizedBox(height: 8.h),
+          Gap(8.h),
           // شبكة الأيام
           _buildMonthGrid(context),
-          SizedBox(height: 20.h),
+          Gap(20.h),
           // إحصائيات الشهر
           _buildMonthlyStats(context),
-          SizedBox(height: 20.h),
+          Gap(20.h),
           // الأحداث القادمة
           _buildUpcomingEvents(context),
         ],
@@ -45,15 +46,7 @@ class MonthlyView extends StatelessWidget {
   }
 
   Widget _buildDaysHeader(BuildContext context) {
-    List<String> days = [
-      'أحد',
-      'اثنين',
-      'ثلاثاء',
-      'أربعاء',
-      'خميس',
-      'جمعة',
-      'سبت',
-    ];
+    List<String> days = ['أحد', 'اثنين', 'ثلاثاء', 'أربعاء', 'خميس', 'جمعة', 'سبت'];
 
     return Row(
       children: days
@@ -64,10 +57,9 @@ class MonthlyView extends StatelessWidget {
                 child: Text(
                   day,
                   textAlign: TextAlign.center,
-                  style: AppTextStyle.bodySmall(context).copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF9C27B0),
-                  ),
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF9C27B0)),
                 ),
               ),
             ),
@@ -79,11 +71,7 @@ class MonthlyView extends StatelessWidget {
   Widget _buildMonthGrid(BuildContext context) {
     DateTime firstDay = DateTime(selectedDate.year, selectedDate.month, 1);
     int startingWeekday = firstDay.weekday % 7;
-    int daysInMonth = DateTime(
-      selectedDate.year,
-      selectedDate.month + 1,
-      0,
-    ).day;
+    int daysInMonth = DateTime(selectedDate.year, selectedDate.month + 1, 0).day;
 
     return GridView.builder(
       shrinkWrap: true,
@@ -114,9 +102,7 @@ class MonthlyView extends StatelessWidget {
         );
 
         return GestureDetector(
-          onTap: () => onDateSelected(
-            DateTime(selectedDate.year, selectedDate.month, dayNumber),
-          ),
+          onTap: () => onDateSelected(DateTime(selectedDate.year, selectedDate.month, dayNumber)),
           child: Container(
             decoration: BoxDecoration(
               color: isSelected
@@ -137,12 +123,10 @@ class MonthlyView extends StatelessWidget {
                   '$dayNumber',
                   style: AppTextStyle.bodyMedium(context).copyWith(
                     fontWeight: FontWeight.w600,
-                    color: isSelected
-                        ? AppColor.whiteColor(context)
-                        : const Color(0xFF1F2937),
+                    color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF1F2937),
                   ),
                 ),
-                SizedBox(height: 2.h),
+                Gap(2.h),
                 if (dayEvents.isNotEmpty)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -155,9 +139,7 @@ class MonthlyView extends StatelessWidget {
                               height: 4.w,
                               margin: EdgeInsets.symmetric(horizontal: 1.w),
                               decoration: BoxDecoration(
-                                color: isSelected
-                                    ? AppColor.whiteColor(context)
-                                    : event.color,
+                                color: isSelected ? AppColor.whiteColor(context) : event.color,
                                 shape: BoxShape.circle,
                               ),
                             ),
@@ -211,10 +193,9 @@ class MonthlyView extends StatelessWidget {
             children: [
               Text(
                 AppLocalKay.school_statistics.tr(),
-                style: AppTextStyle.titleMedium(context).copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleMedium(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
@@ -233,7 +214,7 @@ class MonthlyView extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 16.h),
+          Gap(16.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -272,13 +253,7 @@ class MonthlyView extends StatelessWidget {
     );
   }
 
-  Widget _buildStatItem(
-    BuildContext context,
-    String title,
-    int count,
-    Color color,
-    IconData icon,
-  ) {
+  Widget _buildStatItem(BuildContext context, String title, int count, Color color, IconData icon) {
     return Column(
       children: [
         Container(
@@ -289,19 +264,17 @@ class MonthlyView extends StatelessWidget {
           ),
           child: Icon(icon, size: 16.w, color: color),
         ),
-        SizedBox(height: 6.h),
+        Gap(6.h),
         Text(
           '$count',
           style: AppTextStyle.bodyMedium(
             context,
           ).copyWith(fontWeight: FontWeight.bold, color: color),
         ),
-        SizedBox(height: 2.h),
+        Gap(2.h),
         Text(
           title,
-          style: AppTextStyle.bodySmall(
-            context,
-          ).copyWith(color: const Color(0xFF6B7280)),
+          style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
         ),
       ],
     );
@@ -313,23 +286,17 @@ class MonthlyView extends StatelessWidget {
       children: [
         Text(
           AppLocalKay.upcoming_events.tr(),
-          style: AppTextStyle.titleMedium(context).copyWith(
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF1F2937),
-          ),
+          style: AppTextStyle.titleMedium(
+            context,
+          ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
         ),
-        SizedBox(height: 12.h),
-        ...upcomingEvents
-            .map((event) => _buildUpcomingEventItem(context, event))
-            .toList(),
+        Gap(12.h),
+        ...upcomingEvents.map((event) => _buildUpcomingEventItem(context, event)).toList(),
       ],
     );
   }
 
-  Widget _buildUpcomingEventItem(
-    BuildContext context,
-    AdminCalendarEvent event,
-  ) {
+  Widget _buildUpcomingEventItem(BuildContext context, AdminCalendarEvent event) {
     return Container(
       margin: EdgeInsets.only(bottom: 12.h),
       padding: EdgeInsets.all(12.w),
@@ -349,24 +316,20 @@ class MonthlyView extends StatelessWidget {
           Container(
             width: 4.w,
             height: 40.h,
-            decoration: BoxDecoration(
-              color: event.color,
-              borderRadius: BorderRadius.circular(2),
-            ),
+            decoration: BoxDecoration(color: event.color, borderRadius: BorderRadius.circular(2)),
           ),
-          SizedBox(width: 12.w),
+          Gap(12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   event.title,
-                  style: AppTextStyle.bodyMedium(context).copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF1F2937),
-                  ),
+                  style: AppTextStyle.bodyMedium(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
                 ),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   "${event.date} • ${event.time}",
                   style: AppTextStyle.bodySmall(
@@ -384,11 +347,9 @@ class MonthlyView extends StatelessWidget {
             ),
             child: Text(
               event.type,
-              style: AppTextStyle.bodySmall(context).copyWith(
-                fontSize: 10.sp,
-                color: event.color,
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppTextStyle.bodySmall(
+                context,
+              ).copyWith(fontSize: 10.sp, color: event.color, fontWeight: FontWeight.w600),
             ),
           ),
         ],

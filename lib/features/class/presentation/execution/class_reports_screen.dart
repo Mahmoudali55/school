@@ -1,6 +1,7 @@
 // features/class/presentation/execution/class_reports_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/class/data/model/school_class_model.dart';
@@ -43,7 +44,7 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
             child: Row(
               children: [
                 Icon(Icons.assessment, size: 24.w, color: Colors.grey),
-                SizedBox(width: 8.w),
+                Gap( 8.w),
                 Text(
                   'اختر نوع التقرير:',
                   style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
@@ -89,11 +90,11 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
             ),
           ),
 
-          SizedBox(height: 16.h),
+          Gap(16.h),
 
           // إحصائيات سريعة
           _buildQuickStats(),
-          SizedBox(height: 16.h),
+          Gap(16.h),
 
           // التقرير المحدد
           Expanded(child: _buildSelectedReport()),
@@ -108,9 +109,9 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
       child: Row(
         children: [
           Expanded(child: _buildStatCard('الحضور', '94%', Icons.trending_up, Colors.green)),
-          SizedBox(width: 12.w),
+          Gap( 12.w),
           Expanded(child: _buildStatCard('المتوسط', '86%', Icons.grade, Colors.blue)),
-          SizedBox(width: 12.w),
+          Gap( 12.w),
           Expanded(
             child: _buildStatCard(
               'الطلاب',
@@ -135,7 +136,7 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
               decoration: BoxDecoration(color: color.withOpacity(0.1), shape: BoxShape.circle),
               child: Icon(icon, color: color, size: 20.w),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
             Text(
               value,
               style: AppTextStyle.titleMedium(
@@ -185,7 +186,7 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
               'تقرير الحضور - آخر 20 يوم',
               style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             Expanded(
               child: ListView.builder(
                 itemCount: attendanceData.length,
@@ -221,7 +222,7 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
               ).copyWith(fontWeight: FontWeight.bold, color: Colors.blue),
             ),
           ),
-          SizedBox(width: 12.w),
+          Gap( 12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -230,7 +231,7 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
                   student['student'],
                   style: AppTextStyle.titleSmall(context).copyWith(fontWeight: FontWeight.w500),
                 ),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   'حضور: ${student['present']} | غياب: ${student['absent']}',
                   style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600),
@@ -276,7 +277,7 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
               'تقرير الدرجات - الفصل الأول',
               style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             Expanded(
               child: ListView.builder(
                 itemCount: gradesData.length,
@@ -310,7 +311,7 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
             ),
             child: Icon(Icons.grade, size: 20.w, color: Colors.green),
           ),
-          SizedBox(width: 12.w),
+          Gap( 12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -319,7 +320,7 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
                   subject['subject'],
                   style: AppTextStyle.titleSmall(context).copyWith(fontWeight: FontWeight.w500),
                 ),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   'أعلى: ${subject['highest']} | أدنى: ${subject['lowest']}',
                   style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600),
@@ -369,7 +370,7 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
               'تقرير السلوك - الشهر الحالي',
               style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             Expanded(
               child: ListView.builder(
                 itemCount: behaviorData.length,
@@ -404,7 +405,7 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
               color: AppColor.whiteColor(context),
             ),
           ),
-          SizedBox(width: 12.w),
+          Gap( 12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -413,7 +414,7 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
                   student['student'],
                   style: AppTextStyle.titleSmall(context).copyWith(fontWeight: FontWeight.w500),
                 ),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   '${student['points']} نقطة',
                   style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600),

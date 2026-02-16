@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -45,7 +46,7 @@ class BusDetails extends StatelessWidget {
                   context,
                 ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
 
               // Loading state
               if (busStatus.isLoading)
@@ -213,7 +214,7 @@ class BusDetails extends StatelessWidget {
             ),
             child: Icon(icon, size: 16.w, color: selectedBusData.busColor),
           ),
-          SizedBox(height: 8.w),
+          Gap(8.w),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -222,12 +223,12 @@ class BusDetails extends StatelessWidget {
                 style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
               ),
               if (isTappable) ...[
-                SizedBox(width: 4.w),
+                Gap(4.w),
                 Icon(Icons.touch_app_rounded, size: 12.w, color: AppColor.primaryColor(context)),
               ],
             ],
           ),
-          SizedBox(height: 8.w),
+          Gap(8.w),
           Text(
             value,
             style: AppTextStyle.titleSmall(

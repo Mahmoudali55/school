@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
@@ -39,7 +40,7 @@ class LiveTrackingWidget extends StatelessWidget {
                       shape: BoxShape.circle,
                     ),
                   ),
-                  SizedBox(width: 4.w),
+                  Gap(4.w),
                   Text(
                     AppLocalKay.user_management_status_active.tr(),
                     style: AppTextStyle.bodySmall(
@@ -52,7 +53,7 @@ class LiveTrackingWidget extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 16.h),
+        Gap(16.h),
         // محتوى الكرت
         Container(
           decoration: BoxDecoration(
@@ -87,7 +88,7 @@ class LiveTrackingWidget extends StatelessWidget {
                           size: 28.w,
                         ),
                       ),
-                      SizedBox(width: 12.w),
+                      Gap(12.w),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,7 +100,7 @@ class LiveTrackingWidget extends StatelessWidget {
                                 color: const Color(0xFF1F2937),
                               ).copyWith(fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(height: 4.h),
+                            Gap(4.h),
                             Text(
                               "وصول متوقع: ٨:١٥ ص",
                               style: AppTextStyle.bodySmall(
@@ -122,7 +123,7 @@ class LiveTrackingWidget extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(Icons.location_on, size: 16.w),
-                            SizedBox(width: 4.w),
+                            Gap(4.w),
                             Text(
                               AppLocalKay.user_management_track.tr(),
                               style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.white),
@@ -132,7 +133,7 @@ class LiveTrackingWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 16.h),
+                  Gap(16.h),
                   Container(
                     height: 120.h,
                     decoration: BoxDecoration(
@@ -151,7 +152,7 @@ class LiveTrackingWidget extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(Icons.map_outlined, color: const Color(0xFF2E5BFF), size: 32.w),
-                              SizedBox(height: 8.h),
+                              Gap(8.h),
                               Text(
                                 AppLocalKay.route_map.tr(),
                                 style: AppTextStyle.bodyMedium(

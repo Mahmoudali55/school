@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/services/services_locator.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -27,12 +28,12 @@ class TeacherClassesList extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.class_outlined, size: 60, color: Colors.grey[400]),
-            const SizedBox(height: 16),
+            const Gap(16),
             Text(
               AppLocalKay.empty_classes.tr(),
               style: AppTextStyle.titleMedium(context, color: Colors.grey[500]),
             ),
-            const SizedBox(height: 8),
+            const Gap(8),
             Text(AppLocalKay.empty_classes_hint.tr(), style: AppTextStyle.bodyMedium(context)),
           ],
         ),

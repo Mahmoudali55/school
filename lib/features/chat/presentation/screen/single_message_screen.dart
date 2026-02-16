@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
@@ -89,7 +90,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       hintText: AppLocalKay.enter_message.tr(),
                     ),
                   ),
-                  SizedBox(width: 8.w),
+                  Gap(8.w),
                   CircleAvatar(
                     backgroundColor: Colors.blue,
                     child: IconButton(

@@ -2,6 +2,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -42,7 +43,7 @@ class TermsScreen extends StatelessWidget {
                         context,
                       ).copyWith(fontWeight: FontWeight.bold, color: AppColor.greyColor(context)),
                     ),
-                    SizedBox(height: 8.h),
+                    Gap(8.h),
                     Text(
                       'يرجى قراءة هذه الشروط والأحكام بعناية قبل استخدام تطبيق إدارة المدرسة.',
                       style: AppTextStyle.bodyMedium(
@@ -53,84 +54,84 @@ class TermsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 24.h),
+            Gap(24.h),
 
             _buildTermSection(
               AppLocalKay.terms_section_1_title.tr(),
               AppLocalKay.terms_section_1_content.tr(),
               context,
             ),
-            SizedBox(height: 24.h),
+            Gap(24.h),
 
             _buildTermSection(
               AppLocalKay.terms_section_2_title.tr(),
               AppLocalKay.terms_section_2_content.tr(),
               context,
             ),
-            SizedBox(height: 24.h),
+            Gap(24.h),
 
             _buildTermSection(
               AppLocalKay.terms_section_3_title.tr(),
               AppLocalKay.terms_section_3_content.tr(),
               context,
             ),
-            SizedBox(height: 24.h),
+            Gap(24.h),
 
             _buildTermSection(
               AppLocalKay.terms_section_4_title.tr(),
               AppLocalKay.terms_section_4_content.tr(),
               context,
             ),
-            SizedBox(height: 24.h),
+            Gap(24.h),
 
             _buildTermSection(
               AppLocalKay.terms_section_5_title.tr(),
               AppLocalKay.terms_section_5_content.tr(),
               context,
             ),
-            SizedBox(height: 24.h),
+            Gap(24.h),
 
             _buildTermSection(
               AppLocalKay.terms_section_6_title.tr(),
               AppLocalKay.terms_section_6_content.tr(),
               context,
             ),
-            SizedBox(height: 24.h),
+            Gap(24.h),
 
             _buildTermSection(
               AppLocalKay.terms_section_7_title.tr(),
               AppLocalKay.terms_section_7_content.tr(),
               context,
             ),
-            SizedBox(height: 24.h),
+            Gap(24.h),
 
             _buildTermSection(
               AppLocalKay.terms_section_8_title.tr(),
               AppLocalKay.terms_section_8_content.tr(),
               context,
             ),
-            SizedBox(height: 24.h),
+            Gap(24.h),
 
             _buildTermSection(
               AppLocalKay.terms_section_9_title.tr(),
               AppLocalKay.terms_section_9_content.tr(),
               context,
             ),
-            SizedBox(height: 24.h),
+            Gap(24.h),
 
             _buildTermSection(
               AppLocalKay.terms_section_10_title.tr(),
               AppLocalKay.terms_section_10_content.tr(),
               context,
             ),
-            SizedBox(height: 24.h),
+            Gap(24.h),
 
             _buildTermSection(
               AppLocalKay.terms_section_11_title.tr(),
               AppLocalKay.terms_section_11_content.tr(),
               context,
             ),
-            SizedBox(height: 32.h),
+            Gap(32.h),
 
             // تنويه
             Card(
@@ -146,7 +147,7 @@ class TermsScreen extends StatelessWidget {
                         context,
                       ).copyWith(fontWeight: FontWeight.bold, color: Colors.orange[700]),
                     ),
-                    SizedBox(height: 8.h),
+                    Gap(8.h),
                     Text(
                       AppLocalKay.terms_important_note_content.tr(),
                       style: AppTextStyle.bodySmall(
@@ -173,7 +174,7 @@ class TermsScreen extends StatelessWidget {
             context,
           ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
         ),
-        SizedBox(height: 12.h),
+        Gap(12.h),
         Text(
           content,
           style: AppTextStyle.bodyMedium(

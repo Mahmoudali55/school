@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -34,7 +35,7 @@ class ParentCalendarControlBar extends StatelessWidget {
         children: [
           // اختيار الطالب
           _buildStudentSelector(context),
-          SizedBox(height: 12.h),
+          Gap(12.h),
           // شريط العرض والتنقل
           Row(
             children: [
@@ -55,7 +56,7 @@ class ParentCalendarControlBar extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: 12.w),
+              Gap(12.w),
               Container(
                 decoration: BoxDecoration(
                   color: const Color(0xFF2196F3).withOpacity(0.1),
@@ -116,7 +117,7 @@ class ParentCalendarControlBar extends StatelessWidget {
               child: Row(
                 children: [
                   Icon(Icons.person_outline_rounded, size: 16.w, color: const Color(0xFF2196F3)),
-                  SizedBox(width: 6.w),
+                  Gap(6.w),
                   Text(value),
                 ],
               ),

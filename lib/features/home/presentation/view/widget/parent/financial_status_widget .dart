@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -20,7 +21,7 @@ class FinancialStatusWidget extends StatelessWidget {
             color: const Color(0xFF1F2937),
           ).copyWith(fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 16.h),
+        Gap(16.h),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
@@ -59,7 +60,7 @@ class FinancialStatusWidget extends StatelessWidget {
                                 size: 20.w,
                               ),
                             ),
-                            SizedBox(width: 12.w),
+                            Gap(12.w),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +72,7 @@ class FinancialStatusWidget extends StatelessWidget {
                                       color: const Color(0xFF6B7280),
                                     ),
                                   ),
-                                  SizedBox(height: 4.h),
+                                  Gap(4.h),
                                   Text(
                                     "2,000 ريال",
                                     style: AppTextStyle.headlineMedium(
@@ -84,7 +85,7 @@ class FinancialStatusWidget extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(height: 12.h),
+                        Gap(12.h),
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                           decoration: BoxDecoration(
@@ -99,7 +100,7 @@ class FinancialStatusWidget extends StatelessWidget {
                                 size: 14.w,
                                 color: const Color(0xFFDC2626),
                               ),
-                              SizedBox(width: 4.w),
+                              Gap(4.w),
                               Text(
                                 "الاستحقاق: 05/11",
                                 style: AppTextStyle.labelSmall(
@@ -113,7 +114,7 @@ class FinancialStatusWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(width: 16.w),
+                  Gap(16.w),
                   ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(

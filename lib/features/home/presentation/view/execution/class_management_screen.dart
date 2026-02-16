@@ -2,6 +2,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -31,7 +32,7 @@ class ClassManagementScreen extends StatelessWidget {
           children: [
             // Statistics Cards
             _buildStatisticsCards(context),
-            SizedBox(height: 20.h),
+            Gap(20.h),
             // Classes Grid
             Expanded(
               child: GridView.builder(
@@ -68,7 +69,7 @@ class ClassManagementScreen extends StatelessWidget {
             context,
           ),
         ),
-        SizedBox(width: 12.w),
+        Gap(12.w),
         Expanded(
           child: _buildStatCard(
             AppLocalKay.user_management_absent_classes.tr(),
@@ -77,7 +78,7 @@ class ClassManagementScreen extends StatelessWidget {
             context,
           ),
         ),
-        SizedBox(width: 12.w),
+        Gap(12.w),
         Expanded(
           child: _buildStatCard(
             AppLocalKay.user_management_present_classes.tr(),
@@ -104,13 +105,13 @@ class ClassManagementScreen extends StatelessWidget {
                 context,
               ).copyWith(fontWeight: FontWeight.bold, color: color),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
             Text(
               title,
               style: AppTextStyle.bodySmall(context).copyWith(color: AppColor.blackColor(context)),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
           ],
         ),
       ),
@@ -148,7 +149,7 @@ class ClassManagementScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
             Text(
               'المعلم: أحمد محمد',
               style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600),
@@ -157,13 +158,13 @@ class ClassManagementScreen extends StatelessWidget {
               'الطلاب: 30/30',
               style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
             LinearProgressIndicator(
               value: 1.0,
               backgroundColor: Colors.grey.shade200,
               valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
             ),
-            SizedBox(height: 28.h),
+            Gap(28.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [

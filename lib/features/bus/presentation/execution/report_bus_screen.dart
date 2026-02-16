@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/bus/presentation/execution/widget/base_page_widget.dart';
@@ -16,7 +17,7 @@ class ReportBusScreen extends StatelessWidget {
       child: ListView.separated(
         padding: EdgeInsets.only(top: 12.h, bottom: 16.h),
         itemCount: 10,
-        separatorBuilder: (_, __) => SizedBox(height: 10.h),
+        separatorBuilder: (_, __) => Gap(10.h),
         itemBuilder: (context, index) {
           return Container(
             decoration: BoxDecoration(

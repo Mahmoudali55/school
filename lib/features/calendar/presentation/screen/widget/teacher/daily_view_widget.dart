@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -25,7 +26,7 @@ class DailyViewWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildDailyHeader(state, events.length, context: context),
-              SizedBox(height: 16.h),
+              Gap(16.h),
               if (events.isEmpty)
                 _buildEmptySchedule(context)
               else
@@ -61,7 +62,7 @@ class DailyViewWidget extends StatelessWidget {
             ),
             child: Icon(Icons.today_rounded, color: AppColor.accentColor(context), size: 20.w),
           ),
-          SizedBox(width: 12.w),
+          Gap(12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +73,7 @@ class DailyViewWidget extends StatelessWidget {
                     context,
                   ).copyWith(color: AppColor.blackColor(context)),
                 ),
-                SizedBox(height: 5.h),
+                Gap(5.h),
                 Text(
                   _getDayName(state.selectedDate.weekday),
                   style: AppTextStyle.bodyMedium(
@@ -93,7 +94,7 @@ class DailyViewWidget extends StatelessWidget {
                   context,
                 ).copyWith(color: AppColor.accentColor(context)),
               ),
-              SizedBox(height: 2.h),
+              Gap(2.h),
               Text(
                 "${_getTeachingHours(state)} ساعة تدريس",
                 style: AppTextStyle.bodySmall(context).copyWith(color: AppColor.greyColor(context)),
@@ -138,9 +139,9 @@ class DailyViewWidget extends StatelessWidget {
       child: Column(
         children: [
           Icon(Icons.school_outlined, size: 48.w, color: AppColor.greyColor(context)),
-          SizedBox(height: 12.h),
+          Gap(12.h),
           Text(AppLocalKay.schedule_empty_title.tr(), style: AppTextStyle.titleMedium(context)),
-          SizedBox(height: 4.h),
+          Gap(4.h),
           Text(
             AppLocalKay.schedule_empty_title2.tr(),
             style: AppTextStyle.bodyMedium(context).copyWith(color: AppColor.greyColor(context)),

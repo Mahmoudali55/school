@@ -146,10 +146,10 @@ class _TeacherClassesScreenState extends State<TeacherClassesScreen> {
                                     errorText: '',
                                     submitted: false,
                                   ),
-                                  const SizedBox(height: 16),
+                                  const Gap( 16),
                                 ],
 
-                                const SizedBox(height: 10),
+                                const Gap( 10),
                                 Expanded(
                                   child: TeacherClassesList(
                                     classes: classes

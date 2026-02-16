@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
@@ -49,7 +50,7 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
           child: ListView(
             children: [
               Text(AppLocalKay.to.tr(), style: AppTextStyle.formTitleStyle(context)),
-              SizedBox(height: 5.h),
+              Gap(5.h),
               DropdownButtonFormField<String>(
                 value: _selectedAudience,
                 decoration: InputDecoration(
@@ -72,7 +73,7 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
 
               if (_selectedAudience == 'صفوف محددة') ...[
                 Column(
@@ -82,7 +83,7 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
                       AppLocalKay.select_classes.tr(),
                       style: AppTextStyle.formTitleStyle(context),
                     ),
-                    SizedBox(height: 8.h),
+                    Gap(8.h),
                     Wrap(
                       spacing: 8.w,
                       runSpacing: 8.h,
@@ -108,7 +109,7 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
                         );
                       }).toList(),
                     ),
-                    SizedBox(height: 16.h),
+                    Gap(16.h),
                   ],
                 ),
               ],
@@ -125,7 +126,7 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
 
               CustomFormField(
                 radius: 12.r,
@@ -140,7 +141,7 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
 
               Card(
                 child: Padding(
@@ -154,23 +155,23 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
                           context,
                         ).copyWith(fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 12.h),
+                      Gap(12.h),
                       Row(
                         children: [
                           Icon(Icons.important_devices, color: Colors.grey),
-                          SizedBox(width: 8.w),
+                          Gap(8.w),
                           Text(
                             AppLocalKay.will_send_via.tr(),
                             style: AppTextStyle.bodyMedium(context),
                           ),
                         ],
                       ),
-                      SizedBox(height: 8.h),
+                      Gap(8.h),
                       Row(
                         children: [
                           Checkbox(value: true, onChanged: (v) {}),
                           Text(AppLocalKay.app.tr(), style: AppTextStyle.bodyMedium(context)),
-                          SizedBox(width: 16.w),
+                          Gap(16.w),
                           Checkbox(value: false, onChanged: (v) {}),
                           Text(AppLocalKay.email.tr(), style: AppTextStyle.bodyMedium(context)),
                         ],
@@ -179,7 +180,7 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 24.h),
+              Gap(24.h),
 
               CustomButton(
                 text: AppLocalKay.send.tr(),

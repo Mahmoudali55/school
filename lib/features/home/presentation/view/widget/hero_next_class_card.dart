@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -26,7 +27,7 @@ class HeroNextClassCard extends StatelessWidget {
           Row(
             children: [
               Icon(Icons.schedule, color: AppColor.whiteColor(context), size: 26.w),
-              SizedBox(width: 8.w),
+              Gap(8.w),
               Text(
                 AppLocalKay.join_class.tr(),
                 style: AppTextStyle.bodyLarge(
@@ -36,7 +37,7 @@ class HeroNextClassCard extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 16.h),
+          Gap(16.h),
 
           Text(
             "الرياضيات",
@@ -46,12 +47,12 @@ class HeroNextClassCard extends StatelessWidget {
             ).copyWith(fontSize: 24.sp, fontWeight: FontWeight.bold),
           ),
 
-          SizedBox(height: 8.h),
+          Gap(8.h),
 
           Row(
             children: [
               Icon(Icons.access_time, color: AppColor.whiteColor(context), size: 16.w),
-              SizedBox(width: 6.w),
+              Gap(6.w),
               Text(
                 "١٠:٠٠ - ١٠:٤٥ صباحاً",
                 style: AppTextStyle.bodyMedium(
@@ -62,12 +63,12 @@ class HeroNextClassCard extends StatelessWidget {
             ],
           ),
 
-          SizedBox(height: 4.h),
+          Gap(4.h),
 
           Row(
             children: [
               Icon(Icons.person, color: AppColor.whiteColor(context), size: 16.w),
-              SizedBox(width: 6.w),
+              Gap(6.w),
               Text(
                 "أ. أحمد محمد",
                 style: AppTextStyle.bodyMedium(
@@ -78,7 +79,7 @@ class HeroNextClassCard extends StatelessWidget {
             ],
           ),
 
-          SizedBox(height: 20.h),
+          Gap(20.h),
 
           ElevatedButton.icon(
             onPressed: () {},

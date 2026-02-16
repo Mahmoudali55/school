@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 import 'package:my_template/features/home/presentation/view/widget/teacher/stat_card_widget.dart';
@@ -39,7 +40,7 @@ class QuickStatsWidget extends StatelessWidget {
                 color: const Color(0xFF3B82F6),
               ),
             ),
-            SizedBox(width: 12.w),
+            Gap(12.w),
             Expanded(
               child: StatCardWidget(
                 title: "إجمالي الطلاب",

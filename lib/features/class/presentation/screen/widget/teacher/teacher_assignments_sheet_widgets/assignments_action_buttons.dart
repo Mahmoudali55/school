@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
@@ -20,7 +21,7 @@ class AssignmentsActionButtons extends StatelessWidget {
             radius: 12,
           ),
         ),
-        const SizedBox(width: 12),
+        const Gap(12),
         Expanded(
           child: CustomButton(text: AppLocalKay.cancel.tr(), radius: 12, onPressed: onCancel),
         ),

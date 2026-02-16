@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -34,7 +35,7 @@ class CalendarControlBar extends StatelessWidget {
         children: [
           // تصفية الأحداث
           _buildFilterSelector(context),
-          SizedBox(height: 12.h),
+          Gap(12.h),
           // شريط العرض والتنقل
           Row(
             children: [
@@ -47,26 +48,14 @@ class CalendarControlBar extends StatelessWidget {
                   ),
                   child: Row(
                     children: [
-                      _buildViewButton(
-                        context,
-                        AppLocalKay.backupFrequencyDaily.tr(),
-                        0,
-                      ),
-                      _buildViewButton(
-                        context,
-                        AppLocalKay.backupFrequencyWeekly.tr(),
-                        1,
-                      ),
-                      _buildViewButton(
-                        context,
-                        AppLocalKay.backupFrequencyMonthly.tr(),
-                        2,
-                      ),
+                      _buildViewButton(context, AppLocalKay.backupFrequencyDaily.tr(), 0),
+                      _buildViewButton(context, AppLocalKay.backupFrequencyWeekly.tr(), 1),
+                      _buildViewButton(context, AppLocalKay.backupFrequencyMonthly.tr(), 2),
                     ],
                   ),
                 ),
               ),
-              SizedBox(width: 12.w),
+              Gap(12.w),
               Container(
                 decoration: BoxDecoration(
                   color: const Color(0xFF9C27B0).withOpacity(0.1),
@@ -116,9 +105,7 @@ class CalendarControlBar extends StatelessWidget {
                   ),
                   selected: selectedFilter == filter,
                   onSelected: (bool selected) {
-                    onFilterSelected(
-                      selected ? filter : AppLocalKay.filter_all.tr(),
-                    );
+                    onFilterSelected(selected ? filter : AppLocalKay.filter_all.tr());
                   },
                   backgroundColor: AppColor.whiteColor(context),
                   selectedColor: const Color(0xFF9C27B0),
@@ -151,9 +138,7 @@ class CalendarControlBar extends StatelessWidget {
               text,
               style: AppTextStyle.bodySmall(context).copyWith(
                 fontWeight: FontWeight.w600,
-                color: isSelected
-                    ? AppColor.whiteColor(context)
-                    : const Color(0xFF6B7280),
+                color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF6B7280),
               ),
             ),
           ),

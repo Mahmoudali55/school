@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/images/app_images.dart';
 
 enum ToastType { success, error, offline, warning, help }
@@ -44,14 +45,11 @@ class CustomToast extends StatelessWidget {
                 icon ?? _icons(),
                 height: 30,
                 width: 30,
-                colorFilter: const ColorFilter.mode(
-                  Colors.white,
-                  BlendMode.srcIn,
-                ),
+                colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
               ),
             ),
           ),
-          const SizedBox(width: 10),
+          const Gap(10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +65,7 @@ class CustomToast extends StatelessWidget {
                     ),
                     maxLines: 1,
                   ),
-                  const SizedBox(height: 8),
+                  const Gap(8),
                 },
                 Text(
                   message,

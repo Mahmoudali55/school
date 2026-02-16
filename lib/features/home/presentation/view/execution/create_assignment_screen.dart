@@ -171,7 +171,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                     AppLocalKay.user_management_class.tr(),
                     style: AppTextStyle.formTitleStyle(context),
                   ),
-                  SizedBox(height: 8.h),
+                  Gap( 8.h),
                   IgnorePointer(
                     ignoring: isEdit,
                     child: Opacity(
@@ -212,7 +212,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                     AppLocalKay.class_name_assigment.tr(),
                     style: AppTextStyle.formTitleStyle(context),
                   ),
-                  SizedBox(height: 8.h),
+                  Gap( 8.h),
                   IgnorePointer(
                     ignoring: isEdit,
                     child: Opacity(
@@ -242,7 +242,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                     AppLocalKay.user_management_subject.tr(),
                     style: AppTextStyle.formTitleStyle(context),
                   ),
-                  SizedBox(height: 8.h),
+                  Gap( 8.h),
                   IgnorePointer(
                     ignoring: isEdit,
                     child: Opacity(
@@ -360,7 +360,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                           ? Column(
                               children: [
                                 CustomLoading(color: AppColor.accentColor(context), size: 30.w),
-                                SizedBox(height: 8.h),
+                                Gap( 8.h),
                                 Text(AppLocalKay.loading.tr()),
                               ],
                             )
@@ -375,7 +375,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                                       ? AppColor.secondAppColor(context)
                                       : AppColor.greyColor(context),
                                 ),
-                                SizedBox(height: 8.h),
+                                Gap( 8.h),
                                 Text(
                                   _fileName ?? AppLocalKay.user_management_upload_lesson.tr(),
                                   textAlign: TextAlign.center,
@@ -383,7 +383,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                                     context,
                                   ).copyWith(fontWeight: FontWeight.bold),
                                 ),
-                                SizedBox(height: 8.h),
+                                Gap( 8.h),
                                 if (_uploadedFileUrl != null && _uploadedFileUrl!.isNotEmpty) ...[
                                   Gap(12.h),
                                   CustomButton(
@@ -415,7 +415,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                     ),
                   ),
 
-                  SizedBox(height: 24.h),
+                  Gap( 24.h),
 
                   /// زر الإنشاء / التعديل
                   CustomButton(

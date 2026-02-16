@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -28,9 +29,9 @@ class StudentMonthlyView extends StatelessWidget {
       child: Column(
         children: [
           _buildDaysHeader(context),
-          SizedBox(height: 8.h),
+          Gap(8.h),
           _buildMonthGrid(context),
-          SizedBox(height: 5.h),
+          Gap(5.h),
           _buildUpcomingEventsSection(context),
         ],
       ),
@@ -118,7 +119,7 @@ class StudentMonthlyView extends StatelessWidget {
                     color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF1F2937),
                   ),
                 ),
-                SizedBox(height: 2.h),
+                Gap(2.h),
                 if (dayEvents.isNotEmpty)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -171,7 +172,7 @@ class StudentMonthlyView extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 12.h),
+        Gap(12.h),
         if (upcomingEvents.isEmpty)
           const StudentEmptyState()
         else

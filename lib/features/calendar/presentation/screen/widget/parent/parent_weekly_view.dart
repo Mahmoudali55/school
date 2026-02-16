@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -81,7 +82,7 @@ class ParentWeeklyView extends StatelessWidget {
                           context,
                         ).copyWith(color: const Color(0xFF6B7280)),
                       ),
-                      SizedBox(height: 2.h),
+                      Gap(2.h),
                       Text(
                         '${day.day}',
                         style: AppTextStyle.bodyLarge(
@@ -91,7 +92,7 @@ class ParentWeeklyView extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(width: 12.w),
+                Gap(12.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -115,7 +116,7 @@ class ParentWeeklyView extends StatelessWidget {
                                     color: AppColor.whiteColor(context),
                                   ),
                                 ),
-                                SizedBox(width: 8.w),
+                                Gap(8.w),
                                 Expanded(
                                   child: Text(
                                     event.title,
@@ -207,7 +208,7 @@ class ParentWeeklyView extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 16.h),
+          Gap(16.h),
           Column(
             children: students.map((student) => _buildChildSchedule(context, student)).toList(),
           ),
@@ -235,14 +236,14 @@ class ParentWeeklyView extends StatelessWidget {
                 ),
                 child: Icon(Icons.person_rounded, size: 14.w, color: const Color(0xFF2196F3)),
               ),
-              SizedBox(width: 8.w),
+              Gap(8.w),
               Text(
                 studentName,
                 style: AppTextStyle.bodyMedium(
                   context,
                 ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
               ),
-              SizedBox(width: 8.w),
+              Gap(8.w),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                 decoration: BoxDecoration(
@@ -260,7 +261,7 @@ class ParentWeeklyView extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 8.h),
+          Gap(8.h),
           if (studentEvents.isEmpty)
             _buildEmptySchedule(context)
           else
@@ -290,7 +291,7 @@ class ParentWeeklyView extends StatelessWidget {
             height: 8.w,
             decoration: BoxDecoration(color: event.color, shape: BoxShape.circle),
           ),
-          SizedBox(width: 8.w),
+          Gap(8.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -301,7 +302,7 @@ class ParentWeeklyView extends StatelessWidget {
                     context,
                   ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
                 ),
-                SizedBox(height: 2.h),
+                Gap(2.h),
                 Text(
                   "${event.date} • ${event.time}",
                   style: AppTextStyle.bodySmall(
@@ -335,7 +336,7 @@ class ParentWeeklyView extends StatelessWidget {
       child: Row(
         children: [
           Icon(Icons.event_busy_rounded, size: 16.w, color: const Color(0xFF9CA3AF)),
-          SizedBox(width: 8.w),
+          Gap(8.w),
           Text(
             AppLocalKay.no_events_this_week.tr(),
             style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF9CA3AF)),

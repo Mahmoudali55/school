@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -120,7 +121,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 4.h),
+                        Gap(4.h),
                         Text(
                           '${_schedule[_days[index]]?.length ?? 0}',
                           style: AppTextStyle.bodySmall(context).copyWith(
@@ -137,7 +138,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               },
             ),
           ),
-          SizedBox(height: 16.h),
+          Gap(16.h),
 
           // جدول اليوم
           Expanded(child: _buildDaySchedule(_days[_selectedDay])),
@@ -155,7 +156,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.event_available, size: 60.w, color: Colors.grey),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             Text(
               AppLocalKay.no_classes_today.tr(),
               style: AppTextStyle.titleMedium(context).copyWith(color: Colors.grey),
@@ -194,11 +195,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 4.h),
+            Gap(4.h),
             Text(classItem['time']),
-            SizedBox(height: 2.h),
+            Gap(2.h),
             Text('${AppLocalKay.teachers.tr()}:${classItem['teacher']}'),
-            SizedBox(height: 2.h),
+            Gap(2.h),
             Text('${AppLocalKay.room.tr()}: ${classItem['room']}'),
           ],
         ),

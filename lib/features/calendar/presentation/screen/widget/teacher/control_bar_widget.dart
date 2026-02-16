@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
@@ -40,7 +41,7 @@ class _CalenderClassSelectorWidgetState extends State<CalenderClassSelectorWidge
               child: Row(
                 children: [
                   Icon(Icons.class_rounded, size: 16.w, color: AppColor.accentColor(context)),
-                  SizedBox(width: 6.w),
+                  Gap(6.w),
                   Text(value),
                 ],
               ),

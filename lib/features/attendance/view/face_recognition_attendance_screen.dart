@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
@@ -354,7 +355,7 @@ class _FaceRecognitionAttendanceScreenState extends State<FaceRecognitionAttenda
                   widget.className,
                   style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   DateFormat('yyyy-MM-dd').format(DateTime.now()),
                   style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey),
@@ -373,7 +374,7 @@ class _FaceRecognitionAttendanceScreenState extends State<FaceRecognitionAttenda
                   },
             activeColor: AppColor.primaryColor(context),
           ),
-          SizedBox(width: 8.w),
+          Gap(8.w),
           Text(
             isContinuousMode ? AppLocalKay.continuous_scan.tr() : AppLocalKay.single_scan.tr(),
             style: AppTextStyle.bodySmall(context),
@@ -437,7 +438,7 @@ class _FaceRecognitionAttendanceScreenState extends State<FaceRecognitionAttenda
                         ),
                         child: Icon(Icons.check, color: Colors.white, size: 60.sp),
                       ),
-                      SizedBox(height: 16.h),
+                      Gap(16.h),
                       Text(
                         _lastRecognizedName ?? '',
                         style: AppTextStyle.headlineMedium(context).copyWith(
@@ -446,7 +447,7 @@ class _FaceRecognitionAttendanceScreenState extends State<FaceRecognitionAttenda
                           shadows: [const Shadow(color: Colors.black, blurRadius: 8)],
                         ),
                       ),
-                      SizedBox(height: 8.h),
+                      Gap(8.h),
                       Text(
                         AppLocalKay.attendance_marked_success.tr(),
                         style: AppTextStyle.titleMedium(context).copyWith(
@@ -524,7 +525,7 @@ class _FaceRecognitionAttendanceScreenState extends State<FaceRecognitionAttenda
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(Icons.face_retouching_off, size: 64, color: Colors.grey),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             Text(
               AppLocalKay.no_registered_students_for_face.tr(),
               style: AppTextStyle.bodyMedium(context),
@@ -608,7 +609,7 @@ class _FaceRecognitionAttendanceScreenState extends State<FaceRecognitionAttenda
             children: [
               Expanded(child: Text(studentName, overflow: TextOverflow.ellipsis)),
               if (hasRegisteredFace) ...[
-                SizedBox(width: 4.w),
+                Gap(4.w),
                 Icon(Icons.verified_user, size: 16.sp, color: Colors.blue),
               ],
             ],
@@ -717,7 +718,7 @@ class _FaceRecognitionAttendanceScreenState extends State<FaceRecognitionAttenda
                 color: AppColor.primaryColor(context),
               ),
             ),
-            SizedBox(width: 12.w),
+            Gap(12.w),
           ] else ...[
             Expanded(
               child: CustomButton(
@@ -727,7 +728,7 @@ class _FaceRecognitionAttendanceScreenState extends State<FaceRecognitionAttenda
                 color: Colors.red,
               ),
             ),
-            SizedBox(width: 12.w),
+            Gap(12.w),
           ],
           Expanded(
             child: BlocBuilder<AttendanceCubit, AttendanceState>(

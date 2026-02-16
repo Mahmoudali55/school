@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -46,7 +47,7 @@ class ChildrenSelector extends StatelessWidget {
                 color: AppColor.primaryColor(context),
                 size: 20.w,
               ),
-              SizedBox(width: 8.w),
+              Gap(8.w),
               Text(
                 AppLocalKay.select_student.tr(),
                 style: AppTextStyle.titleMedium(
@@ -55,7 +56,7 @@ class ChildrenSelector extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 12.h),
+          Gap(12.h),
           Wrap(
             spacing: 8.w,
             runSpacing: 8.h,
@@ -79,7 +80,7 @@ class ChildrenSelector extends StatelessWidget {
             size: 16.w,
             color: isSelected ? AppColor.whiteColor(context) : childData.busColor,
           ),
-          SizedBox(width: 6.w),
+          Gap(6.w),
           Text(childName),
         ],
       ),

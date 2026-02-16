@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/features/class/data/model/teacher_classes_models.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
@@ -62,7 +63,7 @@ class _TeacherAssignmentsSheetState extends State<TeacherAssignmentsSheet> {
             child: Column(
               children: [
                 const AssignmentsHeader(),
-                const SizedBox(height: 16),
+                const Gap(16),
                 AssignmentsCalendarStrip(
                   dates: dates,
                   selectedDate: selectedDate,
@@ -73,7 +74,7 @@ class _TeacherAssignmentsSheetState extends State<TeacherAssignmentsSheet> {
                     _fetchHomework(date);
                   },
                 ),
-                const SizedBox(height: 20),
+                const Gap(20),
                 AssignmentsList(
                   scrollController: scrollController,
                   onEdit: (item) async {
@@ -101,7 +102,7 @@ class _TeacherAssignmentsSheetState extends State<TeacherAssignmentsSheet> {
                     );
                   },
                 ),
-                const SizedBox(height: 12),
+                const Gap(12),
                 AssignmentsActionButtons(
                   onCreate: () async {
                     final result = await Navigator.push(

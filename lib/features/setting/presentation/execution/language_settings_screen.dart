@@ -1,8 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart';
-import 'package:my_template/core/cache/hive/hive_methods.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -30,14 +29,14 @@ showLanguageSheet(BuildContext parentContext) {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              const SizedBox(height: 10),
+              const Gap(10),
               Text(
                 AppLocalKay.language.tr(),
                 style: AppTextStyle.headlineMedium(
                   bottomSheetContext,
                 ).copyWith(fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 20),
+              const Gap(20),
               ListTile(
                 leading: Image.asset('assets/global_icon/eng_flag.png', width: 30, height: 30),
                 title: Text(
@@ -68,7 +67,7 @@ showLanguageSheet(BuildContext parentContext) {
                   Navigator.pop(bottomSheetContext);
                 },
               ),
-              const SizedBox(height: 10),
+              const Gap(10),
             ],
           ),
         ),

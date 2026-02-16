@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/bus/data/model/bus_tracking_models.dart';
@@ -60,14 +61,14 @@ class StudentsOnBusWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
               ConstrainedBox(
                 constraints: BoxConstraints(maxHeight: 300.h),
                 child: ListView.separated(
                   shrinkWrap: true,
                   physics: const AlwaysScrollableScrollPhysics(),
                   itemCount: state.studentsOnBus.length,
-                  separatorBuilder: (context, index) => SizedBox(height: 8.h),
+                  separatorBuilder: (context, index) => Gap(8.h),
                   itemBuilder: (context, index) =>
                       _buildStudentItem(state.studentsOnBus[index], context),
                 ),
@@ -135,7 +136,7 @@ class StudentsOnBusWidget extends StatelessWidget {
             ),
             child: Icon(Icons.person_rounded, color: student.avatarColor, size: 18.w),
           ),
-          SizedBox(width: 8.w),
+          Gap(8.w),
           // Student Info
           Expanded(
             child: Column(
@@ -150,7 +151,7 @@ class StudentsOnBusWidget extends StatelessWidget {
                     color: const Color(0xFF1F2937),
                   ),
                 ),
-                SizedBox(height: 2.h),
+                Gap(2.h),
                 Text(
                   "${student.grade} • ${student.boardingStop}",
                   style: TextStyle(fontSize: 11.sp, color: const Color(0xFF6B7280)),
@@ -173,7 +174,7 @@ class StudentsOnBusWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(statusIcon, size: 10.w, color: statusColor),
-                    SizedBox(width: 4.w),
+                    Gap(4.w),
                     Text(
                       student.status,
                       style: TextStyle(
@@ -185,7 +186,7 @@ class StudentsOnBusWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 2.h),
+              Gap(2.h),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                 decoration: BoxDecoration(

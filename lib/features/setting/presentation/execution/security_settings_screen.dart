@@ -2,6 +2,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
@@ -64,7 +65,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
                 },
               ),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
 
             // المصادقة البيومترية
             Card(
@@ -86,7 +87,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
                 },
               ),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
 
             // تسجيل الخروج التلقائي
             Card(
@@ -105,7 +106,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
                 },
               ),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
 
             // مهلة الجلسة
             if (_autoLogout) ...[
@@ -139,7 +140,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 8.h),
+              Gap(8.h),
             ],
 
             // تنبيهات تسجيل الدخول
@@ -159,7 +160,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
                 },
               ),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
 
             // إدارة الأجهزة
             Card(
@@ -181,7 +182,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
                 },
               ),
             ),
-            SizedBox(height: 24.h),
+            Gap(24.h),
 
             // سجل الأمان
             Text(
@@ -191,7 +192,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
                 color: const Color(0xFF1F2937),
               ).copyWith(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             Card(
               child: ListTile(
                 leading: Icon(Icons.history, color: AppColor.primaryColor(context)),
@@ -204,7 +205,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
                 onTap: _showLoginHistory,
               ),
             ),
-            SizedBox(height: 32.h),
+            Gap(32.h),
 
             // زر الحفظ
             CustomButton(

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/network/status.state.dart';
 
 import '../../theme/app_colors.dart';
@@ -57,9 +58,7 @@ class CustomButton extends StatelessWidget {
         decoration: BoxDecoration(
           color:
               color ??
-              (isMainColor
-                  ? AppColor.primaryColor(context)
-                  : AppColor.secondAppColor(context)),
+              (isMainColor ? AppColor.primaryColor(context) : AppColor.secondAppColor(context)),
           borderRadius: borderRadius ?? BorderRadius.circular(radius),
           border: borderColor != null ? Border.all(color: borderColor!) : null,
         ),
@@ -69,30 +68,21 @@ class CustomButton extends StatelessWidget {
             onTap: cubitState?.isLoading == true ? null : onPressed,
             child: Center(
               child: cubitState?.isLoading == true
-                  ? CupertinoActivityIndicator(
-                      color: AppColor.whiteColor(context),
-                    )
+                  ? CupertinoActivityIndicator(color: AppColor.whiteColor(context))
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        if (prefixIcon != null) ...{
-                          prefixIcon!,
-                          const SizedBox(width: 5),
-                        },
+                        if (prefixIcon != null) ...{prefixIcon!, const Gap(5)},
                         Flexible(
                           child:
                               child ??
                               Text(
                                 text ?? "",
                                 textAlign: TextAlign.center,
-                                style:
-                                    style ?? AppTextStyle.buttonStyle(context),
+                                style: style ?? AppTextStyle.buttonStyle(context),
                               ),
                         ),
-                        if (suffixIcon != null) ...{
-                          const SizedBox(width: 5),
-                          suffixIcon!,
-                        },
+                        if (suffixIcon != null) ...{const Gap(5), suffixIcon!},
                       ],
                     ),
             ),

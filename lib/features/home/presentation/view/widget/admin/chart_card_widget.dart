@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
@@ -33,7 +34,7 @@ class ChartCard extends StatelessWidget {
               context,
             ).copyWith(fontSize: 12.sp, fontWeight: FontWeight.w600),
           ),
-          SizedBox(height: 8.h),
+          Gap(8.h),
           chart,
         ],
       ),

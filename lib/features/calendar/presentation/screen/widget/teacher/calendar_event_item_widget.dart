@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/calendar/data/model/calendar_event_model.dart';
@@ -32,7 +33,7 @@ class CalendarEventItemWidget extends StatelessWidget {
             height: 8.w,
             decoration: BoxDecoration(color: task.color, shape: BoxShape.circle),
           ),
-          SizedBox(width: 12.w),
+          Gap(12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,7 +44,7 @@ class CalendarEventItemWidget extends StatelessWidget {
                     context,
                   ).copyWith(color: AppColor.blackColor(context)),
                 ),
-                SizedBox(height: 2.h),
+                Gap(2.h),
                 Row(
                   children: [
                     Text(
@@ -52,7 +53,7 @@ class CalendarEventItemWidget extends StatelessWidget {
                         context,
                       ).copyWith(color: AppColor.accentColor(context)),
                     ),
-                    SizedBox(width: 8.w),
+                    Gap(8.w),
                     Text(
                       "${_formatDate(task.date)} • ${task.formattedTime}",
                       style: AppTextStyle.bodyMedium(

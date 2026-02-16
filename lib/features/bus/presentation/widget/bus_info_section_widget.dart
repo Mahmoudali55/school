@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
 class BusInfoSectionWidget extends StatelessWidget {
@@ -19,7 +20,7 @@ class BusInfoSectionWidget extends StatelessWidget {
               "معلومات الحافلة",
               style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             _buildInfoRow("رقم الحافلة", "باص ٠١", context),
             _buildInfoRow("السائق", "أحمد محمد", context),
             _buildInfoRow("رقم الهاتف", "+٢٠١٢٣٤٥٦٧٨٩", context),

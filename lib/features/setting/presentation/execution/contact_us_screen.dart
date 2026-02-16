@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
@@ -77,7 +78,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                         ),
                       ),
 
-                      const SizedBox(height: 12),
+                      const Gap(12),
                       _buildContactInfo(icon: Icons.location_on, text: "مجموعه النظم التطبيقة "),
                       _buildContactInfo(icon: Icons.phone, text: '+966 580926448'),
                       _buildContactInfo(icon: Icons.email, text: ' erp@delta-asg.com'),
@@ -89,13 +90,13 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const Gap(20),
               // نموذج الاتصال
               Text(
                 AppLocalKay.send_message.tr(),
                 style: AppTextStyle.titleSmall(context, color: AppColor.blackColor(context)),
               ),
-              const SizedBox(height: 12),
+              const Gap(12),
               // القسم
               DropdownButtonFormField<String>(
                 value: _selectedDepartment,
@@ -117,7 +118,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 ),
               ),
-              const SizedBox(height: 16),
+              const Gap(16),
               // الاسم
               CustomFormField(
                 controller: _nameController,
@@ -131,7 +132,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
+              const Gap(16),
               // البريد الإلكتروني
               CustomFormField(
                 controller: _emailController,
@@ -150,7 +151,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
+              const Gap(16),
               // الموضوع
               CustomFormField(
                 controller: _subjectController,
@@ -164,7 +165,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
+              const Gap(16),
               // الرسالة
               CustomFormField(
                 controller: _messageController,
@@ -181,7 +182,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                   return null;
                 },
               ),
-              const SizedBox(height: 30),
+              const Gap(30),
               // زر الإرسال
               CustomButton(radius: 12.r, text: AppLocalKay.send.tr(), onPressed: _submitForm),
             ],
@@ -198,7 +199,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(icon, color: AppColor.primaryColor(context), size: 20),
-          const SizedBox(width: 12),
+          const Gap(12),
           Expanded(child: Text(text, style: AppTextStyle.bodyMedium(context))),
         ],
       ),

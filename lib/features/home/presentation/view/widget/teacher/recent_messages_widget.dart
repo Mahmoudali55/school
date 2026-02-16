@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/routes/routes_name.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -60,7 +61,7 @@ class RecentMessagesWidget extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 16.h),
+        Gap(16.h),
         Column(children: messages.map((msg) => MessageItemWidget(message: msg)).toList()),
       ],
     );

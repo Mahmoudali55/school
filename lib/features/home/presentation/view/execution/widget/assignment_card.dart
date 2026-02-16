@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
@@ -56,15 +57,15 @@ class AssignmentCard extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 4.h),
+            Gap( 4.h),
             Text('${assignment['subject']}'),
-            SizedBox(height: 2.h),
+            Gap( 2.h),
             Text(
               assignment['dueDate'] ?? assignment['submittedDate'],
               style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp, color: Colors.grey),
             ),
             if (assignment['grade'] != null) ...[
-              SizedBox(height: 2.h),
+              Gap( 2.h),
               Text(
                 'الدرجة: ${assignment['grade']}',
                 style: AppTextStyle.bodySmall(

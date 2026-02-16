@@ -2,6 +2,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
@@ -118,7 +119,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
             ),
           ),
         ),
-        SizedBox(height: 4.h),
+        Gap(4.h),
         Text(
           label,
           style: AppTextStyle.titleSmall(context).copyWith(color: AppColor.greyColor(context)),
@@ -157,7 +158,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
               color: user.isActive ? secondColor : errorColor,
               size: 20.w,
             ),
-            SizedBox(width: 8.w),
+            Gap(8.w),
             PopupMenuButton<String>(
               icon: Icon(Icons.more_vert),
               onSelected: (value) => _handleUserAction(value, user, errorColor),
@@ -235,7 +236,7 @@ class _UserManagementScreenState extends State<UserManagementScreen> {
               onPressed: () => Navigator.of(context).pop(),
               text: AppLocalKay.cancel.tr(),
             ),
-            SizedBox(height: 16.w),
+            Gap(16.w),
             CustomButton(
               color: AppColor.errorColor(context),
               onPressed: () {

@@ -40,7 +40,7 @@
 //                 AppLocalKay.stats.tr(),
 //                 style: AppTextStyle.titleMedium(context).copyWith(color: const Color(0xFF1F2937)),
 //               ),
-//               SizedBox(height: 16.h),
+//               Gap( 16.h),
 //               Row(
 //                 mainAxisAlignment: MainAxisAlignment.spaceAround,
 //                 children: [
@@ -82,9 +82,9 @@
 //           decoration: BoxDecoration(color: color.withOpacity(0.1), shape: BoxShape.circle),
 //           child: Icon(icon, size: 18.w, color: color),
 //         ),
-//         SizedBox(height: 6.h),
+//         Gap( 6.h),
 //         Text('$count', style: AppTextStyle.titleMedium(context).copyWith(color: color)),
-//         SizedBox(height: 2.h),
+//         Gap( 2.h),
 //         Text(
 //           title,
 //           style: AppTextStyle.bodySmall(context).copyWith(color: AppColor.greyColor(context)),

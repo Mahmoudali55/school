@@ -2,6 +2,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
@@ -103,7 +104,7 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
             ),
           ),
         ),
-        SizedBox(height: 4.h),
+        Gap(4.h),
         Text(
           label,
           style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp, color: Colors.grey),
@@ -279,7 +280,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                 style: AppTextStyle.formTitle20Style(context),
               ),
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             CustomFormField(
               radius: 12.r,
               controller: _gradeController,
@@ -292,7 +293,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                 return null;
               },
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             CustomFormField(
               radius: 12.r,
               controller: _sectionController,
@@ -304,7 +305,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                 return null;
               },
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             CustomFormField(
               radius: 12.r,
               controller: _teacherController,
@@ -317,7 +318,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                 return null;
               },
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             CustomFormField(
               radius: 12.r,
               controller: _studentCountController,
@@ -330,7 +331,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                 return null;
               },
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -341,7 +342,7 @@ class _AddClassDialogState extends State<AddClassDialog> {
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ),
-                const SizedBox(width: 10),
+                const Gap(10),
                 Expanded(
                   child: CustomButton(
                     radius: 12.r,
@@ -428,7 +429,7 @@ class _EditClassDialogState extends State<EditClassDialog> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16.h),
+                Gap(16.h),
                 CustomFormField(
                   radius: 12.r,
                   controller: _sectionController,
@@ -441,7 +442,7 @@ class _EditClassDialogState extends State<EditClassDialog> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16.h),
+                Gap(16.h),
                 CustomFormField(
                   radius: 12.r,
                   controller: _teacherController,
@@ -454,7 +455,7 @@ class _EditClassDialogState extends State<EditClassDialog> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16.h),
+                Gap(16.h),
                 CustomFormField(
                   radius: 12.r,
                   controller: _studentCountController,
@@ -468,7 +469,7 @@ class _EditClassDialogState extends State<EditClassDialog> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16.h),
+                Gap(16.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [

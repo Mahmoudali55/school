@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
@@ -33,7 +34,7 @@ class BusInformation extends StatelessWidget {
             AppLocalKay.route_info.tr(),
             style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 16.h),
+          Gap(16.h),
           InfoRow(label: AppLocalKay.driver.tr(), value: busData.driverName),
           InfoRow(label: AppLocalKay.phone.tr(), value: busData.driverPhone),
           if (busData.supervisorName != null)

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/features/profile/presentation/screen/widget/achievement_tile.dart';
 
 class AchievementsTab extends StatelessWidget {
@@ -10,7 +11,7 @@ class AchievementsTab extends StatelessWidget {
     return ListView.separated(
       padding: const EdgeInsets.all(16),
       itemCount: achievements.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      separatorBuilder: (_, __) => const Gap(12),
       itemBuilder: (_, i) => AchievementTile(item: achievements[i]),
     );
   }

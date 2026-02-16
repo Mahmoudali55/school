@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
@@ -33,16 +34,16 @@ class LibraryItemDetailScreen extends StatelessWidget {
               ),
               child: Icon(item['icon'], size: 80.w, color: item['color']),
             ),
-            SizedBox(height: 16.h),
+            Gap( 16.h),
             Text(
               item['title'],
               style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8.h),
+            Gap( 8.h),
             Text('النوع: ${item['type']}'),
             Text('المادة: ${item['subject']}'),
             Text('الحجم: ${item['size']}'),
-            SizedBox(height: 16.h),
+            Gap( 16.h),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(onPressed: () {}, child: const Text('تحميل')),

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/routes/routes_name.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -40,7 +41,7 @@ class RecentNotificationsSection extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             if (state.isLoading)
               const Center(child: CircularProgressIndicator())
             else if (notifications.isEmpty)
@@ -72,7 +73,7 @@ class RecentNotificationsSection extends StatelessWidget {
                           ),
                           child: Icon(item.icon, color: item.iconColor, size: 20.w),
                         ),
-                        SizedBox(width: 12.w),
+                        Gap(12.w),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,7 +84,7 @@ class RecentNotificationsSection extends StatelessWidget {
                                   context,
                                 ).copyWith(fontWeight: FontWeight.w600),
                               ),
-                              SizedBox(height: 4.h),
+                              Gap(4.h),
                               Text(
                                 item.message,
                                 style: AppTextStyle.bodySmall(
@@ -91,7 +92,7 @@ class RecentNotificationsSection extends StatelessWidget {
                                   color: AppColor.greyColor(context),
                                 ),
                               ),
-                              SizedBox(height: 4.h),
+                              Gap(4.h),
                               Text(
                                 item.time,
                                 style: AppTextStyle.bodySmall(

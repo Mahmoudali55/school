@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
@@ -49,7 +50,7 @@ class AlertItem extends StatelessWidget {
             decoration: BoxDecoration(color: iconBgColor, borderRadius: BorderRadius.circular(12)),
             child: Icon(icon, color: iconColor, size: 20.w),
           ),
-          SizedBox(width: 12.w),
+          Gap(12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,12 +82,12 @@ class AlertItem extends StatelessWidget {
                       ),
                   ],
                 ),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   description,
                   style: AppTextStyle.bodySmall(context, color: const Color(0xFF6B7280)),
                 ),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   time,
                   style: AppTextStyle.bodySmall(

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -42,10 +43,10 @@ class AdminMainTrackingCard extends StatelessWidget {
         children: [
           // Bus & Driver Header
           _buildBusHeader(context),
-          SizedBox(height: 20.h),
+          Gap(20.h),
           // Map Section
           _buildMapSection(context),
-          SizedBox(height: 20.h),
+          Gap(20.h),
           // Quick Actions
           _buildQuickActions(context),
         ],
@@ -87,7 +88,7 @@ class AdminMainTrackingCard extends StatelessWidget {
           ),
           child: Icon(Icons.directions_bus_rounded, color: selectedBusData.busColor, size: 24.w),
         ),
-        SizedBox(width: 12.w),
+        Gap(12.w),
         // Bus Info
         Expanded(
           child: Column(
@@ -117,7 +118,7 @@ class AdminMainTrackingCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(statusIcon, size: 14.w, color: statusColor),
-              SizedBox(width: 4.w),
+              Gap(4.w),
               Text(
                 selectedBusData.status,
                 style: AppTextStyle.bodySmall(
@@ -161,7 +162,7 @@ class AdminMainTrackingCard extends StatelessWidget {
             child: Column(
               children: [
                 Icon(Icons.school_rounded, color: const Color(0xFF2196F3), size: 24.w),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   "المدرسة",
                   style: AppTextStyle.bodySmall(context).copyWith(
@@ -180,7 +181,7 @@ class AdminMainTrackingCard extends StatelessWidget {
             child: Column(
               children: [
                 Icon(Icons.location_on_rounded, color: const Color(0xFFFF9800), size: 20.w),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   "المحطة 1",
                   style: AppTextStyle.bodySmall(
@@ -196,7 +197,7 @@ class AdminMainTrackingCard extends StatelessWidget {
             child: Column(
               children: [
                 Icon(Icons.location_on_rounded, color: const Color(0xFFFF9800), size: 20.w),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   "المحطة 2",
                   style: AppTextStyle.bodySmall(
@@ -301,7 +302,7 @@ class AdminMainTrackingCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, color: color, size: 18.w),
-            SizedBox(width: 8.w),
+            Gap(8.w),
             Text(
               text,
               style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp, color: color),

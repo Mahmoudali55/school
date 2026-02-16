@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/setting/presentation/execution/edit_profile_screen.dart';
@@ -21,7 +22,7 @@ class ProfileCardWidget extends StatelessWidget {
               backgroundColor: AppColor.primaryColor(context).withOpacity(0.1),
               child: Icon(Icons.school, size: 30.w, color: AppColor.primaryColor(context)),
             ),
-            SizedBox(width: 16.w),
+            Gap(16.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,12 +34,12 @@ class ProfileCardWidget extends StatelessWidget {
                       color: const Color(0xFF1F2937),
                     ).copyWith(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 4.h),
+                  Gap(4.h),
                   Text(
                     'مدير المدرسة',
                     style: AppTextStyle.bodyMedium(context, color: AppColor.hintColor(context)),
                   ),
-                  SizedBox(height: 4.h),
+                  Gap(4.h),
                   Text(
                     'admin@school.edu',
                     style: AppTextStyle.bodyMedium(context, color: AppColor.hintColor(context)),

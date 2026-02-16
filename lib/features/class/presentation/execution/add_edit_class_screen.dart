@@ -2,6 +2,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
@@ -83,7 +84,7 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
 
               // الصف والشعبة
               Row(
@@ -101,7 +102,7 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
                       },
                     ),
                   ),
-                  SizedBox(width: 16.w),
+                  Gap( 16.w),
                   Expanded(
                     child: CustomFormField(
                       controller: _sectionController,
@@ -117,7 +118,7 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
 
               // السعة والطلاب الحاليين
               Row(
@@ -137,7 +138,7 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
                       },
                     ),
                   ),
-                  SizedBox(width: 16.w),
+                  Gap( 16.w),
                   Expanded(
                     child: CustomFormField(
                       controller: _currentStudentsController,
@@ -155,7 +156,7 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
 
               // المعلم
               CustomFormField(
@@ -170,7 +171,7 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
 
               // القاعة
               CustomFormField(
@@ -185,7 +186,7 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
 
               // الجدول
               CustomFormField(
@@ -200,7 +201,7 @@ class _AddEditClassScreenState extends State<AddEditClassScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 32.h),
+              Gap(32.h),
 
               // زر الحفظ
               CustomButton(

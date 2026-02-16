@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -31,10 +32,10 @@ class ParentMonthlyView extends StatelessWidget {
         children: [
           // رأس الأيام
           _buildDaysHeader(context),
-          SizedBox(height: 8.h),
+          Gap(8.h),
           // شبكة الأيام
           _buildMonthGrid(context),
-          SizedBox(height: 10.h),
+          Gap(10.h),
           // الأحداث القادمة
           _buildUpcomingEvents(context),
         ],
@@ -123,7 +124,7 @@ class ParentMonthlyView extends StatelessWidget {
                     color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF1F2937),
                   ),
                 ),
-                SizedBox(height: 2.h),
+                Gap(2.h),
                 if (dayEvents.isNotEmpty)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -168,7 +169,7 @@ class ParentMonthlyView extends StatelessWidget {
         Row(
           children: [
             Icon(Icons.event_note_rounded, color: const Color(0xFF2196F3), size: 20.w),
-            SizedBox(width: 8.w),
+            Gap(8.w),
             Text(
               AppLocalKay.upcoming.tr(),
               style: AppTextStyle.titleMedium(
@@ -177,7 +178,7 @@ class ParentMonthlyView extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 12.h),
+        Gap(12.h),
         if (upcomingEvents.isEmpty)
           const ParentEmptyState()
         else

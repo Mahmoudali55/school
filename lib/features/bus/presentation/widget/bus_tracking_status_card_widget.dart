@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
 class BusTrackingStatusCardWidget extends StatelessWidget {
@@ -44,7 +45,7 @@ class BusTrackingStatusCardWidget extends StatelessWidget {
                 ),
                 child: Icon(icon, color: color, size: 16.w),
               ),
-              SizedBox(width: 8.w),
+              Gap(8.w),
               Text(
                 title,
                 style: AppTextStyle.bodySmall(
@@ -53,7 +54,7 @@ class BusTrackingStatusCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 8.h),
+          Gap(8.h),
           Text(
             value,
             style: AppTextStyle.bodyLarge(context).copyWith(

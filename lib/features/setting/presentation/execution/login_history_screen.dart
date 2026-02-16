@@ -1,6 +1,7 @@
 // lib/features/settings/presentation/screens/login_history_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
@@ -112,7 +113,7 @@ class LoginHistoryScreen extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 4.h),
+        Gap( 4.h),
         Text(
           label,
           style: AppTextStyle.bodySmall(context, color: Colors.grey).copyWith(fontSize: 10.sp),

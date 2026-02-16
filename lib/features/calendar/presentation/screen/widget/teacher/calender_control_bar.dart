@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/teacher/class_selector_widget.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/teacher/view_selector_widget.dart';
@@ -38,7 +39,7 @@ class _ControlBarWidgetState extends State<ControlBarWidget> {
             children: [
               // اختيار الصف مع معالجة حالة التحميل
               _buildClassSelector(context, state),
-              SizedBox(height: 12.h),
+              Gap(12.h),
               // شريط العرض والتنقل
               Row(
                 children: [
@@ -50,7 +51,7 @@ class _ControlBarWidgetState extends State<ControlBarWidget> {
                       },
                     ),
                   ),
-                  SizedBox(width: 12.w),
+                  Gap(12.w),
                   _buildNavigationButtons(context),
                 ],
               ),
@@ -82,7 +83,7 @@ class _ControlBarWidgetState extends State<ControlBarWidget> {
                 valueColor: AlwaysStoppedAnimation<Color>(AppColor.accentColor(context)),
               ),
             ),
-            SizedBox(width: 8.w),
+            Gap(8.w),
             Text('جاري تحميل الصفوف...', style: TextStyle(fontSize: 14.sp)),
           ],
         ),
@@ -101,7 +102,7 @@ class _ControlBarWidgetState extends State<ControlBarWidget> {
         child: Row(
           children: [
             Icon(Icons.error_outline, color: Colors.red, size: 20.w),
-            SizedBox(width: 8.w),
+            Gap(8.w),
             Expanded(
               child: Text(
                 state.classesStatus.error ?? "Unknown Error",

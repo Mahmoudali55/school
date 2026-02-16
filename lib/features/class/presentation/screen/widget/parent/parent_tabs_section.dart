@@ -92,7 +92,7 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
             ],
           ),
         ),
-        const SizedBox(height: 10),
+        const Gap(10),
         Expanded(
           child: TabBarView(
             controller: _tabController,

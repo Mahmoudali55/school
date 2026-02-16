@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -28,7 +29,7 @@ class SettingsScreen extends StatelessWidget {
         children: [
           // Profile Section
           _buildProfileSection(context),
-          SizedBox(height: 20.h),
+          Gap(20.h),
           // Settings Sections
           _buildSettingsSection(context),
         ],
@@ -47,7 +48,7 @@ class SettingsScreen extends StatelessWidget {
               backgroundColor: Colors.blue.shade100,
               child: Icon(Icons.person, size: 30.w, color: Colors.blue),
             ),
-            SizedBox(width: 16.w),
+            Gap(16.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,12 +57,12 @@ class SettingsScreen extends StatelessWidget {
                     'مدير المدرسة',
                     style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 4.h),
+                  Gap(4.h),
                   Text(
                     'أ. أحمد محمد',
                     style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey.shade600),
                   ),
-                  SizedBox(height: 4.h),
+                  Gap(4.h),
                   Text(
                     'admin@school.edu.sa',
                     style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600),
@@ -90,21 +91,21 @@ class SettingsScreen extends StatelessWidget {
           _buildSettingsItem('الفصول الدراسية', Icons.class_, () {}),
           _buildSettingsItem('الجدول الدراسي', Icons.schedule, () {}),
         ]),
-        SizedBox(height: 20.h),
+        Gap(20.h),
         _buildSettingsCategory(context, 'إعدادات النظام', Icons.settings, [
           _buildSettingsItem('الإشعارات', Icons.notifications, () {}),
           _buildSettingsItem('الخصوصية', Icons.security, () {}),
           _buildSettingsItem('النسخ الاحتياطي', Icons.backup, () {}),
           _buildSettingsItem('تحديث النظام', Icons.update, () {}),
         ]),
-        SizedBox(height: 20.h),
+        Gap(20.h),
         _buildSettingsCategory(context, 'الدعم', Icons.help, [
           _buildSettingsItem('المساعدة', Icons.help_center, () {}),
           _buildSettingsItem('اتصل بنا', Icons.contact_support, () {}),
           _buildSettingsItem('شروط الاستخدام', Icons.description, () {}),
           _buildSettingsItem('سياسة الخصوصية', Icons.privacy_tip, () {}),
         ]),
-        SizedBox(height: 20.h),
+        Gap(20.h),
         _buildLogoutButton(context),
       ],
     );
@@ -125,14 +126,14 @@ class SettingsScreen extends StatelessWidget {
             Row(
               children: [
                 Icon(icon, color: Colors.blue, size: 20.w),
-                SizedBox(width: 8.w),
+                Gap(8.w),
                 Text(
                   title,
                   style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
                 ),
               ],
             ),
-            SizedBox(height: 12.h),
+            Gap(12.h),
             Column(children: items),
           ],
         ),

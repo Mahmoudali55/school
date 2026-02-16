@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -23,7 +24,7 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
     return Column(
       children: [
         // اللغة
-        SizedBox(height: 8.h),
+        Gap( 8.h),
 
         // المظهر
         Card(
@@ -45,7 +46,7 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
             ),
           ),
         ),
-        SizedBox(height: 8.h),
+        Gap( 8.h),
 
         // الإشعارات
         Card(
@@ -64,7 +65,7 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
             },
           ),
         ),
-        SizedBox(height: 8.h),
+        Gap( 8.h),
 
         // المصادقة البيومترية
         Card(

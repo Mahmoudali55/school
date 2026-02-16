@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
 class NotificationSectionWidget extends StatelessWidget {
@@ -15,7 +16,7 @@ class NotificationSectionWidget extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 8.w),
           child: Text(title, style: AppTextStyle.titleLarge(context)),
         ),
-        SizedBox(height: 12.h),
+        Gap(12.h),
         Column(children: notifications),
       ],
     );

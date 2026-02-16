@@ -2,6 +2,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -70,7 +71,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
 
             // النسخ الاحتياطي التلقائي
             Card(
@@ -89,7 +90,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
                 },
               ),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
 
             // تردد النسخ الاحتياطي
             if (_autoBackup) ...[
@@ -115,7 +116,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 8.h),
+              Gap(8.h),
             ],
 
             // فترة احتفاظ البيانات
@@ -141,7 +142,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
 
             // وضع الصيانة
             Card(
@@ -163,7 +164,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
                 },
               ),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
 
             // وضع التصحيح
             Card(
@@ -182,7 +183,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
                 },
               ),
             ),
-            SizedBox(height: 24.h),
+            Gap(24.h),
 
             // إعدادات متقدمة
             Text(
@@ -192,7 +193,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
                 color: const Color(0xFF1F2937),
               ).copyWith(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
 
             SettingItemWidget(
               icon: Icons.cleaning_services,
@@ -212,7 +213,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
               subtitle: AppLocalKay.resetSystemDialogText.tr(),
               onTap: _resetSystemSettings,
             ),
-            SizedBox(height: 32.h),
+            Gap(32.h),
 
             // معلومات النظام
             Card(
@@ -229,7 +230,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
                         color: const Color(0xFF1F2937),
                       ).copyWith(fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 12.h),
+                    Gap(12.h),
                     _buildSystemInfoItem(AppLocalKay.systemVersion.tr(), '2.1.0'),
                     _buildSystemInfoItem(AppLocalKay.lastUpdate.tr(), '2024-03-20'),
                     _buildSystemInfoItem(AppLocalKay.databaseSize.tr(), '245 MB'),
@@ -239,7 +240,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 32.h),
+            Gap(32.h),
 
             // زر الحفظ
             SizedBox(
@@ -329,7 +330,7 @@ class _SystemSettingsScreenState extends State<SystemSettingsScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(Icons.check_circle, color: AppColor.successColor(context), size: 50.w),
-              SizedBox(height: 16.h),
+              Gap(16.h),
               Text('النظام محدث لأحدث إصدار (2.1.0)'),
             ],
           ),

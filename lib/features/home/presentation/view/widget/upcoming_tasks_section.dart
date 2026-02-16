@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -23,7 +24,7 @@ class UpcomingTasksSection extends StatelessWidget {
           AppLocalKay.no_notifications.tr(),
           style: AppTextStyle.headlineMedium(context).copyWith(fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 16.h),
+        Gap(16.h),
         Column(
           children: tasks.map((task) {
             return Container(
@@ -51,7 +52,7 @@ class UpcomingTasksSection extends StatelessWidget {
                     ),
                     child: Icon(Icons.assignment, color: task.$4, size: 20.w),
                   ),
-                  SizedBox(width: 12.w),
+                  Gap(12.w),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +63,7 @@ class UpcomingTasksSection extends StatelessWidget {
                             context,
                           ).copyWith(fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(height: 4.h),
+                        Gap(4.h),
                         Row(
                           children: [
                             Text(
@@ -72,13 +73,13 @@ class UpcomingTasksSection extends StatelessWidget {
                                 color: AppColor.primaryColor(context),
                               ).copyWith(fontSize: 11.sp),
                             ),
-                            SizedBox(width: 8.w),
+                            Gap(8.w),
                             Icon(
                               Icons.calendar_today,
                               size: 12.w,
                               color: AppColor.greyColor(context),
                             ),
-                            SizedBox(width: 4.w),
+                            Gap(4.w),
                             Text(
                               task.$3,
                               style: AppTextStyle.bodySmall(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gap/gap.dart';
+
 import '../../extension/context_extension.dart';
 import '../../images/app_images.dart';
 import '../../theme/app_theme.dart';
@@ -7,11 +9,7 @@ import '../../theme/app_theme.dart';
 class NoDataWidget extends StatelessWidget {
   final Axis axis;
   final String? message;
-  const NoDataWidget({
-    super.key,
-    this.axis = Axis.vertical,
-    this.message,
-  });
+  const NoDataWidget({super.key, this.axis = Axis.vertical, this.message});
   @override
   Widget build(BuildContext context) {
     switch (axis) {
@@ -28,27 +26,19 @@ class NoDataWidget extends StatelessWidget {
                 SvgPicture.asset(
                   AppImages.assetsGlobalIconEmptyFolderIcon,
                   colorFilter: ColorFilter.mode(
-                    AppTheme.getByTheme(
-                      context,
-                      light: Colors.black,
-                      dark: Colors.white,
-                    ),
+                    AppTheme.getByTheme(context, light: Colors.black, dark: Colors.white),
                     BlendMode.srcIn,
                   ),
                   width: 40,
                   height: 40,
                   fit: BoxFit.contain,
                 ),
-                const SizedBox(width: 10),
+                const Gap(10),
                 Expanded(
                   child: Align(
                     alignment: AlignmentDirectional.centerStart,
                     child: Text(
-                      message ??
-                          context.apiTr(
-                            ar: "لا توجد بيانات",
-                            en: "There is no data",
-                          ),
+                      message ?? context.apiTr(ar: "لا توجد بيانات", en: "There is no data"),
                       style: TextStyle(
                         color: AppTheme.getByTheme(
                           context,
@@ -80,30 +70,18 @@ class NoDataWidget extends StatelessWidget {
               SvgPicture.asset(
                 AppImages.assetsGlobalIconEmptyFolderIcon,
                 colorFilter: ColorFilter.mode(
-                  AppTheme.getByTheme(
-                    context,
-                    light: Colors.black,
-                    dark: Colors.white,
-                  ),
+                  AppTheme.getByTheme(context, light: Colors.black, dark: Colors.white),
                   BlendMode.srcIn,
                 ),
                 width: 100,
                 height: 100,
                 fit: BoxFit.contain,
               ),
-              const SizedBox(height: 10),
+              const Gap(10),
               Text(
-                message ??
-                    context.apiTr(
-                      ar: "لا توجد بيانات",
-                      en: "There is no data",
-                    ),
+                message ?? context.apiTr(ar: "لا توجد بيانات", en: "There is no data"),
                 style: TextStyle(
-                  color: AppTheme.getByTheme(
-                    context,
-                    light: Colors.black,
-                    dark: Colors.white,
-                  ),
+                  color: AppTheme.getByTheme(context, light: Colors.black, dark: Colors.white),
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                 ),

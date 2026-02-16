@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 
 class MapSection extends StatelessWidget {
@@ -64,7 +65,7 @@ class MapSection extends StatelessWidget {
                       border: Border.all(color: AppColor.secondAppColor(context), width: 2.w),
                     ),
                   ),
-                  SizedBox(height: 8.h),
+                  Gap(8.h),
                   Text(
                     stop['name'],
                     style: TextStyle(

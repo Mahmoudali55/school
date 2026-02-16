@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_state.dart';
 
@@ -76,12 +77,12 @@ class QuickOverviewWidget extends StatelessWidget {
           ),
           child: Icon(icon, color: color, size: 24.w),
         ),
-        SizedBox(height: 8.h),
+        Gap(8.h),
         Text(
           value,
           style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        SizedBox(height: 4.h),
+        Gap(4.h),
         Text(
           label,
           style: TextStyle(

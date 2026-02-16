@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/schedule_Item_model.dart';
@@ -51,7 +52,7 @@ class ScheduleWidget extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 16.h),
+        Gap(16.h),
         Column(children: scheduleItems.map((item) => ScheduleItemWidget(item: item)).toList()),
       ],
     );

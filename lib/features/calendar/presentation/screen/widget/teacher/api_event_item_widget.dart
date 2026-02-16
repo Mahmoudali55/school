@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -61,7 +62,7 @@ class ApiEventItemWidget extends StatelessWidget {
                           _buildActionMenu(context),
                         ],
                       ),
-                      SizedBox(height: 8.h),
+                      Gap(8.h),
                       Text(
                         event.eventDesc,
                         style: AppTextStyle.bodySmall(
@@ -70,7 +71,7 @@ class ApiEventItemWidget extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(height: 12.h),
+                      Gap(12.h),
                       Row(
                         children: [
                           Icon(
@@ -78,7 +79,7 @@ class ApiEventItemWidget extends StatelessWidget {
                             size: 14.sp,
                             color: AppColor.greyColor(context),
                           ),
-                          SizedBox(width: 4.w),
+                          Gap(4.w),
                           Text(
                             "${event.eventDate} • ${event.eventTime}",
                             style: AppTextStyle.bodySmall(context).copyWith(
@@ -176,7 +177,7 @@ class ApiEventItemWidget extends StatelessWidget {
                 color: AppColor.primaryColor(context, listen: false),
                 size: 20,
               ),
-              SizedBox(width: 12.w),
+              Gap(12.w),
               Text(AppLocalKay.edit.tr(), style: AppTextStyle.bodyMedium(context, listen: false)),
             ],
           ),
@@ -190,7 +191,7 @@ class ApiEventItemWidget extends StatelessWidget {
                 color: AppColor.errorColor(context, listen: false),
                 size: 20,
               ),
-              SizedBox(width: 12.w),
+              Gap(12.w),
               Text(AppLocalKay.delete.tr(), style: AppTextStyle.bodyMedium(context, listen: false)),
             ],
           ),

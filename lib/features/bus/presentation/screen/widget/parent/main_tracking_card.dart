@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -52,9 +53,9 @@ class _MainTrackingCardState extends State<MainTrackingCard> {
       child: Column(
         children: [
           _buildChildHeader(context),
-          SizedBox(height: 20.h),
+          Gap(20.h),
           _buildMapSection(context),
-          SizedBox(height: 20.h),
+          Gap(20.h),
           _buildQuickActions(context),
         ],
       ),
@@ -73,7 +74,7 @@ class _MainTrackingCardState extends State<MainTrackingCard> {
           ),
           child: Icon(Icons.person_rounded, color: widget.selectedBusData.busColor, size: 24.w),
         ),
-        SizedBox(width: 12.w),
+        Gap(12.w),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,7 +140,7 @@ class _MainTrackingCardState extends State<MainTrackingCard> {
               child: Column(
                 children: [
                   Icon(Icons.home_rounded, color: AppColor.secondAppColor(context), size: 24.w),
-                  SizedBox(height: 4.h),
+                  Gap(4.h),
                   Text(
                     AppLocalKay.home_address.tr(),
                     style: AppTextStyle.bodySmall(context).copyWith(
@@ -157,7 +158,7 @@ class _MainTrackingCardState extends State<MainTrackingCard> {
               child: Column(
                 children: [
                   Icon(Icons.school_rounded, color: AppColor.primaryColor(context), size: 24.w),
-                  SizedBox(height: 4.h),
+                  Gap(4.h),
                   Text(
                     AppLocalKay.school.tr(),
                     style: AppTextStyle.bodySmall(context).copyWith(
@@ -196,7 +197,7 @@ class _MainTrackingCardState extends State<MainTrackingCard> {
                       size: 14.w,
                       color: AppColor.primaryColor(context),
                     ),
-                    SizedBox(width: 4.w),
+                    Gap(4.w),
                     Text(
                       _showMap ? AppLocalKay.hide_map.tr() : AppLocalKay.show_map.tr(),
                       style: AppTextStyle.bodySmall(context).copyWith(
@@ -260,7 +261,7 @@ class _MainTrackingCardState extends State<MainTrackingCard> {
             widget.onCallDriver,
           ),
         ),
-        SizedBox(width: 12.w),
+        Gap(12.w),
         Expanded(
           child: _buildActionButton(
             context,
@@ -270,7 +271,7 @@ class _MainTrackingCardState extends State<MainTrackingCard> {
             widget.onShareLocation,
           ),
         ),
-        SizedBox(width: 12.w),
+        Gap(12.w),
         Expanded(
           child: _buildActionButton(
             context,
@@ -303,7 +304,7 @@ class _MainTrackingCardState extends State<MainTrackingCard> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, color: color, size: 18.w),
-            SizedBox(height: 10.w),
+            Gap(10.w),
             Text(
               text,
               style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp, color: color),

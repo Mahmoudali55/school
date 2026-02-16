@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/class/data/model/schedule_Item_model.dart';
 
@@ -25,7 +26,7 @@ class MessageItemWidget extends StatelessWidget {
             ),
             child: Icon(Icons.person, color: const Color(0xFF2E5BFF), size: 20.w),
           ),
-          SizedBox(width: 12.w),
+          Gap(12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,7 +50,7 @@ class MessageItemWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   message.preview,
                   style: AppTextStyle.bodySmall(

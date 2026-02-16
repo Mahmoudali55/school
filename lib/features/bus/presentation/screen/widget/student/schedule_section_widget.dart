@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -30,7 +31,7 @@ class ScheduleSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(AppLocalKay.scheduleSection.tr(), style: AppTextStyle.titleMedium(context)),
-          SizedBox(height: 16.h),
+          Gap(16.h),
           ...schedule.map((item) {
             return Padding(
               padding: EdgeInsets.symmetric(vertical: 4.h),

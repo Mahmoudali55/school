@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -50,9 +51,9 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildChartControls(),
-            SizedBox(height: 20.h),
+            Gap(20.h),
             _buildMainChart(),
-            SizedBox(height: 20.h),
+            Gap(20.h),
             _buildDetailedStats(),
           ],
         ),
@@ -73,7 +74,7 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('الفترة:', style: AppTextStyle.titleSmall(context)),
-                      SizedBox(height: 8.h),
+                      Gap(8.h),
                       DropdownButton<String>(
                         value: _selectedTimeRange,
                         isExpanded: true,
@@ -92,13 +93,13 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
                     ],
                   ),
                 ),
-                SizedBox(width: 16.w),
+                Gap(16.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('النوع:', style: AppTextStyle.titleSmall(context)),
-                      SizedBox(height: 8.h),
+                      Gap(8.h),
                       DropdownButton<String>(
                         value: _selectedChartStyle,
                         isExpanded: true,
@@ -135,12 +136,12 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
               AppLocalKay.chartDetails.tr(),
               style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
             Text(
               'بيانات ${widget.chartTitle} للفترة المحددة',
               style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600),
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             // استخدام Container قابل للتمرير أفقيًا
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -543,7 +544,7 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
               'الإحصائيات التفصيلية',
               style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             Column(
               children: statsData.map((stat) {
                 return _buildStatRow(stat);
@@ -573,13 +574,13 @@ class _ChartDetailPageState extends State<ChartDetailPage> {
             ),
             child: Icon(stat['icon'] as IconData, size: 18.w, color: widget.chartColor),
           ),
-          SizedBox(width: 12.w),
+          Gap(12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(stat['title'] as String, style: AppTextStyle.titleSmall(context)),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   stat['subtitle'] as String,
                   style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600),

@@ -53,7 +53,7 @@
 //                 'الأسئلة الشائعة',
 //                 style: AppTextStyle.titleSmall(context, color: AppColor.blackColor(context)),
 //               ),
-//               const SizedBox(height: 16),
+//               const Gap( 16),
 //               Expanded(
 //                 child: ListView.builder(
 //                   itemCount: _faqs.length,
@@ -94,7 +94,7 @@
 //                           color: AppColor.blackColor(context),
 //                         ),
 //                       ),
-//                       const SizedBox(height: 16),
+//                       const Gap( 16),
 //                       _buildContactOption(
 //                         icon: Icons.email,
 //                         title: 'البريد الإلكتروني',

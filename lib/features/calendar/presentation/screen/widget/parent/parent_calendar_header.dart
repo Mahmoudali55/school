@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -37,16 +38,12 @@ class ParentCalendarHeader extends StatelessWidget {
             children: [
               Text(
                 AppLocalKay.follow_up.tr(),
-                style: AppTextStyle.titleMedium(
-                  context,
-                ).copyWith(fontWeight: FontWeight.bold),
+                style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 4.h),
+              Gap(4.h),
               Text(
                 getFormattedDate(selectedDate),
-                style: AppTextStyle.bodySmall(
-                  context,
-                ).copyWith(color: const Color(0xFF6B7280)),
+                style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
               ),
             ],
           ),
@@ -56,11 +53,7 @@ class ParentCalendarHeader extends StatelessWidget {
               color: const Color(0xFF2196F3).withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              Icons.family_restroom_rounded,
-              color: const Color(0xFF2196F3),
-              size: 24.w,
-            ),
+            child: Icon(Icons.family_restroom_rounded, color: const Color(0xFF2196F3), size: 24.w),
           ),
         ],
       ),

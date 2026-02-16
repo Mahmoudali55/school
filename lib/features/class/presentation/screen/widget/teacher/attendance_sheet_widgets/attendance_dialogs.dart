@@ -10,10 +10,10 @@ import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.da
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/class/data/model/teacher_classes_models.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/class/presentation/cubit/class_state.dart';
 import 'package:my_template/features/home/data/models/add_class_absent_request_model.dart';
-import 'package:my_template/features/class/data/model/teacher_classes_models.dart';
 
 class AttendanceDialogs {
   static void showEditDialog({
@@ -77,7 +77,7 @@ class AttendanceDialogs {
                       child: Text(AppLocalKay.cancel.tr()),
                     ),
                   ),
-                  SizedBox(width: 10.w),
+                  Gap(10.w),
                   Expanded(
                     child: BlocBuilder<ClassCubit, ClassState>(
                       builder: (context, state) {

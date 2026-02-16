@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_state.dart';
@@ -44,7 +45,7 @@ class BusClassDetailsWidget extends StatelessWidget {
                   color: const Color(0xFF1F2937),
                 ),
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
               GridView.count(
                 crossAxisCount: 2,
                 shrinkWrap: true,
@@ -113,7 +114,7 @@ class BusClassDetailsWidget extends StatelessWidget {
             ),
             child: Icon(icon, size: 16.w, color: busClass.classColor),
           ),
-          SizedBox(height: 10.h),
+          Gap(10.h),
           Text(
             title,
             style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -91,9 +92,9 @@ class QuickOverview extends StatelessWidget {
             ],
           ),
           if (driverName != null || busNumber != null || nextStop != null) ...[
-            SizedBox(height: 16.h),
+            Gap(16.h),
             Divider(color: Colors.white.withOpacity(0.1), height: 1),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -125,12 +126,12 @@ class QuickOverview extends StatelessWidget {
             ),
           ],
           if (lastUpdate != null) ...[
-            SizedBox(height: 16.h),
+            Gap(16.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.history_toggle_off_rounded, size: 12.w, color: const Color(0xFF94A3B8)),
-                SizedBox(width: 4.w),
+                Gap(4.w),
                 Text(
                   "${"آخر تحديث"}: $lastUpdate",
                   style: AppTextStyle.bodySmall(
@@ -168,7 +169,7 @@ class QuickOverview extends StatelessWidget {
             ),
             child: Icon(icon, color: color, size: 24.w),
           ),
-          SizedBox(height: 10.h),
+          Gap(10.h),
           Text(
             value,
             style: AppTextStyle.bodyLarge(context).copyWith(
@@ -177,7 +178,7 @@ class QuickOverview extends StatelessWidget {
               fontSize: 14.sp,
             ),
           ),
-          SizedBox(height: 4.h),
+          Gap(4.h),
           Text(
             label,
             style: AppTextStyle.bodySmall(context).copyWith(
@@ -212,7 +213,7 @@ class QuickOverview extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(icon, size: 14.w, color: AppColor.primaryColor(context)),
-                SizedBox(width: 6.w),
+                Gap(6.w),
                 Text(
                   value,
                   style: AppTextStyle.bodySmall(
@@ -223,7 +224,7 @@ class QuickOverview extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 4.h),
+            Gap(4.h),
             Text(
               label,
               style: AppTextStyle.bodySmall(

@@ -33,7 +33,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           color: isValid ? Colors.green : Colors.grey,
           size: 18,
         ),
-        const SizedBox(width: 8),
+        const Gap(8),
         Text(text, style: TextStyle(color: isValid ? Colors.green : Colors.grey, fontSize: 13)),
       ],
     );

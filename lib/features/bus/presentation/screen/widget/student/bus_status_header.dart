@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
@@ -24,7 +25,7 @@ class BusStatusHeader extends StatelessWidget {
             size: 24.w,
           ),
         ),
-        SizedBox(width: 12.w),
+        Gap(12.w),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

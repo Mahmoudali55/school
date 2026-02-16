@@ -2,6 +2,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
@@ -86,16 +87,16 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
             child: Row(
               children: [
                 _buildQuickCard('الدعم الفني', Icons.support_agent, Colors.blue),
-                SizedBox(width: 12.w),
+                Gap(12.w),
                 _buildQuickCard('الفيديو التعليمي', Icons.video_library, Colors.green),
-                SizedBox(width: 12.w),
+                Gap(12.w),
                 _buildQuickCard('الاتصال بالدعم', Icons.contact_support, Colors.orange),
-                SizedBox(width: 12.w),
+                Gap(12.w),
                 _buildQuickCard('التقارير', Icons.report, Colors.purple),
               ],
             ),
           ),
-          SizedBox(height: 24.h),
+          Gap(24.h),
 
           // الأسئلة الشائعة
           Padding(
@@ -112,7 +113,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
               ],
             ),
           ),
-          SizedBox(height: 16.h),
+          Gap(16.h),
 
           // قائمة الأسئلة
           Expanded(
@@ -146,7 +147,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, size: 30.w, color: color),
-            SizedBox(height: 8.h),
+            Gap(8.h),
             Text(
               title,
               textAlign: TextAlign.center,
@@ -193,7 +194,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.search_off, size: 80.w, color: Colors.grey.shade300),
-          SizedBox(height: 16.h),
+          Gap(16.h),
           Text(
             'لا توجد نتائج',
             style: AppTextStyle.headlineMedium(
@@ -201,7 +202,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
               color: Colors.grey.shade500,
             ).copyWith(fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 8.h),
+          Gap(8.h),
           Text(
             'لم نتمكن من العثور على أي سؤال يتطابق مع بحثك',
             style: AppTextStyle.bodyMedium(context, color: Colors.grey.shade400),
@@ -240,7 +241,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('اتصل بالدعم الفني', style: AppTextStyle.bodyLarge(context)),
-              SizedBox(height: 16.h),
+              Gap(16.h),
               ListTile(
                 leading: Icon(Icons.phone, color: Colors.green),
                 title: Text('الهاتف', style: AppTextStyle.bodyMedium(context)),
@@ -268,7 +269,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
                   // TODO: فتح الدردشة
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
               CustomButton(radius: 12.r, text: 'اغلاق', onPressed: () => Navigator.pop(context)),
             ],
           ),

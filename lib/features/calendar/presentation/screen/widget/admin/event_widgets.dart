@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -70,7 +71,7 @@ class EventCard extends StatelessWidget {
                   child: Row(
                     children: [
                       Icon(Icons.priority_high_rounded, color: Colors.red, size: 10.w),
-                      SizedBox(width: 2.w),
+                      Gap(2.w),
                       Text(
                         "أولوية عالية",
                         style: AppTextStyle.bodySmall(
@@ -82,25 +83,25 @@ class EventCard extends StatelessWidget {
                 ),
             ],
           ),
-          SizedBox(height: 12.h),
+          Gap(12.h),
           Text(
             event.title,
             style: AppTextStyle.titleMedium(
               context,
             ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
           ),
-          SizedBox(height: 8.h),
+          Gap(8.h),
           Row(
             children: [
               Icon(Icons.access_time_rounded, size: 14.w, color: const Color(0xFF6B7280)),
-              SizedBox(width: 4.w),
+              Gap(4.w),
               Text(
                 event.time,
                 style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
               ),
-              SizedBox(width: 16.w),
+              Gap(16.w),
               Icon(Icons.location_on_outlined, size: 14.w, color: const Color(0xFF6B7280)),
-              SizedBox(width: 4.w),
+              Gap(4.w),
               Expanded(
                 child: Text(
                   event.location,
@@ -112,7 +113,7 @@ class EventCard extends StatelessWidget {
             ],
           ),
           if (event.description.isNotEmpty) ...[
-            SizedBox(height: 12.h),
+            Gap(12.h),
             Text(
               event.description,
               style: AppTextStyle.bodySmall(
@@ -122,9 +123,9 @@ class EventCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ],
-          SizedBox(height: 12.h),
+          Gap(12.h),
           const Divider(),
-          SizedBox(height: 8.h),
+          Gap(8.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -158,7 +159,7 @@ class EventCard extends StatelessWidget {
                     constraints: const BoxConstraints(),
                     padding: EdgeInsets.all(4.w),
                   ),
-                  SizedBox(width: 4.w),
+                  Gap(4.w),
                   IconButton(
                     icon: Icon(
                       Icons.notifications_active_outlined,
@@ -169,7 +170,7 @@ class EventCard extends StatelessWidget {
                     constraints: const BoxConstraints(),
                     padding: EdgeInsets.all(4.w),
                   ),
-                  SizedBox(width: 4.w),
+                  Gap(4.w),
                   IconButton(
                     icon: Icon(Icons.share_outlined, size: 18.w, color: const Color(0xFF6B7280)),
                     onPressed: onShare,
@@ -209,20 +210,20 @@ class CalendarEmptyState extends StatelessWidget {
                 size: 48.w,
               ),
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             Text(
               AppLocalKay.no_events.tr(),
               style: AppTextStyle.titleMedium(
                 context,
               ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF4B5563)),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
             Text(
               AppLocalKay.free_time.tr(),
               textAlign: TextAlign.center,
               style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
             ),
-            SizedBox(height: 20.h),
+            Gap(20.h),
             CustomButton(
               radius: 12.r,
               onPressed: () {

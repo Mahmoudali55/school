@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/student/student_calendar_models.dart';
@@ -27,15 +28,11 @@ class StudentDailyView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildDailyHeader(context),
-          SizedBox(height: 16.h),
+          Gap(16.h),
           if (dailyEvents.isEmpty)
             const StudentEmptyState()
           else
-            Column(
-              children: dailyEvents
-                  .map((event) => StudentEventCard(event: event))
-                  .toList(),
-            ),
+            Column(children: dailyEvents.map((event) => StudentEventCard(event: event)).toList()),
         ],
       ),
     );
@@ -63,40 +60,32 @@ class StudentDailyView extends StatelessWidget {
               color: const Color(0xFF4CAF50).withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(
-              Icons.calendar_today_rounded,
-              color: const Color(0xFF4CAF50),
-              size: 20.w,
-            ),
+            child: Icon(Icons.calendar_today_rounded, color: const Color(0xFF4CAF50), size: 20.w),
           ),
-          SizedBox(width: 12.w),
+          Gap( 12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   getFormattedDate(selectedDate),
-                  style: AppTextStyle.titleMedium(context).copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF1F2937),
-                  ),
+                  style: AppTextStyle.titleMedium(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
                 ),
-                SizedBox(height: 2.h),
+                Gap(2.h),
                 Text(
                   getDayName(selectedDate.weekday),
-                  style: AppTextStyle.bodySmall(
-                    context,
-                  ).copyWith(color: const Color(0xFF6B7280)),
+                  style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
                 ),
               ],
             ),
           ),
           Text(
             "${dailyEvents.length} حدث",
-            style: AppTextStyle.bodySmall(context).copyWith(
-              color: const Color(0xFF4CAF50),
-              fontWeight: FontWeight.w600,
-            ),
+            style: AppTextStyle.bodySmall(
+              context,
+            ).copyWith(color: const Color(0xFF4CAF50), fontWeight: FontWeight.w600),
           ),
         ],
       ),

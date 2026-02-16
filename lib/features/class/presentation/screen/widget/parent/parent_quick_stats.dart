@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -21,7 +22,7 @@ class ParentQuickStats extends StatelessWidget {
             AppLocalKay.this_month.tr(),
           ),
         ),
-        const SizedBox(width: 10),
+        const Gap( 10),
         Expanded(
           child: _statCard(
             context,
@@ -32,7 +33,7 @@ class ParentQuickStats extends StatelessWidget {
             AppLocalKay.gpas.tr(),
           ),
         ),
-        const SizedBox(width: 10),
+        const Gap( 10),
         Expanded(
           child: _statCard(
             context,
@@ -70,14 +71,14 @@ class ParentQuickStats extends StatelessWidget {
               ),
               child: Icon(icon, color: color),
             ),
-            const SizedBox(height: 6),
+            const Gap(6),
             Text(
               value,
               style: AppTextStyle.titleMedium(
                 context,
               ).copyWith(color: color, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 4),
+            const Gap(4),
             Text(title, style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey)),
             Text(
               sub,

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -33,7 +34,7 @@ class FleetManagement extends StatelessWidget {
           Row(
             children: [
               Icon(Icons.manage_accounts_rounded, color: const Color(0xFF9C27B0), size: 20.w),
-              SizedBox(width: 8.w),
+              Gap(8.w),
               Text(
                 AppLocalKay.buses_section.tr(),
                 style: AppTextStyle.titleMedium(
@@ -42,7 +43,7 @@ class FleetManagement extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 16.h),
+          Gap(16.h),
           GridView.count(
             crossAxisCount: 2,
             shrinkWrap: true,
@@ -110,7 +111,7 @@ class FleetManagement extends StatelessWidget {
                 decoration: BoxDecoration(color: color.withOpacity(0.2), shape: BoxShape.circle),
                 child: Icon(icon, size: 16.w, color: color),
               ),
-              SizedBox(width: 8.w),
+              Gap(8.w),
               Expanded(
                 child: Text(
                   title,
@@ -121,7 +122,7 @@ class FleetManagement extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 8.h),
+          Gap(8.h),
           Text(
             value,
             style: AppTextStyle.titleMedium(

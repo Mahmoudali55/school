@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
 class ProfileInfoRow extends StatelessWidget {
@@ -36,7 +37,7 @@ class ProfileInfoRow extends StatelessWidget {
             ),
             child: Icon(icon, color: const Color(0xFF2E3192), size: 22.sp),
           ),
-          SizedBox(width: 16.w),
+          Gap(16.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +48,7 @@ class ProfileInfoRow extends StatelessWidget {
                     context,
                   ).copyWith(color: Colors.grey.shade600, fontWeight: FontWeight.w500),
                 ),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   value == "null" || value.isEmpty ? "-" : value,
                   style: AppTextStyle.bodyMedium(

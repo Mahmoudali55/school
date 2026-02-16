@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -55,14 +56,14 @@ class AllChildrenStatus extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 16.h),
+          Gap(16.h),
           ConstrainedBox(
             constraints: BoxConstraints(maxHeight: 250.h),
             child: ListView.separated(
               shrinkWrap: true,
               physics: const AlwaysScrollableScrollPhysics(),
               itemCount: childrenBusData.length,
-              separatorBuilder: (context, index) => SizedBox(height: 8.h),
+              separatorBuilder: (context, index) => Gap(8.h),
               itemBuilder: (context, index) =>
                   _buildChildStatusItem(context, childrenBusData[index]),
             ),
@@ -91,7 +92,7 @@ class AllChildrenStatus extends StatelessWidget {
             ),
             child: Icon(Icons.person_rounded, color: childData.busColor, size: 18.w),
           ),
-          SizedBox(width: 8.w),
+          Gap(8.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +104,7 @@ class AllChildrenStatus extends StatelessWidget {
                     context,
                   ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
                 ),
-                SizedBox(height: 2.h),
+                Gap(2.h),
                 Text(
                   " ${HiveMethods.getUserCompanyName()}",
                   style: AppTextStyle.bodySmall(
@@ -138,7 +139,7 @@ class AllChildrenStatus extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 2.h),
+              Gap(2.h),
               Text(
                 childData.status ?? "",
                 style: AppTextStyle.bodySmall(

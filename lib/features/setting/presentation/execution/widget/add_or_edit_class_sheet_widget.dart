@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/setting/presentation/execution/class_management_screen.dart';
 
@@ -55,7 +56,7 @@ class _AddOrEditClassSheetState extends State<AddOrEditClassSheet> {
               widget.schoolClass == null ? "إضافة صف" : "تعديل الصف",
               style: AppTextStyle.headlineMedium(context).copyWith(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 12),
+            Gap(12),
 
             Form(
               key: _formKey,
@@ -71,7 +72,7 @@ class _AddOrEditClassSheetState extends State<AddOrEditClassSheet> {
                 ],
               ),
             ),
-            SizedBox(height: 18),
+            Gap(18),
 
             _actionButton(),
           ],
@@ -119,5 +120,5 @@ class _AddOrEditClassSheetState extends State<AddOrEditClassSheet> {
     );
   }
 
-  Widget _gap() => SizedBox(height: 14.h);
+  Widget _gap() => Gap(14.h);
 }

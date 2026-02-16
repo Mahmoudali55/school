@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -22,9 +23,9 @@ class MonthlyViewWidget extends StatelessWidget {
           child: Column(
             children: [
               _buildTableCalendar(context, state),
-              SizedBox(height: 20.h),
+              Gap(20.h),
               // MonthlyStatsWidget(selectedDate: state.selectedDate),
-              SizedBox(height: 20.h),
+              Gap(20.h),
               const UpcomingTasksWidget(),
             ],
           ),

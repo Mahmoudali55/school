@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/class/data/model/alert_model.dart';
@@ -34,7 +35,7 @@ class AlertItem extends StatelessWidget {
             height: 8.w,
             decoration: BoxDecoration(color: alertColor, shape: BoxShape.circle),
           ),
-          SizedBox(width: 8.w),
+          Gap(8.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

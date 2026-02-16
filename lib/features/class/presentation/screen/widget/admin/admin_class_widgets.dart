@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -68,7 +69,7 @@ class AdminClassCard extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 12.h),
+            Gap(12.h),
 
             // معلومات الفصل
             _buildInfoRow(
@@ -76,15 +77,15 @@ class AdminClassCard extends StatelessWidget {
               Icons.person,
               '${AppLocalKay.teacher.tr()}: ${schoolClass.teacher}',
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
             _buildInfoRow(
               context,
               Icons.room,
               '${AppLocalKay.label_room.tr()}: ${schoolClass.room}',
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
             _buildInfoRow(context, Icons.schedule, schoolClass.schedule),
-            SizedBox(height: 16.h),
+            Gap(16.h),
 
             // شريط التقدم
             Column(
@@ -103,7 +104,7 @@ class AdminClassCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 8.h),
+                Gap(8.h),
                 LinearProgressIndicator(
                   value: schoolClass.currentStudents / schoolClass.capacity,
                   backgroundColor: Colors.grey[200],
@@ -113,7 +114,7 @@ class AdminClassCard extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
 
             // أزرار الإجراءات
             Row(
@@ -125,7 +126,7 @@ class AdminClassCard extends StatelessWidget {
                   AppColor.primaryColor(context),
                   onViewDetails,
                 ),
-                SizedBox(width: 8.w),
+                Gap( 8.w),
                 _buildActionButton(
                   context,
                   Icons.edit,
@@ -133,7 +134,7 @@ class AdminClassCard extends StatelessWidget {
                   AppColor.accentColor(context),
                   onEdit,
                 ),
-                SizedBox(width: 8.w),
+                Gap( 8.w),
                 _buildActionButton(
                   context,
                   Icons.people,
@@ -154,7 +155,7 @@ class AdminClassCard extends StatelessWidget {
     return Row(
       children: [
         Icon(icon, size: 16.w, color: Colors.grey),
-        SizedBox(width: 8.w),
+        Gap( 8.w),
         Expanded(
           child: Text(
             text,
@@ -187,7 +188,7 @@ class AdminClassCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(icon, size: 16.w, color: color),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   label,
                   style: AppTextStyle.bodySmall(context).copyWith(fontSize: fontSize),
@@ -218,14 +219,14 @@ class AdminClassesEmptyState extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(Icons.class_, size: 80.w, color: Colors.grey.shade300),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             Text(
               context.locale.languageCode == 'ar' ? 'لا توجد فصول' : 'No classes found',
               style: AppTextStyle.titleMedium(
                 context,
               ).copyWith(fontWeight: FontWeight.bold, color: Colors.grey.shade500),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
             Text(
               !isSearch
                   ? AppLocalKay.empty_subtitle_no_classes.tr()
@@ -233,7 +234,7 @@ class AdminClassesEmptyState extends StatelessWidget {
               style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey.shade400),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 24.h),
+            Gap(24.h),
             ElevatedButton(
               onPressed: onAddClass,
               style: ElevatedButton.styleFrom(

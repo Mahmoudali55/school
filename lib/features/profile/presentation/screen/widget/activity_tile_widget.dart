@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/profile/presentation/screen/widget/card_style.dart';
 
@@ -21,7 +22,7 @@ class ActivityTile extends StatelessWidget {
             backgroundColor: color.withAlpha((0.15 * 255).round()),
             child: Icon(icon, color: color, size: 26),
           ),
-          const SizedBox(width: 16),
+          const Gap(16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,7 +31,7 @@ class ActivityTile extends StatelessWidget {
                   item['title'].toString(),
                   style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.w600),
                 ),
-                const SizedBox(height: 4),
+                const Gap(4),
                 Text(
                   item['time'].toString(),
                   style: AppTextStyle.bodySmall(

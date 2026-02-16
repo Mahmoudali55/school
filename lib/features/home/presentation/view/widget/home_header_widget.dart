@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/routes/routes_name.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -33,7 +34,7 @@ class HomeHeaderWidget extends StatelessWidget {
             child: Icon(Icons.person, color: Colors.blue, size: 28.w),
           ),
         ),
-        SizedBox(width: 12.w),
+        Gap(12.w),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,7 +43,7 @@ class HomeHeaderWidget extends StatelessWidget {
                 AppLocalKay.welcome.tr(),
                 style: AppTextStyle.headlineSmall(context).copyWith(fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 4.h),
+              Gap(4.h),
               Text(
                 studentName,
                 style: AppTextStyle.bodyMedium(

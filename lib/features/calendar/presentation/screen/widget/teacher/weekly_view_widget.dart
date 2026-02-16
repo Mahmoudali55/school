@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -34,7 +35,7 @@ class WeeklyViewWidget extends StatelessWidget {
                         context,
                       ).copyWith(color: const Color(0xFF1F2937)),
                     ),
-                    SizedBox(height: 12.h),
+                    Gap(12.h),
                     if (state.getEventsStatus.isLoading)
                       const Center(child: CircularProgressIndicator())
                     else if (events.isEmpty)
@@ -102,7 +103,7 @@ class WeeklyViewWidget extends StatelessWidget {
                       fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                     ),
                   ),
-                  SizedBox(height: 4.h),
+                  Gap(4.h),
                   Text(
                     date.day.toString(),
                     style: AppTextStyle.titleMedium(context).copyWith(
@@ -135,7 +136,7 @@ class WeeklyViewWidget extends StatelessWidget {
       child: Column(
         children: [
           Icon(Icons.assignment_turned_in_outlined, size: 40.w, color: AppColor.greyColor(context)),
-          SizedBox(height: 8.h),
+          Gap(8.h),
           Text(
             AppLocalKay.no_tasks.tr(),
             style: AppTextStyle.bodyMedium(context).copyWith(color: AppColor.greyColor(context)),

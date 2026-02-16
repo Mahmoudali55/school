@@ -31,7 +31,7 @@ class AchievementTile extends StatelessWidget {
                   item['title'].toString(),
                   style: AppTextStyle.titleMedium(context, color: color),
                 ),
-                const SizedBox(height: 4),
+                const Gap( 4),
                 Text(
                   item['desc'].toString(),
                   style: AppTextStyle.bodyMedium(context, color: Colors.grey.shade600),

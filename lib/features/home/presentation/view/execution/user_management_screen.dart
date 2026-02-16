@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
@@ -31,7 +32,7 @@ class UserManagementScreen extends StatelessWidget {
           children: [
             // Search and Filter Section
             _buildSearchSection(context),
-            SizedBox(height: 20.h),
+            Gap(20.h),
             // Users List
             Expanded(
               child: ListView.builder(
@@ -60,7 +61,7 @@ class UserManagementScreen extends StatelessWidget {
           hintText: AppLocalKay.user_management_search_hint.tr(),
           prefixIcon: Icon(Icons.search),
         ),
-        SizedBox(height: 12.h),
+        Gap(12.h),
         Row(
           children: [
             Expanded(
@@ -78,7 +79,7 @@ class UserManagementScreen extends StatelessWidget {
                 },
               ),
             ),
-            SizedBox(width: 12.w),
+            Gap(12.w),
             Expanded(
               child: AppDropdown<String>(
                 label: AppLocalKay.user_management_status_label.tr(),

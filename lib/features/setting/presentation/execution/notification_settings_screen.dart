@@ -2,6 +2,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -49,7 +50,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
               AppLocalKay.notification_channels.tr(),
               style: AppTextStyle.titleLarge(context, color: const Color(0xFF1F2937)),
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
 
             // الإشعارات التلقائية
             Card(
@@ -71,7 +72,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                 },
               ),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
 
             // الإشعارات البريدية
             Card(
@@ -93,7 +94,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                 },
               ),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
 
             // إشعارات SMS
             Card(
@@ -115,7 +116,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                 },
               ),
             ),
-            SizedBox(height: 24.h),
+            Gap(24.h),
 
             // أنواع التنبيهات
             Text(
@@ -125,7 +126,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                 color: const Color(0xFF1F2937),
               ).copyWith(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
 
             // مستخدمين جدد
             Card(
@@ -143,7 +144,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                 },
               ),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
 
             // صفوف جديدة
             Card(
@@ -161,7 +162,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                 },
               ),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
 
             // تنبيهات النظام
             Card(
@@ -179,7 +180,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                 },
               ),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
 
             // تنبيهات الطوارئ
             Card(
@@ -200,7 +201,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                 },
               ),
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
 
             // تقارير النظام
             Card(
@@ -221,7 +222,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                 },
               ),
             ),
-            SizedBox(height: 32.h),
+            Gap(32.h),
 
             // توقيت الإشعارات
             Text(
@@ -231,7 +232,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                 color: const Color(0xFF1F2937),
               ).copyWith(fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             Card(
               child: ListTile(
                 leading: Icon(Icons.access_time, color: const Color(0xFF2E5BFF)),
@@ -247,7 +248,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                 onTap: _setNotificationHours,
               ),
             ),
-            SizedBox(height: 32.h),
+            Gap(32.h),
 
             // زر الحفظ
             SizedBox(

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/profile/data/model/student_profile_model.dart';
 
@@ -32,7 +33,7 @@ class ProfileHeader extends StatelessWidget {
                 onPressed: () => Navigator.pop(context),
               ),
             ),
-            SizedBox(height: 10.h),
+            Gap(10.h),
             Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -51,7 +52,7 @@ class ProfileHeader extends StatelessWidget {
                 child: Icon(Icons.person, size: 50.sp, color: const Color(0xFF2E3192)),
               ),
             ),
-            SizedBox(height: 16.h),
+            Gap(16.h),
             Text(
               context.locale.languageCode == 'en'
                   ? studentData.firstNameEn.toString()
@@ -68,7 +69,7 @@ class ProfileHeader extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 6.h),
+            Gap(6.h),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
               decoration: BoxDecoration(

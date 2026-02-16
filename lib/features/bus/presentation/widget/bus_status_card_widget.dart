@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
 class BusStatusCardWidget extends StatelessWidget {
@@ -17,7 +18,7 @@ class BusStatusCardWidget extends StatelessWidget {
             Row(
               children: [
                 Icon(Icons.directions_bus_rounded, color: Colors.green, size: 32.w),
-                SizedBox(width: 12.w),
+                Gap(12.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +40,7 @@ class BusStatusCardWidget extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 12.h),
+            Gap(12.h),
             LinearProgressIndicator(
               value: 0.7,
               backgroundColor: Colors.grey[300],

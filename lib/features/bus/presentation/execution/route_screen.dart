@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -39,7 +40,7 @@ class RouteScreen extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 20.h),
+          Gap(20.h),
 
           // Route info section
           Container(
@@ -60,31 +61,31 @@ class RouteScreen extends StatelessWidget {
                 Row(
                   children: [
                     Icon(Icons.location_on, color: Colors.orange),
-                    SizedBox(width: 8.w),
+                    Gap(8.w),
                     Text(
                       'نقطة الانطلاق: المدرسة',
                       style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
                     ),
                   ],
                 ),
-                SizedBox(height: 10.h),
+                Gap(10.h),
 
                 Row(
                   children: [
                     Icon(Icons.flag_circle_rounded, color: Colors.blue),
-                    SizedBox(width: 8.w),
+                    Gap(8.w),
                     Text(
                       'الوجهة: المنزل',
                       style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
                     ),
                   ],
                 ),
-                SizedBox(height: 10.h),
+                Gap(10.h),
 
                 Row(
                   children: [
                     Icon(Icons.access_time, color: Colors.green),
-                    SizedBox(width: 8.w),
+                    Gap(8.w),
                     Text(
                       'الوقت المتوقع: 12 دقيقة',
                       style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w600),
@@ -95,7 +96,7 @@ class RouteScreen extends StatelessWidget {
             ),
           ),
 
-          SizedBox(height: 20.h),
+          Gap(20.h),
 
           CustomButton(
             text: AppLocalKay.update_location.tr(),

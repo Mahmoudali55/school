@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
@@ -37,7 +38,7 @@ class _ParentNotificationScreenState extends State<ParentNotificationScreen> {
                   : "Enter notification text here...",
             ),
 
-            SizedBox(height: 24.h),
+            Gap(24.h),
 
             // Send Button
             CustomButton(

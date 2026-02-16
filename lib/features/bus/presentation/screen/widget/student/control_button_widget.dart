@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 
 class ControlButton extends StatelessWidget {
   final String text;
@@ -29,7 +30,7 @@ class ControlButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, color: color, size: 18.w),
-            SizedBox(height: 8.h),
+            Gap(8.h),
             Text(
               text,
               style: TextStyle(fontSize: 10.sp, color: color),

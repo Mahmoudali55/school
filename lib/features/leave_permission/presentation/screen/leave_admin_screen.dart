@@ -116,7 +116,7 @@ class LeaveAdminScreen extends StatelessWidget {
                   DateFormat('yyyy-MM-dd').format(request.date),
                   context,
                 ),
-                const SizedBox(width: 16),
+                const Gap(16),
                 _buildInfoItem(Icons.access_time, request.startTime, context),
               ],
             ),
@@ -138,7 +138,7 @@ class LeaveAdminScreen extends StatelessWidget {
                       child: Text(AppLocalKay.status_rejected.tr()),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  const Gap(12),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () => context.read<LeaveCubit>().updateLeaveStatus(
@@ -187,7 +187,7 @@ class LeaveAdminScreen extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Icon(icon, size: 16, color: AppColor.infoColor(context)),
-        const SizedBox(width: 6),
+        const Gap(6),
         Text(value, style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey)),
       ],
     );

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
 import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
@@ -43,7 +44,7 @@ class ActionButtonsWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.logout, color: AppColor.whiteColor(context)),
-                SizedBox(width: 10.w),
+                Gap(10.w),
                 context.watch<SettingsCubit>().state.logoutStatus.isLoading
                     ? CustomLoading(color: AppColor.whiteColor(context), size: 20)
                     : Text(

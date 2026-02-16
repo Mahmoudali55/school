@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -36,7 +37,7 @@ class AdminBusDetails extends StatelessWidget {
               context,
             ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
           ),
-          SizedBox(height: 16.h),
+          Gap(16.h),
           GridView.count(
             crossAxisCount: 2,
             shrinkWrap: true,
@@ -118,7 +119,7 @@ class AdminBusDetails extends StatelessWidget {
             ),
             child: Icon(icon, size: 16.w, color: selectedBusData.busColor),
           ),
-          SizedBox(height: 10.h),
+          Gap(10.h),
           Text(
             title,
             style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),

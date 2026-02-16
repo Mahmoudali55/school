@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
 class ReportsAdminScreen extends StatelessWidget {
@@ -33,7 +34,7 @@ class ReportsAdminScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(report['icon'], color: report['color'], size: 32.sp),
-                        SizedBox(height: 8.h),
+                        Gap( 8.h),
                         Text(
                           report['title']!,
                           style: AppTextStyle.titleSmall(
@@ -48,7 +49,7 @@ class ReportsAdminScreen extends StatelessWidget {
               },
             ),
 
-            SizedBox(height: 20.h),
+            Gap( 20.h),
 
             Expanded(
               child: Column(
@@ -58,7 +59,7 @@ class ReportsAdminScreen extends StatelessWidget {
                     'التقارير الحديثة',
                     style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 12.h),
+                  Gap( 12.h),
                   Expanded(
                     child: ListView.builder(
                       itemCount: _recentReports.length,

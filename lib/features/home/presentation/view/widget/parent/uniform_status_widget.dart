@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/routes/routes_name.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -22,7 +23,7 @@ class UniformStatusWidget extends StatelessWidget {
             color: const Color(0xFF1F2937),
           ).copyWith(fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 16.h),
+        Gap(16.h),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
@@ -61,7 +62,7 @@ class UniformStatusWidget extends StatelessWidget {
                                 size: 20.w,
                               ),
                             ),
-                            SizedBox(width: 12.w),
+                            Gap(12.w),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +74,7 @@ class UniformStatusWidget extends StatelessWidget {
                                       color: const Color(0xFF6B7280),
                                     ),
                                   ),
-                                  SizedBox(height: 4.h),
+                                  Gap(4.h),
                                   Text(
                                     AppLocalKay.input_sizes.tr(),
                                     style: AppTextStyle.bodyMedium(
@@ -89,7 +90,7 @@ class UniformStatusWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(width: 16.w),
+                  Gap(16.w),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(

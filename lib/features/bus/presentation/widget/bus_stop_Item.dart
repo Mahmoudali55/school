@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
 class BusStopItem extends StatelessWidget {
@@ -58,7 +59,7 @@ class BusStopItem extends StatelessWidget {
                   : null,
             ),
           ),
-          SizedBox(width: 12.w),
+          Gap(12.w),
 
           // Station Info
           Expanded(
@@ -73,7 +74,7 @@ class BusStopItem extends StatelessWidget {
                     color: const Color(0xFF1F2937),
                   ),
                 ),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   time,
                   style: AppTextStyle.bodySmall(

@@ -177,7 +177,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                       AppLocalKay.user_management_class.tr(),
                       style: AppTextStyle.formTitleStyle(context),
                     ),
-                    SizedBox(height: 8.h),
+                    Gap(8.h),
                     CustomDropdownFormField<int>(
                       value: levels.any((e) => e.levelCode == _selectedLevelCode)
                           ? _selectedLevelCode
@@ -214,7 +214,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                       AppLocalKay.class_name_assigment.tr(),
                       style: AppTextStyle.formTitleStyle(context),
                     ),
-                    SizedBox(height: 8.h),
+                    Gap(8.h),
                     CustomDropdownFormField<int>(
                       value: classesList.any((e) => e.classCode == _selectedClassCode)
                           ? _selectedClassCode
@@ -237,7 +237,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                       AppLocalKay.user_management_subject.tr(),
                       style: AppTextStyle.formTitleStyle(context),
                     ),
-                    SizedBox(height: 8.h),
+                    Gap(8.h),
                     IgnorePointer(
                       ignoring: isEdit,
                       child: Opacity(
@@ -331,7 +331,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                             ? Column(
                                 children: [
                                   CustomLoading(color: AppColor.accentColor(context), size: 30.w),
-                                  SizedBox(height: 8.h),
+                                  Gap(8.h),
                                   Text(AppLocalKay.loading.tr()),
                                 ],
                               )
@@ -346,7 +346,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                                         ? AppColor.secondAppColor(context)
                                         : AppColor.greyColor(context),
                                   ),
-                                  SizedBox(height: 8.h),
+                                  Gap(8.h),
                                   Text(
                                     _fileName ?? AppLocalKay.user_management_upload_lesson.tr(),
                                     textAlign: TextAlign.center,
@@ -354,7 +354,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                                       context,
                                     ).copyWith(fontWeight: FontWeight.bold),
                                   ),
-                                  SizedBox(height: 8.h),
+                                  Gap(8.h),
                                   if (_uploadedFileUrl != null && _uploadedFileUrl!.isNotEmpty) ...[
                                     Gap(12.h),
                                     CustomButton(
@@ -386,7 +386,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                       ),
                     ),
 
-                    SizedBox(height: 24.h),
+                    Gap(24.h),
 
                     /// زر الرفع
                     CustomButton(

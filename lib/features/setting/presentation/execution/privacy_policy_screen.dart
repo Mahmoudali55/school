@@ -2,6 +2,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -36,27 +37,27 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(AppLocalKay.last_update.tr(), style: AppTextStyle.bodyMedium(context)),
-                    SizedBox(height: 8.h),
+                    Gap( 8.h),
                     Text(AppLocalKay.intro.tr(), style: AppTextStyle.bodyMedium(context)),
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 24.h),
+            Gap( 24.h),
 
             _buildPrivacySection(
               AppLocalKay.section1_title.tr(),
               AppLocalKay.section1_content.tr(),
               context,
             ),
-            SizedBox(height: 24.h),
+            Gap( 24.h),
 
             _buildPrivacySection(
               AppLocalKay.section2_title.tr(),
               AppLocalKay.section2_content.tr(),
               context,
             ),
-            SizedBox(height: 24.h),
+            Gap( 24.h),
 
             _buildPrivacySection(
               AppLocalKay.section3_title.tr(),
@@ -64,42 +65,42 @@ class PrivacyPolicyScreen extends StatelessWidget {
 
               context,
             ),
-            SizedBox(height: 24.h),
+            Gap( 24.h),
 
             _buildPrivacySection(
               AppLocalKay.section4_title.tr(),
               AppLocalKay.section4_content.tr(),
               context,
             ),
-            SizedBox(height: 24.h),
+            Gap( 24.h),
 
             _buildPrivacySection(
               AppLocalKay.section5_title.tr(),
               AppLocalKay.section5_content.tr(),
               context,
             ),
-            SizedBox(height: 24.h),
+            Gap( 24.h),
 
             _buildPrivacySection(
               AppLocalKay.section6_title.tr(),
               AppLocalKay.section6_content.tr(),
               context,
             ),
-            SizedBox(height: 24.h),
+            Gap( 24.h),
 
             _buildPrivacySection(
               AppLocalKay.section7_title.tr(),
               AppLocalKay.section7_content.tr(),
               context,
             ),
-            SizedBox(height: 24.h),
+            Gap( 24.h),
 
             _buildPrivacySection(
               AppLocalKay.section8_title.tr(),
               AppLocalKay.section8_content.tr(),
               context,
             ),
-            SizedBox(height: 32.h),
+            Gap( 32.h),
 
             // موافقة
             Card(
@@ -115,7 +116,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                         context,
                       ).copyWith(fontWeight: FontWeight.bold, color: Colors.green[800]),
                     ),
-                    SizedBox(height: 8.h),
+                    Gap( 8.h),
                     Text(
                       AppLocalKay.consent_text.tr(),
                       style: AppTextStyle.bodyMedium(
@@ -137,7 +138,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(title, style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold)),
-        SizedBox(height: 12.h),
+        Gap( 12.h),
         Text(
           content,
           style: AppTextStyle.bodyMedium(context).copyWith(height: 1.6),

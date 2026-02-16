@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
@@ -292,7 +293,7 @@ class _StudentFaceRegistrationScreenState extends State<StudentFaceRegistrationS
                   ).copyWith(color: AppColor.whiteColor(context), fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 8.h),
+                Gap(8.h),
                 Text(
                   AppLocalKay.position_face_in_frame.tr(),
                   style: AppTextStyle.bodyMedium(

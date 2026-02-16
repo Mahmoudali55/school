@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -45,10 +46,10 @@ class MainTrackingCard extends StatelessWidget {
             children: [
               // Class Header
               _buildClassHeader(state.selectedClass!),
-              SizedBox(height: 20.h),
+              Gap(20.h),
               // Map Section
               _buildMapSection(state.selectedClass!, context),
-              SizedBox(height: 20.h),
+              Gap(20.h),
               // Tracking Actions
               _buildTrackingActions(context),
             ],
@@ -92,7 +93,7 @@ class MainTrackingCard extends StatelessWidget {
           ),
           child: Icon(Icons.class_rounded, color: busClass.classColor, size: 24.w),
         ),
-        SizedBox(width: 12.w),
+        Gap(12.w),
         // Class Info
         Expanded(
           child: Column(
@@ -124,7 +125,7 @@ class MainTrackingCard extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(statusIcon, size: 14.w, color: statusColor),
-              SizedBox(width: 4.w),
+              Gap(4.w),
               Text(
                 busClass.status,
                 style: TextStyle(fontSize: 12.sp, color: statusColor, fontWeight: FontWeight.bold),
@@ -166,7 +167,7 @@ class MainTrackingCard extends StatelessWidget {
             child: Column(
               children: [
                 Icon(Icons.school_rounded, color: const Color(0xFF2196F3), size: 24.w),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   "المدرسة",
                   style: TextStyle(
@@ -199,7 +200,7 @@ class MainTrackingCard extends StatelessWidget {
         child: Column(
           children: [
             Icon(Icons.person_pin_circle_rounded, color: const Color(0xFFFF9800), size: 20.w),
-            SizedBox(height: 4.h),
+            Gap(4.h),
             Text(
               "محطة ${index + 1}",
               style: TextStyle(fontSize: 8.sp, color: const Color(0xFF6B7280)),
@@ -252,7 +253,7 @@ class MainTrackingCard extends StatelessWidget {
             () => _takeAttendance(cubit, context),
           ),
         ),
-        SizedBox(width: 12.w),
+        Gap(12.w),
         Expanded(
           child: _buildActionButton(
             AppLocalKay.ConnectDriver.tr(),
@@ -261,7 +262,7 @@ class MainTrackingCard extends StatelessWidget {
             () => _callDriver(context),
           ),
         ),
-        SizedBox(width: 12.w),
+        Gap(12.w),
         Expanded(
           child: _buildActionButton(
             AppLocalKay.ParentNotification.tr(),
@@ -287,7 +288,7 @@ class MainTrackingCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, color: color, size: 15.w),
-            SizedBox(width: 10.w),
+            Gap(10.w),
             Text(
               text,
               style: TextStyle(fontSize: 8.sp, color: color),

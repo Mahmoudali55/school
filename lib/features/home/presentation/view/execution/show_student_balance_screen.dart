@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
@@ -52,7 +53,7 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
 
             return ListView.separated(
               itemCount: balances.length,
-              separatorBuilder: (_, __) => SizedBox(height: 16.h),
+              separatorBuilder: (_, __) => Gap(16.h),
               itemBuilder: (context, index) {
                 final student = balances[index];
 
@@ -92,7 +93,7 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                               size: 26.sp,
                             ),
                           ),
-                          SizedBox(width: 12.w),
+                          Gap(12.w),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +104,7 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                                     context,
                                   ).copyWith(fontWeight: FontWeight.bold),
                                 ),
-                                SizedBox(height: 4.h),
+                                Gap(4.h),
                                 Text(
                                   "${AppLocalKay.student_code.tr()} : ${student.studentCode}",
                                   style: AppTextStyle.bodySmall(
@@ -116,7 +117,7 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                         ],
                       ),
 
-                      SizedBox(height: 16.h),
+                      Gap(16.h),
 
                       /// Balance
                       Container(
@@ -143,7 +144,7 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                                 context,
                               ).copyWith(color: Colors.green.shade800),
                             ),
-                            SizedBox(height: 6.h),
+                            Gap(6.h),
                             Text(
                               "${student.balance} ر.س",
                               style: AppTextStyle.titleLarge(
@@ -154,7 +155,7 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                         ),
                       ),
 
-                      SizedBox(height: 14.h),
+                      Gap(14.h),
 
                       /// Pay Now Button
                       SizedBox(

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/home/presentation/view/widget/parent/alert_Item_widget.dart';
@@ -40,7 +41,7 @@ class UrgentAlertsWidget extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 16.h),
+        Gap(16.h),
         Column(
           children: const [
             AlertItem(
@@ -52,7 +53,7 @@ class UrgentAlertsWidget extends StatelessWidget {
               time: "منذ ساعتين",
               isUrgent: true,
             ),
-            SizedBox(height: 12),
+            Gap(12),
             AlertItem(
               icon: Icons.assignment,
               iconColor: Color(0xFF2E5BFF),
@@ -62,7 +63,7 @@ class UrgentAlertsWidget extends StatelessWidget {
               time: "منذ يوم",
               isUrgent: false,
             ),
-            SizedBox(height: 12),
+            Gap(12),
             AlertItem(
               icon: Icons.message,
               iconColor: Color(0xFF10B981),

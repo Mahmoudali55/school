@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/core/theme/app_colors.dart';
@@ -173,7 +174,7 @@ class _CalendarTeacherScreenState extends State<CalendarTeacherScreen> {
                   child: Row(
                     children: [
                       Icon(Icons.school_outlined, size: 16.w, color: const Color(0xFFFF9800)),
-                      SizedBox(width: 6.w),
+                      Gap(6.w),
                       Text(level.levelName),
                     ],
                   ),

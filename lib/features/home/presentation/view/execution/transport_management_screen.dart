@@ -2,6 +2,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -31,7 +32,7 @@ class TransportManagementScreen extends StatelessWidget {
           children: [
             // Buses Overview
             _buildBusesOverview(context),
-            SizedBox(height: 20.h),
+            Gap(20.h),
             // Buses List
             Expanded(child: _buildBusesList()),
           ],
@@ -81,7 +82,7 @@ class TransportManagementScreen extends StatelessWidget {
     return Column(
       children: [
         Icon(icon, size: 30.w, color: Colors.blue),
-        SizedBox(height: 8.h),
+        Gap(8.h),
         Text(value, style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold)),
         Text(title, style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600)),
       ],
@@ -119,7 +120,7 @@ class TransportManagementScreen extends StatelessWidget {
                   child: Row(
                     children: [
                       Icon(Icons.circle, size: 8.w, color: Colors.green),
-                      SizedBox(width: 4.w),
+                      Gap(4.w),
                       Text(
                         AppLocalKay.user_management_active.tr(),
                         style: AppTextStyle.bodySmall(context).copyWith(color: Colors.green),
@@ -129,39 +130,39 @@ class TransportManagementScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 12.h),
+            Gap(12.h),
             Row(
               children: [
                 Icon(Icons.confirmation_number, size: 16.w, color: Colors.grey),
-                SizedBox(width: 8.w),
+                Gap(8.w),
                 Text('رقم الحافلة: BUS-00${index + 1}', style: AppTextStyle.bodySmall(context)),
               ],
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
             Row(
               children: [
                 Icon(Icons.person, size: 16.w, color: Colors.grey),
-                SizedBox(width: 8.w),
+                Gap(8.w),
                 Text('السائق: محمد أحمد', style: AppTextStyle.bodySmall(context)),
               ],
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
             Row(
               children: [
                 Icon(Icons.phone, size: 16.w, color: Colors.grey),
-                SizedBox(width: 8.w),
+                Gap(8.w),
                 Text('رقم الهاتف: 05xxxxxxxx', style: AppTextStyle.bodySmall(context)),
               ],
             ),
-            SizedBox(height: 8.h),
+            Gap(8.h),
             Row(
               children: [
                 Icon(Icons.people, size: 16.w, color: Colors.grey),
-                SizedBox(width: 8.w),
+                Gap(8.w),
                 Text('الطلاب: ٢٥/٣٠', style: AppTextStyle.bodySmall(context)),
               ],
             ),
-            SizedBox(height: 12.h),
+            Gap(12.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [

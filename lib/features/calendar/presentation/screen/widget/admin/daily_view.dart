@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -36,7 +37,7 @@ class DailyView extends StatelessWidget {
         children: [
           // تاريخ اليوم
           _buildDailyHeader(context, dailyEvents.length),
-          SizedBox(height: 16.h),
+          Gap(16.h),
           // قائمة الأحداث
           if (dailyEvents.isEmpty)
             const CalendarEmptyState()
@@ -53,7 +54,7 @@ class DailyView extends StatelessWidget {
                   )
                   .toList(),
             ),
-          SizedBox(height: 20.h),
+          Gap(20.h),
           // ملخص اليوم
           _buildDailySummary(context),
         ],
@@ -85,7 +86,7 @@ class DailyView extends StatelessWidget {
             ),
             child: Icon(Icons.today_rounded, color: const Color(0xFF9C27B0), size: 24.w),
           ),
-          SizedBox(width: 12.w),
+          Gap(12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,7 +97,7 @@ class DailyView extends StatelessWidget {
                     context,
                   ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
                 ),
-                SizedBox(height: 2.h),
+                Gap(2.h),
                 Text(
                   "$eventCount أحداث مجدولة لليوم",
                   style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
@@ -136,19 +137,19 @@ class DailyView extends StatelessWidget {
               context,
             ).copyWith(color: AppColor.whiteColor(context), fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 12.h),
+          Gap(12.h),
           _buildSummaryRow(
             context,
             Icons.check_circle_outline_rounded,
             "تم إنجاز ٢ من الأحداث اليوم",
           ),
-          SizedBox(height: 8.h),
+          Gap(8.h),
           _buildSummaryRow(
             context,
             Icons.notification_important_rounded,
             "يوجد حدث هام سيبدأ بعد ساعة",
           ),
-          SizedBox(height: 8.h),
+          Gap(8.h),
           _buildSummaryRow(
             context,
             Icons.people_outline_rounded,
@@ -163,7 +164,7 @@ class DailyView extends StatelessWidget {
     return Row(
       children: [
         Icon(icon, color: AppColor.whiteColor(context).withOpacity(0.8), size: 16.w),
-        SizedBox(width: 8.w),
+        Gap(8.w),
         Expanded(
           child: Text(
             text,

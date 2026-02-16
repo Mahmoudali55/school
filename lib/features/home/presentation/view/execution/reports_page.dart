@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -109,19 +110,19 @@ class _ReportsPageState extends State<ReportsPage> {
           children: [
             // الإحصائيات السريعة
             _buildQuickStats(),
-            SizedBox(height: 24.h),
+            Gap(24.h),
 
             // الفلاتر
             _buildFilters(),
-            SizedBox(height: 24.h),
+            Gap(24.h),
 
             // التقارير الحديثة
             _buildRecentReports(),
-            SizedBox(height: 24.h),
+            Gap(24.h),
 
             // الرسوم البيانية
             _buildChartsSection(),
-            SizedBox(height: 20.h), // مسافة إضافية في الأسفل
+            Gap(20.h), // مسافة إضافية في الأسفل
           ],
         ),
       ),
@@ -138,7 +139,7 @@ class _ReportsPageState extends State<ReportsPage> {
             context,
           ).copyWith(fontWeight: FontWeight.bold, color: Colors.grey.shade800),
         ),
-        SizedBox(height: 16.h),
+        Gap(16.h),
 
         GridView.builder(
           shrinkWrap: true,
@@ -184,7 +185,7 @@ class _ReportsPageState extends State<ReportsPage> {
                   ),
                   child: Icon(stat['icon'] as IconData, color: stat['color'] as Color, size: 20.w),
                 ),
-                SizedBox(width: 8.w),
+                Gap(8.w),
                 Text(
                   stat['trend'] as String,
                   style: AppTextStyle.bodySmall(
@@ -203,7 +204,7 @@ class _ReportsPageState extends State<ReportsPage> {
                     context,
                   ).copyWith(fontWeight: FontWeight.bold, color: Colors.grey.shade800),
                 ),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   stat['title'] as String,
                   style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600),
@@ -226,7 +227,7 @@ class _ReportsPageState extends State<ReportsPage> {
             context,
           ).copyWith(fontWeight: FontWeight.bold, color: Colors.grey.shade800),
         ),
-        SizedBox(height: 16.h),
+        Gap(16.h),
 
         Container(
           decoration: BoxDecoration(
@@ -248,14 +249,14 @@ class _ReportsPageState extends State<ReportsPage> {
                 Row(
                   children: [
                     Icon(Icons.filter_list, size: 18.w, color: Colors.grey),
-                    SizedBox(width: 8.w),
+                    Gap(8.w),
                     Text(
                       AppLocalKay.user_management_report_type.tr(),
                       style: AppTextStyle.titleSmall(context),
                     ),
                   ],
                 ),
-                SizedBox(height: 12.h),
+                Gap(12.h),
 
                 Wrap(
                   spacing: 8.w,
@@ -286,9 +287,9 @@ class _ReportsPageState extends State<ReportsPage> {
                   }).toList(),
                 ),
 
-                SizedBox(height: 16.h),
+                Gap(16.h),
                 Divider(),
-                SizedBox(height: 16.h),
+                Gap(16.h),
 
                 // الفترة الزمنية
                 Row(
@@ -301,7 +302,7 @@ class _ReportsPageState extends State<ReportsPage> {
                             AppLocalKay.user_management_report_period.tr(),
                             style: AppTextStyle.titleSmall(context),
                           ),
-                          SizedBox(height: 8.h),
+                          Gap(8.h),
                           Container(
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.grey.shade300),
@@ -332,7 +333,7 @@ class _ReportsPageState extends State<ReportsPage> {
                       ),
                     ),
 
-                    SizedBox(width: 12.w),
+                    Gap(12.w),
 
                     // زر التصدير
                     Expanded(
@@ -340,7 +341,7 @@ class _ReportsPageState extends State<ReportsPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(' ', style: AppTextStyle.bodyMedium(context)),
-                          SizedBox(height: 8.h),
+                          Gap(8.h),
                           ElevatedButton.icon(
                             onPressed: _exportReport,
                             icon: Icon(Icons.picture_as_pdf, size: 16.w),
@@ -386,7 +387,7 @@ class _ReportsPageState extends State<ReportsPage> {
             ),
           ],
         ),
-        SizedBox(height: 16.h),
+        Gap(16.h),
 
         Column(
           children: _reports.map((report) {
@@ -422,7 +423,7 @@ class _ReportsPageState extends State<ReportsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(height: 2.h),
+            Gap(2.h),
             Text(
               report['date'] as String,
               style: AppTextStyle.bodySmall(
@@ -450,7 +451,7 @@ class _ReportsPageState extends State<ReportsPage> {
                 ),
               ),
             ),
-            SizedBox(height: 2.h),
+            Gap(2.h),
             Text(
               report['status'] as String,
               style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp, color: Colors.green),
@@ -474,7 +475,7 @@ class _ReportsPageState extends State<ReportsPage> {
             context,
           ).copyWith(fontWeight: FontWeight.bold, color: Colors.grey.shade800),
         ),
-        SizedBox(height: 16.h),
+        Gap(16.h),
 
         GridView.builder(
           shrinkWrap: true,
@@ -560,7 +561,7 @@ class _ReportsPageState extends State<ReportsPage> {
                 ],
               ),
 
-              SizedBox(height: 8.h),
+              Gap(8.h),
 
               Text(
                 chart['title'] as String,
@@ -569,7 +570,7 @@ class _ReportsPageState extends State<ReportsPage> {
                 ).copyWith(fontWeight: FontWeight.w500, color: Colors.grey.shade800),
               ),
 
-              SizedBox(height: 8.h),
+              Gap(8.h),
 
               Container(
                 height: 60.h,
@@ -583,7 +584,7 @@ class _ReportsPageState extends State<ReportsPage> {
                 ),
               ),
 
-              SizedBox(height: 8.h),
+              Gap(8.h),
 
               TextButton(
                 onPressed: () {

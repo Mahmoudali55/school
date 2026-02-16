@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -46,7 +47,7 @@ class NotificationsScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
             child: ListView.separated(
               itemCount: state.notifications.length,
-              separatorBuilder: (_, __) => SizedBox(height: 12.h),
+              separatorBuilder: (_, __) => Gap(12.h),
               itemBuilder: (context, index) {
                 final item = state.notifications[index];
                 return Container(
@@ -66,9 +67,9 @@ class NotificationsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(item.title, style: AppTextStyle.text16SDark(context)),
-                      SizedBox(height: 4.h),
+                      Gap(4.h),
                       Text(item.message, style: AppTextStyle.text14RGrey(context)),
-                      SizedBox(height: 4.h),
+                      Gap(4.h),
                       Text(
                         item.time,
                         style: AppTextStyle.text14RGrey(

@@ -593,7 +593,7 @@
 //                       child: Text(AppLocalKay.cancel.tr()),
 //                     ),
 //                   ),
-//                   SizedBox(width: 10.w),
+//                   Gap( 10.w),
 //                   Expanded(
 //                     child: CustomButton(
 //                       onPressed: () {

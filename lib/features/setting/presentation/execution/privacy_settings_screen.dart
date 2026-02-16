@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
@@ -42,7 +43,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
               'التحكم في إعدادات الخصوصية',
               style: AppTextStyle.bodyLarge(context, color: AppColor.greyColor(context)),
             ),
-            const SizedBox(height: 20),
+            const Gap( 20),
             Expanded(
               child: ListView(
                 children: [
@@ -77,7 +78,7 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 20),
+            const Gap( 20),
             CustomButton(
               text: 'حفظ التغييرات',
               radius: 12.r,

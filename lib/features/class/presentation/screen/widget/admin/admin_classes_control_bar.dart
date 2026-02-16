@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -37,7 +38,7 @@ class AdminClassesControlBar extends StatelessWidget {
             prefixIcon: const Icon(Icons.search),
             onChanged: onSearchChanged,
           ),
-          SizedBox(height: 12.h),
+          Gap(12.h),
 
           // أزرار التصفية
           SingleChildScrollView(
@@ -45,19 +46,19 @@ class AdminClassesControlBar extends StatelessWidget {
             child: Row(
               children: [
                 _buildFilterChip(context, AppLocalKay.all.tr(), AppLocalKay.all.tr()),
-                SizedBox(width: 8.w),
+                Gap( 8.w),
                 _buildFilterChip(context, 'الصف الأول', 'الأول'),
-                SizedBox(width: 8.w),
+                Gap( 8.w),
                 _buildFilterChip(context, 'الصف الثاني', 'الثاني'),
-                SizedBox(width: 8.w),
+                Gap( 8.w),
                 _buildFilterChip(context, 'الصف الثالث', 'الثالث'),
-                SizedBox(width: 8.w),
+                Gap( 8.w),
                 _buildFilterChip(
                   context,
                   AppLocalKay.filter_full.tr(),
                   AppLocalKay.filter_full.tr(),
                 ),
-                SizedBox(width: 8.w),
+                Gap( 8.w),
                 _buildFilterChip(
                   context,
                   AppLocalKay.filter_available.tr(),

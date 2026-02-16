@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
 class NotificationItemWidget extends StatelessWidget {
@@ -63,7 +64,7 @@ class NotificationItemWidget extends StatelessWidget {
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   message,
                   style: AppTextStyle.bodySmall(
@@ -71,7 +72,7 @@ class NotificationItemWidget extends StatelessWidget {
                     color: const Color(0xFF6B7280),
                   ).copyWith(fontSize: 12.sp),
                 ),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   time,
                   style: AppTextStyle.bodySmall(

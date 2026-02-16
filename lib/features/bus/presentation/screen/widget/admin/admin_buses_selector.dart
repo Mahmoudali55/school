@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -40,7 +41,7 @@ class AdminBusesSelector extends StatelessWidget {
           Row(
             children: [
               Icon(Icons.directions_bus_rounded, color: const Color(0xFF9C27B0), size: 20.w),
-              SizedBox(width: 8.w),
+              Gap(8.w),
               Text(
                 AppLocalKay.select_bus.tr(),
                 style: AppTextStyle.titleMedium(
@@ -49,7 +50,7 @@ class AdminBusesSelector extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 12.h),
+          Gap(12.h),
           Wrap(
             spacing: 8.w,
             runSpacing: 8.h,
@@ -72,7 +73,7 @@ class AdminBusesSelector extends StatelessWidget {
             size: 16.w,
             color: isSelected ? AppColor.whiteColor(context) : bus.busColor,
           ),
-          SizedBox(width: 6.w),
+          Gap(6.w),
           Text(bus.busNumber),
         ],
       ),

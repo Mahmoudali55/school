@@ -280,7 +280,7 @@ class _UniformParentScreenState extends State<UniformParentScreen> {
                         isEdit ? Icons.edit : Icons.straighten,
                         color: AppColor.primaryColor(context),
                       ),
-                      SizedBox(width: 8.w),
+                      Gap(8.w),
                       Text(
                         isEdit ? AppLocalKay.edit.tr() : AppLocalKay.student_sizes.tr(),
                         style: AppTextStyle.bodyLarge(

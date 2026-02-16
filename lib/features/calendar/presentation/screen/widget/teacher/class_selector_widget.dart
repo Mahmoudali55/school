@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/calendar/data/model/calendar_event_model.dart';
@@ -42,7 +43,7 @@ class ClassSelectorWidget extends StatelessWidget {
                 child: Row(
                   children: [
                     Icon(Icons.class_rounded, size: 16.w, color: AppColor.accentColor(context)),
-                    SizedBox(width: 6.w),
+                    Gap(6.w),
                     Text(value.fullName),
                   ],
                 ),

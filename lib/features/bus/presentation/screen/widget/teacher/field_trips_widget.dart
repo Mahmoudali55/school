@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_state.dart';
@@ -58,7 +59,7 @@ class FieldTripsWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
               if (state.fieldTrips.isEmpty)
                 _buildEmptyFieldTrips()
               else
@@ -105,7 +106,7 @@ class FieldTripsWidget extends StatelessWidget {
             decoration: BoxDecoration(color: trip.color.withOpacity(0.1), shape: BoxShape.circle),
             child: Icon(Icons.travel_explore_rounded, size: 18.w, color: trip.color),
           ),
-          SizedBox(width: 12.w),
+          Gap(12.w),
           // Trip Info
           Expanded(
             child: Column(
@@ -119,12 +120,12 @@ class FieldTripsWidget extends StatelessWidget {
                     color: const Color(0xFF1F2937),
                   ),
                 ),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   "${trip.date} • ${trip.time}",
                   style: TextStyle(fontSize: 12.sp, color: const Color(0xFF6B7280)),
                 ),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   "الحافلة: ${trip.bus} • ${trip.students}",
                   style: TextStyle(fontSize: 11.sp, color: const Color(0xFF6B7280)),
@@ -155,7 +156,7 @@ class FieldTripsWidget extends StatelessWidget {
       child: Column(
         children: [
           Icon(Icons.travel_explore_outlined, size: 48.w, color: const Color(0xFF9CA3AF)),
-          SizedBox(height: 12.h),
+          Gap(12.h),
           Text(
             AppLocalKay.no_travels.tr(),
             style: TextStyle(
@@ -164,7 +165,7 @@ class FieldTripsWidget extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          SizedBox(height: 4.h),
+          Gap(4.h),
           Text(
             AppLocalKay.no_travels_hint.tr(),
             style: TextStyle(fontSize: 12.sp, color: const Color(0xFF9CA3AF)),

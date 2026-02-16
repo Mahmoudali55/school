@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -130,7 +131,7 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
               labelPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
             ),
           ),
-          SizedBox(height: 8.h),
+          Gap( 8.h),
 
           Expanded(
             child: TabBarView(
@@ -162,7 +163,7 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(_getCategoryIcon(category), size: 60.w, color: Colors.grey.shade400),
-            SizedBox(height: 16.h),
+            Gap( 16.h),
             Text(
               'لا توجد عناصر في $category',
               style: AppTextStyle.titleMedium(context).copyWith(color: Colors.grey.shade600),
@@ -221,9 +222,9 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 4.h),
+            Gap( 4.h),
             Text('${item['type']} - ${item['subject']}'),
-            SizedBox(height: 2.h),
+            Gap( 2.h),
             Text(
               item['size'],
               style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp, color: Colors.grey),

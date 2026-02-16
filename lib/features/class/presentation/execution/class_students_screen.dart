@@ -2,6 +2,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
@@ -130,7 +131,7 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
             ),
           ),
         ),
-        SizedBox(height: 4.h),
+        Gap(4.h),
         Text(
           label,
           style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp, color: Colors.grey),

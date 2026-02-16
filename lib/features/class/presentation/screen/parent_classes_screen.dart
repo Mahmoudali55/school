@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -80,7 +81,7 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
                             setState(() => _selectedIndex = index);
                           },
                         ),
-                        const SizedBox(height: 16),
+                        const Gap(16),
                         Expanded(
                           child: ParentTabsSection(
                             classState: state,

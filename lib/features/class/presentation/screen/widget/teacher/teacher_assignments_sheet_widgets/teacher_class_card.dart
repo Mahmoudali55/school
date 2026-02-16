@@ -47,7 +47,7 @@ class TeacherClassCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const SizedBox(width: 8),
+                const Gap(8),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
@@ -67,7 +67,7 @@ class TeacherClassCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const Gap(12),
             Text(
               '${AppLocalKay.code.tr()}: ${classInfo.id}',
               style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey[600]),
@@ -82,7 +82,7 @@ class TeacherClassCard extends StatelessWidget {
                     context: context,
                   ),
                 ),
-                const SizedBox(width: 8),
+                const Gap(8),
                 Expanded(
                   child: _buildActionButton(
                     text: AppLocalKay.todostitle.tr(),
@@ -90,7 +90,7 @@ class TeacherClassCard extends StatelessWidget {
                     context: context,
                   ),
                 ),
-                const SizedBox(width: 8),
+                const Gap(8),
                 Expanded(
                   child: _buildActionButton(
                     text: AppLocalKay.absence.tr(),

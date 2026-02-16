@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
 class StatCardWidget extends StatelessWidget {
@@ -52,7 +53,7 @@ class StatCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 12.h),
+          Gap(12.h),
           Text(
             title,
             style: AppTextStyle.bodyMedium(
@@ -60,7 +61,7 @@ class StatCardWidget extends StatelessWidget {
               color: const Color(0xFF1F2937),
             ).copyWith(fontSize: 14.sp, fontWeight: FontWeight.w600),
           ),
-          SizedBox(height: 4.h),
+          Gap(4.h),
           Text(
             subtitle,
             style: AppTextStyle.bodySmall(

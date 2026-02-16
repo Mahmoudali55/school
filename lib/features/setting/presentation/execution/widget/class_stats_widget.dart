@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
@@ -51,7 +52,7 @@ class ClassStatsWidget extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 4.h),
+        Gap(4.h),
         Text(
           label,
           style: AppTextStyle.bodySmall(

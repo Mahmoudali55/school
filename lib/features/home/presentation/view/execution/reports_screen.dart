@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -58,7 +59,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                     },
                   ),
                 ),
-                SizedBox(width: 16.w),
+                Gap(16.w),
                 Expanded(
                   child: DropdownButtonFormField<String>(
                     value: _selectedPeriod,
@@ -154,7 +155,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                   'نسبة الحضور',
                   style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 16.h),
+                Gap(16.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -167,7 +168,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
             ),
           ),
         ),
-        SizedBox(height: 16.h),
+        Gap(16.h),
 
         // قائمة الطلاب
         Card(
@@ -180,7 +181,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                   'تفاصيل الحضور',
                   style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 12.h),
+                Gap(12.h),
                 ...List.generate(5, (index) => _buildStudentAttendanceItem(index)),
               ],
             ),
@@ -203,7 +204,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                   'تقرير السلوك',
                   style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 16.h),
+                Gap(16.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -252,7 +253,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
             ),
           ),
         ),
-        SizedBox(height: 8.h),
+        Gap(8.h),
         Text(label, style: AppTextStyle.bodySmall(context)),
       ],
     );
@@ -286,7 +287,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
               style: AppTextStyle.bodyMedium(context).copyWith(color: const Color(0xFF7C3AED)),
             ),
           ),
-          SizedBox(width: 12.w),
+          Gap(12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -295,7 +296,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                   student['name'],
                   style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   'حضور: ${student['present']} | غياب: ${student['absent']} | تأخير: ${student['late']}',
                   style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey),

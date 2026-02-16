@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_loading/custom_shimmer.dart';
 
 class CardShimmer extends StatelessWidget {
@@ -26,16 +27,16 @@ class CardShimmer extends StatelessWidget {
       child: Row(
         children: [
           CustomShimmer(width: 60.w, height: 60.w, radius: 8),
-          SizedBox(width: 12.w),
+          Gap(12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomShimmer(width: 120.w, height: 14.h, radius: 4),
-                SizedBox(height: 8.h),
+                Gap(8.h),
                 CustomShimmer(width: 180.w, height: 12.h, radius: 4),
-                SizedBox(height: 8.h),
+                Gap(8.h),
                 CustomShimmer(width: 80.w, height: 10.h, radius: 4),
               ],
             ),
@@ -56,12 +57,12 @@ class ProfileHeaderShimmer extends StatelessWidget {
       child: Row(
         children: [
           CustomShimmer(width: 50.w, height: 50.w, radius: 25), // Circle profile
-          SizedBox(width: 12.w),
+          Gap(12.w),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomShimmer(width: 100.w, height: 16.h, radius: 4),
-              SizedBox(height: 6.h),
+              Gap(6.h),
               CustomShimmer(width: 140.w, height: 12.h, radius: 4),
             ],
           ),
@@ -101,7 +102,7 @@ class GridShimmer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               CustomShimmer(width: 40.w, height: 40.w, radius: 10),
-              SizedBox(height: 12.h),
+              Gap(12.h),
               CustomShimmer(width: 80.w, height: 14.h, radius: 4),
             ],
           ),
@@ -119,7 +120,7 @@ class BusTrackingShimmer extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(height: 16.h),
+          Gap(16.h),
           // Map/Tracking Card Placeholder
           Container(
             height: 250.h,
@@ -127,26 +128,26 @@ class BusTrackingShimmer extends StatelessWidget {
             decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
             child: const CustomShimmer(height: 250, radius: 20),
           ),
-          SizedBox(height: 20.h),
+          Gap(20.h),
           // Info Cards
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Row(
               children: [
                 Expanded(child: CustomShimmer(height: 80.h, radius: 12)),
-                SizedBox(width: 12.w),
+                Gap(12.w),
                 Expanded(child: CustomShimmer(height: 80.h, radius: 12)),
               ],
             ),
           ),
-          SizedBox(height: 20.h),
+          Gap(20.h),
           // List of stops
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             padding: EdgeInsets.symmetric(horizontal: 16.w),
             itemCount: 3,
-            separatorBuilder: (_, __) => SizedBox(height: 12.h),
+            separatorBuilder: (_, __) => Gap(12.h),
             itemBuilder: (_, __) => const CardShimmer(height: 70),
           ),
         ],
@@ -167,7 +168,7 @@ class ListShimmer extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       itemCount: itemCount,
-      separatorBuilder: (_, __) => SizedBox(height: 12.h),
+      separatorBuilder: (_, __) => Gap(12.h),
       itemBuilder: (_, __) => CardShimmer(height: itemHeight),
     );
   }

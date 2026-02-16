@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
@@ -155,7 +156,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
                     size: 20,
                   ),
                 ),
-                SizedBox(width: 10.w),
+                Gap( 10.w),
 
                 /// Course Name
                 Expanded(
@@ -182,7 +183,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
               ],
             ),
 
-            SizedBox(height: 16.h),
+            Gap( 16.h),
 
             /// Homework Title
             Text(
@@ -193,7 +194,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
             ),
 
             if (assignment.notes.isNotEmpty) ...[
-              SizedBox(height: 8.h),
+              Gap( 8.h),
               Text(
                 assignment.notes,
                 maxLines: 3,
@@ -204,17 +205,17 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
               ),
             ],
 
-            SizedBox(height: 16.h),
+            Gap( 16.h),
 
             Divider(color: AppColor.grey300Color(context)),
 
-            SizedBox(height: 8.h),
+            Gap( 8.h),
 
             /// Bottom Row
             Row(
               children: [
                 Icon(Icons.class_, size: 16, color: AppColor.greyColor(context)),
-                SizedBox(width: 6.w),
+                Gap( 6.w),
                 Text(
                   "${AppLocalKay.code.tr()}: ${assignment.classCode}",
                   style: AppTextStyle.bodySmall(

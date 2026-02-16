@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
@@ -37,7 +38,7 @@ class UserManagementSCreen extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: 20.h),
+            Gap(20.h),
 
             DefaultTabController(
               length: 2,
@@ -63,7 +64,7 @@ class UserManagementSCreen extends StatelessWidget {
                       ),
                     ),
 
-                    SizedBox(height: 16.h),
+                    Gap(16.h),
 
                     Expanded(
                       child: TabBarView(
@@ -160,14 +161,14 @@ class TransportationManagementScreen extends StatelessWidget {
                 Expanded(
                   child: _buildTransportStat(context, 'إجمالي الحافلات', '8', Colors.purple),
                 ),
-                SizedBox(width: 12.w),
+                Gap(12.w),
                 Expanded(child: _buildTransportStat(context, 'نشطة', '7', Colors.green)),
-                SizedBox(width: 12.w),
+                Gap(12.w),
                 Expanded(child: _buildTransportStat(context, 'تحت الصيانة', '1', Colors.orange)),
               ],
             ),
 
-            SizedBox(height: 20.h),
+            Gap(20.h),
 
             Expanded(
               child: ListView.builder(
@@ -237,7 +238,7 @@ class TransportationManagementScreen extends StatelessWidget {
                 context,
               ).copyWith(fontWeight: FontWeight.bold, color: color),
             ),
-            SizedBox(height: 4.h),
+            Gap(4.h),
             Text(
               title,
               style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey),
@@ -313,7 +314,7 @@ class FinancialSettingsScreen extends StatelessWidget {
                         _buildFinancialItem(context, 'صافي الربح', '١٦,١٠٠ ر.س', Colors.blue),
                       ],
                     ),
-                    SizedBox(height: 16.h),
+                    Gap(16.h),
                     LinearProgressIndicator(
                       value: 0.72,
                       backgroundColor: Colors.grey[300],
@@ -324,7 +325,7 @@ class FinancialSettingsScreen extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: 20.h),
+            Gap(20.h),
 
             // Fees Management
             Expanded(
@@ -335,7 +336,7 @@ class FinancialSettingsScreen extends StatelessWidget {
                     'إدارة الرسوم',
                     style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 12.h),
+                  Gap(12.h),
                   Expanded(
                     child: ListView.builder(
                       itemCount: _fees.length,
@@ -380,7 +381,7 @@ class FinancialSettingsScreen extends StatelessWidget {
     return Column(
       children: [
         Text(title, style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey)),
-        SizedBox(height: 4.h),
+        Gap(4.h),
         Text(
           amount,
           style: AppTextStyle.bodyMedium(
@@ -425,11 +426,11 @@ class GeneralSettingsScreen extends StatelessWidget {
         child: ListView(
           children: [
             _buildSettingsSection(context, 'إعدادات النظام', _systemSettings),
-            SizedBox(height: 20.h),
+            Gap(20.h),
             _buildSettingsSection(context, 'إعدادات المدرسة', _schoolSettings),
-            SizedBox(height: 20.h),
+            Gap(20.h),
             _buildSettingsSection(context, 'إعدادات التواصل', _communicationSettings),
-            SizedBox(height: 20.h),
+            Gap(20.h),
             _buildSettingsSection(context, 'الأمان والخصوصية', _securitySettings),
           ],
         ),
@@ -446,7 +447,7 @@ class GeneralSettingsScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(title, style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold)),
-        SizedBox(height: 12.h),
+        Gap(12.h),
         Card(
           child: Column(
             children: settings

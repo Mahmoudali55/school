@@ -21,7 +21,7 @@ class BusLocationSectionWidget extends StatelessWidget {
               Row(
                 children: [
                   Icon(Icons.location_on_outlined, color: Colors.blue, size: 24.w),
-                  SizedBox(width: 8.w),
+                  Gap(8.w),
                   Text("الموقع الحالي", style: AppTextStyle.titleLarge(context)),
                 ],
               ),

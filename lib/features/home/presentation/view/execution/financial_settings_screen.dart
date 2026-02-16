@@ -2,6 +2,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -30,7 +31,7 @@ class FinancialSettingsScreen extends StatelessWidget {
         child: Column(
           children: [
             _buildFinancialSummary(context),
-            SizedBox(height: 20.h),
+            Gap(20.h),
             Expanded(
               child: DefaultTabController(
                 length: 3,
@@ -55,7 +56,7 @@ class FinancialSettingsScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 16.h),
+                    Gap(16.h),
                     Expanded(
                       child: TabBarView(
                         children: [_buildFeesTab(), _buildExpensesTab(), _buildSettingsTab()],
@@ -111,7 +112,7 @@ class FinancialSettingsScreen extends StatelessWidget {
             context,
           ).copyWith(fontWeight: FontWeight.bold, color: color),
         ),
-        SizedBox(height: 4.h),
+        Gap(4.h),
         Text(title, style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey.shade600)),
       ],
     );

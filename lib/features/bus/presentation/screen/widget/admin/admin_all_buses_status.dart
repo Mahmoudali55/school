@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -54,14 +55,14 @@ class AdminAllBusesStatus extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 16.h),
+          Gap(16.h),
           ConstrainedBox(
             constraints: BoxConstraints(maxHeight: 300.h),
             child: ListView.separated(
               shrinkWrap: true,
               physics: const AlwaysScrollableScrollPhysics(),
               itemCount: allBusesData.length,
-              separatorBuilder: (context, index) => SizedBox(height: 8.h),
+              separatorBuilder: (context, index) => Gap(8.h),
               itemBuilder: (context, index) => _buildBusStatusItem(context, allBusesData[index]),
             ),
           ),
@@ -105,7 +106,7 @@ class AdminAllBusesStatus extends StatelessWidget {
             ),
             child: Icon(Icons.directions_bus_rounded, color: busData.busColor, size: 18.w),
           ),
-          SizedBox(width: 8.w),
+          Gap(8.w),
           // Bus Info
           Expanded(
             child: Column(
@@ -118,7 +119,7 @@ class AdminAllBusesStatus extends StatelessWidget {
                     context,
                   ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
                 ),
-                SizedBox(height: 2.h),
+                Gap(2.h),
                 Text(
                   "${busData.driverName} • ${busData.currentLocation}",
                   style: AppTextStyle.bodySmall(
@@ -146,7 +147,7 @@ class AdminAllBusesStatus extends StatelessWidget {
                   ).copyWith(fontSize: 9.sp, color: statusColor, fontWeight: FontWeight.w600),
                 ),
               ),
-              SizedBox(height: 2.h),
+              Gap(2.h),
               Text(
                 busData.estimatedTime,
                 style: AppTextStyle.bodySmall(

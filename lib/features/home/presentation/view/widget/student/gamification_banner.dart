@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -42,7 +43,7 @@ class GamificationBanner extends StatelessWidget {
         child: Row(
           children: [
             _buildLevelBadge(context),
-            SizedBox(width: 16.w),
+            Gap(16.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,19 +55,19 @@ class GamificationBanner extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  SizedBox(height: 4.h),
+                  Gap(4.h),
                   Text(
                     "${AppLocalKay.level.tr()} $level",
                     style: AppTextStyle.titleLarge(
                       context,
                     ).copyWith(color: AppColor.whiteColor(context), fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8.h),
+                  Gap(8.h),
                   _buildProgressIndicator(context),
                 ],
               ),
             ),
-            SizedBox(width: 16.w),
+            Gap(16.w),
             _buildPointsDisplay(context),
           ],
         ),
@@ -103,7 +104,7 @@ class GamificationBanner extends StatelessWidget {
             minHeight: 8.h,
           ),
         ),
-        SizedBox(height: 4.h),
+        Gap(4.h),
         Text(
           "${100 - (points % 100)} ${AppLocalKay.next_level.tr()}",
           style: AppTextStyle.bodySmall(

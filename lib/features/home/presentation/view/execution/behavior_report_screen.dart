@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
@@ -73,7 +74,7 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap( 16.h),
 
               Text(AppLocalKay.behavior_type.tr(), style: AppTextStyle.formTitleStyle(context)),
               DropdownButtonFormField<String>(
@@ -98,7 +99,7 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap( 16.h),
 
               if (_selectedBehaviorType == 'سلبي') ...[
                 Text(AppLocalKay.severity_level.tr(), style: AppTextStyle.formTitleStyle(context)),
@@ -124,7 +125,7 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16.h),
+                Gap( 16.h),
               ],
 
               // تاريخ الحادث
@@ -148,7 +149,7 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap( 16.h),
 
               // تفاصيل السلوك
               CustomFormField(
@@ -164,7 +165,7 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap( 16.h),
 
               // إجراء متبع
               if (_selectedBehaviorType == 'سلبي') ...[
@@ -173,7 +174,7 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
                   title: AppLocalKay.action_taken.tr(),
                   hintText: AppLocalKay.select_action_taken.tr(),
                 ),
-                SizedBox(height: 16.h),
+                Gap( 16.h),
               ],
 
               CustomFormField(
@@ -181,7 +182,7 @@ class _BehaviorReportScreenState extends State<BehaviorReportScreen> {
                 title: AppLocalKay.recommendations.tr(),
                 hintText: AppLocalKay.enter_recommendations.tr(),
               ),
-              SizedBox(height: 24.h),
+              Gap( 24.h),
 
               CustomButton(
                 text: AppLocalKay.save.tr(),

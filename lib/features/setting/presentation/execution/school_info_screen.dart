@@ -1,6 +1,7 @@
 // lib/features/settings/presentation/screens/school_info_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
@@ -74,7 +75,7 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 24.h),
+              Gap(24.h),
 
               // اسم المدرسة
               CustomFormField(
@@ -90,7 +91,7 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
 
               // رقم هوية المدرسة
               CustomFormField(
@@ -106,7 +107,7 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
 
               // العنوان
               CustomFormField(
@@ -123,7 +124,7 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
 
               // رقم الهاتف
               CustomFormField(
@@ -139,7 +140,7 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
 
               // البريد الإلكتروني
               CustomFormField(
@@ -158,7 +159,7 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
 
               // الموقع الإلكتروني
               CustomFormField(
@@ -167,7 +168,7 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                 title: 'الموقع الإلكتروني',
                 prefixIcon: Icon(Icons.language),
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
 
               // اسم المدير
               CustomFormField(
@@ -183,7 +184,7 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
 
               // سنة التأسيس
               CustomFormField(
@@ -194,7 +195,7 @@ class _SchoolInfoScreenState extends State<SchoolInfoScreen> {
                 prefixIcon: Icon(Icons.calendar_today),
                 keyboardType: TextInputType.number,
               ),
-              SizedBox(height: 32.h),
+              Gap(32.h),
 
               CustomButton(text: 'حفظ معلومات المدرسة', onPressed: _saveSchoolInfo, radius: 12.r),
             ],

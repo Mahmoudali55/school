@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/bus_controls_widget.dart';
@@ -50,7 +51,7 @@ class _BusTrackingCardState extends State<BusTrackingCard> {
       child: Column(
         children: [
           BusStatusHeader(busData: widget.busData),
-          SizedBox(height: 20.h),
+          Gap(20.h),
 
           // Map or Animation Area
           SizedBox(
@@ -61,7 +62,7 @@ class _BusTrackingCardState extends State<BusTrackingCard> {
               isBusMoving: widget.isBusMoving,
             ),
           ),
-          SizedBox(height: 20.h),
+          Gap(20.h),
           BusControls(
             refreshLocation: widget.refreshLocation,
             toggleBusMovement: widget.toggleBusMovement,

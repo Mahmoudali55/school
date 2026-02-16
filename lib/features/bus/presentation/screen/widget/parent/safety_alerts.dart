@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -31,22 +32,17 @@ class SafetyAlerts extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
-                Icons.security_rounded,
-                color: AppColor.primaryColor(context),
-                size: 20.w,
-              ),
-              SizedBox(width: 8.w),
+              Icon(Icons.security_rounded, color: AppColor.primaryColor(context), size: 20.w),
+              Gap(8.w),
               Text(
                 AppLocalKay.features.tr(),
-                style: AppTextStyle.titleLarge(context).copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F2937),
-                ),
+                style: AppTextStyle.titleLarge(
+                  context,
+                ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
             ],
           ),
-          SizedBox(height: 16.h),
+          Gap(16.h),
           Row(
             children: [
               Expanded(
@@ -57,7 +53,7 @@ class SafetyAlerts extends StatelessWidget {
                   const Color(0xFF4CAF50),
                 ),
               ),
-              SizedBox(width: 12.w),
+              Gap(12.w),
               Expanded(
                 child: _buildSafetyFeature(
                   context,
@@ -66,7 +62,7 @@ class SafetyAlerts extends StatelessWidget {
                   AppColor.primaryColor(context),
                 ),
               ),
-              SizedBox(width: 12.w),
+              Gap(12.w),
               Expanded(
                 child: _buildSafetyFeature(
                   context,
@@ -82,12 +78,7 @@ class SafetyAlerts extends StatelessWidget {
     );
   }
 
-  Widget _buildSafetyFeature(
-    BuildContext context,
-    String title,
-    IconData icon,
-    Color color,
-  ) {
+  Widget _buildSafetyFeature(BuildContext context, String title, IconData icon, Color color) {
     return GestureDetector(
       onTap: () => onFeatureTap(title),
       child: Container(
@@ -100,14 +91,12 @@ class SafetyAlerts extends StatelessWidget {
         child: Column(
           children: [
             Icon(icon, size: 24.w, color: color),
-            SizedBox(height: 8.h),
+            Gap(8.h),
             Text(
               title,
-              style: AppTextStyle.bodySmall(context).copyWith(
-                fontSize: 12.sp,
-                color: color,
-                fontWeight: FontWeight.w600,
-              ),
+              style: AppTextStyle.bodySmall(
+                context,
+              ).copyWith(fontSize: 12.sp, color: color, fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ),
           ],

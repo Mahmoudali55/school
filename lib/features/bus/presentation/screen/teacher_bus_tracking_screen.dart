@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -147,7 +148,7 @@ class _TeacherBusTrackingScreenState extends State<TeacherBusTrackingScreen>
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(AppLocalKay.quick_actions.tr(), style: AppTextStyle.bodyMedium(context)),
-            SizedBox(height: 20.h),
+            Gap(20.h),
             GridView.count(
               crossAxisCount: 3,
               shrinkWrap: true,
@@ -168,7 +169,7 @@ class _TeacherBusTrackingScreenState extends State<TeacherBusTrackingScreen>
                         ),
                         child: Icon(action.icon, color: AppColor.accentColor(context), size: 24.w),
                       ),
-                      SizedBox(height: 8.h),
+                      Gap(8.h),
                       Text(
                         action.title,
                         style: AppTextStyle.bodySmall(
@@ -181,7 +182,7 @@ class _TeacherBusTrackingScreenState extends State<TeacherBusTrackingScreen>
                 );
               }).toList(),
             ),
-            SizedBox(height: 20.h),
+            Gap(20.h),
           ],
         ),
       ),

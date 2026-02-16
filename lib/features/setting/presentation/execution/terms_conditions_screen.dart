@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
@@ -36,7 +37,7 @@ class TermsConditionsScreen extends StatelessWidget {
                   AppLocalKay.terms_hint.tr(),
                   style: AppTextStyle.titleLarge(context, color: AppColor.blackColor(context)),
                 ),
-                const SizedBox(height: 20),
+                const Gap(20),
                 _buildTermSection(
                   title: AppLocalKay.terms_title.tr(),
                   content: AppLocalKay.terms_content.tr(),
@@ -72,7 +73,7 @@ class TermsConditionsScreen extends StatelessWidget {
                   content: AppLocalKay.terms_content7.tr(),
                   context: context,
                 ),
-                const SizedBox(height: 30),
+                const Gap(30),
                 Card(
                   color: AppColor.primaryColor(context).withOpacity(0.11),
                   child: Padding(
@@ -87,13 +88,13 @@ class TermsConditionsScreen extends StatelessWidget {
                             color: AppColor.primaryColor(context),
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const Gap(8),
                         Text(AppLocalKay.note_content.tr(), style: AppTextStyle.bodySmall(context)),
                       ],
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const Gap(20),
                 CustomButton(
                   radius: 12.r,
                   text: AppLocalKay.terms_agree.tr(),
@@ -116,9 +117,9 @@ class TermsConditionsScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(title, style: AppTextStyle.titleSmall(context, color: AppColor.blackColor(context))),
-        const SizedBox(height: 8),
+        const Gap(8),
         Text(content, style: AppTextStyle.bodyMedium(context, color: AppColor.greyColor(context))),
-        const SizedBox(height: 20),
+        const Gap(20),
       ],
     );
   }

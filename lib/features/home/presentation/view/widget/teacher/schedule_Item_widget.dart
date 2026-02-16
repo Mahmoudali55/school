@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/class/data/model/schedule_Item_model.dart';
 
@@ -31,7 +32,7 @@ class ScheduleItemWidget extends StatelessWidget {
               ).copyWith(fontSize: 12.sp, fontWeight: FontWeight.bold),
             ),
           ),
-          SizedBox(width: 12.w),
+          Gap(12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,11 +44,11 @@ class ScheduleItemWidget extends StatelessWidget {
                     color: const Color(0xFF1F2937),
                   ).copyWith(fontSize: 16.sp, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Row(
                   children: [
                     Icon(Icons.class_, size: 14.w, color: const Color(0xFF6B7280)),
-                    SizedBox(width: 4.w),
+                    Gap(4.w),
                     Text(
                       item.classroom,
                       style: AppTextStyle.bodySmall(
@@ -55,9 +56,9 @@ class ScheduleItemWidget extends StatelessWidget {
                         color: const Color(0xFF6B7280),
                       ).copyWith(fontSize: 12.sp),
                     ),
-                    SizedBox(width: 12.w),
+                    Gap(12.w),
                     Icon(Icons.room, size: 14.w, color: const Color(0xFF6B7280)),
-                    SizedBox(width: 4.w),
+                    Gap(4.w),
                     Text(
                       item.room,
                       style: AppTextStyle.bodySmall(

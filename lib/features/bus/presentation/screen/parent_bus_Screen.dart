@@ -207,7 +207,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
           children: [
             Text('${AppLocalKay.ConnectDriverHint.tr()}${selectedBusData.driverName}؟'),
             if (phoneNumber != null) ...[
-              SizedBox(height: 8.h),
+              Gap(8.h),
               Text(
                 phoneNumber,
                 style: AppTextStyle.titleMedium(
@@ -425,7 +425,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                 child: Row(
                   children: [
                     Icon(Icons.route_rounded, color: AppColor.primaryColor(context), size: 24.w),
-                    SizedBox(width: 12.w),
+                    Gap(12.w),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -468,7 +468,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                               size: 48.w,
                               color: AppColor.greyColor(context),
                             ),
-                            SizedBox(height: 12.h),
+                            Gap(12.h),
                             Text(
                               AppLocalKay.no_stations.tr(),
                               style: AppTextStyle.bodyMedium(
@@ -561,7 +561,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
           ],
         ),
 
-        SizedBox(width: 12.w),
+        Gap(12.w),
 
         // Station info
         Expanded(
@@ -612,18 +612,18 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                     ),
                   ],
                 ),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Text(
                   stationDetails,
                   style: AppTextStyle.bodySmall(
                     context,
                   ).copyWith(color: AppColor.greyColor(context)),
                 ),
-                SizedBox(height: 4.h),
+                Gap(4.h),
                 Row(
                   children: [
                     Icon(Icons.person_rounded, size: 14.w, color: AppColor.greyColor(context)),
-                    SizedBox(width: 4.w),
+                    Gap(4.w),
                     Text(
                       driverName,
                       style: AppTextStyle.bodySmall(
@@ -647,7 +647,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
         title: Row(
           children: [
             Icon(Icons.emergency_rounded, color: AppColor.errorColor(context)),
-            SizedBox(width: 8.w),
+            Gap(8.w),
             Text(AppLocalKay.emergency_management.tr(), style: AppTextStyle.bodyMedium(context)),
           ],
         ),

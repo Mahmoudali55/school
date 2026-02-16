@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/features/profile/presentation/screen/widget/info_tile_widget.dart';
 import 'package:my_template/features/profile/presentation/screen/widget/stat_card_widget.dart';
 
@@ -13,7 +14,7 @@ class InfoTab extends StatelessWidget {
       child: Column(
         children: [
           StatCard(studentData: studentData),
-          const SizedBox(height: 20),
+          const Gap(20),
           InfoTile(label: 'الصف', value: studentData['grade'].toString()),
           InfoTile(label: 'القسم', value: studentData['section'].toString()),
           InfoTile(label: 'عدد المواد', value: '12 مادة'),

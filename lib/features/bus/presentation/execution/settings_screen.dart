@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/bus/presentation/execution/widget/base_page_widget.dart';
 
@@ -35,7 +36,7 @@ class _BusSettingsPageState extends State<BusSettingsPage> {
                 switchValue: busNotifications,
                 onSwitchChanged: (val) => setState(() => busNotifications = val),
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
               _buildCardOption(
                 icon: Icons.notifications_active,
                 title: AppLocalKay.notifications_student.tr(),
@@ -44,7 +45,7 @@ class _BusSettingsPageState extends State<BusSettingsPage> {
                 switchValue: studentNotifications,
                 onSwitchChanged: (val) => setState(() => studentNotifications = val),
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
               _buildCardOption(
                 icon: Icons.person,
                 title: AppLocalKay.driver_info.tr(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/class/data/model/teacher_classes_models.dart';
@@ -23,7 +24,7 @@ class TeacherInfoCard extends StatelessWidget {
               backgroundColor: Colors.green[100],
               child: Icon(Icons.person, size: 30, color: Colors.green[700]),
             ),
-            const SizedBox(width: 16),
+            const Gap( 16),
             // Teacher Info
             Expanded(
               child: Column(
@@ -36,16 +37,16 @@ class TeacherInfoCard extends StatelessWidget {
                       color: AppColor.secondAppColor(context),
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const Gap( 4),
                   Text(
                     teacherInfo.subject,
                     style: AppTextStyle.bodyMedium(context, color: Colors.grey[600]),
                   ),
-                  const SizedBox(height: 4),
+                  const Gap( 4),
                   Row(
                     children: [
                       Icon(Icons.school, size: 14, color: Colors.grey[600]),
-                      const SizedBox(width: 4),
+                      const Gap( 4),
                       Expanded(
                         child: Text(
                           teacherInfo.email,

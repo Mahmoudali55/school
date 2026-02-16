@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/parent/parent_calendar_models.dart';
@@ -26,13 +27,13 @@ class ParentDailyView extends StatelessWidget {
         children: [
           // تاريخ اليوم
           _buildDailyHeader(context, dailyEvents.length),
-          SizedBox(height: 16.h),
+          Gap(16.h),
           // قائمة الأحداث
           if (dailyEvents.isEmpty)
             const ParentEmptyState()
           else
             Column(children: dailyEvents.map((event) => ParentEventCard(event: event)).toList()),
-          SizedBox(height: 20.h),
+          Gap(20.h),
         ],
       ),
     );
@@ -62,7 +63,7 @@ class ParentDailyView extends StatelessWidget {
             ),
             child: Icon(Icons.today_rounded, color: const Color(0xFF2196F3), size: 24.w),
           ),
-          SizedBox(width: 12.w),
+          Gap(12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +74,7 @@ class ParentDailyView extends StatelessWidget {
                     context,
                   ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
                 ),
-                SizedBox(height: 2.h),
+                Gap(2.h),
                 Text(
                   "$eventCount أحداث مجدولة لليوم",
                   style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
@@ -90,7 +91,7 @@ class ParentDailyView extends StatelessWidget {
     return Row(
       children: [
         Icon(icon, color: AppColor.whiteColor(context).withOpacity(0.8), size: 16.w),
-        SizedBox(width: 8.w),
+        Gap(8.w),
         Expanded(
           child: Text(
             text,

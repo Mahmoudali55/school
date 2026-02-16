@@ -213,7 +213,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                         AppLocalKay.user_management_class.tr(),
                         style: AppTextStyle.formTitleStyle(context),
                       ),
-                      SizedBox(height: 8.h),
+                      Gap(8.h),
                       IgnorePointer(
                         ignoring: isEdit,
                         child: Opacity(
@@ -257,7 +257,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                         AppLocalKay.class_name_assigment.tr(),
                         style: AppTextStyle.formTitleStyle(context),
                       ),
-                      SizedBox(height: 8.h),
+                      Gap(8.h),
                       IgnorePointer(
                         ignoring: isEdit,
                         child: Opacity(
@@ -322,7 +322,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                               onTap: _pickDate,
                             ),
                           ),
-                          SizedBox(width: 12.w),
+                          Gap( 12.w),
                           Expanded(
                             child: CustomFormField(
                               radius: 12.r,

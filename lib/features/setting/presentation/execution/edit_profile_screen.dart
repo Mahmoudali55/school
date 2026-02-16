@@ -2,6 +2,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
@@ -71,7 +72,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 24.h),
+              Gap(24.h),
 
               // الاسم الكامل
               CustomFormField(
@@ -87,7 +88,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
 
               // البريد الإلكتروني
               CustomFormField(
@@ -105,7 +106,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
 
               // رقم الهاتف
               CustomFormField(
@@ -121,7 +122,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.h),
+              Gap(16.h),
 
               // المنصب
               CustomFormField(
@@ -137,7 +138,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 32.h),
+              Gap(32.h),
 
               CustomButton(
                 text: AppLocalKay.save_changes.tr(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
 class StudentClassCard extends StatelessWidget {
@@ -57,7 +58,7 @@ class StudentClassCard extends StatelessWidget {
                     ),
                     child: const Icon(Icons.menu_book_rounded, color: Color(0xFF2E3192), size: 28),
                   ),
-                  const SizedBox(width: 16),
+                  const Gap( 16),
                   // Class Info
                   Expanded(
                     child: Column(
@@ -70,7 +71,7 @@ class StudentClassCard extends StatelessWidget {
                           ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF2E3192)),
                         ),
                         if (notes.isNotEmpty && notes != "null") ...[
-                          const SizedBox(height: 4),
+                          const Gap(4),
                           Text(
                             notes,
                             style: AppTextStyle.bodySmall(
