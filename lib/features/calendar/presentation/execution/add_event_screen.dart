@@ -17,13 +17,18 @@ import 'package:my_template/features/calendar/data/model/Events_response_model.d
 import 'package:my_template/features/calendar/data/model/add_event_request_model.dart';
 import 'package:my_template/features/calendar/presentation/cubit/calendar_cubit.dart';
 import 'package:my_template/features/calendar/presentation/cubit/calendar_state.dart';
+import 'package:my_template/features/class/data/model/section_data_model.dart';
+import 'package:my_template/features/class/data/model/stage_data_model.dart';
+import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
+import 'package:my_template/features/class/presentation/cubit/class_state.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 
 class AddEventScreen extends StatefulWidget {
-  const AddEventScreen({super.key, required this.color, this.eventToEdit});
+  const AddEventScreen({super.key, required this.color, this.eventToEdit, this.isManagement});
   final Color color;
   final Event? eventToEdit;
+  final bool? isManagement;
 
   @override
   State<AddEventScreen> createState() => _AddEventScreenState();
@@ -57,9 +62,12 @@ class _AddEventScreenState extends State<AddEventScreen> {
   @override
   void initState() {
     super.initState();
-    // Initialize HomeCubit data
-    final stageCode = int.tryParse(HiveMethods.getUserStage().toString()) ?? 0;
-    context.read<HomeCubit>().teacherLevel(stageCode);
+    if (widget.isManagement == true) {
+      context.read<ClassCubit>().sectionData(userId: HiveMethods.getType());
+    } else {
+      final stageCode = int.tryParse(HiveMethods.getUserStage().toString()) ?? 0;
+      context.read<HomeCubit>().teacherLevel(stageCode);
+    }
 
     if (widget.eventToEdit != null) {
       final event = widget.eventToEdit!;
@@ -205,212 +213,289 @@ class _AddEventScreenState extends State<AddEventScreen> {
 
                 return Form(
                   key: formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Level Dropdown
-                      Text(
-                        AppLocalKay.user_management_class.tr(),
-                        style: AppTextStyle.formTitleStyle(context),
-                      ),
-                      Gap(8.h),
-                      IgnorePointer(
-                        ignoring: isEdit,
-                        child: Opacity(
-                          opacity: isEdit ? 0.5 : 1,
-                          child: CustomDropdownFormField<int>(
-                            value: levels.any((e) => e.levelCode == _selectedLevelCode)
-                                ? _selectedLevelCode
-                                : null,
-                            submitted: _submitted,
-                            hint: AppLocalKay.user_management_class.tr(),
-                            errorText: AppLocalKay.user_management_select_class.tr(),
-                            items: levels
-                                .map(
-                                  (e) => DropdownMenuItem(
-                                    value: e.levelCode,
-                                    child: Text(e.levelName),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (v) {
-                              setState(() {
-                                _selectedLevelCode = v;
-                                _selectedClassCode = null;
-                              });
-                              if (v != null) {
-                                context.read<HomeCubit>().teacherClasses(
-                                  int.tryParse(HiveMethods.getUserSection().toString()) ?? 0,
-                                  int.tryParse(HiveMethods.getUserStage().toString()) ?? 0,
-                                  v,
+                  child: BlocBuilder<ClassCubit, ClassState>(
+                    builder: (context, classState) {
+                      final uniqueStages = (classState.stageDataStatus.data ?? []).toSet().toList();
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (widget.isManagement == true) ...[
+                            Text(
+                              AppLocalKay.select_section.tr(),
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            Gap(8.h),
+                            CustomDropdownFormField<SectionDataModel>(
+                              hint: AppLocalKay.select_section.tr(),
+                              value: classState.selectedSection,
+                              items: (classState.sectionDataStatus.data ?? []).map((section) {
+                                return DropdownMenuItem<SectionDataModel>(
+                                  value: section,
+                                  child: Text(section.sectionName),
                                 );
+                              }).toList(),
+                              onChanged: (SectionDataModel? section) {
+                                context.read<ClassCubit>().onSectionChanged(section);
+                              },
+                              errorText: '',
+                              submitted: false,
+                            ),
+                            Gap(5.h),
+                            Text(
+                              context.locale.languageCode == 'ar' ? 'اختر المرحلة' : 'Select Stage',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            Gap(8.h),
+                            CustomDropdownFormField<StageDataModel>(
+                              hint: context.locale.languageCode == 'ar'
+                                  ? 'اختر المرحلة'
+                                  : 'Select Stage',
+                              value: (uniqueStages.contains(classState.selectedStage))
+                                  ? classState.selectedStage
+                                  : null,
+                              items: uniqueStages.map((stage) {
+                                return DropdownMenuItem<StageDataModel>(
+                                  value: stage,
+                                  child: Text(stage.stageNameAr),
+                                );
+                              }).toList(),
+                              onChanged: (StageDataModel? stage) {
+                                context.read<ClassCubit>().onStageChanged(stage);
+                                if (stage != null) {
+                                  context.read<HomeCubit>().teacherLevel(stage.stageCode);
+                                }
+                              },
+                              errorText: '',
+                              submitted: false,
+                            ),
+                          ],
+                          // Level Dropdown
+                          Text(
+                            AppLocalKay.user_management_class.tr(),
+                            style: AppTextStyle.formTitleStyle(context),
+                          ),
+                          Gap(8.h),
+                          IgnorePointer(
+                            ignoring: isEdit,
+                            child: Opacity(
+                              opacity: isEdit ? 0.5 : 1,
+                              child: CustomDropdownFormField<int>(
+                                value: levels.any((e) => e.levelCode == _selectedLevelCode)
+                                    ? _selectedLevelCode
+                                    : null,
+                                submitted: _submitted,
+                                hint: AppLocalKay.user_management_class.tr(),
+                                errorText: AppLocalKay.user_management_select_class.tr(),
+                                items: levels
+                                    .map(
+                                      (e) => DropdownMenuItem(
+                                        value: e.levelCode,
+                                        child: Text(e.levelName),
+                                      ),
+                                    )
+                                    .toList(),
+                                onChanged: (v) {
+                                  setState(() {
+                                    _selectedLevelCode = v;
+                                    _selectedClassCode = null;
+                                  });
+                                  if (v != null) {
+                                    final sectionCode = widget.isManagement == true
+                                        ? classState.selectedSection?.sectionCode
+                                        : int.tryParse(HiveMethods.getUserSection().toString());
+                                    final stageCode = widget.isManagement == true
+                                        ? classState.selectedStage?.stageCode
+                                        : int.tryParse(HiveMethods.getUserStage().toString());
+
+                                    context.read<HomeCubit>().teacherClasses(
+                                      sectionCode ?? 0,
+                                      stageCode ?? 0,
+                                      v,
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
+
+                          Gap(8.h),
+
+                          /// Class Dropdown
+                          Text(
+                            AppLocalKay.class_name_assigment.tr(),
+                            style: AppTextStyle.formTitleStyle(context),
+                          ),
+                          Gap(8.h),
+                          IgnorePointer(
+                            ignoring: isEdit,
+                            child: Opacity(
+                              opacity: isEdit ? 0.5 : 1,
+                              child: CustomDropdownFormField<int>(
+                                value: classesList.any((e) => e.classCode == _selectedClassCode)
+                                    ? _selectedClassCode
+                                    : null,
+                                submitted: _submitted,
+                                hint: AppLocalKay.class_name_assigment.tr(),
+                                errorText: AppLocalKay.user_management_select_classs.tr(),
+                                items: classesList
+                                    .map(
+                                      (e) => DropdownMenuItem(
+                                        value: e.classCode,
+                                        child: Text(e.classNameAr),
+                                      ),
+                                    )
+                                    .toList(),
+                                onChanged: (v) => setState(() => _selectedClassCode = v),
+                              ),
+                            ),
+                          ),
+
+                          Gap(8.h),
+
+                          CustomFormField(
+                            radius: 12.r,
+                            title: AppLocalKay.event_title.tr(),
+                            controller: titleController,
+                            hintText: AppLocalKay.event_title_hint.tr(),
+                            validator: (value) => value!.isEmpty ? AppLocalKay.required.tr() : null,
+                          ),
+                          Gap(8.h),
+                          CustomFormField(
+                            radius: 12.r,
+                            title: AppLocalKay.event_description.tr(),
+                            controller: descriptionController,
+                            hintText: AppLocalKay.event_description_hint.tr(),
+                            validator: (value) => value!.isEmpty ? AppLocalKay.required.tr() : null,
+                            maxLines: 3,
+                          ),
+                          Gap(8.h),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomFormField(
+                                  radius: 12.r,
+                                  readOnly: true,
+                                  validator: (value) =>
+                                      value!.isEmpty ? AppLocalKay.select_date.tr() : null,
+                                  controller: TextEditingController(
+                                    text: selectedDate == null
+                                        ? ''
+                                        : selectedDate!.toIso8601String().split('T')[0],
+                                  ),
+                                  title: AppLocalKay.select_date.tr(),
+                                  suffixIcon: Icon(
+                                    Icons.date_range_rounded,
+                                    color: AppColor.primaryColor(context),
+                                  ),
+                                  onTap: _pickDate,
+                                ),
+                              ),
+                              Gap(12.w),
+                              Expanded(
+                                child: CustomFormField(
+                                  radius: 12.r,
+                                  readOnly: true,
+                                  validator: (value) =>
+                                      value!.isEmpty ? AppLocalKay.select_time.tr() : null,
+                                  controller: TextEditingController(
+                                    text: selectedTime == null
+                                        ? ''
+                                        : selectedTime!.format(context).toString(),
+                                  ),
+                                  title: AppLocalKay.select_time.tr(),
+                                  suffixIcon: Icon(
+                                    Icons.access_time_rounded,
+                                    color: AppColor.primaryColor(context),
+                                  ),
+                                  onTap: _pickTime,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Gap(8.h),
+                          Text(
+                            AppLocalKay.event_Color.tr(),
+                            style: AppTextStyle.titleSmall(context),
+                          ),
+                          Gap(10.h),
+                          Wrap(
+                            spacing: 12.w,
+                            children: eventColors.map((color) {
+                              final bool isSelected = selectedColor == color;
+                              return GestureDetector(
+                                onTap: () => setState(() => selectedColor = color),
+                                child: Container(
+                                  width: 40.w,
+                                  height: 40.w,
+                                  decoration: BoxDecoration(
+                                    color: color,
+                                    shape: BoxShape.circle,
+                                    border: isSelected
+                                        ? Border.all(
+                                            color: AppColor.blackColor(context),
+                                            width: 2.5,
+                                          )
+                                        : null,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                          Gap(20.h),
+                          CustomButton(
+                            color: widget.color,
+                            child:
+                                (widget.eventToEdit != null
+                                    ? context.watch<CalendarCubit>().state.editEventStatus.isLoading
+                                    : context.watch<CalendarCubit>().state.addEventStatus.isLoading)
+                                ? CustomLoading(color: AppColor.whiteColor(context), size: 15.w)
+                                : Text(
+                                    widget.eventToEdit != null
+                                        ? AppLocalKay.edit.tr()
+                                        : AppLocalKay.add.tr(),
+                                    style: AppTextStyle.bodyMedium(
+                                      context,
+                                    ).copyWith(color: AppColor.whiteColor(context)),
+                                  ),
+                            radius: 12.r,
+                            onPressed: () {
+                              setState(() => _submitted = true);
+                              if (formKey.currentState!.validate()) {
+                                final request = AddEventRequestModel(
+                                  id: widget.eventToEdit?.id.toString() ?? "",
+                                  eventTitel: titleController.text,
+                                  eventDesc: descriptionController.text,
+                                  eventDate: selectedDate!.toIso8601String().split('T')[0],
+                                  eventTime:
+                                      "${selectedTime!.hour.toString().padLeft(2, '0')}:${selectedTime!.minute.toString().padLeft(2, '0')}",
+                                  eventColor: _getColorName(selectedColor),
+                                  sectionCode:
+                                      (widget.isManagement == true
+                                          ? classState.selectedSection?.sectionCode
+                                          : int.tryParse(
+                                              HiveMethods.getUserSection().toString(),
+                                            )) ??
+                                      0,
+                                  stageCode:
+                                      (widget.isManagement == true
+                                          ? classState.selectedStage?.stageCode
+                                          : int.tryParse(HiveMethods.getUserStage().toString())) ??
+                                      0,
+                                  levelCode: int.parse(_selectedLevelCode.toString()),
+                                  classCode: int.parse(_selectedClassCode.toString()),
+                                );
+
+                                if (widget.eventToEdit != null) {
+                                  context.read<CalendarCubit>().editEvent(request);
+                                } else {
+                                  context.read<CalendarCubit>().addEvent(request);
+                                }
                               }
                             },
                           ),
-                        ),
-                      ),
-
-                      Gap(8.h),
-
-                      /// Class Dropdown
-                      Text(
-                        AppLocalKay.class_name_assigment.tr(),
-                        style: AppTextStyle.formTitleStyle(context),
-                      ),
-                      Gap(8.h),
-                      IgnorePointer(
-                        ignoring: isEdit,
-                        child: Opacity(
-                          opacity: isEdit ? 0.5 : 1,
-                          child: CustomDropdownFormField<int>(
-                            value: classesList.any((e) => e.classCode == _selectedClassCode)
-                                ? _selectedClassCode
-                                : null,
-                            submitted: _submitted,
-                            hint: AppLocalKay.class_name_assigment.tr(),
-                            errorText: AppLocalKay.user_management_select_classs.tr(),
-                            items: classesList
-                                .map(
-                                  (e) => DropdownMenuItem(
-                                    value: e.classCode,
-                                    child: Text(e.classNameAr),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (v) => setState(() => _selectedClassCode = v),
-                          ),
-                        ),
-                      ),
-
-                      Gap(8.h),
-
-                      CustomFormField(
-                        radius: 12.r,
-                        title: AppLocalKay.event_title.tr(),
-                        controller: titleController,
-                        hintText: AppLocalKay.event_title_hint.tr(),
-                        validator: (value) => value!.isEmpty ? AppLocalKay.required.tr() : null,
-                      ),
-                      Gap(8.h),
-                      CustomFormField(
-                        radius: 12.r,
-                        title: AppLocalKay.event_description.tr(),
-                        controller: descriptionController,
-                        hintText: AppLocalKay.event_description_hint.tr(),
-                        validator: (value) => value!.isEmpty ? AppLocalKay.required.tr() : null,
-                        maxLines: 3,
-                      ),
-                      Gap(8.h),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CustomFormField(
-                              radius: 12.r,
-                              readOnly: true,
-                              validator: (value) =>
-                                  value!.isEmpty ? AppLocalKay.select_date.tr() : null,
-                              controller: TextEditingController(
-                                text: selectedDate == null
-                                    ? ''
-                                    : selectedDate!.toIso8601String().split('T')[0],
-                              ),
-                              title: AppLocalKay.select_date.tr(),
-                              suffixIcon: Icon(
-                                Icons.date_range_rounded,
-                                color: AppColor.primaryColor(context),
-                              ),
-                              onTap: _pickDate,
-                            ),
-                          ),
-                          Gap( 12.w),
-                          Expanded(
-                            child: CustomFormField(
-                              radius: 12.r,
-                              readOnly: true,
-                              validator: (value) =>
-                                  value!.isEmpty ? AppLocalKay.select_time.tr() : null,
-                              controller: TextEditingController(
-                                text: selectedTime == null
-                                    ? ''
-                                    : selectedTime!.format(context).toString(),
-                              ),
-                              title: AppLocalKay.select_time.tr(),
-                              suffixIcon: Icon(
-                                Icons.access_time_rounded,
-                                color: AppColor.primaryColor(context),
-                              ),
-                              onTap: _pickTime,
-                            ),
-                          ),
                         ],
-                      ),
-                      Gap(8.h),
-                      Text(AppLocalKay.event_Color.tr(), style: AppTextStyle.titleSmall(context)),
-                      Gap(10.h),
-                      Wrap(
-                        spacing: 12.w,
-                        children: eventColors.map((color) {
-                          final bool isSelected = selectedColor == color;
-                          return GestureDetector(
-                            onTap: () => setState(() => selectedColor = color),
-                            child: Container(
-                              width: 40.w,
-                              height: 40.w,
-                              decoration: BoxDecoration(
-                                color: color,
-                                shape: BoxShape.circle,
-                                border: isSelected
-                                    ? Border.all(color: AppColor.blackColor(context), width: 2.5)
-                                    : null,
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                      Gap(20.h),
-                      CustomButton(
-                        color: widget.color,
-                        child:
-                            (widget.eventToEdit != null
-                                ? context.watch<CalendarCubit>().state.editEventStatus.isLoading
-                                : context.watch<CalendarCubit>().state.addEventStatus.isLoading)
-                            ? CustomLoading(color: AppColor.whiteColor(context), size: 15.w)
-                            : Text(
-                                widget.eventToEdit != null
-                                    ? AppLocalKay.edit.tr()
-                                    : AppLocalKay.add.tr(),
-                                style: AppTextStyle.bodyMedium(
-                                  context,
-                                ).copyWith(color: AppColor.whiteColor(context)),
-                              ),
-                        radius: 12.r,
-                        onPressed: () {
-                          setState(() => _submitted = true);
-                          if (formKey.currentState!.validate()) {
-                            final request = AddEventRequestModel(
-                              id: widget.eventToEdit?.id.toString() ?? "",
-                              eventTitel: titleController.text,
-                              eventDesc: descriptionController.text,
-                              eventDate: selectedDate!.toIso8601String().split('T')[0],
-                              eventTime:
-                                  "${selectedTime!.hour.toString().padLeft(2, '0')}:${selectedTime!.minute.toString().padLeft(2, '0')}",
-                              eventColor: _getColorName(selectedColor),
-                              sectionCode:
-                                  int.tryParse(HiveMethods.getUserSection().toString()) ?? 0,
-                              stageCode: int.tryParse(HiveMethods.getUserStage().toString()) ?? 0,
-                              levelCode: int.parse(_selectedLevelCode.toString()),
-                              classCode: int.parse(_selectedClassCode.toString()),
-                            );
-
-                            if (widget.eventToEdit != null) {
-                              context.read<CalendarCubit>().editEvent(request);
-                            } else {
-                              context.read<CalendarCubit>().addEvent(request);
-                            }
-                          }
-                        },
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 );
               },

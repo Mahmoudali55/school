@@ -1094,5 +1094,6 @@
   "plate_no": "اللوحة",
   "bus_seats": "عدد المقاعد",
   "no_line": "بدون خط",
-  "unknown": "غير معروف"
+  "unknown": "غير معروف",
+  "select_classs":"اختر الصف"
 }

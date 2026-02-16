@@ -90,12 +90,12 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                   ),
                   Gap(5.h),
                   Text(
-                    AppLocalKay.select_level.tr(),
+                    AppLocalKay.select_classs.tr(),
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   Gap(8.h),
                   CustomDropdownFormField<LevelModel>(
-                    hint: AppLocalKay.select_level.tr(),
+                    hint: AppLocalKay.select_classs.tr(),
                     value: (uniqueLevels.contains(state.selectedLevel))
                         ? state.selectedLevel
                         : null,

@@ -1053,4 +1053,5 @@ class AppLocalKay {
   static const String bus_seats = 'bus_seats';
   static const String no_line = 'no_line';
   static const String unknown = 'unknown';
+  static const String select_classs = 'select_classs';
 }

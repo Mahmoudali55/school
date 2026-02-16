@@ -17,6 +17,7 @@ import 'package:my_template/features/calendar/presentation/screen/widget/teacher
 import 'package:my_template/features/calendar/presentation/screen/widget/teacher/daily_view_widget.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/teacher/monthly_view_widget.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/teacher/weekly_view_widget.dart';
+import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/home/data/models/teacher_level_model.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
@@ -219,6 +220,7 @@ class _CalendarTeacherScreenState extends State<CalendarTeacherScreen> {
               providers: [
                 BlocProvider.value(value: context.read<CalendarCubit>()),
                 BlocProvider.value(value: context.read<HomeCubit>()),
+                BlocProvider.value(value: context.read<ClassCubit>()),
               ],
               child: AddEventScreen(color: AppColor.accentColor(context)),
             ),

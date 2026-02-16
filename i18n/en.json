@@ -1027,5 +1027,6 @@
   "plate_no": "Plate No",
   "bus_seats": "Seats",
   "no_line": "No Line",
-  "unknown": "Unknown"
+  "unknown": "Unknown",
+  "select_classs":"Select Class"
 }
