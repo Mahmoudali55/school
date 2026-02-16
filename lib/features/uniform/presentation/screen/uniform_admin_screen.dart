@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
-import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/features/home/data/models/get_uniform_data_model.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
+import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 
 import '../../../../core/utils/app_local_kay.dart';
-import '../../data/model/uniform_model.dart';
-import '../cubit/uniform_cubit.dart';
 
 class UniformAdminScreen extends StatelessWidget {
   const UniformAdminScreen({super.key});
@@ -24,14 +24,15 @@ class UniformAdminScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: BlocBuilder<UniformCubit, UniformState>(
+      body: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
-          if (state is UniformLoading) {
+          if (state.getUniformsStatus.isLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is UniformLoaded) {
-            return _buildOrdersList(context, state.orders);
-          } else if (state is UniformError) {
-            return Center(child: Text(state.message));
+          } else if (state.getUniformsStatus.isSuccess) {
+            final orders = state.getUniformsStatus.data?.data ?? [];
+            return _buildOrdersList(context, orders);
+          } else if (state.getUniformsStatus.isFailure) {
+            return Center(child: Text(state.getUniformsStatus.error ?? ''));
           }
           return const SizedBox.shrink();
         },
@@ -39,72 +40,99 @@ class UniformAdminScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildOrdersList(BuildContext context, List<UniformOrder> orders) {
+  Widget _buildOrdersList(BuildContext context, List<UniformItem> orders) {
     if (orders.isEmpty) {
       return const Center(
-        child: Text("No incoming orders", style: TextStyle(fontWeight: FontWeight.bold)),
+        child: Text(
+          "No incoming orders",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
       );
     }
 
-    return ListView.builder(
+    return ListView.separated(
       padding: const EdgeInsets.all(16),
       itemCount: orders.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 16),
       itemBuilder: (context, index) {
         final order = orders[index];
-        return Card(
-          elevation: 3,
-          margin: const EdgeInsets.only(bottom: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(18),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                /// Top Row (Name + ID)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      order.studentName,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    Expanded(
+                      child: Text(
+                        order.studentName,
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                    _buildStatusChip(context, order.status),
-                  ],
-                ),
-                Text(
-                  order.studentGrade,
-                  style: AppTextStyle.bodySmall(
-                    context,
-                  ).copyWith(fontWeight: FontWeight.w500, color: AppColor.grey600Color(context)),
-                ),
-                const Divider(height: 24),
-                ...order.items.map(
-                  (item) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('${item.name} (${item.size})'),
-                        Text(
-                          '${item.price} SAR',
-                          style: AppTextStyle.bodyMedium(
-                            context,
-                          ).copyWith(fontWeight: FontWeight.bold),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: AppColor.primaryColor(context).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        "#${order.id}",
+                        style: TextStyle(
+                          color: AppColor.primaryColor(context),
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-                const Divider(height: 24),
+
+                const SizedBox(height: 6),
+
+                Text(
+                  "${AppLocalKay.code.tr()} : ${order.studentCode}",
+                  style: TextStyle(color: AppColor.grey600Color(context)),
+                ),
+
+                const SizedBox(height: 18),
+
+                /// Measurements Row
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      '${AppLocalKay.order_status.tr()}:',
-                      style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
-                    ),
-                    _buildStatusDropdown(context, order),
+                    _infoItem(Icons.height, "${order.height} cm"),
+                    _infoItem(Icons.monitor_weight, "${order.weight} kg"),
+                    _infoItem(Icons.checkroom, order.size),
                   ],
                 ),
+
+                const SizedBox(height: 18),
+
+                /// Notes
+                if (order.notes.isNotEmpty)
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(order.notes, style: const TextStyle(fontSize: 14)),
+                  ),
               ],
             ),
           ),
@@ -113,67 +141,13 @@ class UniformAdminScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusChip(BuildContext context, UniformOrderStatus status) {
-    Color color;
-    String text;
-    switch (status) {
-      case UniformOrderStatus.pending:
-        color = AppColor.accentColor(context);
-        text = AppLocalKay.pending.tr();
-        break;
-      case UniformOrderStatus.preparing:
-        color = AppColor.infoColor(context);
-        text = AppLocalKay.preparing.tr();
-        break;
-      case UniformOrderStatus.ready:
-        color = AppColor.successColor(context);
-        text = AppLocalKay.ready_for_pickup.tr();
-        break;
-      case UniformOrderStatus.delivered:
-        color = AppColor.grey400Color(context);
-        text = AppLocalKay.delivered.tr();
-        break;
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color),
-      ),
-      child: Text(
-        text,
-        style: AppTextStyle.bodySmall(context).copyWith(color: color, fontWeight: FontWeight.bold),
-      ),
+  Widget _infoItem(IconData icon, String value) {
+    return Row(
+      children: [
+        Icon(icon, size: 18, color: Colors.grey),
+        const SizedBox(width: 6),
+        Text(value, style: const TextStyle(fontWeight: FontWeight.w600)),
+      ],
     );
-  }
-
-  Widget _buildStatusDropdown(BuildContext context, UniformOrder order) {
-    return DropdownButton<UniformOrderStatus>(
-      value: order.status,
-      underline: const SizedBox.shrink(),
-      items: UniformOrderStatus.values.map((status) {
-        return DropdownMenuItem(value: status, child: Text(_getStatusString(context, status)));
-      }).toList(),
-      onChanged: (newStatus) {
-        if (newStatus != null) {
-          context.read<UniformCubit>().updateOrderStatus(order.id, newStatus);
-        }
-      },
-    );
-  }
-
-  String _getStatusString(BuildContext context, UniformOrderStatus status) {
-    switch (status) {
-      case UniformOrderStatus.pending:
-        return AppLocalKay.pending.tr();
-      case UniformOrderStatus.preparing:
-        return AppLocalKay.preparing.tr();
-      case UniformOrderStatus.ready:
-        return AppLocalKay.ready_for_pickup.tr();
-      case UniformOrderStatus.delivered:
-        return AppLocalKay.delivered.tr();
-    }
   }
 }

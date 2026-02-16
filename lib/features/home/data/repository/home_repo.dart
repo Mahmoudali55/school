@@ -64,7 +64,7 @@ abstract interface class HomeRepo {
     required AddUniformRequestModel request,
   });
 
-  Future<Either<Failure, GetUniformDataResponse>> getUniforms({required int code, int? id});
+  Future<Either<Failure, GetUniformDataResponse>> getUniforms({int? code, int? id});
 
   Future<Either<Failure, EditUniformResponse>> editUniform({
     required EditUniformRequestModel request,
@@ -268,7 +268,7 @@ class HomeRepoImpl implements HomeRepo {
   }
 
   @override
-  Future<Either<Failure, GetUniformDataResponse>> getUniforms({required int code, int? id}) async {
+  Future<Either<Failure, GetUniformDataResponse>> getUniforms({int? code, int? id}) async {
     return handleDioRequest(
       request: () async {
         final response = await apiConsumer.get(

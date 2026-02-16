@@ -100,7 +100,7 @@ class AppRouters {
       case RoutesName.uniformAdminScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (context) => sl<UniformCubit>()..loadAdminData(),
+            create: (context) => sl<HomeCubit>()..getUniform(),
             child: const UniformAdminScreen(),
           ),
         );

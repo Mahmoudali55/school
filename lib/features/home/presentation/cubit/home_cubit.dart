@@ -222,7 +222,7 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
-  Future<void> getUniform({required int code, int? id}) async {
+  Future<void> getUniform({int? code, int? id}) async {
     if (isClosed) return;
     emit(state.copyWith(getUniformsStatus: StatusState.loading()));
 

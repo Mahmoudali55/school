@@ -28,7 +28,6 @@ import 'package:my_template/features/pickup/presentation/screen/pickup_admin_scr
 import 'package:my_template/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:my_template/features/profile/presentation/screen/parent_profile_screen.dart';
 import 'package:my_template/features/profile/presentation/screen/profile_screen.dart';
-import 'package:my_template/features/uniform/presentation/cubit/uniform_cubit.dart';
 import 'package:my_template/features/uniform/presentation/screen/uniform_admin_screen.dart';
 
 import '../../features/auth/presentation/view/cubit/auth_cubit.dart';
