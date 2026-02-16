@@ -6,6 +6,7 @@ import 'package:my_template/core/error/failures.dart';
 import 'package:my_template/core/network/api_consumer.dart';
 import 'package:my_template/core/network/end_points.dart';
 import 'package:my_template/features/class/data/model/class_absent_model.dart';
+import 'package:my_template/features/class/data/model/class_model.dart';
 import 'package:my_template/features/class/data/model/class_models.dart';
 import 'package:my_template/features/class/data/model/get_T_home_work_model.dart';
 import 'package:my_template/features/class/data/model/get_lessons_model.dart';
@@ -59,6 +60,11 @@ abstract interface class ClassRepo {
   Future<Either<Failure, List<SectionDataModel>>> sectionData({required String userId});
   Future<Either<Failure, List<StageDataModel>>> stageData({required int sectionCode});
   Future<Either<Failure, List<LevelModel>>> levelData({required int stage});
+  Future<Either<Failure, List<GetClassModel>>> classData({
+    required int level,
+    required int sectionCod,
+    required int stageCode,
+  });
 
   final List<StudentClassModel> _studentClasses = const [
     StudentClassModel(
@@ -373,6 +379,23 @@ class ClassRepoImpl extends ClassRepo {
         );
         final String dataString = response['Data'] as String;
         return LevelModel.listFromJson(dataString);
+      },
+    );
+  }
+
+  Future<Either<Failure, List<GetClassModel>>> classData({
+    required int level,
+    required int sectionCod,
+    required int stageCode,
+  }) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.classData,
+          queryParameters: {"levelcode": level, "sectioncode": sectionCod, "stagecode": stageCode},
+        );
+        final String dataString = response['Data'] as String;
+        return GetClassModel.listFromJson(dataString);
       },
     );
   }

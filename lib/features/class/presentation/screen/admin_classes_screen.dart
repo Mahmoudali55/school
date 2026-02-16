@@ -5,12 +5,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_dropdown_form_field.dart';
+import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/level_model.dart';
 import 'package:my_template/features/class/data/model/section_data_model.dart';
 import 'package:my_template/features/class/data/model/stage_data_model.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/class/presentation/cubit/class_state.dart';
+import 'package:my_template/features/class/presentation/screen/widget/admin/class_card.dart';
 
 class AdminClassesScreen extends StatefulWidget {
   const AdminClassesScreen({super.key});
@@ -24,6 +27,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
   void initState() {
     super.initState();
     final userCode = HiveMethods.getUserid();
+    context.read<ClassCubit>().clearSelection(); // Reset selection on init
     context.read<ClassCubit>().sectionData(userId: userCode);
   }
 
@@ -110,6 +114,86 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                     errorText: '',
                     submitted: false,
                   ),
+
+                  if (state.classDataStatus?.isLoading ?? false)
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: const CircularProgressIndicator(),
+                      ),
+                    )
+                  else if (state.classDataStatus?.isFailure ?? false)
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5.h),
+                        child: Column(
+                          children: [
+                            Icon(Icons.error_outline, color: Colors.redAccent, size: 40.sp),
+                            Gap(8.h),
+                            Text(
+                              state.classDataStatus!.error ?? 'Error loading data',
+                              style: AppTextStyle.bodyMedium(
+                                context,
+                              ).copyWith(color: AppColor.errorColor(context)),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  else if (state.classDataStatus?.isSuccess ?? false)
+                    if ((state.classDataStatus!.data ?? []).isEmpty)
+                      Center(
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.class_outlined,
+                              size: 60.sp,
+                              color: AppColor.grey300Color(context),
+                            ),
+                            Gap(16.h),
+                            Text(
+                              context.locale.languageCode == 'ar'
+                                  ? 'لا توجد فصول متاحة'
+                                  : 'No classes found',
+                              style: AppTextStyle.titleMedium(context).copyWith(
+                                color: AppColor.grey50Color(context),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Gap(8.h),
+                            Text(
+                              context.locale.languageCode == 'ar'
+                                  ? 'يرجى اختيار مرحلة ومستوى آخر'
+                                  : 'Please select another stage and level',
+                              style: AppTextStyle.bodySmall(
+                                context,
+                              ).copyWith(color: AppColor.grey400Color(context)),
+                            ),
+                          ],
+                        ),
+                      )
+                    else
+                      ListView.separated(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: state.classDataStatus!.data!.length,
+                        separatorBuilder: (context, index) => Gap(12.h),
+                        itemBuilder: (context, index) {
+                          final classModel = state.classDataStatus!.data![index];
+                          return ClassCard(
+                            classModel: classModel,
+                            onViewDetails: () {
+                              // Navigate to details
+                            },
+                            onEdit: () {
+                              // Navigate to edit
+                            },
+                            onManageStudents: () {
+                              // Navigate to students
+                            },
+                          );
+                        },
+                      ),
                 ],
               ),
             );

@@ -207,6 +207,23 @@ class ClassCubit extends Cubit<ClassState> {
     );
   }
 
+  Future<void> classData({
+    required int level,
+    required int sectionCod,
+    required int stageCode,
+  }) async {
+    emit(state.copyWith(classDataStatus: const StatusState.loading()));
+    final result = await _classRepo.classData(
+      level: level,
+      sectionCod: sectionCod,
+      stageCode: stageCode,
+    );
+    result.fold(
+      (error) => emit(state.copyWith(classDataStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(classDataStatus: StatusState.success(success))),
+    );
+  }
+
   void onSectionChanged(SectionDataModel? section) {
     emit(
       state.copyWith(
@@ -235,6 +252,26 @@ class ClassCubit extends Cubit<ClassState> {
 
   void onLevelChanged(LevelModel? level) {
     emit(state.copyWith(selectedLevel: level));
+    if (level != null && state.selectedSection != null && state.selectedStage != null) {
+      classData(
+        level: level.levelCode,
+        sectionCod: state.selectedSection!.sectionCode,
+        stageCode: state.selectedStage!.stageCode,
+      );
+    }
+  }
+
+  void clearSelection() {
+    emit(
+      state.copyWith(
+        selectedSection: null,
+        selectedStage: null,
+        selectedLevel: null,
+        stageDataStatus: const StatusState.initial(),
+        levelDataStatus: const StatusState.initial(),
+        classDataStatus: const StatusState.initial(),
+      ),
+    );
   }
 
   Future<void> updateClassAbsent({

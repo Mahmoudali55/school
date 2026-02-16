@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/class/data/model/class_absent_model.dart';
+import 'package:my_template/features/class/data/model/class_model.dart';
 import 'package:my_template/features/class/data/model/class_models.dart';
 import 'package:my_template/features/class/data/model/get_T_home_work_model.dart';
 import 'package:my_template/features/class/data/model/get_lessons_model.dart';
@@ -30,6 +31,7 @@ class ClassState extends Equatable {
   final StatusState<List<SectionDataModel>> sectionDataStatus;
   final StatusState<List<StageDataModel>> stageDataStatus;
   final StatusState<List<LevelModel>>? levelDataStatus;
+  final StatusState<List<GetClassModel>>? classDataStatus;
   final SectionDataModel? selectedSection;
   final StageDataModel? selectedStage;
   final LevelModel? selectedLevel;
@@ -50,6 +52,7 @@ class ClassState extends Equatable {
     this.sectionDataStatus = const StatusState.initial(),
     this.stageDataStatus = const StatusState.initial(),
     this.levelDataStatus = const StatusState.initial(),
+    this.classDataStatus = const StatusState.initial(),
     this.selectedSection,
     this.selectedStage,
     this.selectedLevel,
@@ -75,6 +78,7 @@ class ClassState extends Equatable {
     stageDataStatus,
     levelDataStatus,
     selectedLevel,
+    classDataStatus,
   ];
 
   ClassState copyWith({
@@ -93,6 +97,7 @@ class ClassState extends Equatable {
     StatusState<List<SectionDataModel>>? sectionDataStatus,
     StatusState<List<StageDataModel>>? stageDataStatus,
     StatusState<List<LevelModel>>? levelDataStatus,
+    StatusState<List<GetClassModel>>? classDataStatus,
     SectionDataModel? selectedSection,
     StageDataModel? selectedStage,
     LevelModel? selectedLevel,
@@ -115,6 +120,8 @@ class ClassState extends Equatable {
       selectedStage: selectedStage ?? this.selectedStage,
       stageDataStatus: stageDataStatus ?? this.stageDataStatus,
       levelDataStatus: levelDataStatus ?? this.levelDataStatus,
+      selectedLevel: selectedLevel ?? this.selectedLevel,
+      classDataStatus: classDataStatus ?? this.classDataStatus,
     );
   }
 }

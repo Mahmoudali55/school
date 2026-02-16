@@ -1026,5 +1026,6 @@
   "bus_code": "Bus Code",
   "plate_no": "Plate No",
   "bus_seats": "Seats",
-  "no_line": "No Line"
+  "no_line": "No Line",
+  "unknown": "Unknown"
 }

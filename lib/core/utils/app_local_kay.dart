@@ -1052,4 +1052,5 @@ class AppLocalKay {
   static const String plate_no = 'plate_no';
   static const String bus_seats = 'bus_seats';
   static const String no_line = 'no_line';
+  static const String unknown = 'unknown';
 }
