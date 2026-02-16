@@ -5,6 +5,7 @@ import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/common_methods.dart';
+import 'package:my_template/features/class/data/model/section_data_model.dart';
 import 'package:my_template/features/class/data/repository/class_repo.dart';
 import 'package:my_template/features/home/data/models/add_class_absent_request_model.dart';
 
@@ -175,6 +176,19 @@ class ClassCubit extends Cubit<ClassState> {
       (error) => emit(state.copyWith(deleteLessonStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(deleteLessonStatus: StatusState.success(success))),
     );
+  }
+
+  Future<void> sectionData({required String studentCode}) async {
+    emit(state.copyWith(sectionDataStatus: const StatusState.loading()));
+    final result = await _classRepo.sectionData(userId: studentCode);
+    result.fold(
+      (error) => emit(state.copyWith(sectionDataStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(sectionDataStatus: StatusState.success(success))),
+    );
+  }
+
+  void onSectionChanged(SectionDataModel? section) {
+    emit(state.copyWith(selectedSection: section));
   }
 
   Future<void> updateClassAbsent({

@@ -5,6 +5,7 @@ import 'package:my_template/features/class/data/model/class_models.dart';
 import 'package:my_template/features/class/data/model/get_T_home_work_model.dart';
 import 'package:my_template/features/class/data/model/get_lessons_model.dart';
 import 'package:my_template/features/class/data/model/home_work_model.dart';
+import 'package:my_template/features/class/data/model/section_data_model.dart';
 import 'package:my_template/features/class/data/model/student_class_data_model.dart';
 import 'package:my_template/features/class/data/model/student_courses_model.dart';
 import 'package:my_template/features/home/data/models/add_class_absent_response_model.dart';
@@ -24,6 +25,9 @@ class ClassState extends Equatable {
   final StatusState<ClassHWDelModel> deleteLessonStatus;
   final StatusState<GetLessonsModel> getLessonsStatus;
   final StatusState<String>? imageFileNameStatus;
+  final StatusState<List<SectionDataModel>> sectionDataStatus;
+  final SectionDataModel? selectedSection;
+
   const ClassState({
     this.classesStatus = const StatusState.initial(),
     this.homeWorkStatus = const StatusState.initial(),
@@ -37,6 +41,8 @@ class ClassState extends Equatable {
     this.getLessonsStatus = const StatusState.initial(),
     this.imageFileNameStatus = const StatusState.initial(),
     this.deleteLessonStatus = const StatusState.initial(),
+    this.sectionDataStatus = const StatusState.initial(),
+    this.selectedSection,
   });
 
   @override
@@ -53,6 +59,8 @@ class ClassState extends Equatable {
     getLessonsStatus,
     imageFileNameStatus,
     deleteLessonStatus,
+    sectionDataStatus,
+    selectedSection,
   ];
 
   ClassState copyWith({
@@ -68,6 +76,8 @@ class ClassState extends Equatable {
     StatusState<GetLessonsModel>? getLessonsStatus,
     StatusState<ClassHWDelModel>? deleteLessonStatus,
     StatusState<String>? imageFileNameStatus,
+    StatusState<List<SectionDataModel>>? sectionDataStatus,
+    SectionDataModel? selectedSection,
   }) {
     return ClassState(
       classesStatus: classesStatus ?? this.classesStatus,
@@ -82,6 +92,8 @@ class ClassState extends Equatable {
       getLessonsStatus: getLessonsStatus ?? this.getLessonsStatus,
       imageFileNameStatus: imageFileNameStatus ?? this.imageFileNameStatus,
       deleteLessonStatus: deleteLessonStatus ?? this.deleteLessonStatus,
+      sectionDataStatus: sectionDataStatus ?? this.sectionDataStatus,
+      selectedSection: selectedSection ?? this.selectedSection,
     );
   }
 }

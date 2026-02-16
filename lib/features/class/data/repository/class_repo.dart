@@ -10,6 +10,7 @@ import 'package:my_template/features/class/data/model/class_models.dart';
 import 'package:my_template/features/class/data/model/get_T_home_work_model.dart';
 import 'package:my_template/features/class/data/model/get_lessons_model.dart';
 import 'package:my_template/features/class/data/model/home_work_model.dart';
+import 'package:my_template/features/class/data/model/section_data_model.dart';
 import 'package:my_template/features/class/data/model/student_class_data_model.dart';
 import 'package:my_template/features/class/data/model/student_courses_model.dart';
 import 'package:my_template/features/home/data/models/add_class_absent_request_model.dart';
@@ -53,6 +54,7 @@ abstract interface class ClassRepo {
   });
   Future<Either<Failure, String>> imageFileName({required String filePath});
   Future<Either<Failure, ClassHWDelModel>> deleteLesson({required int lessonCode});
+  Future<Either<Failure, List<SectionDataModel>>> sectionData({required String userId});
 
   final List<StudentClassModel> _studentClasses = const [
     StudentClassModel(
@@ -327,6 +329,20 @@ class ClassRepoImpl extends ClassRepo {
           body: {"Code": lessonCode},
         );
         return ClassHWDelModel.fromJson(response);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, List<SectionDataModel>>> sectionData({required String userId}) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.SectionData,
+          queryParameters: {"id": userId},
+        );
+        final String dataString = response['Data'] as String;
+        return SectionDataModel.listFromJsonString(dataString);
       },
     );
   }

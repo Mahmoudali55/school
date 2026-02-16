@@ -22,6 +22,14 @@ class HiveMethods {
     _box.put('token', token);
   }
 
+  static void updateUserid(String id) {
+    _box.put('id', id);
+  }
+
+  static String getUserid() {
+    return _box.get('id', defaultValue: '');
+  }
+
   static void deleteToken() {
     _box.delete('token');
   }
