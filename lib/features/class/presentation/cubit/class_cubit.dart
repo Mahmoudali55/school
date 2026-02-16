@@ -6,6 +6,7 @@ import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/common_methods.dart';
 import 'package:my_template/features/class/data/model/section_data_model.dart';
+import 'package:my_template/features/class/data/model/stage_data_model.dart';
 import 'package:my_template/features/class/data/repository/class_repo.dart';
 import 'package:my_template/features/home/data/models/add_class_absent_request_model.dart';
 
@@ -178,17 +179,39 @@ class ClassCubit extends Cubit<ClassState> {
     );
   }
 
-  Future<void> sectionData({required String studentCode}) async {
+  Future<void> sectionData({required String userId}) async {
     emit(state.copyWith(sectionDataStatus: const StatusState.loading()));
-    final result = await _classRepo.sectionData(userId: studentCode);
+    final result = await _classRepo.sectionData(userId: userId);
     result.fold(
       (error) => emit(state.copyWith(sectionDataStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(sectionDataStatus: StatusState.success(success))),
     );
   }
 
+  Future<void> stageData({required int sectionId}) async {
+    emit(state.copyWith(stageDataStatus: const StatusState.loading()));
+    final result = await _classRepo.stageData(sectionCode: sectionId);
+    result.fold(
+      (error) => emit(state.copyWith(stageDataStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(stageDataStatus: StatusState.success(success))),
+    );
+  }
+
   void onSectionChanged(SectionDataModel? section) {
-    emit(state.copyWith(selectedSection: section));
+    emit(
+      state.copyWith(
+        selectedSection: section,
+        selectedStage: null,
+        stageDataStatus: const StatusState.initial(),
+      ),
+    );
+    if (section != null) {
+      stageData(sectionId: section.sectionCode);
+    }
+  }
+
+  void onStageChanged(StageDataModel? stage) {
+    emit(state.copyWith(selectedStage: stage));
   }
 
   Future<void> updateClassAbsent({
