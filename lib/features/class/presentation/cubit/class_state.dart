@@ -5,6 +5,7 @@ import 'package:my_template/features/class/data/model/class_models.dart';
 import 'package:my_template/features/class/data/model/get_T_home_work_model.dart';
 import 'package:my_template/features/class/data/model/get_lessons_model.dart';
 import 'package:my_template/features/class/data/model/home_work_model.dart';
+import 'package:my_template/features/class/data/model/level_model.dart';
 import 'package:my_template/features/class/data/model/section_data_model.dart';
 import 'package:my_template/features/class/data/model/stage_data_model.dart';
 import 'package:my_template/features/class/data/model/student_class_data_model.dart';
@@ -28,8 +29,10 @@ class ClassState extends Equatable {
   final StatusState<String>? imageFileNameStatus;
   final StatusState<List<SectionDataModel>> sectionDataStatus;
   final StatusState<List<StageDataModel>> stageDataStatus;
+  final StatusState<List<LevelModel>>? levelDataStatus;
   final SectionDataModel? selectedSection;
   final StageDataModel? selectedStage;
+  final LevelModel? selectedLevel;
 
   const ClassState({
     this.classesStatus = const StatusState.initial(),
@@ -46,8 +49,10 @@ class ClassState extends Equatable {
     this.deleteLessonStatus = const StatusState.initial(),
     this.sectionDataStatus = const StatusState.initial(),
     this.stageDataStatus = const StatusState.initial(),
+    this.levelDataStatus = const StatusState.initial(),
     this.selectedSection,
     this.selectedStage,
+    this.selectedLevel,
   });
 
   @override
@@ -68,6 +73,8 @@ class ClassState extends Equatable {
     selectedSection,
     selectedStage,
     stageDataStatus,
+    levelDataStatus,
+    selectedLevel,
   ];
 
   ClassState copyWith({
@@ -85,8 +92,10 @@ class ClassState extends Equatable {
     StatusState<String>? imageFileNameStatus,
     StatusState<List<SectionDataModel>>? sectionDataStatus,
     StatusState<List<StageDataModel>>? stageDataStatus,
+    StatusState<List<LevelModel>>? levelDataStatus,
     SectionDataModel? selectedSection,
     StageDataModel? selectedStage,
+    LevelModel? selectedLevel,
   }) {
     return ClassState(
       classesStatus: classesStatus ?? this.classesStatus,
@@ -105,6 +114,7 @@ class ClassState extends Equatable {
       selectedSection: selectedSection ?? this.selectedSection,
       selectedStage: selectedStage ?? this.selectedStage,
       stageDataStatus: stageDataStatus ?? this.stageDataStatus,
+      levelDataStatus: levelDataStatus ?? this.levelDataStatus,
     );
   }
 }

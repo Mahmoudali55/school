@@ -5,6 +5,7 @@ import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/common_methods.dart';
+import 'package:my_template/features/class/data/model/level_model.dart';
 import 'package:my_template/features/class/data/model/section_data_model.dart';
 import 'package:my_template/features/class/data/model/stage_data_model.dart';
 import 'package:my_template/features/class/data/repository/class_repo.dart';
@@ -197,6 +198,15 @@ class ClassCubit extends Cubit<ClassState> {
     );
   }
 
+  Future<void> levelData({required int stage}) async {
+    emit(state.copyWith(levelDataStatus: const StatusState.loading()));
+    final result = await _classRepo.levelData(stage: stage);
+    result.fold(
+      (error) => emit(state.copyWith(levelDataStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(levelDataStatus: StatusState.success(success))),
+    );
+  }
+
   void onSectionChanged(SectionDataModel? section) {
     emit(
       state.copyWith(
@@ -211,7 +221,20 @@ class ClassCubit extends Cubit<ClassState> {
   }
 
   void onStageChanged(StageDataModel? stage) {
-    emit(state.copyWith(selectedStage: stage));
+    emit(
+      state.copyWith(
+        selectedStage: stage,
+        selectedLevel: null,
+        sectionDataStatus: const StatusState.initial(),
+      ),
+    );
+    if (stage != null) {
+      levelData(stage: stage.stageCode);
+    }
+  }
+
+  void onLevelChanged(LevelModel? level) {
+    emit(state.copyWith(selectedLevel: level));
   }
 
   Future<void> updateClassAbsent({
