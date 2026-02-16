@@ -6,31 +6,13 @@ import 'package:my_template/core/routes/routes_name.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/alert_model.dart';
-import 'package:my_template/features/home/presentation/view/execution/class_management_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/financial_settings_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/reports_page.dart';
 import 'package:my_template/features/home/presentation/view/execution/transport_management_screen.dart';
-import 'package:my_template/features/home/presentation/view/execution/user_management_screen.dart';
 import 'package:my_template/features/home/presentation/view/widget/admin/shortcut_card_widget.dart';
 
 class ManagementShortcuts extends StatelessWidget {
   final List<ManagementShortcut> shortcuts = [
-    ManagementShortcut(
-      title: AppLocalKay.user_management_title.tr(),
-      description: AppLocalKay.user_management_desc.tr(),
-      icon: Icons.people,
-      color: Colors.blue,
-      onTap: (context) =>
-          Navigator.push(context, MaterialPageRoute(builder: (context) => UserManagementScreen())),
-    ),
-    ManagementShortcut(
-      title: AppLocalKay.class_management_title.tr(),
-      description: AppLocalKay.class_management_desc.tr(),
-      icon: Icons.class_,
-      color: Colors.green,
-      onTap: (context) =>
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ClassManagementScreen())),
-    ),
     ManagementShortcut(
       title: AppLocalKay.reports_title.tr(),
       description: AppLocalKay.reports_desc.tr(),
