@@ -1095,5 +1095,6 @@
   "bus_seats": "عدد المقاعد",
   "no_line": "بدون خط",
   "unknown": "غير معروف",
-  "select_classs":"اختر الصف"
+  "select_classs":"اختر الصف",
+  "teachers_ar":"المعلمين"
 }

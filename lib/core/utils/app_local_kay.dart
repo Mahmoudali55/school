@@ -1054,4 +1054,5 @@ class AppLocalKay {
   static const String no_line = 'no_line';
   static const String unknown = 'unknown';
   static const String select_classs = 'select_classs';
+  static const String teachers_ar = 'teachers_ar';
 }

@@ -33,6 +33,7 @@ import 'package:my_template/features/home/data/models/student_balance_model.dart
 import 'package:my_template/features/home/data/models/student_course_degree_model.dart';
 import 'package:my_template/features/home/data/models/teacher_class_model.dart';
 import 'package:my_template/features/home/data/models/teacher_courses_model.dart';
+import 'package:my_template/features/home/data/models/teacher_data_model.dart';
 import 'package:my_template/features/home/data/models/teacher_level_model.dart';
 
 import '../models/home_models.dart';
@@ -103,6 +104,7 @@ abstract interface class HomeRepo {
   Future<Either<Failure, List<String>>> uploadFile({required List<String> filePaths});
   Future<Either<Failure, String>> imageFileName({required String filePath});
   Future<Either<Failure, List<BusDataModel>>> busData();
+  Future<Either<Failure, List<TeacherDataModel>>> teacherData({required var searchVal});
 }
 
 class HomeRepoImpl implements HomeRepo {
@@ -479,6 +481,18 @@ class HomeRepoImpl implements HomeRepo {
         } else {
           throw Exception('Server error: ${response.statusCode}, ${response.body}');
         }
+      },
+    );
+  }
+
+  Future<Either<Failure, List<TeacherDataModel>>> teacherData({required var searchVal}) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.teacherData,
+          queryParameters: {"SearchVal": searchVal},
+        );
+        return TeacherDataModel.listFromResponse(response);
       },
     );
   }

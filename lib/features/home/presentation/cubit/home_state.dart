@@ -20,6 +20,7 @@ import 'package:my_template/features/home/data/models/student_balance_model.dart
 import 'package:my_template/features/home/data/models/student_course_degree_model.dart';
 import 'package:my_template/features/home/data/models/teacher_class_model.dart';
 import 'package:my_template/features/home/data/models/teacher_courses_model.dart';
+import 'package:my_template/features/home/data/models/teacher_data_model.dart';
 import 'package:my_template/features/home/data/models/teacher_level_model.dart';
 
 import '../../data/models/home_models.dart';
@@ -51,6 +52,7 @@ class HomeState extends Equatable {
     this.editLessonsStatus = const StatusState.initial(),
     this.imageFileNameStatus = const StatusState.initial(),
     this.busDataStatus = const StatusState.initial(),
+    this.teacherDataStatus = const StatusState.initial(),
     this.selectedStudent,
     this.data,
     this.isLoading = false,
@@ -83,6 +85,7 @@ class HomeState extends Equatable {
   final StatusState<List<BusDataModel>> busDataStatus;
   final StatusState<String> imageFileNameStatus;
   final StudentMiniInfo? selectedStudent;
+  final StatusState<List<TeacherDataModel>>? teacherDataStatus;
 
   /// Main home data (TeacherHomeModel, StudentHomeModel, etc.)
   final HomeModel? data;
@@ -120,6 +123,7 @@ class HomeState extends Equatable {
     editLessonsStatus,
     imageFileNameStatus,
     busDataStatus,
+    teacherDataStatus,
   ];
 
   HomeState copyWith({
@@ -148,6 +152,7 @@ class HomeState extends Equatable {
     StatusState<AddLessonsResponse>? editLessonsStatus,
     StatusState<String>? imageFileNameStatus,
     StatusState<List<BusDataModel>>? busDataStatus,
+    StatusState<List<TeacherDataModel>>? teacherDataStatus,
     StudentMiniInfo? selectedStudent,
     HomeModel? data,
     bool? isLoading,
@@ -183,6 +188,7 @@ class HomeState extends Equatable {
       editLessonsStatus: editLessonsStatus ?? this.editLessonsStatus,
       imageFileNameStatus: imageFileNameStatus ?? this.imageFileNameStatus,
       busDataStatus: busDataStatus ?? this.busDataStatus,
+      teacherDataStatus: teacherDataStatus ?? this.teacherDataStatus,
     );
   }
 }

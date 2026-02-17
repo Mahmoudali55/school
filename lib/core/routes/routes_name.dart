@@ -25,4 +25,5 @@ class RoutesName {
   static const String pickupAdminScreen = 'pickupAdminScreen';
   static const String showStudentBalanceScreen = 'showStudentBalanceScreen';
   static const String studentAIAssistantScreen = 'studentAIAssistantScreen';
+  static const String teacherScreen = 'teacherScreen';
 }

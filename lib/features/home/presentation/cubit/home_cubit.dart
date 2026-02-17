@@ -423,6 +423,18 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  Future teacherData({required var searchVal}) async {
+    if (isClosed) return;
+    emit(state.copyWith(teacherDataStatus: StatusState.loading()));
+
+    final result = await _homeRepo.teacherData(searchVal: searchVal);
+    if (isClosed) return;
+    result.fold(
+      (error) => emit(state.copyWith(teacherDataStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(teacherDataStatus: StatusState.success(success))),
+    );
+  }
+
   void resetAddHomeworkStatus() {
     if (isClosed) return;
     emit(state.copyWith(addHomeworkStatus: const StatusState.initial()));

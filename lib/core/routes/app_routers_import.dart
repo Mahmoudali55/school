@@ -7,6 +7,7 @@ import 'package:my_template/features/chat/presentation/screen/messages_screen.da
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/class/presentation/screen/assignments_screen.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
+import 'package:my_template/features/home/presentation/view/execution/Teacher_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/digital_library_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/grades_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/leave_parent_screen.dart';
@@ -16,7 +17,6 @@ import 'package:my_template/features/home/presentation/view/execution/uniform_pa
 import 'package:my_template/features/home/presentation/view/screen/home_screen.dart';
 import 'package:my_template/features/home/presentation/view/screen/student_ai_assistant_screen.dart';
 import 'package:my_template/features/layout/presentation/screen/layout_screen.dart';
-import 'package:my_template/features/leave_permission/presentation/cubit/leave_cubit.dart';
 import 'package:my_template/features/leave_permission/presentation/screen/leave_admin_screen.dart';
 import 'package:my_template/features/notifications/presentation/cubit/notification_cubit.dart';
 import 'package:my_template/features/notifications/presentation/screen/notifications_partent_screen.dart';
