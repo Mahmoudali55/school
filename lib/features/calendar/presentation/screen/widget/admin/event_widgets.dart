@@ -93,27 +93,7 @@ class EventCard extends StatelessWidget {
             ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
           ),
           Gap(8.h),
-          Row(
-            children: [
-              Icon(Icons.access_time_rounded, size: 14.w, color: const Color(0xFF6B7280)),
-              Gap(4.w),
-              Text(
-                event.time,
-                style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
-              ),
-              Gap(16.w),
-              Icon(Icons.location_on_outlined, size: 14.w, color: const Color(0xFF6B7280)),
-              Gap(4.w),
-              Expanded(
-                child: Text(
-                  event.location,
-                  style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
+
           if (event.description.isNotEmpty) ...[
             Gap(12.h),
             Text(
@@ -152,34 +132,6 @@ class EventCard extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
-              Row(
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.edit_outlined, size: 18.w, color: const Color(0xFF6B7280)),
-                    onPressed: onEdit,
-                    constraints: const BoxConstraints(),
-                    padding: EdgeInsets.all(4.w),
-                  ),
-                  Gap(4.w),
-                  IconButton(
-                    icon: Icon(
-                      Icons.notifications_active_outlined,
-                      size: 18.w,
-                      color: const Color(0xFF6B7280),
-                    ),
-                    onPressed: onSetReminder,
-                    constraints: const BoxConstraints(),
-                    padding: EdgeInsets.all(4.w),
-                  ),
-                  Gap(4.w),
-                  IconButton(
-                    icon: Icon(Icons.share_outlined, size: 18.w, color: const Color(0xFF6B7280)),
-                    onPressed: onShare,
-                    constraints: const BoxConstraints(),
-                    padding: EdgeInsets.all(4.w),
-                  ),
-                ],
               ),
             ],
           ),

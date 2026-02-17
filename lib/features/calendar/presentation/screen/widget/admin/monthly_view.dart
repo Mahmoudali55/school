@@ -35,9 +35,6 @@ class MonthlyView extends StatelessWidget {
           // شبكة الأيام
           _buildMonthGrid(context),
           Gap(20.h),
-          // إحصائيات الشهر
-          _buildMonthlyStats(context),
-          Gap(20.h),
           // الأحداث القادمة
           _buildUpcomingEvents(context),
         ],
@@ -161,122 +158,6 @@ class MonthlyView extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildMonthlyStats(BuildContext context) {
-    List<AdminCalendarEvent> monthEvents = getEventsForMonth(selectedDate);
-
-    Map<String, int> eventCounts = {};
-    for (var event in monthEvents) {
-      eventCounts[event.type] = (eventCounts[event.type] ?? 0) + 1;
-    }
-
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: AppColor.whiteColor(context),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: AppColor.blackColor(context).withOpacity(0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 1),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                AppLocalKay.school_statistics.tr(),
-                style: AppTextStyle.titleMedium(
-                  context,
-                ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF9C27B0).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  "${monthEvents.length} حدث",
-                  style: AppTextStyle.bodySmall(context).copyWith(
-                    fontSize: 11.sp,
-                    color: const Color(0xFF9C27B0),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Gap(16.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildStatItem(
-                context,
-                AppLocalKay.school_events.tr(),
-                eventCounts["اجتماع"] ?? 0,
-                const Color(0xFFF59E0B),
-                Icons.groups_rounded,
-              ),
-              _buildStatItem(
-                context,
-                AppLocalKay.school_activities.tr(),
-                eventCounts["فعالية"] ?? 0,
-                const Color(0xFF10B981),
-                Icons.celebration_rounded,
-              ),
-              _buildStatItem(
-                context,
-                AppLocalKay.school_exams.tr(),
-                eventCounts["اختبار"] ?? 0,
-                const Color(0xFFDC2626),
-                Icons.quiz_rounded,
-              ),
-              _buildStatItem(
-                context,
-                AppLocalKay.school_holidays.tr(),
-                eventCounts["عطلة"] ?? 0,
-                const Color(0xFF7C3AED),
-                Icons.beach_access_rounded,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatItem(BuildContext context, String title, int count, Color color, IconData icon) {
-    return Column(
-      children: [
-        Container(
-          padding: EdgeInsets.all(8.w),
-          decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Icon(icon, size: 16.w, color: color),
-        ),
-        Gap(6.h),
-        Text(
-          '$count',
-          style: AppTextStyle.bodyMedium(
-            context,
-          ).copyWith(fontWeight: FontWeight.bold, color: color),
-        ),
-        Gap(2.h),
-        Text(
-          title,
-          style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
-        ),
-      ],
     );
   }
 

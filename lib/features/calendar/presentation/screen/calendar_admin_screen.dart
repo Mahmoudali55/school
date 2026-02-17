@@ -353,13 +353,24 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
       } catch (e) {
         color = const Color(0xFF9C27B0);
       }
+
+      final title = event.eventTitel;
+      String type = "اجتماع"; // Default
+      if (title.contains("اختبار") || title.contains("امتحان")) {
+        type = "اختبار";
+      } else if (title.contains("عطلة") || title.contains("إجازة")) {
+        type = "عطلة";
+      } else if (title.contains("فعالية") || title.contains("نشاط") || title.contains("حفل")) {
+        type = "فعالية";
+      }
+
       return AdminCalendarEvent(
-        title: event.eventTitel,
+        title: title,
         date: event.eventDate,
-        time: event.eventTime,
-        type: "حدث",
+        time: event.eventTime.isEmpty ? "08:00 ص" : event.eventTime,
+        type: type,
         color: color,
-        location: "المدرسة",
+        location: '',
         description: event.eventDesc,
         participants: [],
         priority: "عادي",
@@ -368,11 +379,30 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
 
     // Mapping from TeacherCalendarEvent (Local model)
     if (event is TeacherCalendarEvent) {
+      String type = "اجتماع";
+      switch (event.type) {
+        case EventType.meeting:
+          type = "اجتماع";
+          break;
+        case EventType.exam:
+          type = "اختبار";
+          break;
+        case EventType.classEvent:
+          type = "حصّة";
+          break;
+        case EventType.correction:
+          type = "تصحيح";
+          break;
+        case EventType.preparation:
+          type = "تحضير";
+          break;
+      }
+
       return AdminCalendarEvent(
         title: event.title,
-        date: DateFormat('d MMM').format(event.date),
+        date: DateFormat('yyyy-MM-dd').format(event.date),
         time: event.formattedTime,
-        type: event.typeName,
+        type: type,
         color: event.color,
         location: event.location,
         description: event.description,
