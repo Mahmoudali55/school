@@ -25,6 +25,7 @@ class BusModel {
   final String? modelYear;
   final String? sectionName;
   final String? accountName;
+  final List<Map<String, dynamic>>? stops;
 
   BusModel({
     required this.busNumber,
@@ -52,5 +53,6 @@ class BusModel {
     this.modelYear,
     this.sectionName,
     this.accountName,
+    this.stops,
   });
 }

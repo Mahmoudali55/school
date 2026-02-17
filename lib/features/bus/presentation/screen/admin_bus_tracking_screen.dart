@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_state.dart';
-import 'package:my_template/features/bus/presentation/screen/widget/admin/admin_all_buses_status.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/admin/admin_bus_details.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/admin/admin_buses_selector.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/admin/admin_emergency_button.dart';
@@ -13,6 +13,9 @@ import 'package:my_template/features/bus/presentation/screen/widget/admin/admin_
 import 'package:my_template/features/bus/presentation/screen/widget/admin/admin_quick_overview.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/admin/admin_safety_alerts.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/admin/fleet_management.dart';
+import 'package:my_template/features/home/data/models/bus_data_model.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
+import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 
 class AdminBusTrackingScreen extends StatefulWidget {
   const AdminBusTrackingScreen({super.key});
@@ -30,6 +33,8 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
   void initState() {
     super.initState();
     _initializeAnimations();
+    // Fetch real bus data on init
+    context.read<HomeCubit>().getData();
   }
 
   void _initializeAnimations() {
@@ -42,6 +47,79 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
     ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
   }
 
+  /// Maps [BusDataModel] from API to [BusModel] used in UI
+  List<BusModel> _mapBusData(List<BusDataModel> apiData) {
+    return List.generate(apiData.length, (index) {
+      final bus = apiData[index];
+      final lineName = bus.lineNameAr ?? "";
+
+      // Parse stops from the API lineNameAr field (e.g., "القادسية/اليرموك")
+      final List<String> rawStops = lineName
+          .split(RegExp(r'[/-]'))
+          .map((s) => s.trim())
+          .where((s) => s.isNotEmpty)
+          .toList();
+
+      List<Map<String, dynamic>> stops = [
+        {
+          'name': 'المدرسة',
+          'alignment': 0.0,
+          'icon': Icons.school_rounded,
+          'color': const Color(0xFF2196F3),
+        },
+      ];
+
+      if (rawStops.isEmpty) {
+        // Fallback if no stops found
+        stops.add({
+          'name': 'نقطة الوصول',
+          'alignment': 1.0,
+          'icon': Icons.flag_rounded,
+          'color': const Color(0xFF4CAF50),
+        });
+      } else {
+        // Distribute stops along the path
+        for (int i = 0; i < rawStops.length; i++) {
+          final isLast = i == rawStops.length - 1;
+          // Calculate alignment: start from 0.3 and go to 1.0
+          final double alignment =
+              0.3 + (i * (0.7 / (rawStops.length > 1 ? rawStops.length - 1 : 1)));
+
+          stops.add({
+            'name': rawStops[i],
+            'alignment': isLast ? 1.0 : alignment.clamp(0.3, 0.9),
+            'icon': isLast ? Icons.flag_rounded : Icons.location_on_rounded,
+            'color': isLast ? const Color(0xFF4CAF50) : const Color(0xFFFF9800),
+          });
+        }
+      }
+
+      return BusModel(
+        busNumber: bus.busCode?.toString() ?? "-",
+        busName: bus.plateNo ?? "-",
+        driverName: bus.driverNameAr ?? "-",
+        driverPhone: "-", // Not available in BusDataModel
+        currentLocation: bus.addressAr ?? "-",
+        nextStop: "-",
+        estimatedTime: "-",
+        distance: "-",
+        speed: "-",
+        capacity: bus.busSets?.toString() ?? "-",
+        occupiedSeats: "0",
+        status: "نشط",
+        busColor: const Color(0xFF9C27B0), // Default premium color
+        route: bus.lineNameAr ?? "-",
+        attendanceRate: "0%",
+        fuelLevel: "100%",
+        maintenanceStatus: "جيد",
+        studentsOnBoard: "0",
+        supervisorName: bus.supervisorNameAr1,
+        sectionName: bus.sectionNameAr,
+        stops: stops,
+      );
+    });
+  }
+
   @override
   void dispose() {
     _animationController.dispose();
@@ -50,64 +128,100 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BusCubit, BusState>(
-      builder: (context, state) {
-        if (state.isLoading) {
-          return const Scaffold(body: Center(child: CircularProgressIndicator()));
-        }
-
-        final selectedBusData = state.selectedAdminBus;
-        if (selectedBusData == null) {
-          return Scaffold(body: Center(child: Text(AppLocalKay.no_buses.tr())));
-        }
-
-        return Scaffold(
-          backgroundColor: const Color(0xFFF8FAFD),
-          body: SafeArea(
-            child: CustomScrollView(
-              physics: const BouncingScrollPhysics(),
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Center(
-                    child: Text(
-                      AppLocalKay.bus_title.tr(),
-                      style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: AdminBusesSelector(
-                    selectedBus: selectedBusData.busNumber,
-                    buses: state.buses,
-                    onBusSelected: (busNumber) {
-                      context.read<BusCubit>().selectAdminBus(busNumber);
-                    },
-                  ),
-                ),
-                const SliverToBoxAdapter(child: AdminQuickOverview()),
-                SliverToBoxAdapter(
-                  child: AdminMainTrackingCard(
-                    selectedBusData: selectedBusData,
-                    busAnimation: _busAnimation,
-                    onCallDriver: () => _callDriver(selectedBusData),
-                    onRefreshLocation: () => _refreshLocation(selectedBusData),
-                    onSendAlert: () => _sendAlert(selectedBusData),
-                  ),
-                ),
-                SliverToBoxAdapter(child: AdminAllBusesStatus(allBusesData: state.buses)),
-                SliverToBoxAdapter(child: AdminBusDetails(selectedBusData: selectedBusData)),
-                SliverToBoxAdapter(child: FleetManagement(selectedBusData: selectedBusData)),
-                SliverToBoxAdapter(
-                  child: AdminSafetyAlerts(
-                    onFeatureTap: (feature) => _handleSafetyFeature(feature, selectedBusData),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          floatingActionButton: AdminEmergencyButton(onPressed: _showEmergencyDialog),
-        );
+    return BlocListener<HomeCubit, HomeState>(
+      listenWhen: (previous, current) =>
+          previous.busDataStatus.data != current.busDataStatus.data &&
+          current.busDataStatus.isSuccess,
+      listener: (context, homeState) {
+        final realBuses = _mapBusData(homeState.busDataStatus.data ?? []);
+        context.read<BusCubit>().updateAdminBuses(realBuses);
       },
+      child: BlocBuilder<BusCubit, BusState>(
+        builder: (context, busState) {
+          final buses = busState.buses;
+          final selectedBusData = busState.selectedAdminBus;
+
+          return BlocBuilder<HomeCubit, HomeState>(
+            builder: (context, homeState) {
+              final busStatus = homeState.busDataStatus;
+
+              if (busStatus.isLoading && buses.isEmpty) {
+                return const Scaffold(body: Center(child: CircularProgressIndicator()));
+              }
+
+              if (busStatus.isFailure && buses.isEmpty) {
+                return Scaffold(
+                  body: Center(child: Text(busStatus.error ?? "Error loading buses")),
+                );
+              }
+
+              if (buses.isEmpty) {
+                return Scaffold(body: Center(child: Text(AppLocalKay.no_buses.tr())));
+              }
+
+              // The selectedBusData is now synced via BusCubit
+              final displaySelectedBus = selectedBusData ?? buses.first;
+
+              return Scaffold(
+                backgroundColor: const Color(0xFFF8FAFD),
+                body: SafeArea(
+                  child: CustomScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Center(
+                            child: Text(
+                              AppLocalKay.bus_title.tr(),
+                              style: AppTextStyle.titleLarge(
+                                context,
+                              ).copyWith(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SliverToBoxAdapter(
+                        child: AdminBusesSelector(
+                          selectedBus: displaySelectedBus.busNumber,
+                          buses: buses,
+                          onBusSelected: (busNumber) {
+                            context.read<BusCubit>().selectAdminBus(busNumber);
+                          },
+                        ),
+                      ),
+                      const SliverToBoxAdapter(child: AdminQuickOverview()),
+                      SliverToBoxAdapter(
+                        child: AdminMainTrackingCard(
+                          selectedBusData: displaySelectedBus,
+                          busAnimation: _busAnimation,
+                          onCallDriver: () => _callDriver(displaySelectedBus),
+                          onRefreshLocation: () => _refreshLocation(displaySelectedBus),
+                          onSendAlert: () => _sendAlert(displaySelectedBus),
+                        ),
+                      ),
+
+                      SliverToBoxAdapter(
+                        child: AdminBusDetails(selectedBusData: displaySelectedBus),
+                      ),
+                      SliverToBoxAdapter(
+                        child: FleetManagement(selectedBusData: displaySelectedBus),
+                      ),
+                      SliverToBoxAdapter(
+                        child: AdminSafetyAlerts(
+                          onFeatureTap: (feature) =>
+                              _handleSafetyFeature(feature, displaySelectedBus),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                floatingActionButton: AdminEmergencyButton(onPressed: _showEmergencyDialog),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -120,12 +234,7 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
         content: Text('${AppLocalKay.ConnectDriverHint.tr()} ${busData.driverName}?'),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context), child: Text(AppLocalKay.cancel.tr())),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text(AppLocalKay.Connect.tr()),
-          ),
+          ElevatedButton(onPressed: () {}, child: Text(AppLocalKay.Connect.tr())),
         ],
       ),
     );

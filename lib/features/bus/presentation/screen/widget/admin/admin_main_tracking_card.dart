@@ -44,8 +44,8 @@ class AdminMainTrackingCard extends StatelessWidget {
           // Bus & Driver Header
           _buildBusHeader(context),
           Gap(20.h),
+
           // Map Section
-          _buildMapSection(context),
           Gap(20.h),
           // Quick Actions
           _buildQuickActions(context),
@@ -129,122 +129,6 @@ class AdminMainTrackingCard extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildMapSection(BuildContext context) {
-    return Container(
-      height: 200.h,
-      decoration: BoxDecoration(
-        color: AppColor.whiteColor(context),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: selectedBusData.busColor.withOpacity(0.3)),
-      ),
-      child: Stack(
-        children: [
-          // Route Line
-          Positioned(
-            top: 90.h,
-            left: 20.w,
-            right: 20.w,
-            child: Container(
-              height: 4.h,
-              decoration: BoxDecoration(
-                color: selectedBusData.busColor.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-          ),
-          // School Icon
-          Positioned(
-            left: 20.w,
-            top: 80.h,
-            child: Column(
-              children: [
-                Icon(Icons.school_rounded, color: const Color(0xFF2196F3), size: 24.w),
-                Gap(4.h),
-                Text(
-                  "المدرسة",
-                  style: AppTextStyle.bodySmall(context).copyWith(
-                    fontSize: 10.sp,
-                    color: const Color(0xFF6B7280),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // Multiple Stops
-          Positioned(
-            left: MediaQuery.of(context).size.width * 0.3,
-            top: 80.h,
-            child: Column(
-              children: [
-                Icon(Icons.location_on_rounded, color: const Color(0xFFFF9800), size: 20.w),
-                Gap(4.h),
-                Text(
-                  "المحطة 1",
-                  style: AppTextStyle.bodySmall(
-                    context,
-                  ).copyWith(fontSize: 8.sp, color: const Color(0xFF6B7280)),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            left: MediaQuery.of(context).size.width * 0.6,
-            top: 80.h,
-            child: Column(
-              children: [
-                Icon(Icons.location_on_rounded, color: const Color(0xFFFF9800), size: 20.w),
-                Gap(4.h),
-                Text(
-                  "المحطة 2",
-                  style: AppTextStyle.bodySmall(
-                    context,
-                  ).copyWith(fontSize: 8.sp, color: const Color(0xFF6B7280)),
-                ),
-              ],
-            ),
-          ),
-          // Animated Bus
-          _buildAnimatedBus(context),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAnimatedBus(BuildContext context) {
-    return Positioned(
-      left: MediaQuery.of(context).size.width * 0.45,
-      top: 70.h,
-      child: AnimatedBuilder(
-        animation: busAnimation,
-        builder: (context, child) {
-          return Transform.translate(
-            offset: Offset(0, busAnimation.value),
-            child: Container(
-              padding: EdgeInsets.all(10.w),
-              decoration: BoxDecoration(
-                color: AppColor.whiteColor(context),
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColor.blackColor(context).withOpacity(0.2),
-                    blurRadius: 8,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Icon(
-                Icons.directions_bus_rounded,
-                color: selectedBusData.busColor,
-                size: 32.w,
-              ),
-            ),
-          );
-        },
-      ),
     );
   }
 

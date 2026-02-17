@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
 import 'package:my_template/features/bus/data/model/bus_tracking_models.dart';
 import 'package:my_template/features/bus/data/repo/bus_repo.dart';
 
@@ -226,6 +227,19 @@ class BusCubit extends Cubit<BusState> {
       state.copyWith(
         classes: busClasses,
         selectedClass: busClasses.isNotEmpty ? busClasses.first : null,
+      ),
+    );
+  }
+
+  void updateAdminBuses(List<BusModel> realBuses) {
+    emit(
+      state.copyWith(
+        buses: realBuses,
+        selectedAdminBus:
+            state.selectedAdminBus != null &&
+                realBuses.any((b) => b.busNumber == state.selectedAdminBus!.busNumber)
+            ? realBuses.firstWhere((b) => b.busNumber == state.selectedAdminBus!.busNumber)
+            : (realBuses.isNotEmpty ? realBuses.first : null),
       ),
     );
   }
