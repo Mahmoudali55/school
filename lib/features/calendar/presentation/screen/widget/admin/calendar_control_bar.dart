@@ -33,10 +33,6 @@ class CalendarControlBar extends StatelessWidget {
       color: AppColor.whiteColor(context),
       child: Column(
         children: [
-          // تصفية الأحداث
-          _buildFilterSelector(context),
-          Gap(12.h),
-          // شريط العرض والتنقل
           Row(
             children: [
               Expanded(
@@ -82,43 +78,6 @@ class CalendarControlBar extends StatelessWidget {
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildFilterSelector(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: filters
-            .map(
-              (filter) => Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4.w),
-                child: FilterChip(
-                  label: Text(
-                    filter,
-                    style: AppTextStyle.bodySmall(context).copyWith(
-                      color: selectedFilter == filter
-                          ? AppColor.whiteColor(context)
-                          : const Color(0xFF6B7280),
-                    ),
-                  ),
-                  selected: selectedFilter == filter,
-                  onSelected: (bool selected) {
-                    onFilterSelected(selected ? filter : AppLocalKay.filter_all.tr());
-                  },
-                  backgroundColor: AppColor.whiteColor(context),
-                  selectedColor: const Color(0xFF9C27B0),
-                  checkmarkColor: AppColor.whiteColor(context),
-                  side: BorderSide(
-                    color: selectedFilter == filter
-                        ? const Color(0xFF9C27B0)
-                        : const Color(0xFFE5E7EB),
-                  ),
-                ),
-              ),
-            )
-            .toList(),
       ),
     );
   }

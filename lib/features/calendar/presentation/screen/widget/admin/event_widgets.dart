@@ -7,15 +7,14 @@ import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
-import 'package:my_template/features/calendar/data/model/Events_response_model.dart';
-import 'package:my_template/features/calendar/data/model/calendar_event_model.dart';
 import 'package:my_template/features/calendar/presentation/cubit/calendar_cubit.dart';
 import 'package:my_template/features/calendar/presentation/execution/add_event_screen.dart';
+import 'package:my_template/features/calendar/presentation/screen/widget/admin/admin_calendar_models.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 
 class EventCard extends StatelessWidget {
-  final dynamic event;
+  final AdminCalendarEvent event;
   final VoidCallback onEdit;
   final VoidCallback onSetReminder;
   final VoidCallback onShare;
@@ -27,49 +26,6 @@ class EventCard extends StatelessWidget {
     required this.onSetReminder,
     required this.onShare,
   });
-
-  String _getTitle() {
-    if (event is Event) return (event as Event).eventTitel;
-    if (event is TeacherCalendarEvent) return (event as TeacherCalendarEvent).title;
-    return "";
-  }
-
-  String _getTime() {
-    if (event is Event) return (event as Event).eventTime;
-    if (event is TeacherCalendarEvent) return (event as TeacherCalendarEvent).formattedTime;
-    return "";
-  }
-
-  String _getType() {
-    if (event is Event) return "حدث";
-    if (event is TeacherCalendarEvent) return (event as TeacherCalendarEvent).typeName;
-    return "";
-  }
-
-  Color _getColor() {
-    if (event is Event) {
-      final colorStr = (event as Event).eventColore.replaceAll('#', '');
-      try {
-        return Color(int.parse('FF$colorStr', radix: 16));
-      } catch (e) {
-        return Colors.blue;
-      }
-    }
-    if (event is TeacherCalendarEvent) return (event as TeacherCalendarEvent).color;
-    return Colors.blue;
-  }
-
-  String _getLocation() {
-    if (event is Event) return "المدرسة";
-    if (event is TeacherCalendarEvent) return (event as TeacherCalendarEvent).location;
-    return "";
-  }
-
-  String _getDescription() {
-    if (event is Event) return (event as Event).eventDesc;
-    if (event is TeacherCalendarEvent) return (event as TeacherCalendarEvent).description;
-    return "";
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,19 +51,19 @@ class EventCard extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                 decoration: BoxDecoration(
-                  color: _getColor().withOpacity(0.1),
+                  color: event.color.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
-                  _getType(),
+                  event.type,
                   style: AppTextStyle.bodySmall(
                     context,
-                  ).copyWith(color: _getColor(), fontWeight: FontWeight.bold, fontSize: 10.sp),
+                  ).copyWith(color: event.color, fontWeight: FontWeight.bold, fontSize: 10.sp),
                 ),
               ),
               const Spacer(),
               // Priority fallback
-              if (event is TeacherCalendarEvent && (event as TeacherCalendarEvent).status == "مهم")
+              if (event.priority == "مهم")
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                   decoration: BoxDecoration(
@@ -131,7 +87,7 @@ class EventCard extends StatelessWidget {
           ),
           Gap(12.h),
           Text(
-            _getTitle(),
+            event.title,
             style: AppTextStyle.titleMedium(
               context,
             ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
@@ -142,7 +98,7 @@ class EventCard extends StatelessWidget {
               Icon(Icons.access_time_rounded, size: 14.w, color: const Color(0xFF6B7280)),
               Gap(4.w),
               Text(
-                _getTime(),
+                event.time,
                 style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
               ),
               Gap(16.w),
@@ -150,7 +106,7 @@ class EventCard extends StatelessWidget {
               Gap(4.w),
               Expanded(
                 child: Text(
-                  _getLocation(),
+                  event.location,
                   style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -158,10 +114,10 @@ class EventCard extends StatelessWidget {
               ),
             ],
           ),
-          if (_getDescription().isNotEmpty) ...[
+          if (event.description.isNotEmpty) ...[
             Gap(12.h),
             Text(
-              _getDescription(),
+              event.description,
               style: AppTextStyle.bodySmall(
                 context,
               ).copyWith(color: const Color(0xFF4B5563), height: 1.4),
@@ -180,7 +136,7 @@ class EventCard extends StatelessWidget {
                 height: 24.h,
                 child: Stack(
                   children: List.generate(
-                    1, // Simplified for now
+                    event.participants.length,
                     (index) => Positioned(
                       left: index * 16.w,
                       child: Container(

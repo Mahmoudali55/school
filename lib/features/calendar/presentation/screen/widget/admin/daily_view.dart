@@ -1,10 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
-import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/admin/admin_calendar_models.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/admin/event_widgets.dart';
 
@@ -35,7 +33,7 @@ class DailyView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // تاريخ اليوم
+          // اليوم وتاريخه
           _buildDailyHeader(context, dailyEvents.length),
           Gap(16.h),
           // قائمة الأحداث
@@ -43,6 +41,7 @@ class DailyView extends StatelessWidget {
             const CalendarEmptyState()
           else
             Column(
+              mainAxisSize: MainAxisSize.min,
               children: dailyEvents
                   .map(
                     (event) => EventCard(
@@ -54,9 +53,6 @@ class DailyView extends StatelessWidget {
                   )
                   .toList(),
             ),
-          Gap(20.h),
-          // ملخص اليوم
-          _buildDailySummary(context),
         ],
       ),
     );
@@ -107,73 +103,6 @@ class DailyView extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildDailySummary(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20.w),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFF9C27B0), Color(0xFF7B1FA2)],
-        ),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF9C27B0).withOpacity(0.3),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            AppLocalKay.daily_notes.tr(),
-            style: AppTextStyle.titleMedium(
-              context,
-            ).copyWith(color: AppColor.whiteColor(context), fontWeight: FontWeight.bold),
-          ),
-          Gap(12.h),
-          _buildSummaryRow(
-            context,
-            Icons.check_circle_outline_rounded,
-            "تم إنجاز ٢ من الأحداث اليوم",
-          ),
-          Gap(8.h),
-          _buildSummaryRow(
-            context,
-            Icons.notification_important_rounded,
-            "يوجد حدث هام سيبدأ بعد ساعة",
-          ),
-          Gap(8.h),
-          _buildSummaryRow(
-            context,
-            Icons.people_outline_rounded,
-            "إجمالي عدد المشاركين اليوم: ٤٥ شخص",
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSummaryRow(BuildContext context, IconData icon, String text) {
-    return Row(
-      children: [
-        Icon(icon, color: AppColor.whiteColor(context).withOpacity(0.8), size: 16.w),
-        Gap(8.w),
-        Expanded(
-          child: Text(
-            text,
-            style: AppTextStyle.bodySmall(
-              context,
-            ).copyWith(color: AppColor.whiteColor(context).withOpacity(0.9)),
-          ),
-        ),
-      ],
     );
   }
 }
