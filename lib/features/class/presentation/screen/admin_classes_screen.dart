@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
+import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_dropdown_form_field.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -36,23 +37,13 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.scaffoldColor(context),
-      appBar: AppBar(
-        backgroundColor: AppColor.scaffoldColor(context),
-        elevation: 0,
-        centerTitle: true,
+      appBar: CustomAppBar(
+        context,
         title: Text(
           AppLocalKay.classes.tr(),
-          style: AppTextStyle.titleMedium(
-            context,
-          ).copyWith(fontWeight: FontWeight.bold, color: AppColor.textColor(context)),
+          style: AppTextStyle.bodyLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search_rounded, color: AppColor.textColor(context)),
-            onPressed: () {},
-          ),
-          Gap(8.w),
-        ],
+        automaticallyImplyLeading: false,
       ),
       body: BlocBuilder<ClassCubit, ClassState>(
         builder: (context, state) {
