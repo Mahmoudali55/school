@@ -11,26 +11,17 @@ class ShortcutCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(12.w),
-      decoration: BoxDecoration(
-        color: AppColor.whiteColor(context),
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: AppColor.blackColor(context).withOpacity(0.03),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+      color: AppColor.whiteColor(context),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
             padding: EdgeInsets.all(8.w),
             decoration: BoxDecoration(
-              color: shortcut.color.withOpacity(0.1),
+              color: shortcut.color.withValues(alpha: (0.1)),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(shortcut.icon, color: shortcut.color, size: 20.w),

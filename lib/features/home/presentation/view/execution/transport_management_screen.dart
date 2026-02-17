@@ -114,25 +114,15 @@ class TransportManagementScreen extends StatelessWidget {
   Widget _buildBusCard(BusDataModel bus, BuildContext context) {
     final bool isActive = bus.driverNameAr != null && bus.lineNameAr != null;
 
-    return Container(
+    return Card(
       margin: EdgeInsets.only(bottom: 16.h),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 15,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
+      elevation: 3,
       child: Padding(
         padding: EdgeInsets.all(20.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// Header
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -146,8 +136,8 @@ class TransportManagementScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
                   decoration: BoxDecoration(
                     color: isActive
-                        ? Colors.green.withOpacity(0.1)
-                        : Colors.orange.withOpacity(0.1),
+                        ? Colors.green.withValues(alpha: (0.1))
+                        : Colors.orange.withValues(alpha: (0.1)),
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Text(
