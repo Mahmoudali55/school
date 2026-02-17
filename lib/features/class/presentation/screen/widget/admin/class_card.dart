@@ -29,216 +29,243 @@ class ClassCard extends StatelessWidget {
         ? (totalStudents / classModel.classCapacity)
         : 0.0;
 
-    // Determine status color based on fill percentage
     Color statusColor;
     String statusText;
 
     if (fillPercentage >= 0.9) {
-      statusColor = Colors.redAccent;
+      statusColor = AppColor.errorColor(context);
       statusText = AppLocalKay.filter_full.tr();
     } else if (fillPercentage >= 0.7) {
-      statusColor = Colors.orangeAccent;
+      statusColor = AppColor.warningColor(context);
       statusText = AppLocalKay.class_status_almost_full.tr();
     } else {
-      statusColor = const Color(0xFF00C853); // Vibrant Green
+      statusColor = AppColor.successColor(context);
       statusText = AppLocalKay.filter_available.tr();
     }
 
-    return Card(
-      margin: EdgeInsets.only(bottom: 12.h),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-      elevation: 1.3,
+    return Container(
+      margin: EdgeInsets.only(bottom: 16.h),
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: AppColor.whiteColor(context),
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(color: AppColor.borderColor(context)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-            decoration: BoxDecoration(
-              color: statusColor.withValues(alpha: 0.08),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(16.r),
-                topRight: Radius.circular(16.r),
+          // Header Row
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: EdgeInsets.all(10.w),
+                decoration: BoxDecoration(
+                  color: AppColor.primaryColor(context).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12.r),
+                ),
+                child: Icon(
+                  Icons.door_sliding_outlined,
+                  color: AppColor.primaryColor(context),
+                  size: 20.sp,
+                ),
               ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(8.w),
-                        decoration: BoxDecoration(
-                          color: AppColor.primaryColor(context).withValues(alpha: 0.1),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.class_outlined,
-                          color: AppColor.primaryColor(context),
-                          size: 20.sp,
-                        ),
-                      ),
-                      Gap(10.w),
-                      Expanded(
-                        child: Text(
-                          classModel.classNameAr,
-                          style: AppTextStyle.titleMedium(context).copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xFF2D3748),
-                            fontSize: 16.sp,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
+              Gap(12.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      classModel.classNameAr,
+                      style: AppTextStyle.titleSmall(context).copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "${classModel.floorName ?? 'الدور الأرضي'}",
+                      style: AppTextStyle.bodySmall(
+                        context,
+                      ).copyWith(color: AppColor.greyColor(context)),
+                    ),
+                  ],
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
-                  decoration: BoxDecoration(
-                    color: statusColor.withValues(alpha: (0.15)),
-                    borderRadius: BorderRadius.circular(20.r),
-                    border: Border.all(color: statusColor.withValues(alpha: (0.3))),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.circle, size: 8.sp, color: statusColor),
-                      Gap(4.w),
-                      Text(
-                        statusText,
-                        style: AppTextStyle.bodySmall(context).copyWith(
-                          fontSize: 11.sp,
-                          color: statusColor,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+              _buildRefinedBadge(context, statusText, statusColor),
+            ],
           ),
-
-          Padding(
-            padding: EdgeInsets.all(16.w),
-            child: Column(
-              children: [
-                // Info Grid
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: _buildInfoItem(
-                        context,
-                        Icons.person_outline,
-                        AppLocalKay.teacher.tr(),
-                        classModel.teacherName ?? AppLocalKay.unknown.tr(),
-                      ),
-                    ),
-                    Gap(12.w),
-                    Expanded(
-                      child: _buildInfoItem(
-                        context,
-                        Icons.meeting_room_outlined,
-                        AppLocalKay.label_room.tr(),
-                        classModel.floorName ?? AppLocalKay.unknown.tr(),
-                      ),
-                    ),
-                  ],
-                ),
-
-                Gap(20.h),
-
-                // Capacity Progress
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          AppLocalKay.label_capacity.tr(),
-                          style: AppTextStyle.bodySmall(
-                            context,
-                          ).copyWith(color: Colors.grey[600], fontWeight: FontWeight.w500),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: '$totalStudents',
-                                style: AppTextStyle.bodyMedium(context).copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: const Color(0xFF2D3748),
-                                ),
-                              ),
-                              TextSpan(
-                                text: '/${classModel.classCapacity}',
-                                style: AppTextStyle.bodySmall(
-                                  context,
-                                ).copyWith(color: Colors.grey[500]),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Gap(8.h),
-                    LinearPercentIndicator(
-                      padding: EdgeInsets.zero,
-                      lineHeight: 8.h,
-                      percent: fillPercentage > 1.0 ? 1.0 : fillPercentage,
-                      backgroundColor: Colors.grey[100],
-                      progressColor: statusColor,
-                      barRadius: Radius.circular(4.r),
-                      animation: true,
-                      animationDuration: 1000,
-                    ),
-                  ],
-                ),
-
-                Gap(20.h),
-              ],
-            ),
+          Gap(20.h),
+          // Info Section
+          Row(
+            children: [
+              _buildRefinedInfoItem(
+                context,
+                Icons.person_outline_rounded,
+                AppLocalKay.teacher.tr(),
+                classModel.teacherName ?? "غير محدد",
+              ),
+            ],
+          ),
+          Gap(16.h),
+          // Capacity Section
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "إشغال الفصل",
+                    style: AppTextStyle.bodySmall(
+                      context,
+                    ).copyWith(fontWeight: FontWeight.w600, fontSize: 10.sp),
+                  ),
+                  Text(
+                    "$totalStudents / ${classModel.classCapacity}",
+                    style: AppTextStyle.bodySmall(
+                      context,
+                    ).copyWith(fontWeight: FontWeight.bold, color: AppColor.textColor(context)),
+                  ),
+                ],
+              ),
+              Gap(8.h),
+              LinearPercentIndicator(
+                padding: EdgeInsets.zero,
+                lineHeight: 6.h,
+                percent: fillPercentage > 1.0 ? 1.0 : fillPercentage,
+                backgroundColor: AppColor.grey100Color(context),
+                progressColor: statusColor,
+                barRadius: Radius.circular(3.r),
+                animation: true,
+                animationDuration: 800,
+              ),
+            ],
+          ),
+          Gap(20.h),
+          // Divider
+          Divider(color: AppColor.dividerColor(context), height: 1),
+          Gap(12.h),
+          // Actions Row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _buildIconButton(
+                context,
+                Icons.edit_note_rounded,
+                AppColor.greyColor(context),
+                onEdit,
+              ),
+              Gap(8.w),
+              _buildTextButton(
+                context,
+                "الطلاب",
+                Icons.group_outlined,
+                AppColor.successColor(context),
+                onManageStudents,
+              ),
+              Gap(8.w),
+              _buildTextButton(
+                context,
+                "التفاصيل",
+                Icons.arrow_forward_rounded,
+                AppColor.primaryColor(context),
+                onViewDetails,
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _buildInfoItem(BuildContext context, IconData icon, String label, String value) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, size: 18.sp, color: Colors.grey[400]),
-        Gap(8.w),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: AppTextStyle.bodySmall(
-                  context,
-                ).copyWith(color: Colors.grey[500], fontSize: 10.sp),
-              ),
-              Gap(2.h),
-              Text(
-                value,
-                style: AppTextStyle.bodyMedium(context).copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF4A5568),
-                  height: 1.2,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ),
+  Widget _buildRefinedBadge(BuildContext context, String text, Color color) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(6.r),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(color: color, fontSize: 9.sp, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _buildRefinedInfoItem(BuildContext context, IconData icon, String label, String value) {
+    return Expanded(
+      child: Container(
+        padding: EdgeInsets.all(10.w),
+        decoration: BoxDecoration(
+          color: AppColor.grey50Color(context),
+          borderRadius: BorderRadius.circular(8.r),
         ),
-      ],
+        child: Row(
+          children: [
+            Icon(icon, size: 16.sp, color: AppColor.iconColor(context)),
+            Gap(8.w),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: TextStyle(fontSize: 8.sp, color: AppColor.greyColor(context)),
+                ),
+                Text(
+                  value,
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.w600, height: 1),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextButton(
+    BuildContext context,
+    String label,
+    IconData icon,
+    Color color,
+    VoidCallback onTap,
+  ) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8.r),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.08),
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        child: Row(
+          children: [
+            Text(
+              label,
+              style: TextStyle(color: color, fontSize: 11.sp, fontWeight: FontWeight.bold),
+            ),
+            Gap(4.w),
+            Icon(icon, size: 14.sp, color: color),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIconButton(BuildContext context, IconData icon, Color color, VoidCallback onTap) {
+    return IconButton(
+      onPressed: onTap,
+      visualDensity: VisualDensity.compact,
+      icon: Icon(icon, color: color, size: 20.sp),
+      padding: EdgeInsets.zero,
+      constraints: const BoxConstraints(),
     );
   }
 }

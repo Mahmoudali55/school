@@ -14,6 +14,7 @@ import 'package:my_template/features/class/data/model/stage_data_model.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/class/presentation/cubit/class_state.dart';
 import 'package:my_template/features/class/presentation/screen/widget/admin/class_card.dart';
+import 'package:my_template/features/class/presentation/screen/widget/admin/students_bottom_sheet.dart';
 
 class AdminClassesScreen extends StatefulWidget {
   const AdminClassesScreen({super.key});
@@ -34,171 +35,340 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 50.w, horizontal: 20.w),
-        child: BlocBuilder<ClassCubit, ClassState>(
-          builder: (context, state) {
-            final uniqueStages = (state.stageDataStatus.data ?? []).toSet().toList();
-            final uniqueLevels = (state.levelDataStatus?.data ?? []).toSet().toList();
-
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    AppLocalKay.select_section.tr(),
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  Gap(8.h),
-                  CustomDropdownFormField<SectionDataModel>(
-                    hint: AppLocalKay.select_section.tr(),
-                    value: state.selectedSection,
-                    items: (state.sectionDataStatus.data ?? []).map((section) {
-                      return DropdownMenuItem<SectionDataModel>(
-                        value: section,
-                        child: Text(section.sectionName),
-                      );
-                    }).toList(),
-                    onChanged: (SectionDataModel? section) {
-                      context.read<ClassCubit>().onSectionChanged(section);
-                    },
-                    errorText: '',
-                    submitted: false,
-                  ),
-                  Gap(5.h),
-                  Text(
-                    context.locale.languageCode == 'ar' ? 'اختر المرحلة' : 'Select Stage',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  Gap(8.h),
-                  CustomDropdownFormField<StageDataModel>(
-                    hint: context.locale.languageCode == 'ar' ? 'اختر المرحلة' : 'Select Stage',
-                    value: (uniqueStages.contains(state.selectedStage))
-                        ? state.selectedStage
-                        : null,
-                    items: uniqueStages.map((stage) {
-                      return DropdownMenuItem<StageDataModel>(
-                        value: stage,
-                        child: Text(stage.stageNameAr),
-                      );
-                    }).toList(),
-                    onChanged: (StageDataModel? stage) {
-                      context.read<ClassCubit>().onStageChanged(stage);
-                    },
-                    errorText: '',
-                    submitted: false,
-                  ),
-                  Gap(5.h),
-                  Text(
-                    AppLocalKay.select_classs.tr(),
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  Gap(8.h),
-                  CustomDropdownFormField<LevelModel>(
-                    hint: AppLocalKay.select_classs.tr(),
-                    value: (uniqueLevels.contains(state.selectedLevel))
-                        ? state.selectedLevel
-                        : null,
-                    items: uniqueLevels.map((stage) {
-                      return DropdownMenuItem<LevelModel>(
-                        value: stage,
-                        child: Text(stage.levelName),
-                      );
-                    }).toList(),
-                    onChanged:
-                        state.selectedStage == null || (state.levelDataStatus?.isLoading ?? false)
-                        ? null
-                        : (LevelModel? level) {
-                            context.read<ClassCubit>().onLevelChanged(level);
-                          },
-                    errorText: '',
-                    submitted: false,
-                  ),
-
-                  if (state.classDataStatus?.isLoading ?? false)
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: const CircularProgressIndicator(),
-                      ),
-                    )
-                  else if (state.classDataStatus?.isFailure ?? false)
-                    Center(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5.h),
-                        child: Column(
-                          children: [
-                            Icon(Icons.error_outline, color: Colors.redAccent, size: 40.sp),
-                            Gap(8.h),
-                            Text(
-                              state.classDataStatus!.error ?? 'Error loading data',
-                              style: AppTextStyle.bodyMedium(
-                                context,
-                              ).copyWith(color: AppColor.errorColor(context)),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  else if (state.classDataStatus?.isSuccess ?? false)
-                    if ((state.classDataStatus!.data ?? []).isEmpty)
-                      Center(
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.class_outlined,
-                              size: 60.sp,
-                              color: AppColor.grey300Color(context),
-                            ),
-                            Gap(16.h),
-                            Text(
-                              context.locale.languageCode == 'ar'
-                                  ? 'لا توجد فصول متاحة'
-                                  : 'No classes found',
-                              style: AppTextStyle.titleMedium(context).copyWith(
-                                color: AppColor.grey50Color(context),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Gap(8.h),
-                            Text(
-                              context.locale.languageCode == 'ar'
-                                  ? 'يرجى اختيار مرحلة ومستوى آخر'
-                                  : 'Please select another stage and level',
-                              style: AppTextStyle.bodySmall(
-                                context,
-                              ).copyWith(color: AppColor.grey400Color(context)),
-                            ),
-                          ],
-                        ),
-                      )
-                    else
-                      ListView.separated(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: state.classDataStatus!.data!.length,
-                        separatorBuilder: (context, index) => Gap(12.h),
-                        itemBuilder: (context, index) {
-                          final classModel = state.classDataStatus!.data![index];
-                          return ClassCard(
-                            classModel: classModel,
-                            onViewDetails: () {
-                              // Navigate to details
-                            },
-                            onEdit: () {
-                              // Navigate to edit
-                            },
-                            onManageStudents: () {
-                              // Navigate to students
-                            },
-                          );
-                        },
-                      ),
-                ],
-              ),
-            );
-          },
+      backgroundColor: AppColor.scaffoldColor(context),
+      appBar: AppBar(
+        backgroundColor: AppColor.scaffoldColor(context),
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          AppLocalKay.classes.tr(),
+          style: AppTextStyle.titleMedium(
+            context,
+          ).copyWith(fontWeight: FontWeight.bold, color: AppColor.textColor(context)),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search_rounded, color: AppColor.textColor(context)),
+            onPressed: () {},
+          ),
+          Gap(8.w),
+        ],
+      ),
+      body: BlocBuilder<ClassCubit, ClassState>(
+        builder: (context, state) {
+          final uniqueStages = (state.stageDataStatus.data ?? []).toSet().toList();
+          final uniqueLevels = (state.levelDataStatus?.data ?? []).toSet().toList();
+          final classes = state.classDataStatus?.data ?? [];
+
+          return CustomScrollView(
+            physics: const BouncingScrollPhysics(),
+            slivers: [
+              // Stats Row - Integrated but subtle
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(20.w, 10.h, 20.w, 20.h),
+                  child: Row(
+                    children: [
+                      _buildRefinedStat(
+                        context,
+                        "عدد الفصول",
+                        "${classes.length}",
+                        Icons.school_outlined,
+                        AppColor.primaryColor(context),
+                      ),
+                      Gap(12.w),
+                      _buildRefinedStat(
+                        context,
+                        "إجمالي الطلاب",
+                        "${classes.fold(0, (sum, item) => sum + (item.newStudent ?? 0) + (item.oldStudent ?? 0))}",
+                        Icons.people_outline_rounded,
+                        AppColor.secondAppColor(context),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // Filters Panel - Clean and Compact
+              SliverToBoxAdapter(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 20.w),
+                  padding: EdgeInsets.all(20.w),
+                  decoration: BoxDecoration(
+                    color: AppColor.whiteColor(context),
+                    borderRadius: BorderRadius.circular(16.r),
+                    border: Border.all(color: AppColor.borderColor(context)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.03),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.tune_rounded,
+                            size: 18.sp,
+                            color: AppColor.primaryColor(context),
+                          ),
+                          Gap(8.w),
+                          Text(
+                            "تصفية النتائج",
+                            style: AppTextStyle.titleSmall(context).copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: AppColor.textColor(context),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Gap(20.h),
+                      _buildRefinedDropdown<SectionDataModel>(
+                        context,
+                        AppLocalKay.select_section.tr(),
+                        state.selectedSection,
+                        (state.sectionDataStatus.data ?? []).map((section) {
+                          return DropdownMenuItem<SectionDataModel>(
+                            value: section,
+                            child: Text(section.sectionName),
+                          );
+                        }).toList(),
+                        (val) => context.read<ClassCubit>().onSectionChanged(val),
+                      ),
+                      Gap(16.h),
+                      _buildRefinedDropdown<StageDataModel>(
+                        context,
+                        context.locale.languageCode == 'ar' ? 'المرحلة الدراسية' : 'Stage',
+                        (uniqueStages.contains(state.selectedStage)) ? state.selectedStage : null,
+                        uniqueStages.map((stage) {
+                          return DropdownMenuItem<StageDataModel>(
+                            value: stage,
+                            child: Text(stage.stageNameAr),
+                          );
+                        }).toList(),
+                        (val) => context.read<ClassCubit>().onStageChanged(val),
+                      ),
+                      Gap(16.h),
+                      _buildRefinedDropdown<LevelModel>(
+                        context,
+                        AppLocalKay.select_classs.tr(),
+                        (uniqueLevels.contains(state.selectedLevel)) ? state.selectedLevel : null,
+                        uniqueLevels.map((level) {
+                          return DropdownMenuItem<LevelModel>(
+                            value: level,
+                            child: Text(level.levelName),
+                          );
+                        }).toList(),
+                        state.selectedStage == null || (state.levelDataStatus?.isLoading ?? false)
+                            ? null
+                            : (val) => context.read<ClassCubit>().onLevelChanged(val),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // Header for Results
+              if (state.classDataStatus?.isSuccess ?? false)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(24.w, 24.h, 24.w, 8.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "الفصول الدراسية",
+                          style: AppTextStyle.titleSmall(
+                            context,
+                          ).copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          "(${classes.length})",
+                          style: AppTextStyle.bodySmall(
+                            context,
+                          ).copyWith(color: AppColor.greyColor(context)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+              // List of Classes
+              SliverPadding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
+                sliver: _buildRefinedListContent(context, state),
+              ),
+
+              SliverGap(30.h),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildRefinedStat(
+    BuildContext context,
+    String label,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
+    return Expanded(
+      child: Container(
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          color: AppColor.whiteColor(context),
+          borderRadius: BorderRadius.circular(16.r),
+          border: Border.all(color: AppColor.borderColor(context)),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(10.w),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Icon(icon, color: color, size: 20.sp),
+            ),
+            Gap(12.w),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  value,
+                  style: AppTextStyle.titleMedium(
+                    context,
+                  ).copyWith(fontWeight: FontWeight.bold, color: AppColor.textColor(context)),
+                ),
+                Text(
+                  label,
+                  style: AppTextStyle.bodySmall(
+                    context,
+                  ).copyWith(color: AppColor.greyColor(context), fontSize: 10.sp),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRefinedDropdown<T>(
+    BuildContext context,
+    String label,
+    T? value,
+    List<DropdownMenuItem<T>> items,
+    void Function(T?)? onChanged,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: AppTextStyle.bodySmall(
+            context,
+          ).copyWith(fontWeight: FontWeight.w600, color: AppColor.greyColor(context)),
+        ),
+        Gap(8.h),
+        CustomDropdownFormField<T>(
+          hint: label,
+          value: value,
+          items: items,
+          onChanged: onChanged,
+          errorText: '',
+          submitted: false,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRefinedListContent(BuildContext context, ClassState state) {
+    if (state.classDataStatus?.isLoading ?? false) {
+      return const SliverToBoxAdapter(
+        child: Center(
+          child: Padding(padding: EdgeInsets.all(40.0), child: CircularProgressIndicator()),
+        ),
+      );
+    }
+
+    if (state.classDataStatus?.isFailure ?? false) {
+      return SliverToBoxAdapter(
+        child: Container(
+          padding: EdgeInsets.all(20.w),
+          decoration: BoxDecoration(
+            color: AppColor.errorColor(context).withValues(alpha: 0.05),
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.error_outline_rounded, color: AppColor.errorColor(context)),
+              Gap(12.w),
+              Expanded(
+                child: Text(
+                  state.classDataStatus!.error ?? 'Error',
+                  style: TextStyle(color: AppColor.errorColor(context)),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    final classes = state.classDataStatus?.data ?? [];
+    if (classes.isEmpty) {
+      return SliverToBoxAdapter(
+        child: Padding(
+          padding: EdgeInsets.only(top: 60.h),
+          child: Column(
+            children: [
+              Icon(Icons.class_outlined, size: 64.sp, color: AppColor.grey200Color(context)),
+              Gap(16.h),
+              Text(
+                context.locale.languageCode == 'ar'
+                    ? 'لا توجد فصول دراسية حالياً'
+                    : 'No classes matching filters',
+                style: AppTextStyle.bodyMedium(
+                  context,
+                ).copyWith(color: AppColor.grey600Color(context)),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return SliverList(
+      delegate: SliverChildBuilderDelegate((context, index) {
+        final classModel = classes[index];
+        return ClassCard(
+          classModel: classModel,
+          onViewDetails: () {},
+          onEdit: () {},
+          onManageStudents: () =>
+              _showStudentsBottomSheet(context, classModel.classNameAr, classModel.classCode),
+        );
+      }, childCount: classes.length),
+    );
+  }
+
+  void _showStudentsBottomSheet(BuildContext context, String className, int classCode) {
+    final classCubit = context.read<ClassCubit>();
+    classCubit.studentData(code: classCode);
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => BlocProvider.value(
+        value: classCubit,
+        child: StudentsBottomSheet(className: className, classCode: classCode),
       ),
     );
   }
