@@ -10,7 +10,11 @@ class BusDataModel extends Equatable {
   final int? fuelType;
   final String? lineNameAr;
   final String? driverNameAr;
+  final String? driverMobile;
   final String? supervisorNameAr1;
+  final String? supervisorNameAr2;
+  final String? supervisorMobile1;
+  final String? supervisorMobile2;
   final String? sectionNameAr;
   final String? companyName;
   final String? addressAr;
@@ -19,7 +23,6 @@ class BusDataModel extends Equatable {
   final String? bAppEndDate;
   final String? eduStartDate;
   final String? secondTermDate;
-
   const BusDataModel({
     this.busCode,
     this.plateNo,
@@ -28,7 +31,11 @@ class BusDataModel extends Equatable {
     this.fuelType,
     this.lineNameAr,
     this.driverNameAr,
+    this.driverMobile,
     this.supervisorNameAr1,
+    this.supervisorNameAr2,
+    this.supervisorMobile1,
+    this.supervisorMobile2,
     this.sectionNameAr,
     this.companyName,
     this.addressAr,
@@ -48,7 +55,11 @@ class BusDataModel extends Equatable {
       fuelType: map['FUEL_TYPE'],
       lineNameAr: map['LINE_NAME_AR'],
       driverNameAr: map['DRIVER_NAME_AR'],
+      driverMobile: map['D_MOBILE_NO'],
       supervisorNameAr1: map['SUPERVISOR_NAME_AR1'],
+      supervisorNameAr2: map['SUPERVISOR_NAME_AR2'],
+      supervisorMobile1: map['SUP_MOBILE_NO1'],
+      supervisorMobile2: map['SUP_MOBILE_NO2'],
       sectionNameAr: map['SECTION_NAME_AR'],
       companyName: map['COMPANY_NAME'],
       addressAr: map['ADDRESS_AR'],
@@ -60,29 +71,11 @@ class BusDataModel extends Equatable {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'BUS_CODE': busCode,
-      'PLATE_NO': plateNo,
-      'BUS_TYPE': busType,
-      'MODEL_NO': modelNo,
-      'FUEL_TYPE': fuelType,
-      'LINE_NAME_AR': lineNameAr,
-      'DRIVER_NAME_AR': driverNameAr,
-      'SUPERVISOR_NAME_AR1': supervisorNameAr1,
-      'SECTION_NAME_AR': sectionNameAr,
-      'COMPANY_NAME': companyName,
-      'ADDRESS_AR': addressAr,
-      'BUS_SETS': busSets,
-      'B_APP_START_DATE': bAppStartDate,
-      'B_APP_END_DATE': bAppEndDate,
-      'EDU_START_DATE': eduStartDate,
-      'SECOND_TERM_DATE': secondTermDate,
-    };
-  }
+  static List<BusDataModel> listFromResponse(Map<String, dynamic> response) {
+    final String dataString = response['Data'] ?? "[]";
 
-  static List<BusDataModel> listFromJson(String source) {
-    final List decoded = json.decode(source);
+    final List decoded = json.decode(dataString);
+
     return decoded.map((e) => BusDataModel.fromMap(e)).toList();
   }
 
@@ -95,7 +88,11 @@ class BusDataModel extends Equatable {
     fuelType,
     lineNameAr,
     driverNameAr,
+    driverMobile,
     supervisorNameAr1,
+    supervisorNameAr2,
+    supervisorMobile1,
+    supervisorMobile2,
     sectionNameAr,
     companyName,
     addressAr,

@@ -5,10 +5,10 @@ import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
-import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
+import 'package:my_template/features/home/data/models/bus_data_model.dart';
 
 class AdminMainTrackingCard extends StatelessWidget {
-  final BusModel selectedBusData;
+  final BusDataModel selectedBusData;
   final Animation<double> busAnimation;
   final VoidCallback onCallDriver;
   final VoidCallback onRefreshLocation;
@@ -58,36 +58,9 @@ class AdminMainTrackingCard extends StatelessWidget {
     Color statusColor;
     IconData statusIcon;
 
-    switch (selectedBusData.status) {
-      case 'في الطريق':
-        statusColor = const Color(0xFF4CAF50);
-        statusIcon = Icons.directions_bus_rounded;
-        break;
-      case 'في المحطة':
-        statusColor = const Color(0xFF2196F3);
-        statusIcon = Icons.location_on_rounded;
-        break;
-      case 'متأخرة':
-        statusColor = const Color(0xFFFF9800);
-        statusIcon = Icons.schedule_rounded;
-        break;
-      default:
-        statusColor = const Color(0xFF9E9E9E);
-        statusIcon = Icons.directions_bus_rounded;
-    }
-
     return Row(
       children: [
         // Bus Avatar
-        Container(
-          width: 50.w,
-          height: 50.w,
-          decoration: BoxDecoration(
-            color: selectedBusData.busColor.withOpacity(0.1),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(Icons.directions_bus_rounded, color: selectedBusData.busColor, size: 24.w),
-        ),
         Gap(12.w),
         // Bus Info
         Expanded(
@@ -95,35 +68,14 @@ class AdminMainTrackingCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "${selectedBusData.busName} - ${selectedBusData.busNumber}",
+                "${selectedBusData.busType} - ${selectedBusData.plateNo ?? selectedBusData.busCode}",
                 style: AppTextStyle.titleMedium(
                   context,
                 ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
               ),
               Text(
-                "السائق: ${selectedBusData.driverName} • ${selectedBusData.route}",
+                "${AppLocalKay.driver.tr()}: ${selectedBusData.driverNameAr} • ${selectedBusData.lineNameAr}",
                 style: AppTextStyle.bodyMedium(context).copyWith(color: const Color(0xFF6B7280)),
-              ),
-            ],
-          ),
-        ),
-        // Status Badge
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-          decoration: BoxDecoration(
-            color: statusColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(statusIcon, size: 14.w, color: statusColor),
-              Gap(4.w),
-              Text(
-                selectedBusData.status,
-                style: AppTextStyle.bodySmall(
-                  context,
-                ).copyWith(color: statusColor, fontWeight: FontWeight.bold),
               ),
             ],
           ),

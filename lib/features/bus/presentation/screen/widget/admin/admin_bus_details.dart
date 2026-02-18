@@ -5,10 +5,10 @@ import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
-import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
+import 'package:my_template/features/home/data/models/bus_data_model.dart';
 
 class AdminBusDetails extends StatelessWidget {
-  final BusModel selectedBusData;
+  final BusDataModel selectedBusData;
 
   const AdminBusDetails({super.key, required this.selectedBusData});
 
@@ -46,53 +46,60 @@ class AdminBusDetails extends StatelessWidget {
             mainAxisSpacing: 12.h,
             childAspectRatio: 1.1,
             children: [
+              /// Bus Number (using Plate No)
               _buildDetailItem(
                 context,
                 AppLocalKay.bus_number.tr(),
-                selectedBusData.busNumber,
+                selectedBusData.plateNo ?? selectedBusData.busCode.toString(),
                 Icons.directions_bus_rounded,
               ),
+
+              /// Driver Name
               _buildDetailItem(
                 context,
                 AppLocalKay.driver.tr(),
-                selectedBusData.driverName,
+                selectedBusData.driverNameAr ?? "-",
                 Icons.person_rounded,
               ),
+
+              /// Supervisor
               _buildDetailItem(
                 context,
-                AppLocalKay.phone.tr(),
-                selectedBusData.driverPhone,
-                Icons.phone_rounded,
+                "المشرف",
+                selectedBusData.supervisorNameAr1 ?? "-",
+                Icons.supervisor_account_rounded,
               ),
+
+              /// Line Name
               _buildDetailItem(
                 context,
-                AppLocalKay.current_location.tr(),
-                selectedBusData.currentLocation,
-                Icons.location_on_rounded,
+                "خط السير",
+                selectedBusData.lineNameAr ?? "-",
+                Icons.route_rounded,
               ),
+
+              /// Section
               _buildDetailItem(
                 context,
-                AppLocalKay.next_stop.tr(),
-                selectedBusData.nextStop,
-                Icons.flag_rounded,
+                "القسم",
+                selectedBusData.sectionNameAr ?? "-",
+                Icons.school_rounded,
               ),
+
+              /// Company
+              _buildDetailItem(
+                context,
+                "الشركة",
+                selectedBusData.companyName ?? "-",
+                Icons.business_rounded,
+              ),
+
+              /// Seats
               _buildDetailItem(
                 context,
                 AppLocalKay.capacity.tr(),
-                "${selectedBusData.occupiedSeats}/${selectedBusData.capacity}",
-                Icons.people_rounded,
-              ),
-              _buildDetailItem(
-                context,
-                AppLocalKay.estimated_time.tr(),
-                selectedBusData.estimatedTime,
-                Icons.schedule_rounded,
-              ),
-              _buildDetailItem(
-                context,
-                AppLocalKay.distance.tr(),
-                selectedBusData.distance,
-                Icons.space_dashboard_rounded,
+                selectedBusData.busSets.toString(),
+                Icons.event_seat_rounded,
               ),
             ],
           ),
@@ -114,10 +121,10 @@ class AdminBusDetails extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(6.w),
             decoration: BoxDecoration(
-              color: selectedBusData.busColor.withOpacity(0.1),
+              color: AppColor.primaryColor(context).withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, size: 16.w, color: selectedBusData.busColor),
+            child: Icon(icon, size: 16.w, color: AppColor.blackColor(context)),
           ),
           Gap(10.h),
           Text(

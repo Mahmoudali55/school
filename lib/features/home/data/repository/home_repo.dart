@@ -502,8 +502,7 @@ class HomeRepoImpl implements HomeRepo {
     return handleDioRequest(
       request: () async {
         final response = await apiConsumer.get(EndPoints.getBus);
-        final dataString = response['Data'];
-        return BusDataModel.listFromJson(dataString);
+        return BusDataModel.listFromResponse(response);
       },
     );
   }

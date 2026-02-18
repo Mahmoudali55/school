@@ -1055,4 +1055,5 @@ class AppLocalKay {
   static const String unknown = 'unknown';
   static const String select_classs = 'select_classs';
   static const String teachers_ar = 'teachers_ar';
+  static const String route_ar = 'route_ar';
 }

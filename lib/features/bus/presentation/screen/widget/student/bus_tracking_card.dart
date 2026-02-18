@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
-import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/bus_controls_widget.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/bus_status_header.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/map_section_widget.dart';
+import 'package:my_template/features/home/data/models/bus_data_model.dart';
 
 class BusTrackingCard extends StatefulWidget {
-  final BusModel busData;
+  final BusDataModel busData;
   final List<Map<String, dynamic>> stops;
   final Animation<double> busAnimation;
   final bool isBusMoving;

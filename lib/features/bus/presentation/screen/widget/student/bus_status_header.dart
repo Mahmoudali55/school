@@ -3,10 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
-import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
+import 'package:my_template/features/home/data/models/bus_data_model.dart';
 
 class BusStatusHeader extends StatelessWidget {
-  final BusModel busData;
+  final BusDataModel busData;
   const BusStatusHeader({super.key, required this.busData});
 
   @override
@@ -31,11 +31,11 @@ class BusStatusHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "الحافلة ${busData.busNumber}",
+                "الحافلة ${busData.busCode ?? "-"}",
                 style: AppTextStyle.bodyMedium(context, color: const Color(0xFF1F2937)),
               ),
               Text(
-                busData.status,
+                busData.busType ?? "-",
                 style: AppTextStyle.bodyMedium(context, color: AppColor.secondAppColor(context)),
               ),
             ],
@@ -48,7 +48,7 @@ class BusStatusHeader extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
-            busData.estimatedTime,
+            "-", // Estimated time not in BusDataModel, using default
             style: AppTextStyle.bodyMedium(context, color: AppColor.primaryColor(context)),
           ),
         ),

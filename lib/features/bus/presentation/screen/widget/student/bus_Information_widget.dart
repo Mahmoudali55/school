@@ -4,11 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
-import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
+import 'package:my_template/features/home/data/models/bus_data_model.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/Info_row_widget.dart';
 
 class BusInformation extends StatelessWidget {
-  final BusModel busData;
+  final BusDataModel busData;
   const BusInformation({super.key, required this.busData});
 
   @override
@@ -35,25 +35,21 @@ class BusInformation extends StatelessWidget {
             style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
           ),
           Gap(16.h),
-          InfoRow(label: AppLocalKay.driver.tr(), value: busData.driverName),
-          InfoRow(label: AppLocalKay.phone.tr(), value: busData.driverPhone),
-          if (busData.supervisorName != null)
-            InfoRow(label: AppLocalKay.supervisor.tr(), value: busData.supervisorName!),
-          if (busData.supervisorPhone != null)
-            InfoRow(label: AppLocalKay.phone.tr(), value: busData.supervisorPhone!),
+          InfoRow(label: AppLocalKay.driver.tr(), value: busData.driverNameAr ?? "-"),
+          InfoRow(label: AppLocalKay.phone.tr(), value: "-"), // Phone not in BusDataModel
+          if (busData.supervisorNameAr1 != null)
+            InfoRow(label: AppLocalKay.supervisor.tr(), value: busData.supervisorNameAr1!),
+          InfoRow(label: AppLocalKay.phone.tr(), value: "-"),
           if (busData.busType != null)
             InfoRow(label: AppLocalKay.bus_type.tr(), value: busData.busType!),
-          if (busData.modelYear != null)
-            InfoRow(label: AppLocalKay.model_year.tr(), value: busData.modelYear!),
-          if (busData.sectionName != null)
-            InfoRow(label: AppLocalKay.section.tr(), value: busData.sectionName!),
-          if (busData.accountName != null)
-            InfoRow(label: AppLocalKay.account.tr(), value: busData.accountName!),
-          InfoRow(label: AppLocalKay.speed.tr(), value: busData.speed),
-          InfoRow(
-            label: AppLocalKay.passengers.tr(),
-            value: "${busData.occupiedSeats}/${busData.capacity}",
-          ),
+          if (busData.modelNo != null)
+            InfoRow(label: AppLocalKay.model_year.tr(), value: busData.modelNo!),
+          if (busData.sectionNameAr != null)
+            InfoRow(label: AppLocalKay.section.tr(), value: busData.sectionNameAr!),
+          if (busData.companyName != null)
+            InfoRow(label: AppLocalKay.account.tr(), value: busData.companyName!),
+          InfoRow(label: AppLocalKay.speed.tr(), value: "-"),
+          InfoRow(label: AppLocalKay.passengers.tr(), value: "0/${busData.busSets ?? "-"}"),
         ],
       ),
     );

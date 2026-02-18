@@ -1,16 +1,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:my_template/core/network/status.state.dart';
-import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
 import 'package:my_template/features/bus/data/model/bus_line_model.dart';
 import 'package:my_template/features/bus/data/model/bus_tracking_models.dart';
+import 'package:my_template/features/home/data/models/bus_data_model.dart';
 
 class BusState extends Equatable {
   final BusClass? selectedClass;
-  final BusModel? selectedAdminBus;
+  final BusDataModel? selectedAdminBus;
   final List<BusClass> classes;
   final List<StudentOnBus> studentsOnBus;
   final List<FieldTrip> fieldTrips;
-  final List<BusModel> buses;
+  final List<BusDataModel> buses;
   final List<BusClass> parentChildrenBuses;
   final bool isLoading;
   final String? error;
@@ -33,11 +33,11 @@ class BusState extends Equatable {
 
   BusState copyWith({
     BusClass? selectedClass,
-    BusModel? selectedAdminBus,
+    BusDataModel? selectedAdminBus,
     List<BusClass>? classes,
     List<StudentOnBus>? studentsOnBus,
     List<FieldTrip>? fieldTrips,
-    List<BusModel>? buses,
+    List<BusDataModel>? buses,
     List<BusClass>? parentChildrenBuses,
     bool? isLoading,
     String? error,

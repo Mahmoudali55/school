@@ -5,11 +5,11 @@ import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
-import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
+import 'package:my_template/features/home/data/models/bus_data_model.dart';
 
 class AdminBusesSelector extends StatefulWidget {
   final String selectedBus;
-  final List<BusModel> buses;
+  final List<BusDataModel> buses;
   final Function(String) onBusSelected;
 
   const AdminBusesSelector({
@@ -81,46 +81,48 @@ class _AdminBusesSelectorState extends State<AdminBusesSelector> {
           ),
           Gap(12.h),
           Wrap(
-            spacing: 8.w,
-            runSpacing: 8.h,
-            children: displayedBuses.map((bus) => _buildBusChip(context, bus)).toList(),
+            spacing: 12.w,
+            runSpacing: 12.h,
+            children: displayedBuses.map((bus) {
+              final isSelected = widget.selectedBus == bus.busCode.toString();
+              return GestureDetector(
+                onTap: () => widget.onBusSelected(bus.busCode.toString()),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? const Color(0xFF9C27B0)
+                        : const Color(0xFF9C27B0).withOpacity(0.05),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: isSelected ? const Color(0xFF9C27B0) : Colors.transparent,
+                      width: 1,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.directions_bus_filled_rounded,
+                        size: 14.w,
+                        color: isSelected ? Colors.white : const Color(0xFF9C27B0),
+                      ),
+                      Gap(6.w),
+                      Text(
+                        bus.plateNo ?? bus.busCode.toString(),
+                        style: AppTextStyle.bodyMedium(context).copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: isSelected ? Colors.white : const Color(0xFF1F2937),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }).toList(),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildBusChip(BuildContext context, BusModel bus) {
-    final isSelected = widget.selectedBus == bus.busNumber;
-
-    return ChoiceChip(
-      label: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.directions_bus_rounded,
-            size: 16.w,
-            color: isSelected ? AppColor.whiteColor(context) : bus.busColor,
-          ),
-          Gap(6.w),
-          Text(bus.busNumber),
-        ],
-      ),
-      selected: isSelected,
-      onSelected: (selected) {
-        if (selected) {
-          widget.onBusSelected(bus.busNumber);
-        }
-      },
-      backgroundColor: AppColor.whiteColor(context),
-      selectedColor: bus.busColor,
-      labelStyle: AppTextStyle.bodyMedium(context).copyWith(
-        color: isSelected ? AppColor.whiteColor(context) : const Color(0xFF6B7280),
-        fontWeight: FontWeight.w600,
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-        side: BorderSide(color: isSelected ? bus.busColor : const Color(0xFFE5E7EB)),
       ),
     );
   }

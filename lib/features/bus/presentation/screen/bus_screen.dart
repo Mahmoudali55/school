@@ -16,13 +16,13 @@ import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/common_methods.dart';
-import 'package:my_template/features/bus/data/model/admin_bus_model.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_state.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/bus_Information_widget.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/bus_tracking_card.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/emergency_button.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/route_progress_widget.dart';
+import 'package:my_template/features/home/data/models/bus_data_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StudentBusTrackingScreen extends StatefulWidget {
@@ -210,32 +210,18 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
 
             final busLine = busLines.first;
 
-            // Map BusLine to BusModel
-            final selectedBus = BusModel(
-              busNumber: busLine.plateNo,
-              busName: busLine.busLineName,
-              driverName: busLine.busDriverName,
-              driverPhone: busLine.mobileNo,
-              currentLocation: "الموقع الحالي غير متاح",
-              nextStop: "---",
-              estimatedTime: "---",
-              distance: "---",
-              speed: "---",
-              capacity: busLine.busSets.toString(),
-              occupiedSeats: busLine.busSetsUsed.toString(),
-              status: busLine.busState == 1 ? "Active" : "Inactive",
-              busColor: const Color(0xFF4CAF50),
-              route: "مسار ${busLine.busLineName}",
-              attendanceRate: "---",
-              fuelLevel: "---",
-              maintenanceStatus: "---",
-              studentsOnBoard: busLine.busSetsUsed.toString(),
-              supervisorName: busLine.busSupervisorName1,
-              supervisorPhone: busLine.supMobileNo,
+            // Map BusLine to BusDataModel (Replacing BusModel)
+            final selectedBus = BusDataModel(
+              busCode: busLine.busCode,
+              plateNo: busLine.plateNo,
               busType: busLine.busType,
-              modelYear: busLine.modelNo,
-              sectionName: busLine.busSectionName,
-              accountName: busLine.accountName,
+              modelNo: busLine.modelNo,
+              lineNameAr: busLine.busLineName,
+              driverNameAr: busLine.busDriverName,
+              supervisorNameAr1: busLine.busSupervisorName1,
+              sectionNameAr: busLine.busSectionName,
+              busSets: busLine.busSets,
+              companyName: busLine.accountName,
             );
 
             List<String> routeStopsNames = busLine.busLineName
@@ -277,7 +263,7 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
                       refreshLocation: _refreshLocation,
                       toggleBusMovement: _toggleBusMovement,
                       callDriver: () =>
-                          _callDriver(selectedBus.driverName, selectedBus.driverPhone),
+                          _callDriver(selectedBus.driverNameAr ?? "-", busLine.mobileNo),
                     ),
                   ),
                   SliverToBoxAdapter(child: RouteProgress(stops: dynamicStops)),

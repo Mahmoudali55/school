@@ -7,14 +7,15 @@ import 'package:my_template/core/network/api_consumer.dart';
 import 'package:my_template/core/network/end_points.dart';
 import 'package:my_template/features/bus/data/model/bus_line_model.dart';
 
-import '../model/admin_bus_model.dart';
+import 'package:my_template/features/home/data/models/bus_data_model.dart';
+
 import '../model/bus_tracking_models.dart';
 
 abstract class BusRepo {
   Future<List<BusClass>> getBusClasses(String userTypeId);
   Future<List<StudentOnBus>> getStudentsOnBus(String userTypeId);
   Future<List<FieldTrip>> getFieldTrips(String userTypeId);
-  Future<List<BusModel>> getAdminBuses(String userTypeId);
+  Future<List<BusDataModel>> getAdminBuses(String userTypeId);
   Future<List<BusClass>> getParentChildrenBuses({required int code});
   Map<String, dynamic> getOverviewStats(String userTypeId);
   Future<Either<Failure, List<BusLine>>> getBusLines({required int code});
@@ -176,48 +177,32 @@ class BusRepoImpl implements BusRepo {
   }
 
   @override
-  Future<List<BusModel>> getAdminBuses(String userTypeId) async {
+  Future<List<BusDataModel>> getAdminBuses(String userTypeId) async {
     if (userTypeId != 'admin') return [];
     return [
-      BusModel(
-        busNumber: 'BUS-05',
-        busName: 'حافلة شمال الرياض',
-        driverName: 'أحمد محمود',
-        driverPhone: '0501234567',
-        currentLocation: 'حي الملك فهد',
-        nextStop: 'شارع التخصصي',
-        estimatedTime: '15 دقيقة',
-        distance: '4.2 كم',
-        speed: '45 كم/س',
-        capacity: '50',
-        occupiedSeats: '28',
-        status: 'في الطريق',
-        busColor: const Color(0xFF10B981),
-        route: 'المسار أ - الصباحي',
-        attendanceRate: '92%',
-        fuelLevel: '75%',
-        maintenanceStatus: 'جيد',
-        studentsOnBoard: '28',
+      const BusDataModel(
+        busCode: 5,
+        plateNo: 'حافلة شمال الرياض',
+        busType: 'حافلة كبيرة',
+        driverNameAr: 'أحمد محمود',
+        addressAr: 'حي الملك فهد',
+        lineNameAr: 'المسار أ - الصباحي',
+        busSets: 50,
+        supervisorNameAr1: 'عمر علي',
+        sectionNameAr: 'ابتدائي',
+        companyName: 'شركة النقل الوطني',
       ),
-      BusModel(
-        busNumber: 'BUS-12',
-        busName: 'حافلة غرب الرياض',
-        driverName: 'خالد العتيبي',
-        driverPhone: '0509876543',
-        currentLocation: 'مبنى المدرسة',
-        nextStop: '--',
-        estimatedTime: 'وصل',
-        distance: '0 كم',
-        speed: '0 كم/س',
-        capacity: '40',
-        occupiedSeats: '25',
-        status: 'متوقف',
-        busColor: const Color(0xFF6B7280),
-        route: 'المسار ب - المسائي',
-        attendanceRate: '100%',
-        fuelLevel: '40%',
-        maintenanceStatus: 'يحتاج صيانة',
-        studentsOnBoard: '25',
+      const BusDataModel(
+        busCode: 12,
+        plateNo: 'حافلة غرب الرياض',
+        busType: 'حافلة متوسطة',
+        driverNameAr: 'خالد العتيبي',
+        addressAr: 'مبنى المدرسة',
+        lineNameAr: 'المسار ب - المسائي',
+        busSets: 40,
+        supervisorNameAr1: 'سعد فهد',
+        sectionNameAr: 'متوسط',
+        companyName: 'شركة النقل الوطني',
       ),
     ];
   }
