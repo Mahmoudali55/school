@@ -1142,5 +1142,16 @@
   "manual": "يدوي",
   "retry_button": "إعادة المحاولة",
   "no_data_available": "لا توجد بيانات متاحة",
-  "something_went_wrong": "حدث خطأ ما"
+  "something_went_wrong": "حدث خطأ ما",
+  "select_month":"اختر الشهر",
+  "month":"شهر",
+  "total_absences":"إجمالي الغيابات",
+  "unknown_student":"طالب غائب",
+  "subject_results":"نتائج المواد",
+  "no_results":"لا توجد نتائج لهذا الشهر",
+  "no_classes":"عدد الفصول",
+  "clear_results":"تصفية النتائج",
+  "classes_title":"الفصول الدراسية"
+
+
 }

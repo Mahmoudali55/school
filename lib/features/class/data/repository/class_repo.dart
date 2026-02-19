@@ -8,12 +8,14 @@ import 'package:my_template/core/network/end_points.dart';
 import 'package:my_template/features/class/data/model/class_absent_model.dart';
 import 'package:my_template/features/class/data/model/class_model.dart';
 import 'package:my_template/features/class/data/model/class_models.dart';
+import 'package:my_template/features/class/data/model/class_month_result_model.dart';
 import 'package:my_template/features/class/data/model/get_T_home_work_model.dart';
 import 'package:my_template/features/class/data/model/get_lessons_model.dart';
 import 'package:my_template/features/class/data/model/home_work_model.dart';
 import 'package:my_template/features/class/data/model/level_model.dart';
 import 'package:my_template/features/class/data/model/section_data_model.dart';
 import 'package:my_template/features/class/data/model/stage_data_model.dart';
+import 'package:my_template/features/class/data/model/student_absent_count_model.dart';
 import 'package:my_template/features/class/data/model/student_class_data_model.dart';
 import 'package:my_template/features/class/data/model/student_courses_model.dart';
 import 'package:my_template/features/home/data/models/add_class_absent_request_model.dart';
@@ -60,6 +62,11 @@ abstract interface class ClassRepo {
   Future<Either<Failure, List<SectionDataModel>>> sectionData({required String userId});
   Future<Either<Failure, List<StageDataModel>>> stageData({required int sectionCode});
   Future<Either<Failure, List<LevelModel>>> levelData({required int stage});
+  Future<Either<Failure, List<ClassMonthResultModel>>> classMonthResult({
+    required int classCode,
+    required int month,
+  });
+  Future<Either<Failure, List<StudentAbsentCountModel>>> studentAbsent({required int classCode});
   Future<Either<Failure, List<GetClassModel>>> classData({
     required int level,
     required int sectionCod,
@@ -396,6 +403,33 @@ class ClassRepoImpl extends ClassRepo {
         );
         final String dataString = response['Data'] as String;
         return GetClassModel.listFromJson(dataString);
+      },
+    );
+  }
+
+  Future<Either<Failure, List<ClassMonthResultModel>>> classMonthResult({
+    required int classCode,
+    required int month,
+  }) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.classMonth,
+          queryParameters: {"Classcode": classCode, "MonthNo": month},
+        );
+        return ClassMonthResultModel.listFromResponse(response);
+      },
+    );
+  }
+
+  Future<Either<Failure, List<StudentAbsentCountModel>>> studentAbsent({required int classCode}) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.studentAbsent,
+          queryParameters: {"Classcode": classCode},
+        );
+        return StudentAbsentCountModel.listFromResponse(response);
       },
     );
   }

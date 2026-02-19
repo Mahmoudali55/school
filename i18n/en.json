@@ -1075,5 +1075,13 @@
   "manual": "Manual",
   "retry_button": "Retry",
   "no_data_available": "No Data Available",
-  "something_went_wrong": "Something went wrong"
+  "something_went_wrong": "Something went wrong",
+  "select_month":"Select Month",
+  "month":"Month",
+  "total_absences":"Total Absences",
+  "unknown_student":"Unknown Student",
+  "subject_results":"Subject Results",
+  "no_results":"No Results",
+  "classes_title": "Classrooms"
+
 }

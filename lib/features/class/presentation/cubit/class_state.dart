@@ -3,12 +3,14 @@ import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/class/data/model/class_absent_model.dart';
 import 'package:my_template/features/class/data/model/class_model.dart';
 import 'package:my_template/features/class/data/model/class_models.dart';
+import 'package:my_template/features/class/data/model/class_month_result_model.dart';
 import 'package:my_template/features/class/data/model/get_T_home_work_model.dart';
 import 'package:my_template/features/class/data/model/get_lessons_model.dart';
 import 'package:my_template/features/class/data/model/home_work_model.dart';
 import 'package:my_template/features/class/data/model/level_model.dart';
 import 'package:my_template/features/class/data/model/section_data_model.dart';
 import 'package:my_template/features/class/data/model/stage_data_model.dart';
+import 'package:my_template/features/class/data/model/student_absent_count_model.dart';
 import 'package:my_template/features/class/data/model/student_class_data_model.dart';
 import 'package:my_template/features/class/data/model/student_courses_model.dart';
 import 'package:my_template/features/home/data/models/add_class_absent_response_model.dart';
@@ -32,6 +34,8 @@ class ClassState extends Equatable {
   final StatusState<List<StageDataModel>> stageDataStatus;
   final StatusState<List<LevelModel>>? levelDataStatus;
   final StatusState<List<GetClassModel>>? classDataStatus;
+  final StatusState<List<ClassMonthResultModel>>? classMonthResultStatus;
+  final StatusState<List<StudentAbsentCountModel>>? studentAbsentCountStatus;
   final SectionDataModel? selectedSection;
   final StageDataModel? selectedStage;
   final LevelModel? selectedLevel;
@@ -53,6 +57,8 @@ class ClassState extends Equatable {
     this.stageDataStatus = const StatusState.initial(),
     this.levelDataStatus = const StatusState.initial(),
     this.classDataStatus = const StatusState.initial(),
+    this.classMonthResultStatus = const StatusState.initial(),
+    this.studentAbsentCountStatus = const StatusState.initial(),
     this.selectedSection,
     this.selectedStage,
     this.selectedLevel,
@@ -79,6 +85,8 @@ class ClassState extends Equatable {
     levelDataStatus,
     selectedLevel,
     classDataStatus,
+    classMonthResultStatus,
+    studentAbsentCountStatus,
   ];
 
   ClassState copyWith({
@@ -98,6 +106,8 @@ class ClassState extends Equatable {
     StatusState<List<StageDataModel>>? stageDataStatus,
     StatusState<List<LevelModel>>? levelDataStatus,
     StatusState<List<GetClassModel>>? classDataStatus,
+    StatusState<List<ClassMonthResultModel>>? classMonthResultStatus,
+    StatusState<List<StudentAbsentCountModel>>? studentAbsentCountStatus,
     SectionDataModel? selectedSection,
     StageDataModel? selectedStage,
     LevelModel? selectedLevel,
@@ -122,6 +132,8 @@ class ClassState extends Equatable {
       levelDataStatus: levelDataStatus ?? this.levelDataStatus,
       selectedLevel: selectedLevel ?? this.selectedLevel,
       classDataStatus: classDataStatus ?? this.classDataStatus,
+      classMonthResultStatus: classMonthResultStatus ?? this.classMonthResultStatus,
+      studentAbsentCountStatus: studentAbsentCountStatus ?? this.studentAbsentCountStatus,
     );
   }
 }

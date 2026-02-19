@@ -15,6 +15,7 @@ import 'package:my_template/features/class/data/model/stage_data_model.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/class/presentation/cubit/class_state.dart';
 import 'package:my_template/features/class/presentation/screen/widget/admin/class_card.dart';
+import 'package:my_template/features/class/presentation/screen/widget/admin/class_details_bottom_sheet.dart';
 import 'package:my_template/features/class/presentation/screen/widget/admin/students_bottom_sheet.dart';
 
 class AdminClassesScreen extends StatefulWidget {
@@ -62,7 +63,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                     children: [
                       _buildRefinedStat(
                         context,
-                        "عدد الفصول",
+                        AppLocalKay.noClasses.tr(),
                         "${classes.length}",
                         Icons.school_outlined,
                         AppColor.primaryColor(context),
@@ -70,7 +71,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                       Gap(12.w),
                       _buildRefinedStat(
                         context,
-                        "إجمالي الطلاب",
+                        AppLocalKay.total_students.tr(),
                         "${classes.fold(0, (sum, item) => sum + (item.newStudent ?? 0) + (item.oldStudent ?? 0))}",
                         Icons.people_outline_rounded,
                         AppColor.secondAppColor(context),
@@ -91,7 +92,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                     border: Border.all(color: AppColor.borderColor(context)),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.03),
+                        color: AppColor.blackColor(context).withValues(alpha: 0.03),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),
@@ -109,7 +110,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                           ),
                           Gap(8.w),
                           Text(
-                            "تصفية النتائج",
+                            AppLocalKay.clearResults.tr(),
                             style: AppTextStyle.titleSmall(context).copyWith(
                               fontWeight: FontWeight.bold,
                               color: AppColor.textColor(context),
@@ -133,7 +134,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                       Gap(16.h),
                       _buildRefinedDropdown<StageDataModel>(
                         context,
-                        context.locale.languageCode == 'ar' ? 'المرحلة الدراسية' : 'Stage',
+                        AppLocalKay.stage.tr(),
                         (uniqueStages.contains(state.selectedStage)) ? state.selectedStage : null,
                         uniqueStages.map((stage) {
                           return DropdownMenuItem<StageDataModel>(
@@ -172,7 +173,7 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "الفصول الدراسية",
+                          AppLocalKay.classesTitle.tr(),
                           style: AppTextStyle.titleSmall(
                             context,
                           ).copyWith(fontWeight: FontWeight.bold),
@@ -341,7 +342,8 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
         final classModel = classes[index];
         return ClassCard(
           classModel: classModel,
-          onViewDetails: () {},
+          onViewDetails: () =>
+              _showDetailsBottomSheet(context, classModel.classNameAr, classModel.classCode),
           onEdit: () {},
           onManageStudents: () =>
               _showStudentsBottomSheet(context, classModel.classNameAr, classModel.classCode),
@@ -360,6 +362,19 @@ class _AdminClassesScreenState extends State<AdminClassesScreen> {
       builder: (context) => BlocProvider.value(
         value: classCubit,
         child: StudentsBottomSheet(className: className, classCode: classCode),
+      ),
+    );
+  }
+
+  void _showDetailsBottomSheet(BuildContext context, String className, int classCode) {
+    final classCubit = context.read<ClassCubit>();
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => BlocProvider.value(
+        value: classCubit,
+        child: ClassDetailsBottomSheet(className: className, classCode: classCode),
       ),
     );
   }

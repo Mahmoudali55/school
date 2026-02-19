@@ -51,4 +51,6 @@ class EndPoints {
   static const String classData = 'DeltagroupService/School/GetTeacherClass';
   static const String teacherData = 'DeltagroupService/School/GetTeacherdata';
   static const String schoolData = 'DeltagroupService/School/GetSchooldata';
+  static const String classMonth = 'DeltagroupService/School/GetClassMonthResult';
+  static const String studentAbsent = 'DeltagroupService/School/GetStudentAbsentcount';
 }

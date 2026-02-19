@@ -1101,4 +1101,13 @@ class AppLocalKay {
   static const String retry_button = "retry_button";
   static const String noDataAvailable = "no_data_available";
   static const String somethingWentWrong = "something_went_wrong";
+  static const String selectMonth = "select_month";
+  static const String month = "month";
+  static const String totalAbsences = "total_absences";
+  static const String unknownStudent = "unknown_student";
+  static const String subjectResults = "subject_results";
+  static const String noResults = "no_results";
+  static const String noClasses = "no_classes";
+  static const String clearResults = "clear_results";
+  static const String classesTitle = "classes_title";
 }
