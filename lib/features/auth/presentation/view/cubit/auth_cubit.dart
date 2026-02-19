@@ -152,6 +152,8 @@ class AuthCubit extends Cubit<AuthState> {
 
     final userId = data?.userId ?? "";
     HiveMethods.updateUserid(userId);
+    final userName = data?.userName ?? "";
+    HiveMethods.updateUserName(userName);
 
     final name = data?.name ?? "";
     HiveMethods.updateName(name);

@@ -36,7 +36,7 @@ class AdminHomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AdminHeader(name: HiveMethods.getUserName(), role: adminData.userRole),
+                    AdminHeader(name: HiveMethods.getUserName2()),
                     Gap(20.h),
                     MetricsDashboard(),
                     Gap(20.h),

@@ -12,7 +12,6 @@ import 'package:my_template/features/setting/presentation/screen/widget/admin_se
 import 'package:my_template/features/setting/presentation/screen/widget/admin_settings/action_buttons_widget.dart';
 import 'package:my_template/features/setting/presentation/screen/widget/admin_settings/app_info_widget.dart';
 import 'package:my_template/features/setting/presentation/screen/widget/admin_settings/app_settings_widget.dart';
-import 'package:my_template/features/setting/presentation/screen/widget/admin_settings/profile_card_widget.dart';
 import 'package:my_template/features/setting/presentation/screen/widget/admin_settings/school_settings_widget.dart';
 import 'package:my_template/features/setting/presentation/screen/widget/admin_settings/section_title_widget.dart';
 
@@ -45,14 +44,14 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                   ).copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
-              ProfileCardWidget(),
-              Gap( 24.h),
+
+              Gap(24.h),
               SectionTitleWidget(title: AppLocalKay.setting_account.tr()),
-              Gap( 16.h),
+              Gap(16.h),
               AccountSettingsWidget(),
-              Gap( 24.h),
+              Gap(24.h),
               SectionTitleWidget(title: AppLocalKay.setting_school.tr()),
-              Gap( 16.h),
+              Gap(16.h),
               BlocBuilder<SettingsCubit, SettingsState>(
                 builder: (context, state) {
                   final String currentLangCode = state is SettingsLoaded
@@ -92,15 +91,15 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                 },
               ),
               SchoolSettingsWidget(),
-              Gap( 24.h),
+              Gap(24.h),
               SectionTitleWidget(title: AppLocalKay.setting_app.tr()),
-              Gap( 16.h),
+              Gap(16.h),
               AppSettingsWidget(),
-              Gap( 24.h),
+              Gap(24.h),
               SectionTitleWidget(title: AppLocalKay.setting_info.tr()),
-              Gap( 16.h),
+              Gap(16.h),
               AppInfoWidget(),
-              Gap( 32.h),
+              Gap(32.h),
               ActionButtonsWidget(),
             ],
           ),

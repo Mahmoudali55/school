@@ -14,6 +14,14 @@ class HiveMethods {
     _box.put('lang', locale.languageCode);
   }
 
+  static void updateUserName(String userName) {
+    _box.put('userName', userName);
+  }
+
+  static String getUserName2() {
+    return _box.get('userName', defaultValue: '');
+  }
+
   static String? getToken() {
     return _box.get('token');
   }

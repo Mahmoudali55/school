@@ -8,8 +8,8 @@ import 'package:my_template/core/utils/app_local_kay.dart';
 
 class AdminHeader extends StatelessWidget {
   final String name;
-  final String role;
-  const AdminHeader({super.key, required this.name, required this.role});
+
+  const AdminHeader({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -24,16 +24,16 @@ class AdminHeader extends StatelessWidget {
                 AppLocalKay.adminPanel.tr(),
                 style: AppTextStyle.headlineSmall(
                   context,
-                  color: const Color(0xFF1F2937),
+                  color: AppColor.primaryColor(context),
                 ).copyWith(fontSize: 20.sp, fontWeight: FontWeight.bold),
               ),
               Gap(4.h),
               Text(
-                "$name - $role",
-                style: AppTextStyle.bodySmall(
+                name,
+                style: AppTextStyle.headlineSmall(
                   context,
-                  color: const Color(0xFF6B7280),
-                ).copyWith(fontSize: 12.sp),
+                  color: const Color(0xFF1F2937),
+                ).copyWith(fontSize: 20.sp, fontWeight: FontWeight.bold),
               ),
             ],
           ),
