@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
@@ -5,6 +7,7 @@ import 'package:my_template/core/error/failures.dart';
 import 'package:my_template/core/network/api_consumer.dart';
 import 'package:my_template/core/network/end_points.dart';
 import 'package:my_template/features/setting/data/model/change_password_response_model.dart';
+import 'package:my_template/features/setting/data/model/school_data_model.dart';
 import 'package:my_template/features/setting/data/model/settings_model.dart';
 
 abstract class SettingsRepo {
@@ -14,6 +17,7 @@ abstract class SettingsRepo {
     required String confirmNewPassword,
   });
   Future<Either<Failure, String>> logout();
+  Future<Either<Failure, SchoolDataModel>> getSchoolData();
   SettingsModel getSettings() {
     return SettingsModel(
       languageCode: HiveMethods.getLang(),
@@ -65,6 +69,21 @@ class SettingsRepoImpl extends SettingsRepo {
       request: () async {
         final response = await apiConsumer.post(EndPoints.logout);
         return response;
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, SchoolDataModel>> getSchoolData() async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(EndPoints.schoolData);
+        final List<dynamic> dataList = jsonDecode(response['Data']);
+        if (dataList.isNotEmpty) {
+          return SchoolDataModel.fromJson(dataList.first);
+        } else {
+          throw Exception('No data found');
+        }
       },
     );
   }

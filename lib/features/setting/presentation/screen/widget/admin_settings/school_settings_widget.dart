@@ -1,6 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_template/core/services/services_locator.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/setting/presentation/cubit/settings_cubit.dart';
 import 'package:my_template/features/setting/presentation/execution/class_management_screen.dart';
 import 'package:my_template/features/setting/presentation/execution/school_info_screen.dart';
 import 'package:my_template/features/setting/presentation/execution/system_settings_screen.dart';
@@ -43,7 +46,13 @@ class SchoolSettingsWidget extends StatelessWidget {
   }
 
   editSchoolInfo(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SchoolInfoScreen()));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            BlocProvider(create: (context) => sl<SettingsCubit>(), child: SchoolInfoScreen()),
+      ),
+    );
   }
 
   manageUsers(BuildContext context) {

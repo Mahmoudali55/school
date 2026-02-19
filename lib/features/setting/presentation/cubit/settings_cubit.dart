@@ -89,4 +89,18 @@ class SettingsCubit extends Cubit<SettingsState> {
       },
     );
   }
+
+  Future<void> getSchoolData() async {
+    emit(state.copyWith(schoolDataStatus: StatusState.loading()));
+
+    final result = await _settingsRepo.getSchoolData();
+    result.fold(
+      (error) {
+        emit(state.copyWith(schoolDataStatus: StatusState.failure(error.errMessage)));
+      },
+      (success) {
+        emit(state.copyWith(schoolDataStatus: StatusState.success(success)));
+      },
+    );
+  }
 }

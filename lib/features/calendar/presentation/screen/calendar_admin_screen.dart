@@ -292,7 +292,6 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
     if (state.getEventsStatus.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
-
     switch (state.currentView) {
       case CalendarView.daily:
         final rawEvents = state.getEventsForDay(state.selectedDate);
@@ -410,7 +409,6 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
         priority: event.status,
       );
     }
-
     // Fallback
     return AdminCalendarEvent(
       title: "حدث غير معروف",
