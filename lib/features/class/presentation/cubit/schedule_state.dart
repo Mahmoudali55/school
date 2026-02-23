@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/features/class/data/model/add_timetable_response_model.dart';
 import 'package:my_template/features/class/data/model/level_model.dart';
 import 'package:my_template/features/class/data/model/schedule_model.dart';
 import 'package:my_template/features/class/data/model/section_data_model.dart';
@@ -13,7 +14,7 @@ class ScheduleState extends Equatable {
   final StatusState<List<TeacherClassModels>> classDataStatus;
   final StatusState<List<ScheduleModel>> generateScheduleStatus;
   final StatusState<List<ScheduleModel>> getScheduleStatus;
-  final StatusState<bool> saveScheduleStatus;
+  final StatusState<AddTimetableResponseModel> saveScheduleStatus;
 
   final SectionDataModel? selectedSection;
   final StageDataModel? selectedStage;
@@ -44,7 +45,7 @@ class ScheduleState extends Equatable {
     StatusState<List<TeacherClassModels>>? classDataStatus,
     StatusState<List<ScheduleModel>>? generateScheduleStatus,
     StatusState<List<ScheduleModel>>? getScheduleStatus,
-    StatusState<bool>? saveScheduleStatus,
+    StatusState<AddTimetableResponseModel>? saveScheduleStatus,
     SectionDataModel? selectedSection,
     StageDataModel? selectedStage,
     LevelModel? selectedLevel,

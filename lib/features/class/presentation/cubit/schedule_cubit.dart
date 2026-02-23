@@ -200,14 +200,17 @@ class ScheduleCubit extends Cubit<ScheduleState> {
 
   Future<void> saveSchedule(int classCode) async {
     final scheduleToSave = state.generatedSchedules.where((e) => e.classCode == classCode).toList();
-    if (scheduleToSave.isEmpty) return;
+    if (scheduleToSave.isEmpty) {
+      emit(state.copyWith(saveScheduleStatus: const StatusState.failure('لا يوجد جدول لحفظه')));
+      return;
+    }
 
     emit(state.copyWith(saveScheduleStatus: const StatusState.loading()));
     final result = await _scheduleRepo.saveSchedule(classCode: classCode, schedule: scheduleToSave);
     result.fold(
       (failure) =>
           emit(state.copyWith(saveScheduleStatus: StatusState.failure(failure.errMessage))),
-      (success) => emit(state.copyWith(saveScheduleStatus: StatusState.success(success))),
+      (response) => emit(state.copyWith(saveScheduleStatus: StatusState.success(response))),
     );
   }
 
