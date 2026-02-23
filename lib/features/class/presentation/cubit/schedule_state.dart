@@ -14,6 +14,7 @@ class ScheduleState extends Equatable {
   final StatusState<List<TeacherClassModels>> classDataStatus;
   final StatusState<List<ScheduleModel>> generateScheduleStatus;
   final StatusState<List<ScheduleModel>> getScheduleStatus;
+  final StatusState<List<ScheduleModel>> getScheduleApiStatus;
   final StatusState<AddTimetableResponseModel> saveScheduleStatus;
 
   final SectionDataModel? selectedSection;
@@ -30,6 +31,7 @@ class ScheduleState extends Equatable {
     this.classDataStatus = const StatusState.initial(),
     this.generateScheduleStatus = const StatusState.initial(),
     this.getScheduleStatus = const StatusState.initial(),
+    this.getScheduleApiStatus = const StatusState.initial(),
     this.saveScheduleStatus = const StatusState.initial(),
     this.selectedSection,
     this.selectedStage,
@@ -45,6 +47,7 @@ class ScheduleState extends Equatable {
     StatusState<List<TeacherClassModels>>? classDataStatus,
     StatusState<List<ScheduleModel>>? generateScheduleStatus,
     StatusState<List<ScheduleModel>>? getScheduleStatus,
+    StatusState<List<ScheduleModel>>? getScheduleApiStatus,
     StatusState<AddTimetableResponseModel>? saveScheduleStatus,
     SectionDataModel? selectedSection,
     StageDataModel? selectedStage,
@@ -59,6 +62,7 @@ class ScheduleState extends Equatable {
       classDataStatus: classDataStatus ?? this.classDataStatus,
       generateScheduleStatus: generateScheduleStatus ?? this.generateScheduleStatus,
       getScheduleStatus: getScheduleStatus ?? this.getScheduleStatus,
+      getScheduleApiStatus: getScheduleApiStatus ?? this.getScheduleApiStatus,
       saveScheduleStatus: saveScheduleStatus ?? this.saveScheduleStatus,
       selectedSection: selectedSection ?? this.selectedSection,
       selectedStage: selectedStage ?? this.selectedStage,
@@ -76,6 +80,7 @@ class ScheduleState extends Equatable {
     classDataStatus,
     generateScheduleStatus,
     getScheduleStatus,
+    getScheduleApiStatus,
     saveScheduleStatus,
     selectedSection,
     selectedStage,

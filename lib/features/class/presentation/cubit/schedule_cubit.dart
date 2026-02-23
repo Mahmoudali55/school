@@ -222,4 +222,14 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       (schedule) => emit(state.copyWith(getScheduleStatus: StatusState.success(schedule))),
     );
   }
+
+  Future<void> getScheduleFromApi(int classCode) async {
+    emit(state.copyWith(getScheduleApiStatus: const StatusState.loading()));
+    final result = await _scheduleRepo.getScheduleFromApi(classCode: classCode);
+    result.fold(
+      (failure) =>
+          emit(state.copyWith(getScheduleApiStatus: StatusState.failure(failure.errMessage))),
+      (schedule) => emit(state.copyWith(getScheduleApiStatus: StatusState.success(schedule))),
+    );
+  }
 }

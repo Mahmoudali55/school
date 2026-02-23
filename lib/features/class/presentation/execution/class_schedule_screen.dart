@@ -9,6 +9,7 @@ import 'package:my_template/core/services/services_locator.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/class/data/model/schedule_model.dart';
 import 'package:my_template/features/class/data/model/school_class_model.dart';
 import 'package:my_template/features/class/presentation/cubit/schedule_cubit.dart';
 import 'package:my_template/features/class/presentation/cubit/schedule_state.dart';
@@ -32,7 +33,7 @@ class _ClassScheduleScreenState extends State<ClassScheduleScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          sl<ScheduleCubit>()..getSchedule(int.tryParse(widget.schoolClass.id) ?? 0),
+          sl<ScheduleCubit>()..getScheduleFromApi(int.tryParse(widget.schoolClass.id) ?? 0),
       child: Scaffold(
         appBar: CustomAppBar(
           context,
@@ -51,11 +52,41 @@ class _ClassScheduleScreenState extends State<ClassScheduleScreen> {
         ),
         body: BlocBuilder<ScheduleCubit, ScheduleState>(
           builder: (context, state) {
-            if (state.getScheduleStatus.isLoading) {
+            if (state.getScheduleApiStatus.isLoading) {
               return const Center(child: CircularProgressIndicator());
             }
 
-            final schedule = state.getScheduleStatus.data ?? [];
+            if (state.getScheduleApiStatus.isFailure) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.wifi_off_rounded, size: 64.w, color: Colors.grey),
+                    Gap(16.h),
+                    Text(
+                      AppLocalKay.schedule_empty_title.tr(),
+                      style: AppTextStyle.titleMedium(context),
+                    ),
+                    Gap(8.h),
+                    Text(
+                      state.getScheduleApiStatus.error ?? '',
+                      style: AppTextStyle.bodySmall(context),
+                      textAlign: TextAlign.center,
+                    ),
+                    Gap(16.h),
+                    ElevatedButton.icon(
+                      onPressed: () => context.read<ScheduleCubit>().getScheduleFromApi(
+                        int.tryParse(widget.schoolClass.id) ?? 0,
+                      ),
+                      icon: const Icon(Icons.refresh),
+                      label: Text(AppLocalKay.retry.tr()),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            final schedule = state.getScheduleApiStatus.data ?? [];
 
             if (schedule.isEmpty) {
               return Center(
@@ -114,8 +145,8 @@ class _ClassScheduleScreenState extends State<ClassScheduleScreen> {
                   child: ListView.builder(
                     itemCount: schedule.where((e) => e.day == _daysEn[_selectedDay]).length,
                     itemBuilder: (context, index) {
-                      final items = schedule.where((e) => e.day == _daysEn[_selectedDay]).toList();
-                      items.sort((a, b) => a.period.compareTo(b.period));
+                      final items = schedule.where((e) => e.day == _daysEn[_selectedDay]).toList()
+                        ..sort((a, b) => a.period.compareTo(b.period));
                       final period = items[index];
                       return _buildPeriodCard(period);
                     },
@@ -129,8 +160,7 @@ class _ClassScheduleScreenState extends State<ClassScheduleScreen> {
     );
   }
 
-  Widget _buildPeriodCard(dynamic period) {
-
+  Widget _buildPeriodCard(ScheduleModel period) {
     final isBreak = period.subjectName == 'فسحة' || period.subjectName == 'Break';
 
     return Card(
@@ -171,7 +201,7 @@ class _ClassScheduleScreenState extends State<ClassScheduleScreen> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              "${period.startTime} - ${period.endTime}",
+              '${period.startTime} - ${period.endTime}',
               style: AppTextStyle.bodySmall(
                 context,
               ).copyWith(fontWeight: FontWeight.bold, color: Colors.grey.shade700),

@@ -5,13 +5,19 @@ import 'package:equatable/equatable.dart';
 class TeacherDataModel extends Equatable {
   final int teacherCode;
   final String teacherNameAr;
+  final int COURSE_CODE;
 
-  const TeacherDataModel({required this.teacherCode, required this.teacherNameAr});
+  const TeacherDataModel({
+    required this.teacherCode,
+    required this.teacherNameAr,
+    required this.COURSE_CODE,
+  });
 
   factory TeacherDataModel.fromMap(Map<String, dynamic> map) {
     return TeacherDataModel(
       teacherCode: map['TEACHER_CODE'] ?? 0,
       teacherNameAr: map['TEACHER_NAME_AR'] ?? '',
+      COURSE_CODE: map['COURSE_CODE'] ?? 0,
     );
   }
 

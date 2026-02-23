@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:my_template/core/services/services_locator.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/class/data/model/schedule_model.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/class/presentation/cubit/class_state.dart';
+import 'package:my_template/features/class/presentation/cubit/schedule_cubit.dart';
+import 'package:my_template/features/class/presentation/cubit/schedule_state.dart';
 
 class ClassDetailsBottomSheet extends StatefulWidget {
   final String className;
@@ -19,13 +23,26 @@ class ClassDetailsBottomSheet extends StatefulWidget {
   State<ClassDetailsBottomSheet> createState() => _ClassDetailsBottomSheetState();
 }
 
-class _ClassDetailsBottomSheetState extends State<ClassDetailsBottomSheet> {
+class _ClassDetailsBottomSheetState extends State<ClassDetailsBottomSheet>
+    with SingleTickerProviderStateMixin {
   int _selectedMonth = DateTime.now().month;
+  late TabController _tabController;
+
+  final List<String> _daysEn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
+  final List<String> _daysAr = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس'];
+  int _selectedDay = 0;
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 2, vsync: this);
     _fetchData();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   void _fetchData() {
@@ -36,98 +53,303 @@ class _ClassDetailsBottomSheetState extends State<ClassDetailsBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 0.85.sh,
-      decoration: BoxDecoration(
-        color: AppColor.scaffoldColor(context),
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
-      ),
-      child: Column(
-        children: [
-          Gap(12.h),
-          Container(
-            width: 40.w,
-            height: 4.h,
-            decoration: BoxDecoration(
-              color: AppColor.grey200Color(context),
-              borderRadius: BorderRadius.circular(2.r),
+    return BlocProvider(
+      create: (_) => sl<ScheduleCubit>()..getScheduleFromApi(widget.classCode),
+      child: Container(
+        height: 0.9.sh,
+        decoration: BoxDecoration(
+          color: AppColor.scaffoldColor(context),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+        ),
+        child: Column(
+          children: [
+            Gap(12.h),
+            Container(
+              width: 40.w,
+              height: 4.h,
+              decoration: BoxDecoration(
+                color: AppColor.grey200Color(context),
+                borderRadius: BorderRadius.circular(2.r),
+              ),
             ),
-          ),
-          Gap(16.h),
+            Gap(16.h),
 
-          // Header
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppLocalKay.class_details.tr(),
-                        style: AppTextStyle.titleMedium(
-                          context,
-                        ).copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        widget.className,
-                        style: AppTextStyle.bodySmall(context).copyWith(
-                          color: AppColor.primaryColor(context),
-                          fontWeight: FontWeight.w600,
+            // Header
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppLocalKay.class_details.tr(),
+                          style: AppTextStyle.titleMedium(
+                            context,
+                          ).copyWith(fontWeight: FontWeight.bold),
                         ),
-                      ),
-                    ],
+                        Text(
+                          widget.className,
+                          style: AppTextStyle.bodySmall(context).copyWith(
+                            color: AppColor.primaryColor(context),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: Icon(Icons.close_rounded, color: AppColor.greyColor(context)),
-                ),
-              ],
-            ),
-          ),
-          Gap(16.h),
-          const Divider(height: 1),
-
-          Expanded(
-            child: BlocBuilder<ClassCubit, ClassState>(
-              builder: (context, state) {
-                return SingleChildScrollView(
-                  padding: EdgeInsets.all(20.w),
-                  physics: const BouncingScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Month Selector Section
-                      Text(
-                        AppLocalKay.selectMonth.tr(),
-                        style: AppTextStyle.titleSmall(
-                          context,
-                        ).copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      Gap(12.h),
-                      _buildMonthPicker(),
-                      Gap(24.h),
-
-                      // Absent Count Section
-                      _buildAbsentSection(context, state),
-                      Gap(24.h),
-
-                      // Month Results Section
-                      _buildResultsSection(context, state),
-                    ],
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: Icon(Icons.close_rounded, color: AppColor.greyColor(context)),
                   ),
-                );
-              },
+                ],
+              ),
             ),
-          ),
-        ],
+            Gap(12.h),
+
+            // Tab Bar
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.w),
+              decoration: BoxDecoration(
+                color: AppColor.grey100Color(context),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: TabBar(
+                controller: _tabController,
+                indicator: BoxDecoration(
+                  color: AppColor.primaryColor(context),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                indicatorSize: TabBarIndicatorSize.tab,
+                dividerColor: Colors.transparent,
+                labelColor: AppColor.whiteColor(context),
+                unselectedLabelColor: AppColor.greyColor(context),
+                labelStyle: AppTextStyle.bodySmall(context).copyWith(fontWeight: FontWeight.bold),
+                tabs: [
+                  Tab(text: AppLocalKay.class_details.tr()),
+                  const Tab(text: 'الجدول الدراسي'),
+                ],
+              ),
+            ),
+            Gap(8.h),
+            const Divider(height: 1),
+
+            // Tab Views
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  // ─── Tab 1: Details ──────────────────────────────────────
+                  BlocBuilder<ClassCubit, ClassState>(
+                    builder: (context, state) {
+                      return SingleChildScrollView(
+                        padding: EdgeInsets.all(20.w),
+                        physics: const BouncingScrollPhysics(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              AppLocalKay.selectMonth.tr(),
+                              style: AppTextStyle.titleSmall(
+                                context,
+                              ).copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            Gap(12.h),
+                            _buildMonthPicker(),
+                            Gap(24.h),
+                            _buildAbsentSection(context, state),
+                            Gap(24.h),
+                            _buildResultsSection(context, state),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+
+                  // ─── Tab 2: Schedule ─────────────────────────────────────
+                  BlocBuilder<ScheduleCubit, ScheduleState>(
+                    builder: (context, state) {
+                      if (state.getScheduleApiStatus.isLoading) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      if (state.getScheduleApiStatus.isFailure) {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.wifi_off_rounded, size: 48.w, color: Colors.grey),
+                              Gap(12.h),
+                              Text(
+                                state.getScheduleApiStatus.error ?? 'حدث خطأ',
+                                style: AppTextStyle.bodySmall(context),
+                                textAlign: TextAlign.center,
+                              ),
+                              Gap(16.h),
+                              ElevatedButton.icon(
+                                onPressed: () => context.read<ScheduleCubit>().getScheduleFromApi(
+                                  widget.classCode,
+                                ),
+                                icon: const Icon(Icons.refresh),
+                                label: Text(AppLocalKay.retry.tr()),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+
+                      final schedule = state.getScheduleApiStatus.data ?? [];
+
+                      if (schedule.isEmpty) {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.calendar_today, size: 48.w, color: Colors.grey),
+                              Gap(12.h),
+                              Text(
+                                AppLocalKay.schedule_empty_title.tr(),
+                                style: AppTextStyle.bodyMedium(context),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+
+                      return Column(
+                        children: [
+                          // Day selector
+                          SizedBox(
+                            height: 52.h,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                              itemCount: _daysAr.length,
+                              itemBuilder: (context, index) {
+                                final isSelected = _selectedDay == index;
+                                final daySchedule = schedule
+                                    .where((e) => e.day == _daysEn[index])
+                                    .toList();
+                                return Padding(
+                                  padding: EdgeInsets.only(right: 8.w),
+                                  child: ChoiceChip(
+                                    label: Text('${_daysAr[index]} (${daySchedule.length})'),
+                                    selected: isSelected,
+                                    onSelected: (_) => setState(() => _selectedDay = index),
+                                    selectedColor: AppColor.primaryColor(context),
+                                    labelStyle: AppTextStyle.bodySmall(context).copyWith(
+                                      color: isSelected
+                                          ? AppColor.whiteColor(context)
+                                          : AppColor.textColor(context),
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          const Divider(height: 1),
+                          // Periods list
+                          Expanded(
+                            child: Builder(
+                              builder: (_) {
+                                final dayItems =
+                                    schedule.where((e) => e.day == _daysEn[_selectedDay]).toList()
+                                      ..sort((a, b) => a.period.compareTo(b.period));
+
+                                if (dayItems.isEmpty) {
+                                  return Center(
+                                    child: Text(
+                                      'لا توجد حصص هذا اليوم',
+                                      style: AppTextStyle.bodyMedium(context),
+                                    ),
+                                  );
+                                }
+
+                                return ListView.builder(
+                                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                                  itemCount: dayItems.length,
+                                  itemBuilder: (context, index) =>
+                                      _buildScheduleCard(dayItems[index]),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
+  // ─── Schedule Card ──────────────────────────────────────────────────────────
+  Widget _buildScheduleCard(ScheduleModel period) {
+    final isBreak = period.subjectName == 'فسحة' || period.subjectName == 'Break';
+    return Card(
+      margin: EdgeInsets.only(bottom: 10.h),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.r)),
+      color: isBreak ? Colors.orange.shade50 : AppColor.whiteColor(context),
+      elevation: 0,
+      child: ListTile(
+        leading: Container(
+          width: 42.w,
+          height: 42.w,
+          decoration: BoxDecoration(
+            color: isBreak
+                ? Colors.orange.withValues(alpha: 0.15)
+                : AppColor.primaryColor(context).withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(10.r),
+          ),
+          child: Center(
+            child: Text(
+              '${period.period}',
+              style: AppTextStyle.titleSmall(context).copyWith(
+                fontWeight: FontWeight.bold,
+                color: isBreak ? Colors.orange : AppColor.primaryColor(context),
+              ),
+            ),
+          ),
+        ),
+        title: Text(
+          period.subjectName,
+          style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text(
+          period.teacherName,
+          style: AppTextStyle.bodySmall(context).copyWith(color: AppColor.greyColor(context)),
+        ),
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              '${period.startTime} - ${period.endTime}',
+              style: AppTextStyle.bodySmall(
+                context,
+              ).copyWith(fontWeight: FontWeight.bold, color: AppColor.textColor(context)),
+            ),
+            if (period.room != null && period.room!.isNotEmpty)
+              Text(
+                period.room!,
+                style: AppTextStyle.bodySmall(
+                  context,
+                ).copyWith(color: AppColor.greyColor(context), fontSize: 10.sp),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ─── Month Picker ───────────────────────────────────────────────────────────
   Widget _buildMonthPicker() {
     return SizedBox(
       height: 45.h,
@@ -184,6 +406,7 @@ class _ClassDetailsBottomSheetState extends State<ClassDetailsBottomSheet> {
     );
   }
 
+  // ─── Absent Section ─────────────────────────────────────────────────────────
   Widget _buildAbsentSection(BuildContext context, ClassState state) {
     final status = state.studentAbsentCountStatus;
 
@@ -252,6 +475,7 @@ class _ClassDetailsBottomSheetState extends State<ClassDetailsBottomSheet> {
     );
   }
 
+  // ─── Results Section ────────────────────────────────────────────────────────
   Widget _buildResultsSection(BuildContext context, ClassState state) {
     final status = state.classMonthResultStatus;
 
