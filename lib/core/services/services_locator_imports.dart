@@ -61,4 +61,11 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<AIService>(() => AIService());
   sl.registerLazySingleton<AIRepo>(() => AIRepoImpl(sl()));
   sl.registerFactory<AICubit>(() => AICubit(sl()));
+
+  // Schedule Generation
+  sl.registerLazySingleton<AIScheduleService>(() => AIScheduleService());
+  sl.registerLazySingleton<ScheduleRepo>(() => ScheduleRepoImpl(appBox: Hive.box('app')));
+  sl.registerFactory<ScheduleCubit>(
+    () => ScheduleCubit(homeRepo: sl(), classRepo: sl(), scheduleRepo: sl(), aiService: sl()),
+  );
 }

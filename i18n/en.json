@@ -1082,6 +1082,18 @@
   "unknown_student":"Unknown Student",
   "subject_results":"Subject Results",
   "no_results":"No Results",
-  "classes_title": "Classrooms"
-
+  "classes_title": "Classrooms",
+   "generate_schedule": "Generate Schedule",
+  "ai_generation": "AI Generation",
+  "review_schedule": "Review Schedule",
+  "select_class_to_generate": "Select Class to Generate Schedule",
+  "generating": "Generating Schedule...",
+  "generation_success": "Schedule Generated Successfully",
+  "generation_failure": "Schedule Generation Failed",
+  "Sunday": "Sunday",
+  "Monday": "Monday",
+  "Tuesday": "Tuesday",
+  "Wednesday": "Wednesday",
+  "Thursday": "Thursday",
+  "period": "Period"
 }

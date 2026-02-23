@@ -26,4 +26,5 @@ class RoutesName {
   static const String showStudentBalanceScreen = 'showStudentBalanceScreen';
   static const String studentAIAssistantScreen = 'studentAIAssistantScreen';
   static const String teacherScreen = 'teacherScreen';
+  static const String adminScheduleGeneratorScreen = 'adminScheduleGeneratorScreen';
 }

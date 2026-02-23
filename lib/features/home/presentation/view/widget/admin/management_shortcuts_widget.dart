@@ -78,6 +78,13 @@ class ManagementShortcuts extends StatelessWidget {
       color: Colors.deepOrange,
       onTap: (context) => Navigator.pushNamed(context, RoutesName.teacherScreen),
     ),
+    ManagementShortcut(
+      title: AppLocalKay.ai_generation.tr(),
+      description: AppLocalKay.generate_schedule.tr(),
+      icon: Icons.auto_awesome,
+      color: Colors.blueAccent,
+      onTap: (context) => Navigator.pushNamed(context, RoutesName.adminScheduleGeneratorScreen),
+    ),
   ];
 
   ManagementShortcuts({super.key});

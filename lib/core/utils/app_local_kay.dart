@@ -798,6 +798,13 @@ class AppLocalKay {
   static const String face_not_recognized_retry = 'face_not_recognized_retry';
   static const String attendance_marked_success = 'attendance_marked_success';
   static const String no_registered_students_for_face = 'no_registered_students_for_face';
+  static const String generate_schedule = 'generate_schedule';
+  static const String ai_generation = 'ai_generation';
+  static const String review_schedule = 'review_schedule';
+  static const String select_class_to_generate = 'select_class_to_generate';
+  static const String generating = 'generating';
+  static const String generation_success = 'generation_success';
+  static const String generation_failure = 'generation_failure';
   static const String verify_face = 'verify_face';
   static const String face_recognition_success = 'face_recognition_success';
   static const String call = 'call';
@@ -1110,4 +1117,10 @@ class AppLocalKay {
   static const String noClasses = "no_classes";
   static const String clearResults = "clear_results";
   static const String classesTitle = "classes_title";
+  static const String Sunday = "Sunday";
+  static const String Monday = "Monday";
+  static const String Tuesday = "Tuesday";
+  static const String Wednesday = "Wednesday";
+  static const String Thursday = "Thursday";
+  static const String period = "period";
 }

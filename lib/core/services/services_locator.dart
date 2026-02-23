@@ -1,6 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:my_template/core/network/api_consumer.dart';
+import 'package:my_template/core/network/app_interceptors.dart';
+import 'package:my_template/core/network/dio_consumer.dart';
 import 'package:my_template/core/services/ai_service.dart';
 import 'package:my_template/core/services/camera_service.dart';
 import 'package:my_template/core/services/face_detection_service.dart';
@@ -15,7 +19,10 @@ import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
 import 'package:my_template/features/calendar/data/repo/calendar_repo.dart';
 import 'package:my_template/features/calendar/presentation/cubit/calendar_cubit.dart';
 import 'package:my_template/features/class/data/repository/class_repo.dart';
+import 'package:my_template/features/class/data/repository/schedule_repo.dart';
+import 'package:my_template/features/class/domain/services/ai_schedule_service.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
+import 'package:my_template/features/class/presentation/cubit/schedule_cubit.dart';
 import 'package:my_template/features/home/data/repository/ai_repo.dart';
 import 'package:my_template/features/home/data/repository/home_repo.dart';
 import 'package:my_template/features/home/presentation/cubit/ai_cubit.dart';
@@ -32,9 +39,5 @@ import 'package:my_template/features/profile/data/repo/profile_repo.dart';
 import 'package:my_template/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:my_template/features/setting/data/repo/settings_repo.dart';
 import 'package:my_template/features/setting/presentation/cubit/settings_cubit.dart';
-
-import '../network/api_consumer.dart';
-import '../network/app_interceptors.dart';
-import '../network/dio_consumer.dart';
 
 part 'services_locator_imports.dart';

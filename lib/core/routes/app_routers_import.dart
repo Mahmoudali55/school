@@ -5,6 +5,8 @@ import 'package:my_template/features/auth/presentation/view/screen/login_screen.
 import 'package:my_template/features/auth/presentation/view/screen/register_screen.dart';
 import 'package:my_template/features/chat/presentation/screen/messages_screen.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
+import 'package:my_template/features/class/presentation/cubit/schedule_cubit.dart';
+import 'package:my_template/features/class/presentation/execution/admin_schedule_generator_screen.dart';
 import 'package:my_template/features/class/presentation/screen/assignments_screen.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/view/execution/Teacher_screen.dart';

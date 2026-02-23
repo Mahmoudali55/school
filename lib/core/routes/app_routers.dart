@@ -135,6 +135,13 @@ class AppRouters {
           builder: (_) =>
               BlocProvider(create: (context) => sl<HomeCubit>(), child: const TeacherScreen()),
         );
+      case RoutesName.adminScheduleGeneratorScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<ScheduleCubit>(),
+            child: const AdminScheduleGeneratorScreen(),
+          ),
+        );
       default:
         return null;
     }

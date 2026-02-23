@@ -1151,7 +1151,18 @@
   "no_results":"لا توجد نتائج لهذا الشهر",
   "no_classes":"عدد الفصول",
   "clear_results":"تصفية النتائج",
-  "classes_title":"الفصول الدراسية"
-
-
+  "classes_title": "الفصول الدراسية",
+  "generate_schedule": "إنشاء الجدول",
+  "ai_generation": "إنشاء جدول الحصص",
+  "review_schedule": "مراجعة الجدول",
+  "select_class_to_generate": "اختر الفصل لإنشاء الجدول",
+  "generating": "جاري إنشاء الجدول...",
+  "generation_success": "تم إنشاء الجدول بنجاح",
+  "generation_failure": "فشل في إنشاء الجدول",
+  "Sunday": "الأحد",
+  "Monday": "الاثنين",
+  "Tuesday": "الثلاثاء",
+  "Wednesday": "الأربعاء",
+  "Thursday": "الخميس",
+  "period": "الحصة"
 }
