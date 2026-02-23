@@ -50,18 +50,13 @@ class _AdminScheduleGeneratorScreenState extends State<AdminScheduleGeneratorScr
       body: BlocConsumer<ScheduleCubit, ScheduleState>(
         listener: (context, state) {
           if (state.saveScheduleStatus.isSuccess) {
-            CommonMethods.showToast(
-              message: state.saveScheduleStatus.data?.msg ?? AppLocalKay.saveSuccess.tr(),
-            );
+            CommonMethods.showToast(message: state.saveScheduleStatus.data?.msg ?? '');
           }
           if (state.saveScheduleStatus.isFailure) {
-            CommonMethods.showToast(message: state.saveScheduleStatus.error ?? '');
-          }
-          if (state.generateScheduleStatus.isSuccess) {
-            CommonMethods.showToast(message: AppLocalKay.generation_success.tr());
-          }
-          if (state.generateScheduleStatus.isFailure) {
-            CommonMethods.showToast(message: state.generateScheduleStatus.error ?? '');
+            CommonMethods.showToast(
+              message: state.saveScheduleStatus.error ?? '',
+              backgroundColor: Colors.red,
+            );
           }
         },
         builder: (context, state) {
