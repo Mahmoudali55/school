@@ -8,53 +8,47 @@ import 'package:my_template/features/class/data/model/metric_card_model.dart';
 import 'package:my_template/features/home/presentation/view/widget/admin/metric_card_widget.dart';
 
 class MetricsDashboard extends StatelessWidget {
-  final List<MetricCard> metrics = [
-    MetricCard(
-      title: "إجمالي الحضور اليوم",
-      value: "94%",
-      change: "+2%",
-      isPositive: true,
-      icon: Icons.people,
-      color: Color(0xFF10B981),
-    ),
-    MetricCard(
-      title: "عدد الطلاب",
-      value: "450",
-      change: "+15",
-      isPositive: true,
-      icon: Icons.school,
-      color: Color(0xFF2E5BFF),
-    ),
-    MetricCard(
-      title: "عدد المعلمين",
-      value: "45",
-      change: "+2",
-      isPositive: true,
-      icon: Icons.person,
-      color: Color(0xFFF59E0B),
-    ),
-    MetricCard(
-      title: "الحافلات النشطة",
-      value: "8",
-      change: "0",
-      isPositive: true,
-      icon: Icons.directions_bus,
-      color: Color(0xFF9C27B0),
-    ),
-    MetricCard(
-      title: "الرسوم المستلمة",
-      value: "85%",
-      change: "+5%",
-      isPositive: true,
-      icon: Icons.payments,
-      color: Color(0xFFEC4899),
-    ),
-  ];
+  final Map<String, Map<String, dynamic>> metricsData;
 
-  MetricsDashboard({super.key});
+  const MetricsDashboard({super.key, required this.metricsData});
+
+  List<MetricCard> _buildMetrics() {
+    final List<MetricCard> list = [];
+
+    metricsData.forEach((key, data) {
+      IconData icon = Icons.info;
+      Color color = Colors.blue;
+
+      if (key.contains("طلاب")) {
+        icon = Icons.school;
+        color = const Color(0xFF2E5BFF);
+      } else if (key.contains("معلم")) {
+        icon = Icons.person;
+        color = const Color(0xFFF59E0B);
+      } else if (key.contains("حافلات")) {
+        icon = Icons.directions_bus;
+        color = const Color(0xFF9C27B0);
+      }
+
+      list.add(
+        MetricCard(
+          title: key,
+          value: data['value'] ?? "0",
+          change: data['change'] ?? "0",
+          isPositive: data['isPositive'] ?? true,
+          icon: icon,
+          color: color,
+        ),
+      );
+    });
+
+    return list;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final metrics = _buildMetrics();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

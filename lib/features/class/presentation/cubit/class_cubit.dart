@@ -46,11 +46,14 @@ class ClassCubit extends Cubit<ClassState> {
       } else if (normalizedType == 'parent') {
         data = await _classRepo.getParentStudentClasses();
       } else {
+        if (isClosed) return;
         emit(state.copyWith(classesStatus: const StatusState.failure("Unknown user type")));
         return;
       }
+      if (isClosed) return;
       emit(state.copyWith(classesStatus: StatusState.success(data.cast())));
     } catch (e) {
+      if (isClosed) return;
       emit(state.copyWith(classesStatus: StatusState.failure(e.toString())));
     }
   }
@@ -59,6 +62,7 @@ class ClassCubit extends Cubit<ClassState> {
     emit(state.copyWith(homeWorkStatus: const StatusState.loading()));
 
     final result = await _classRepo.getHomeWork(code: code, hwDate: hwDate);
+    if (isClosed) return;
     result.fold(
       (failure) => emit(state.copyWith(homeWorkStatus: StatusState.failure(failure.errMessage))),
       (homeWorkList) => emit(state.copyWith(homeWorkStatus: StatusState.success(homeWorkList))),
@@ -69,6 +73,7 @@ class ClassCubit extends Cubit<ClassState> {
     emit(state.copyWith(studentCoursesStatus: const StatusState.loading()));
 
     final result = await _classRepo.getStudentCourses(level: level);
+    if (isClosed) return;
     result.fold(
       (failure) =>
           emit(state.copyWith(studentCoursesStatus: StatusState.failure(failure.errMessage))),
@@ -81,6 +86,7 @@ class ClassCubit extends Cubit<ClassState> {
     emit(state.copyWith(teacherHomeWorkStatus: const StatusState.loading()));
 
     final result = await _classRepo.getTeacherHomeWork(code: code, hwDate: hwDate);
+    if (isClosed) return;
     result.fold(
       (failure) =>
           emit(state.copyWith(teacherHomeWorkStatus: StatusState.failure(failure.errMessage))),
@@ -93,6 +99,7 @@ class ClassCubit extends Cubit<ClassState> {
     emit(state.copyWith(studentClassesStatus: const StatusState.loading()));
 
     final result = await _classRepo.studentClasses(ClassCode: code);
+    if (isClosed) return;
     result.fold(
       (failure) =>
           emit(state.copyWith(studentClassesStatus: StatusState.failure(failure.errMessage))),
@@ -104,6 +111,7 @@ class ClassCubit extends Cubit<ClassState> {
   Future<void> classAbsent({required int classCode, required String HWDATE}) async {
     emit(state.copyWith(classAbsentStatus: StatusState.loading()));
     final result = await _classRepo.classAbsent(classCode: classCode, HwDate: HWDATE);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(classAbsentStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(classAbsentStatus: StatusState.success(success))),
@@ -113,6 +121,7 @@ class ClassCubit extends Cubit<ClassState> {
   Future<void> editClassAbsent({required AddClassAbsentRequestModel request}) async {
     emit(state.copyWith(editClassAbsentStatus: StatusState.loading()));
     final result = await _classRepo.editClassAbsent(request: request);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(editClassAbsentStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(editClassAbsentStatus: StatusState.success(success))),
@@ -122,6 +131,7 @@ class ClassCubit extends Cubit<ClassState> {
   Future<void> deleteClassAbsent({required int classCode, required String HWDATE}) async {
     emit(state.copyWith(deleteHomeworkStatus: StatusState.loading()));
     final result = await _classRepo.deleteClassAbsent(classCode: classCode, HWDATE: HWDATE);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(deleteHomeworkStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(deleteHomeworkStatus: StatusState.success(success))),
@@ -131,6 +141,7 @@ class ClassCubit extends Cubit<ClassState> {
   Future<void> getLessons({int? code}) async {
     emit(state.copyWith(getLessonsStatus: StatusState.loading()));
     final result = await _classRepo.getLessons(code: code);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(getLessonsStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(getLessonsStatus: StatusState.success(success))),
@@ -141,6 +152,7 @@ class ClassCubit extends Cubit<ClassState> {
     emit(state.copyWith(imageFileNameStatus: const StatusState.loading()));
     CommonMethods.showToast(message: AppLocalKay.loading.tr(), type: ToastType.help);
     final result = await _classRepo.imageFileName(filePath: filePaths);
+    if (isClosed) return;
 
     result.fold(
       (error) {
@@ -164,6 +176,7 @@ class ClassCubit extends Cubit<ClassState> {
       HWDATE: HWDATE,
       classCode: classCode,
     );
+    if (isClosed) return;
     result.fold(
       (error) =>
           emit(state.copyWith(deleteStudentAbsentStatus: StatusState.failure(error.errMessage))),
@@ -174,6 +187,7 @@ class ClassCubit extends Cubit<ClassState> {
   Future<void> deleteStudent({required int studentCode}) async {
     emit(state.copyWith(deleteLessonStatus: StatusState.loading()));
     final result = await _classRepo.deleteLesson(lessonCode: studentCode);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(deleteLessonStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(deleteLessonStatus: StatusState.success(success))),
@@ -183,6 +197,7 @@ class ClassCubit extends Cubit<ClassState> {
   Future<void> sectionData({required String userId}) async {
     emit(state.copyWith(sectionDataStatus: const StatusState.loading()));
     final result = await _classRepo.sectionData(userId: userId);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(sectionDataStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(sectionDataStatus: StatusState.success(success))),
@@ -192,6 +207,7 @@ class ClassCubit extends Cubit<ClassState> {
   Future<void> stageData({required int sectionId}) async {
     emit(state.copyWith(stageDataStatus: const StatusState.loading()));
     final result = await _classRepo.stageData(sectionCode: sectionId);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(stageDataStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(stageDataStatus: StatusState.success(success))),
@@ -201,6 +217,7 @@ class ClassCubit extends Cubit<ClassState> {
   Future<void> levelData({required int stage}) async {
     emit(state.copyWith(levelDataStatus: const StatusState.loading()));
     final result = await _classRepo.levelData(stage: stage);
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(levelDataStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(levelDataStatus: StatusState.success(success))),
@@ -210,6 +227,7 @@ class ClassCubit extends Cubit<ClassState> {
   Future<void> classMonthResult({required int classCode, required int month}) async {
     emit(state.copyWith(classMonthResultStatus: const StatusState.loading()));
     final result = await _classRepo.classMonthResult(classCode: classCode, month: month);
+    if (isClosed) return;
     result.fold(
       (error) =>
           emit(state.copyWith(classMonthResultStatus: StatusState.failure(error.errMessage))),
@@ -220,6 +238,7 @@ class ClassCubit extends Cubit<ClassState> {
   Future<void> studentAbsentCount({required int classCode}) async {
     emit(state.copyWith(studentAbsentCountStatus: const StatusState.loading()));
     final result = await _classRepo.studentAbsent(classCode: classCode);
+    if (isClosed) return;
     result.fold(
       (error) =>
           emit(state.copyWith(studentAbsentCountStatus: StatusState.failure(error.errMessage))),
@@ -238,6 +257,7 @@ class ClassCubit extends Cubit<ClassState> {
       sectionCod: sectionCod,
       stageCode: stageCode,
     );
+    if (isClosed) return;
     result.fold(
       (error) => emit(state.copyWith(classDataStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(classDataStatus: StatusState.success(success))),

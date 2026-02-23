@@ -38,7 +38,7 @@ class AdminHomeScreen extends StatelessWidget {
                   children: [
                     AdminHeader(name: HiveMethods.getUserName2()),
                     Gap(20.h),
-                    MetricsDashboard(),
+                    MetricsDashboard(metricsData: adminData.metrics),
                     Gap(20.h),
                     MiniCharts(),
                     Gap(20.h),

@@ -561,14 +561,27 @@ class HomeRepoImpl implements HomeRepo {
 
   @override
   Future<Either<Failure, AdminHomeModel>> getAdminHomeData() async {
+    final teachersResult = await teacherData(searchVal: "");
+    final busesResult = await busData();
+
+    int teachersCount = 0;
+    int busesCount = 0;
+
+    teachersResult.fold((_) {}, (list) => teachersCount = list.length);
+    busesResult.fold((_) {}, (list) => busesCount = list.length);
+
     return Right(
       AdminHomeModel(
         userName: HiveMethods.getUserName(),
         userRole: "مدير",
         metrics: {
-          "الطلاب": {"value": "1250", "trend": "+5%"},
-          "المعلمون": {"value": "85", "trend": "0%"},
-          "نسبة الحضور": {"value": "94%", "trend": "+2%"},
+          "عدد الطلاب": {"value": "450", "change": "+15", "isPositive": true},
+          "عدد المعلمين": {
+            "value": "$teachersCount",
+            "change": teachersCount > 0 ? "+${(teachersCount * 0.05).toInt()}" : "0",
+            "isPositive": true,
+          },
+          "الحافلات النشطة": {"value": "$busesCount", "change": "0", "isPositive": true},
         },
         quickActions: [
           HomeQuickAction(
