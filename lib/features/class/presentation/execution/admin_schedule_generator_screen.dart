@@ -8,6 +8,7 @@ import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.da
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_dropdown_form_field.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/core/utils/common_methods.dart';
 import 'package:my_template/features/class/data/model/level_model.dart';
 import 'package:my_template/features/class/data/model/section_data_model.dart';
 import 'package:my_template/features/class/data/model/stage_data_model.dart';
@@ -49,23 +50,13 @@ class _AdminScheduleGeneratorScreenState extends State<AdminScheduleGeneratorScr
       body: BlocConsumer<ScheduleCubit, ScheduleState>(
         listener: (context, state) {
           if (state.saveScheduleStatus.isSuccess) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(AppLocalKay.saveSuccess.tr())));
+            CommonMethods.showToast(message: AppLocalKay.saveSuccess.tr());
           }
           if (state.generateScheduleStatus.isSuccess) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(AppLocalKay.generation_success.tr())));
+            CommonMethods.showToast(message: AppLocalKay.generation_success.tr());
           }
           if (state.generateScheduleStatus.isFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  state.generateScheduleStatus.message ?? AppLocalKay.generation_failure.tr(),
-                ),
-              ),
-            );
+            CommonMethods.showToast(message: AppLocalKay.generation_success.tr());
           }
         },
         builder: (context, state) {
@@ -75,7 +66,7 @@ class _AdminScheduleGeneratorScreenState extends State<AdminScheduleGeneratorScr
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(AppLocalKay.ai_generation.tr(), style: AppTextStyle.bodyMedium(context)),
-                Gap(16.h),
+                Gap(12.h),
 
                 // Section Dropdown
                 CustomDropdownFormField<SectionDataModel>(
@@ -150,6 +141,7 @@ class _AdminScheduleGeneratorScreenState extends State<AdminScheduleGeneratorScr
                 CustomButton(
                   text: AppLocalKay.ai_generation.tr(),
                   cubitState: state.generateScheduleStatus,
+                  radius: 12.r,
                   onPressed: () {
                     setState(() => _submitted = true);
                     if (state.selectedClass != null) {
@@ -165,6 +157,7 @@ class _AdminScheduleGeneratorScreenState extends State<AdminScheduleGeneratorScr
 
                   CustomButton(
                     text: AppLocalKay.review_schedule.tr(),
+                    radius: 12.r,
                     color: Colors.orange,
                     onPressed: () {
                       showModalBottomSheet(
@@ -185,6 +178,7 @@ class _AdminScheduleGeneratorScreenState extends State<AdminScheduleGeneratorScr
                   Gap(12.h),
                   CustomButton(
                     text: AppLocalKay.save.tr(),
+                    radius: 12.r,
                     cubitState: state.saveScheduleStatus,
                     onPressed: () {
                       context.read<ScheduleCubit>().saveSchedule(state.selectedClass!.classCode);
