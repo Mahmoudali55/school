@@ -9,6 +9,7 @@ import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.da
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_dropdown_form_field.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
+import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -17,8 +18,6 @@ import 'package:my_template/features/calendar/data/model/Events_response_model.d
 import 'package:my_template/features/calendar/data/model/add_event_request_model.dart';
 import 'package:my_template/features/calendar/presentation/cubit/calendar_cubit.dart';
 import 'package:my_template/features/calendar/presentation/cubit/calendar_state.dart';
-import 'package:my_template/features/class/data/model/section_data_model.dart';
-import 'package:my_template/features/class/data/model/stage_data_model.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/class/presentation/cubit/class_state.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
@@ -44,6 +43,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   // Variables for functionality
+  int? _selectedSectionCode;
+  int? _selectedStageCode;
   int? _selectedLevelCode;
   int? _selectedClassCode;
   bool _submitted = false;
@@ -55,6 +56,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
     Colors.orange,
     Colors.purple,
     Colors.teal,
+    Colors.yellow,
   ];
 
   bool get isEdit => widget.eventToEdit != null;
@@ -62,6 +64,17 @@ class _AddEventScreenState extends State<AddEventScreen> {
   @override
   void initState() {
     super.initState();
+
+    // Reset stale success/failure statuses to prevent BlocListener
+    // from firing Navigator.pop() on old state when screen reopens
+    final cubit = context.read<CalendarCubit>();
+    cubit.emit(
+      cubit.state.copyWith(
+        addEventStatus: const StatusState.initial(),
+        editEventStatus: const StatusState.initial(),
+      ),
+    );
+
     if (widget.isManagement == true) {
       context.read<ClassCubit>().sectionData(userId: HiveMethods.getType());
     } else {
@@ -74,27 +87,63 @@ class _AddEventScreenState extends State<AddEventScreen> {
       titleController.text = event.eventTitel;
       descriptionController.text = event.eventDesc;
 
+      _selectedSectionCode = event.sectionCode;
+      _selectedStageCode = event.stageCode;
       _selectedLevelCode = event.levelCode;
       _selectedClassCode = event.classCode;
 
-      if (_selectedLevelCode != null) {
-        context.read<HomeCubit>().teacherClasses(
-          int.tryParse(HiveMethods.getUserSection().toString()) ?? 0,
-          int.tryParse(HiveMethods.getUserStage().toString()) ?? 0,
-          _selectedLevelCode!,
-        );
+      if (widget.isManagement == true) {
+        // For management edit: ensure we have initial lists
+        context.read<ClassCubit>().stageData(sectionId: event.sectionCode);
+        context.read<HomeCubit>().teacherLevel(event.stageCode);
+        if (_selectedLevelCode != null) {
+          context.read<HomeCubit>().teacherClasses(
+            event.sectionCode,
+            event.stageCode,
+            _selectedLevelCode!,
+          );
+        }
+      } else {
+        // For teacher edit: use Hive values
+        if (_selectedLevelCode != null) {
+          context.read<HomeCubit>().teacherClasses(
+            int.tryParse(HiveMethods.getUserSection().toString()) ?? 0,
+            int.tryParse(HiveMethods.getUserStage().toString()) ?? 0,
+            _selectedLevelCode!,
+          );
+        }
       }
 
       try {
-        selectedDate = DateTime.parse(event.eventDate);
+        // Try ISO format first (yyyy-MM-dd)
+        selectedDate = DateTime.parse(event.eventDate.trim());
       } catch (_) {
-        selectedDate = DateTime.now();
+        try {
+          // Try dd/MM/yyyy format from API
+          final dateStr = event.eventDate.trim();
+          final parts = dateStr.split('/');
+          if (parts.length == 3) {
+            selectedDate = DateTime(
+              int.parse(parts[2].trim()), // year
+              int.parse(parts[1].trim()), // month
+              int.parse(parts[0].trim()), // day
+            );
+          } else {
+            selectedDate = DateTime.now();
+          }
+        } catch (_) {
+          selectedDate = DateTime.now();
+        }
       }
       try {
+        final timeStr = event.eventTime.trim();
         // As time comes as string (e.g. "08:00"), we need to parse it
-        final timeParts = event.eventTime.split(':');
+        final timeParts = timeStr.split(':');
         if (timeParts.length == 2) {
-          selectedTime = TimeOfDay(hour: int.parse(timeParts[0]), minute: int.parse(timeParts[1]));
+          selectedTime = TimeOfDay(
+            hour: int.parse(timeParts[0].trim()),
+            minute: int.parse(timeParts[1].trim()),
+          );
         }
       } catch (_) {
         selectedTime = TimeOfDay.now();
@@ -104,7 +153,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
   }
 
   Color _getColorFromString(String colorStr) {
-    switch (colorStr.toLowerCase()) {
+    switch (colorStr.trim().toLowerCase()) {
       case 'red':
         return Colors.red;
       case 'green':
@@ -225,20 +274,33 @@ class _AddEventScreenState extends State<AddEventScreen> {
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                             Gap(8.h),
-                            CustomDropdownFormField<SectionDataModel>(
-                              hint: AppLocalKay.select_section.tr(),
-                              value: classState.selectedSection,
-                              items: (classState.sectionDataStatus.data ?? []).map((section) {
-                                return DropdownMenuItem<SectionDataModel>(
-                                  value: section,
-                                  child: Text(section.sectionName),
-                                );
-                              }).toList(),
-                              onChanged: (SectionDataModel? section) {
-                                context.read<ClassCubit>().onSectionChanged(section);
-                              },
-                              errorText: '',
-                              submitted: false,
+                            IgnorePointer(
+                              ignoring: isEdit,
+                              child: Opacity(
+                                opacity: isEdit ? 0.5 : 1,
+                                child: CustomDropdownFormField<int>(
+                                  hint: AppLocalKay.select_section.tr(),
+                                  value: _selectedSectionCode,
+                                  items: (classState.sectionDataStatus.data ?? []).map((section) {
+                                    return DropdownMenuItem<int>(
+                                      value: section.sectionCode,
+                                      child: Text(section.sectionName),
+                                    );
+                                  }).toList(),
+                                  onChanged: (int? code) {
+                                    _selectedSectionCode = code;
+                                    _selectedStageCode = null;
+                                    _selectedLevelCode = null;
+                                    _selectedClassCode = null;
+                                    final section = (classState.sectionDataStatus.data ?? [])
+                                        .firstWhere((e) => e.sectionCode == code);
+                                    context.read<ClassCubit>().onSectionChanged(section);
+                                    setState(() {});
+                                  },
+                                  errorText: '',
+                                  submitted: false,
+                                ),
+                              ),
                             ),
                             Gap(5.h),
                             Text(
@@ -246,27 +308,36 @@ class _AddEventScreenState extends State<AddEventScreen> {
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
                             Gap(8.h),
-                            CustomDropdownFormField<StageDataModel>(
-                              hint: context.locale.languageCode == 'ar'
-                                  ? 'اختر المرحلة'
-                                  : 'Select Stage',
-                              value: (uniqueStages.contains(classState.selectedStage))
-                                  ? classState.selectedStage
-                                  : null,
-                              items: uniqueStages.map((stage) {
-                                return DropdownMenuItem<StageDataModel>(
-                                  value: stage,
-                                  child: Text(stage.stageNameAr),
-                                );
-                              }).toList(),
-                              onChanged: (StageDataModel? stage) {
-                                context.read<ClassCubit>().onStageChanged(stage);
-                                if (stage != null) {
-                                  context.read<HomeCubit>().teacherLevel(stage.stageCode);
-                                }
-                              },
-                              errorText: '',
-                              submitted: false,
+                            IgnorePointer(
+                              ignoring: isEdit,
+                              child: Opacity(
+                                opacity: isEdit ? 0.5 : 1,
+                                child: CustomDropdownFormField<int>(
+                                  hint: context.locale.languageCode == 'ar'
+                                      ? 'اختر المرحلة'
+                                      : 'Select Stage',
+                                  value: _selectedStageCode,
+                                  items: uniqueStages.map((stage) {
+                                    return DropdownMenuItem<int>(
+                                      value: stage.stageCode,
+                                      child: Text(stage.stageNameAr),
+                                    );
+                                  }).toList(),
+                                  onChanged: (int? code) {
+                                    _selectedStageCode = code;
+                                    _selectedLevelCode = null;
+                                    _selectedClassCode = null;
+                                    final stage = uniqueStages.firstWhere(
+                                      (e) => e.stageCode == code,
+                                    );
+                                    context.read<ClassCubit>().onStageChanged(stage);
+                                    context.read<HomeCubit>().teacherLevel(stage.stageCode);
+                                    setState(() {});
+                                  },
+                                  errorText: '',
+                                  submitted: false,
+                                ),
+                              ),
                             ),
                           ],
                           // Level Dropdown
@@ -471,14 +542,14 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                   eventColor: _getColorName(selectedColor),
                                   sectionCode:
                                       (widget.isManagement == true
-                                          ? classState.selectedSection?.sectionCode
+                                          ? _selectedSectionCode
                                           : int.tryParse(
                                               HiveMethods.getUserSection().toString(),
                                             )) ??
                                       0,
                                   stageCode:
                                       (widget.isManagement == true
-                                          ? classState.selectedStage?.stageCode
+                                          ? _selectedStageCode
                                           : int.tryParse(HiveMethods.getUserStage().toString())) ??
                                       0,
                                   levelCode: int.parse(_selectedLevelCode.toString()),

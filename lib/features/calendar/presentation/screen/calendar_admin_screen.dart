@@ -300,9 +300,6 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
           dailyEvents: rawEvents.map<AdminCalendarEvent>((e) => _toAdminEvent(e)).toList(),
           onDateSelected: (date) => context.read<CalendarCubit>().changeDate(date),
           getFormattedDate: _getFormattedDate,
-          onEditEvent: (event) {},
-          onSetReminder: (event) {},
-          onShareEvent: (event) {},
         );
       case CalendarView.weekly:
         final startOfWeek = state.selectedDate.subtract(
@@ -345,12 +342,44 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
 
     // Mapping from Event (School API)
     if (event is school.Event) {
-      final colorStr = event.eventColore.replaceAll('#', '');
+      final colorStr = event.eventColore.trim().toLowerCase();
       Color color;
-      try {
-        color = Color(int.parse('FF$colorStr', radix: 16));
-      } catch (e) {
-        color = const Color(0xFF9C27B0);
+      switch (colorStr) {
+        case 'red':
+          color = Colors.red;
+          break;
+        case 'green':
+          color = Colors.green;
+          break;
+        case 'blue':
+          color = Colors.blue;
+          break;
+        case 'orange':
+          color = Colors.orange;
+          break;
+        case 'purple':
+          color = Colors.purple;
+          break;
+        case 'yellow':
+          color = Colors.yellow;
+          break;
+        case 'teal':
+          color = Colors.teal;
+          break;
+        default:
+          if (colorStr.startsWith('#')) {
+            try {
+              color = Color(int.parse(colorStr.replaceFirst('#', '0xFF')));
+            } catch (e) {
+              color = Colors.grey;
+            }
+          } else {
+            try {
+              color = Color(int.parse('0xFF$colorStr'));
+            } catch (e) {
+              color = Colors.grey;
+            }
+          }
       }
 
       final title = event.eventTitel;
@@ -373,6 +402,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
         description: event.eventDesc,
         participants: [],
         priority: "عادي",
+        originalEvent: event,
       );
     }
 

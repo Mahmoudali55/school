@@ -8,9 +8,6 @@ class DailyView extends StatelessWidget {
   final List<AdminCalendarEvent> dailyEvents;
   final Function(DateTime) onDateSelected;
   final String Function(DateTime) getFormattedDate;
-  final Function(AdminCalendarEvent) onEditEvent;
-  final Function(AdminCalendarEvent) onSetReminder;
-  final Function(AdminCalendarEvent) onShareEvent;
 
   const DailyView({
     super.key,
@@ -18,9 +15,6 @@ class DailyView extends StatelessWidget {
     required this.dailyEvents,
     required this.onDateSelected,
     required this.getFormattedDate,
-    required this.onEditEvent,
-    required this.onSetReminder,
-    required this.onShareEvent,
   });
 
   @override
@@ -36,16 +30,7 @@ class DailyView extends StatelessWidget {
           else
             Column(
               mainAxisSize: MainAxisSize.min,
-              children: dailyEvents
-                  .map(
-                    (event) => EventCard(
-                      event: event,
-                      onEdit: () => onEditEvent(event),
-                      onSetReminder: () => onSetReminder(event),
-                      onShare: () => onShareEvent(event),
-                    ),
-                  )
-                  .toList(),
+              children: dailyEvents.map((event) => EventCard(event: event)).toList(),
             ),
         ],
       ),

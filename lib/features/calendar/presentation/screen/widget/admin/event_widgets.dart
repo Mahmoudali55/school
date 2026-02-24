@@ -15,17 +15,8 @@ import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 
 class EventCard extends StatelessWidget {
   final AdminCalendarEvent event;
-  final VoidCallback onEdit;
-  final VoidCallback onSetReminder;
-  final VoidCallback onShare;
 
-  const EventCard({
-    super.key,
-    required this.event,
-    required this.onEdit,
-    required this.onSetReminder,
-    required this.onShare,
-  });
+  const EventCard({super.key, required this.event});
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +74,7 @@ class EventCard extends StatelessWidget {
                     ],
                   ),
                 ),
+              if (event.originalEvent != null) _buildActionMenu(context),
             ],
           ),
           Gap(12.h),
@@ -136,6 +128,112 @@ class EventCard extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildActionMenu(BuildContext context) {
+    return PopupMenuButton<String>(
+      padding: EdgeInsets.zero,
+      constraints: BoxConstraints(minWidth: 120.w),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      onSelected: (value) {
+        if (value == 'edit') {
+          final calendarCubit = context.read<CalendarCubit>();
+          final homeCubit = context.read<HomeCubit>();
+          final classCubit = context.read<ClassCubit>();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(value: calendarCubit),
+                  BlocProvider.value(value: homeCubit),
+                  BlocProvider.value(value: classCubit),
+                ],
+                child: AddEventScreen(
+                  color: const Color(0xFF9C27B0),
+                  eventToEdit: event.originalEvent!,
+                  isManagement: true,
+                ),
+              ),
+            ),
+          );
+        } else if (value == 'delete') {
+          showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              title: Text(
+                AppLocalKay.delete.tr(),
+                style: AppTextStyle.titleLarge(context, listen: false),
+              ),
+              content: Text(
+                AppLocalKay.delete_event_message.tr(),
+                style: AppTextStyle.bodyMedium(context, listen: false),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(ctx).pop(),
+                  child: Text(
+                    AppLocalKay.cancel.tr(),
+                    style: AppTextStyle.bodyMedium(
+                      context,
+                      listen: false,
+                    ).copyWith(color: AppColor.greyColor(context, listen: false)),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    context.read<CalendarCubit>().deleteEvent(event.originalEvent!.id);
+                    Navigator.of(ctx).pop();
+                  },
+                  child: Text(
+                    AppLocalKay.delete.tr(),
+                    style: AppTextStyle.bodyMedium(context, listen: false).copyWith(
+                      color: AppColor.errorColor(context, listen: false),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        PopupMenuItem<String>(
+          value: 'edit',
+          child: Row(
+            children: [
+              Icon(Icons.edit_rounded, color: const Color(0xFF9C27B0), size: 20),
+              Gap(12.w),
+              Text(AppLocalKay.edit.tr(), style: AppTextStyle.bodyMedium(context, listen: false)),
+            ],
+          ),
+        ),
+        PopupMenuItem<String>(
+          value: 'delete',
+          child: Row(
+            children: [
+              Icon(
+                Icons.delete_rounded,
+                color: AppColor.errorColor(context, listen: false),
+                size: 20,
+              ),
+              Gap(12.w),
+              Text(AppLocalKay.delete.tr(), style: AppTextStyle.bodyMedium(context, listen: false)),
+            ],
+          ),
+        ),
+      ],
+      child: Container(
+        padding: EdgeInsets.all(4.w),
+        decoration: BoxDecoration(
+          color: AppColor.greyColor(context).withOpacity(0.1),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(Icons.more_horiz_rounded, color: AppColor.greyColor(context), size: 20.sp),
       ),
     );
   }

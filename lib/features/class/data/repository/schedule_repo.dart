@@ -63,30 +63,27 @@ class ScheduleRepoImpl implements ScheduleRepo {
     required List<ScheduleModel> schedule,
   }) async {
     try {
-      AddTimetableResponseModel? lastResponse;
+      final body = {
+        "classCode": classCode,
+        "School_Time_table": schedule
+            .map(
+              (e) => AddTimetableRequestModel.fromScheduleModel(
+                model: e,
+                classCode: classCode,
+              ).toJson(),
+            )
+            .toList(),
+      };
 
-      for (final item in schedule) {
-        final request = AddTimetableRequestModel.fromScheduleModel(item);
-        final response = await apiConsumer.post(
-          EndPoints.addSchoolTimeTable,
-          body: request.toJson(),
-        );
-        lastResponse = AddTimetableResponseModel.fromJson(response);
+      final response = await apiConsumer.post(EndPoints.addSchoolTimeTable, body: body);
 
-        // Stop immediately if any row fails
-        if (!lastResponse.success) {
-          return Left(ServerFailure(lastResponse.msg));
-        }
+      final result = AddTimetableResponseModel.fromJson(response);
+
+      if (!result.success) {
+        return Left(ServerFailure(result.msg));
       }
 
-      // Cache locally after successful API save
-      final String scheduleStr = jsonEncode(schedule.map((e) => e.toJson()).toList());
-      await appBox.put('schedule_$classCode', scheduleStr);
-
-      return Right(
-        lastResponse ??
-            const AddTimetableResponseModel(success: true, id: 0, msg: 'تم الحفظ بنجاح'),
-      );
+      return Right(result);
     } on DioException catch (e) {
       return Left(ServerFailure.fromDioError(e));
     } catch (e) {

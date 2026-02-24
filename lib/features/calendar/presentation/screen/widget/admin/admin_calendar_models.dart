@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_template/features/calendar/data/model/Events_response_model.dart' as school;
 
 class AdminCalendarEvent {
   final String title;
@@ -10,6 +11,7 @@ class AdminCalendarEvent {
   final String description;
   final List<String> participants;
   final String priority;
+  final school.Event? originalEvent;
 
   AdminCalendarEvent({
     required this.title,
@@ -21,5 +23,6 @@ class AdminCalendarEvent {
     required this.description,
     required this.participants,
     required this.priority,
+    this.originalEvent,
   });
 }

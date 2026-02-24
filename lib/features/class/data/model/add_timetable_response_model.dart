@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class AddTimetableResponseModel extends Equatable {
   final bool success;
-  final int id;
+  final dynamic id;
   final String msg;
 
   const AddTimetableResponseModel({required this.success, required this.id, required this.msg});
@@ -10,7 +10,7 @@ class AddTimetableResponseModel extends Equatable {
   factory AddTimetableResponseModel.fromJson(Map<String, dynamic> json) {
     return AddTimetableResponseModel(
       success: json['success'] ?? false,
-      id: json['id'] ?? 0,
+      id: json['id'],
       msg: json['msg'] ?? '',
     );
   }
