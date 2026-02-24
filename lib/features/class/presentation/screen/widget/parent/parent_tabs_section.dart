@@ -16,7 +16,13 @@ import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 class ParentTabsSection extends StatefulWidget {
   final ClassState classState;
   final int studentCode;
-  const ParentTabsSection({super.key, required this.classState, required this.studentCode});
+  final int? classCode;
+  const ParentTabsSection({
+    super.key,
+    required this.classState,
+    required this.studentCode,
+    this.classCode,
+  });
 
   @override
   State<ParentTabsSection> createState() => _ParentTabsSectionState();
@@ -24,12 +30,28 @@ class ParentTabsSection extends StatefulWidget {
 
 class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  int _selectedDayIndex = 0; // 0: Sunday, 1: Monday, ..., 4: Thursday
+
+  final List<String> _days = [
+    AppLocalKay.Sunday.tr(),
+    AppLocalKay.Monday.tr(),
+    AppLocalKay.Tuesday.tr(),
+    AppLocalKay.Wednesday.tr(),
+    AppLocalKay.Thursday.tr(),
+  ];
+
+  final List<String> _daysEn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(_handleTabSelection);
+
+    // Initial fetch for first student
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchDataForActiveTab();
+    });
   }
 
   void _handleTabSelection() {
@@ -47,13 +69,15 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
   }
 
   void _fetchDataForActiveTab() {
-    if (_tabController.index == 3) {
+    if (_tabController.index == 0 && widget.classCode != null) {
+      context.read<ClassCubit>().getScheduleFromApi(widget.classCode!);
+    } else if (_tabController.index == 1) {
+      context.read<HomeCubit>().studentCourseDegree(widget.studentCode, null);
+    } else if (_tabController.index == 2) {
       context.read<ClassCubit>().getHomeWork(
         code: widget.studentCode,
         hwDate: DateFormat('yyyy-MM-dd', 'en').format(DateTime.now()),
       );
-    } else if (_tabController.index == 1) {
-      context.read<HomeCubit>().studentCourseDegree(widget.studentCode, null);
     }
   }
 
@@ -87,7 +111,6 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
             tabs: [
               Tab(text: AppLocalKay.scheduls.tr()),
               Tab(text: AppLocalKay.grades.tr()),
-              Tab(text: AppLocalKay.checkin.tr()),
               Tab(text: AppLocalKay.todostitle.tr()),
             ],
           ),
@@ -97,9 +120,8 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
           child: TabBarView(
             controller: _tabController,
             children: [
-              const Center(child: Text('📆 شاشة الجدول')),
+              _buildScheduleSection(context),
               _buildGradesSection(context),
-              const Center(child: Text('📁 شاشة الحضور')),
               _buildHomeWorkSection(context),
             ],
           ),
@@ -478,5 +500,207 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
     }
 
     return const Center(child: Text("Select a child to see homework"));
+  }
+
+  Widget _buildScheduleSection(BuildContext context) {
+    return Column(
+      children: [
+        _buildDayPicker(),
+        const Gap(16),
+        Expanded(child: _buildScheduleList()),
+      ],
+    );
+  }
+
+  Widget _buildDayPicker() {
+    return SizedBox(
+      height: 45.h,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: _days.length,
+        separatorBuilder: (context, index) => const Gap(10),
+        itemBuilder: (context, index) {
+          final isSelected = _selectedDayIndex == index;
+          return GestureDetector(
+            onTap: () => setState(() => _selectedDayIndex = index),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              decoration: BoxDecoration(
+                color: isSelected ? AppColor.infoColor(context) : AppColor.whiteColor(context),
+                borderRadius: BorderRadius.circular(12.r),
+                border: Border.all(
+                  color: isSelected ? AppColor.infoColor(context) : AppColor.grey300Color(context),
+                ),
+                boxShadow: isSelected
+                    ? [
+                        BoxShadow(
+                          color: AppColor.infoColor(context).withValues(alpha: 0.3),
+                          blurRadius: 8,
+                          offset: const Offset(0, 4),
+                        ),
+                      ]
+                    : null,
+              ),
+              child: Center(
+                child: Text(
+                  _days[index],
+                  style: AppTextStyle.labelLarge(context).copyWith(
+                    color: isSelected ? Colors.white : AppColor.blackColor(context),
+                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildScheduleList() {
+    final status = widget.classState.getScheduleApiStatus;
+
+    if (status.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (status.isFailure) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error_outline, size: 48, color: AppColor.errorColor(context)),
+            const Gap(16),
+            Text(status.error ?? "حدث خطأ أثناء جلب الجدول", textAlign: TextAlign.center),
+          ],
+        ),
+      );
+    }
+
+    if (status.isSuccess) {
+      final allSchedule = status.data ?? [];
+      final selectedDayEn = _daysEn[_selectedDayIndex];
+
+      final schedule = allSchedule.where((item) {
+        return item.day.toLowerCase() == selectedDayEn.toLowerCase();
+      }).toList();
+
+      schedule.sort((a, b) => a.period.compareTo(b.period));
+
+      if (schedule.isEmpty) {
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.calendar_today_outlined, size: 64, color: AppColor.grey300Color(context)),
+              const Gap(16),
+              Text(
+                AppLocalKay.no_task.tr(),
+                style: AppTextStyle.bodyLarge(context).copyWith(color: AppColor.greyColor(context)),
+              ),
+            ],
+          ),
+        );
+      }
+
+      return ListView.separated(
+        padding: EdgeInsets.symmetric(vertical: 8.h),
+        itemCount: schedule.length,
+        separatorBuilder: (context, index) => const Gap(12),
+        itemBuilder: (context, index) {
+          final item = schedule[index];
+          return Container(
+            padding: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(
+              color: AppColor.whiteColor(context),
+              borderRadius: BorderRadius.circular(16.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 50.w,
+                  height: 50.w,
+                  decoration: BoxDecoration(
+                    color: AppColor.infoColor(context).withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        item.period.toString(),
+                        style: AppTextStyle.titleMedium(
+                          context,
+                        ).copyWith(color: AppColor.infoColor(context), fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        AppLocalKay.period.tr(),
+                        style: AppTextStyle.labelSmall(
+                          context,
+                        ).copyWith(color: AppColor.infoColor(context), fontSize: 10.sp),
+                      ),
+                    ],
+                  ),
+                ),
+                const Gap(16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.subjectName,
+                        style: AppTextStyle.titleMedium(
+                          context,
+                        ).copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      const Gap(4),
+                      Row(
+                        children: [
+                          Icon(Icons.person_outline, size: 14, color: AppColor.greyColor(context)),
+                          const Gap(4),
+                          Text(
+                            item.teacherName,
+                            style: AppTextStyle.bodySmall(
+                              context,
+                            ).copyWith(color: AppColor.greyColor(context)),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      item.startTime,
+                      style: AppTextStyle.labelLarge(
+                        context,
+                      ).copyWith(fontWeight: FontWeight.bold, color: AppColor.infoColor(context)),
+                    ),
+                    const Gap(2),
+                    Text(
+                      item.endTime,
+                      style: AppTextStyle.labelMedium(
+                        context,
+                      ).copyWith(color: AppColor.greyColor(context)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
+    return const Center(child: Text("يرجى اختيار طالب لعرض جدوله"));
   }
 }

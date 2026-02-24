@@ -86,6 +86,7 @@ class _ParentClassScreenState extends State<ParentClassScreen> {
                           child: ParentTabsSection(
                             classState: state,
                             studentCode: students[_selectedIndex].studentCode,
+                            classCode: students[_selectedIndex].classCode,
                           ),
                         ),
                       ],

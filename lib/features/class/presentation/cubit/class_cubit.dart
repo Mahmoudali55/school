@@ -9,14 +9,28 @@ import 'package:my_template/features/class/data/model/level_model.dart';
 import 'package:my_template/features/class/data/model/section_data_model.dart';
 import 'package:my_template/features/class/data/model/stage_data_model.dart';
 import 'package:my_template/features/class/data/repository/class_repo.dart';
+import 'package:my_template/features/class/data/repository/schedule_repo.dart';
 import 'package:my_template/features/home/data/models/add_class_absent_request_model.dart';
 
 import 'class_state.dart';
 
 class ClassCubit extends Cubit<ClassState> {
   final ClassRepo _classRepo;
+  final ScheduleRepo _scheduleRepo;
 
-  ClassCubit(this._classRepo) : super(ClassInitial());
+  ClassCubit(this._classRepo, this._scheduleRepo) : super(ClassInitial());
+
+  Future<void> getScheduleFromApi(int classCode) async {
+    emit(state.copyWith(getScheduleApiStatus: const StatusState.loading()));
+
+    final result = await _scheduleRepo.getScheduleFromApi(classCode: classCode);
+    if (isClosed) return;
+    result.fold(
+      (failure) =>
+          emit(state.copyWith(getScheduleApiStatus: StatusState.failure(failure.errMessage))),
+      (schedule) => emit(state.copyWith(getScheduleApiStatus: StatusState.success(schedule))),
+    );
+  }
 
   Future<void> getClassData(String userTypeId) async {
     if (state.classesStatus.isSuccess) return;

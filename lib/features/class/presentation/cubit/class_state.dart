@@ -8,6 +8,7 @@ import 'package:my_template/features/class/data/model/get_T_home_work_model.dart
 import 'package:my_template/features/class/data/model/get_lessons_model.dart';
 import 'package:my_template/features/class/data/model/home_work_model.dart';
 import 'package:my_template/features/class/data/model/level_model.dart';
+import 'package:my_template/features/class/data/model/schedule_model.dart';
 import 'package:my_template/features/class/data/model/section_data_model.dart';
 import 'package:my_template/features/class/data/model/stage_data_model.dart';
 import 'package:my_template/features/class/data/model/student_absent_count_model.dart';
@@ -36,6 +37,7 @@ class ClassState extends Equatable {
   final StatusState<List<GetClassModel>>? classDataStatus;
   final StatusState<List<ClassMonthResultModel>>? classMonthResultStatus;
   final StatusState<List<StudentAbsentCountModel>>? studentAbsentCountStatus;
+  final StatusState<List<ScheduleModel>> getScheduleApiStatus;
   final SectionDataModel? selectedSection;
   final StageDataModel? selectedStage;
   final LevelModel? selectedLevel;
@@ -59,6 +61,7 @@ class ClassState extends Equatable {
     this.classDataStatus = const StatusState.initial(),
     this.classMonthResultStatus = const StatusState.initial(),
     this.studentAbsentCountStatus = const StatusState.initial(),
+    this.getScheduleApiStatus = const StatusState.initial(),
     this.selectedSection,
     this.selectedStage,
     this.selectedLevel,
@@ -87,6 +90,7 @@ class ClassState extends Equatable {
     classDataStatus,
     classMonthResultStatus,
     studentAbsentCountStatus,
+    getScheduleApiStatus,
   ];
 
   ClassState copyWith({
@@ -108,6 +112,7 @@ class ClassState extends Equatable {
     StatusState<List<GetClassModel>>? classDataStatus,
     StatusState<List<ClassMonthResultModel>>? classMonthResultStatus,
     StatusState<List<StudentAbsentCountModel>>? studentAbsentCountStatus,
+    StatusState<List<ScheduleModel>>? getScheduleApiStatus,
     SectionDataModel? selectedSection,
     StageDataModel? selectedStage,
     LevelModel? selectedLevel,
@@ -134,6 +139,7 @@ class ClassState extends Equatable {
       classDataStatus: classDataStatus ?? this.classDataStatus,
       classMonthResultStatus: classMonthResultStatus ?? this.classMonthResultStatus,
       studentAbsentCountStatus: studentAbsentCountStatus ?? this.studentAbsentCountStatus,
+      getScheduleApiStatus: getScheduleApiStatus ?? this.getScheduleApiStatus,
     );
   }
 }

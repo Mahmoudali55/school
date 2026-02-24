@@ -49,6 +49,7 @@ class ParentsStudentData extends Equatable {
       studentCode: studentCode,
       name: studentName,
       grade: levelCode.toString(), // أو حسب منطقك
+      classCode: classCode,
     );
   }
 
