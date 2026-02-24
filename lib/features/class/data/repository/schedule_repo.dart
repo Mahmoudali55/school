@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:my_template/core/error/failures.dart';
 import 'package:my_template/core/network/api_consumer.dart';
@@ -86,6 +87,8 @@ class ScheduleRepoImpl implements ScheduleRepo {
         lastResponse ??
             const AddTimetableResponseModel(success: true, id: 0, msg: 'تم الحفظ بنجاح'),
       );
+    } on DioException catch (e) {
+      return Left(ServerFailure.fromDioError(e));
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
