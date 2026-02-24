@@ -6,11 +6,15 @@ class TeacherDataModel extends Equatable {
   final int teacherCode;
   final String teacherNameAr;
   final int COURSE_CODE;
+  final int? sectionCode;
+  final int? stageCode;
 
   const TeacherDataModel({
     required this.teacherCode,
     required this.teacherNameAr,
     required this.COURSE_CODE,
+    this.sectionCode,
+    this.stageCode,
   });
 
   factory TeacherDataModel.fromMap(Map<String, dynamic> map) {
@@ -18,6 +22,8 @@ class TeacherDataModel extends Equatable {
       teacherCode: map['TEACHER_CODE'] ?? 0,
       teacherNameAr: map['TEACHER_NAME_AR'] ?? '',
       COURSE_CODE: map['COURSE_CODE'] ?? 0,
+      sectionCode: map['SECTION_CODE'] ?? 0,
+      stageCode: map['STAGE_CODE'] ?? 0,
     );
   }
 

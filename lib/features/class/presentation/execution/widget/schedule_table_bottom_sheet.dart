@@ -57,12 +57,30 @@ class _ScheduleTableBottomSheetState extends State<ScheduleTableBottomSheet> {
   }
 
   final days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
-  final periods = List.generate(7, (index) => index + 1);
+  final periods = List.generate(8, (index) => index + 1);
 
   String _getPeriodTime(int period) {
     // Saudi School Times 1447H: 7:00 AM Start, 45 min periods, 15 min break after 3rd
-    final startTimes = ['07:00', '07:45', '08:30', '09:30', '10:15', '11:00', '11:45'];
-    final endTimes = ['07:45', '08:30', '09:15', '10:15', '11:00', '11:45', '12:30'];
+    final startTimes = [
+      '07:00',
+      '07:45',
+      '08:30',
+      '09:15', // Break starts
+      '09:30',
+      '10:15',
+      '11:00',
+      '11:45',
+    ];
+    final endTimes = [
+      '07:45',
+      '08:30',
+      '09:15',
+      '09:30', // Break ends
+      '10:15',
+      '11:00',
+      '11:45',
+      '12:30',
+    ];
     return "${startTimes[period - 1]} - ${endTimes[period - 1]}";
   }
 
@@ -273,10 +291,12 @@ class _ScheduleTableBottomSheetState extends State<ScheduleTableBottomSheet> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "${AppLocalKay.period.tr()} $period",
+            period == 4
+                ? "فسحة / Break"
+                : "${AppLocalKay.period.tr()} ${period < 4 ? period : period - 1}",
             style: AppTextStyle.bodyMedium(
               context,
-            ).copyWith(color: Colors.white, fontWeight: FontWeight.w900),
+            ).copyWith(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 11.sp),
           ),
           Text(
             _getPeriodTime(period),
@@ -316,7 +336,9 @@ class _ScheduleTableBottomSheetState extends State<ScheduleTableBottomSheet> {
 
   Widget _buildScheduleCell(BuildContext context, ScheduleModel item) {
     final isEmpty = item.subjectName.isEmpty;
-    final colorBase = _getSubjectColor(context, item.subjectName);
+    final isBreak =
+        item.subjectName.toLowerCase().contains('break') || item.subjectName.contains('فسحة');
+    final colorBase = isBreak ? Colors.brown : _getSubjectColor(context, item.subjectName);
 
     return Container(
       width: 140.w,
@@ -352,7 +374,11 @@ class _ScheduleTableBottomSheetState extends State<ScheduleTableBottomSheet> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(_getSubjectIcon(item.subjectName), size: 14.sp, color: colorBase),
+                      Icon(
+                        isBreak ? Icons.coffee_outlined : _getSubjectIcon(item.subjectName),
+                        size: 14.sp,
+                        color: colorBase,
+                      ),
                       Gap(4.w),
                       Expanded(
                         child: Text(
@@ -369,20 +395,22 @@ class _ScheduleTableBottomSheetState extends State<ScheduleTableBottomSheet> {
                       ),
                     ],
                   ),
-                  Gap(6.h),
-                  Container(height: 1.h, width: 40.w, color: colorBase.withOpacity(0.1)),
-                  Gap(6.h),
-                  Text(
-                    item.teacherName,
-                    textAlign: TextAlign.center,
-                    style: AppTextStyle.bodySmall(context).copyWith(
-                      color: AppColor.textSecondary(context),
-                      fontSize: 9.sp,
-                      fontWeight: FontWeight.bold,
+                  if (!isBreak) ...[
+                    Gap(6.h),
+                    Container(height: 1.h, width: 40.w, color: colorBase.withOpacity(0.1)),
+                    Gap(6.h),
+                    Text(
+                      item.teacherName,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyle.bodySmall(context).copyWith(
+                        color: AppColor.textSecondary(context),
+                        fontSize: 9.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  ],
                 ],
               ),
             ),

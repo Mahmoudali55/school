@@ -609,6 +609,8 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
         separatorBuilder: (context, index) => const Gap(12),
         itemBuilder: (context, index) {
           final item = schedule[index];
+          final isBreak =
+              item.subjectName.toLowerCase().contains('break') || item.subjectName.contains('فسحة');
           return Container(
             padding: EdgeInsets.all(16.w),
             decoration: BoxDecoration(
@@ -634,18 +636,23 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        item.period.toString(),
-                        style: AppTextStyle.titleMedium(
-                          context,
-                        ).copyWith(color: AppColor.infoColor(context), fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        AppLocalKay.period.tr(),
-                        style: AppTextStyle.labelSmall(
-                          context,
-                        ).copyWith(color: AppColor.infoColor(context), fontSize: 10.sp),
-                      ),
+                      if (isBreak)
+                        Icon(Icons.coffee_outlined, color: AppColor.infoColor(context), size: 20.w)
+                      else ...[
+                        Text(
+                          item.period < 4 ? item.period.toString() : (item.period - 1).toString(),
+                          style: AppTextStyle.titleMedium(context).copyWith(
+                            color: AppColor.infoColor(context),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          AppLocalKay.period.tr(),
+                          style: AppTextStyle.labelSmall(
+                            context,
+                          ).copyWith(color: AppColor.infoColor(context), fontSize: 10.sp),
+                        ),
+                      ],
                     ],
                   ),
                 ),
@@ -661,18 +668,23 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
                         ).copyWith(fontWeight: FontWeight.bold),
                       ),
                       const Gap(4),
-                      Row(
-                        children: [
-                          Icon(Icons.person_outline, size: 14, color: AppColor.greyColor(context)),
-                          const Gap(4),
-                          Text(
-                            item.teacherName,
-                            style: AppTextStyle.bodySmall(
-                              context,
-                            ).copyWith(color: AppColor.greyColor(context)),
-                          ),
-                        ],
-                      ),
+                      if (!isBreak)
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.person_outline,
+                              size: 14,
+                              color: AppColor.greyColor(context),
+                            ),
+                            const Gap(4),
+                            Text(
+                              item.teacherName,
+                              style: AppTextStyle.bodySmall(
+                                context,
+                              ).copyWith(color: AppColor.greyColor(context)),
+                            ),
+                          ],
+                        ),
                     ],
                   ),
                 ),

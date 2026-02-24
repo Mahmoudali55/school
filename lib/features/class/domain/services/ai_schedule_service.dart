@@ -5,7 +5,7 @@ import 'package:my_template/features/home/data/models/teacher_data_model.dart';
 
 class AIScheduleService {
   final List<String> days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
-  final int periodsPerDay = 7;
+  final int totalSlotsPerDay = 8; // 7 teaching periods + 1 break
 
   /// Rules-based Schedule Generation for Saudi Schools (1447H)
   List<ScheduleModel> generateSchedules({
@@ -30,18 +30,16 @@ class AIScheduleService {
     Map<int, Map<String, int>> teacherConsecutivePeriods = {};
 
     // Map to ensure (classCode, subjectCode) -> teacherCode consistency
-    // Rule 1: One teacher per subject per class
     Map<int, Map<int, int>> classSubjectTeacherMap = {};
 
     // Map to ensure a teacher only teaches ONE subject in a specific class
-    // Rule 2: One subject per teacher per class
     Map<int, Set<int>> classAssignedTeachersMap = {};
 
     for (var day in days) {
-      teacherBusyMap[day] = {for (int i = 1; i <= periodsPerDay; i++) i: {}};
+      teacherBusyMap[day] = {for (int i = 1; i <= totalSlotsPerDay; i++) i: {}};
     }
 
-    // Process unique classes to avoid duplicate schedules for the same group
+    // Process unique classes to avoid duplicate schedules
     final uniqueClasses = <int, TeacherClassModels>{};
     for (var tc in allTeacherClasses) {
       uniqueClasses[tc.classCode] = tc;
@@ -50,16 +48,36 @@ class AIScheduleService {
     for (var schoolClass in uniqueClasses.values) {
       Map<String, Set<int>> classDailySubjects = {for (var day in days) day: {}};
       for (var day in days) {
-        int period = 1;
-        while (period <= periodsPerDay) {
+        int slot = 1;
+        while (slot <= totalSlotsPerDay) {
+          // Rule: Insert Break after 3rd teaching period (Slot 4)
+          if (slot == 4) {
+            generatedSchedule.add(
+              ScheduleModel(
+                day: day,
+                period: 4,
+                subjectName: "فسحة / Break",
+                subjectCode: 0,
+                teacherName: "",
+                teacherCode: 0,
+                classCode: schoolClass.classCode,
+                startTime: _getStartTime(4),
+                endTime: _getEndTime(4),
+                room: schoolClass.floorName ?? 'Room ${schoolClass.classCode}',
+              ),
+            );
+            slot++;
+            continue;
+          }
+
           List<StudentCoursesModel> possibleSubjects = [];
 
-          // Rule: Priority for Quran, Islamic, Lughati in early periods (1-3)
-          if (period <= 3 && highFocusSubjects.isNotEmpty) {
+          // Rule: Priority for Quran, Islamic, Lughati in early teaching periods (Slots 1-3)
+          if (slot <= 3 && highFocusSubjects.isNotEmpty) {
             possibleSubjects = List.from(highFocusSubjects);
           }
-          // Rule: Practical/Activity/Skills in late periods (6-7)
-          else if (period >= 6) {
+          // Rule: Practical/Activity/Skills in late periods (Slots 6-8)
+          else if (slot >= 6) {
             possibleSubjects = List.from(practicalSubjects)..addAll(normalSubjects);
           } else {
             possibleSubjects = List.from(subjects);
@@ -76,42 +94,36 @@ class AIScheduleService {
 
           for (var subject in possibleSubjects) {
             bool needsDouble = _requiresDoublePeriod(subject.courseNameAr);
+            // Double periods cannot span across the break (Slot 4)
             bool canDoDouble =
                 needsDouble &&
-                (period + 1 <= periodsPerDay) &&
+                (slot + 1 <= totalSlotsPerDay && slot + 1 != 4) &&
                 !classDailySubjects[day]!.contains(subject.courseCode);
 
-            // 1. Check if we already have a consistent teacher assigned for this (class, subject)
             int? assignedTeacherCode =
                 classSubjectTeacherMap[schoolClass.classCode]?[subject.courseCode];
 
-            // 2. Filter available teachers for THIS subject only (by COURSE_CODE)
-            // AND ensure they aren't already teaching ANOTHER different subject in this class
             final subjectTeachersPool = teachers.where((t) {
               final isQualifiedForSubject = t.COURSE_CODE == subject.courseCode;
               if (!isQualifiedForSubject) return false;
 
-              // If a teacher is already assigned to THIS specific (class, subject), they are the ONLY choice
               if (assignedTeacherCode != null) {
                 return t.teacherCode == assignedTeacherCode;
               }
 
-              // Otherwise, ensure this teacher isn't assigned to ANOTHER subject in this class (Rule 2)
               final isAssignedToOtherSubjectInClass =
                   classAssignedTeachersMap[schoolClass.classCode]?.contains(t.teacherCode) ?? false;
 
               return !isAssignedToOtherSubjectInClass;
             }).toList();
 
-            if (subjectTeachersPool.isEmpty)
-              continue; // No eligible teacher for this subject in this class
+            if (subjectTeachersPool.isEmpty) continue;
 
-            // Find teacher considering Saudi justice rules
             final t = _findSuitableTeacher(
               subjectTeachersPool,
               assignedTeacherCode ?? schoolClass.teacherCode,
               day,
-              period,
+              slot,
               teacherBusyMap,
               teacherFirstPeriodCount,
               teacherLastPeriodCount,
@@ -124,11 +136,9 @@ class AIScheduleService {
               selectedSubject = subject;
               isDouble = canDoDouble;
 
-              // Register the assignment for Rule 1 (Consistency)
               classSubjectTeacherMap[schoolClass.classCode] ??= {};
               classSubjectTeacherMap[schoolClass.classCode]![subject.courseCode] = t.teacherCode;
 
-              // Register the assignment for Rule 2 (Uniqueness per Class)
               classAssignedTeachersMap[schoolClass.classCode] ??= {};
               classAssignedTeachersMap[schoolClass.classCode]!.add(t.teacherCode);
               break;
@@ -139,7 +149,7 @@ class AIScheduleService {
             _assignSlot(
               generatedSchedule,
               day,
-              period,
+              slot,
               selectedSubject,
               selectedTeacher,
               schoolClass,
@@ -150,11 +160,11 @@ class AIScheduleService {
               teacherConsecutivePeriods,
             );
             if (isDouble) {
-              period++;
+              slot++;
               _assignSlot(
                 generatedSchedule,
                 day,
-                period,
+                slot,
                 selectedSubject,
                 selectedTeacher,
                 schoolClass,
@@ -166,7 +176,7 @@ class AIScheduleService {
               );
             }
           }
-          period++;
+          slot++;
         }
       }
     }
@@ -176,7 +186,7 @@ class AIScheduleService {
   void _assignSlot(
     List<ScheduleModel> schedule,
     String day,
-    int period,
+    int slot,
     StudentCoursesModel subject,
     TeacherDataModel teacher,
     TeacherClassModels schoolClass,
@@ -189,25 +199,25 @@ class AIScheduleService {
     schedule.add(
       ScheduleModel(
         day: day,
-        period: period,
+        period: slot,
         subjectName: subject.courseNameAr,
         subjectCode: subject.courseCode,
         teacherName: teacher.teacherNameAr,
         teacherCode: teacher.teacherCode,
         classCode: schoolClass.classCode,
-        startTime: _getStartTime(period),
-        endTime: _getEndTime(period),
+        startTime: _getStartTime(slot),
+        endTime: _getEndTime(slot),
         room: schoolClass.floorName ?? 'Room ${schoolClass.classCode}',
       ),
     );
 
-    busyMap[day]![period]!.add(teacher.teacherCode);
+    busyMap[day]![slot]!.add(teacher.teacherCode);
     classDailySubjects[day]!.add(subject.courseCode);
 
-    // Rule: Equity in 1st and Last periods
-    if (period == 1)
+    // Rule: Equity in 1st and Last periods (Slot 1 and Slot 8)
+    if (slot == 1)
       firstPeriodCount[teacher.teacherCode] = (firstPeriodCount[teacher.teacherCode] ?? 0) + 1;
-    if (period == periodsPerDay)
+    if (slot == totalSlotsPerDay)
       lastPeriodCount[teacher.teacherCode] = (lastPeriodCount[teacher.teacherCode] ?? 0) + 1;
 
     // Track consecutive periods per day
@@ -220,7 +230,7 @@ class AIScheduleService {
     List<TeacherDataModel> pool,
     int? preferredCode,
     String day,
-    int period,
+    int slot,
     Map<String, Map<int, Set<int>>> busyMap,
     Map<int, int> firstPeriodCount,
     Map<int, int> lastPeriodCount,
@@ -231,7 +241,7 @@ class AIScheduleService {
       if (_isTeacherAvailable(
         preferredCode,
         day,
-        period,
+        slot,
         busyMap,
         firstPeriodCount,
         lastPeriodCount,
@@ -240,11 +250,11 @@ class AIScheduleService {
             _isTeacherAvailable(
               preferredCode,
               day,
-              period + 1,
+              slot + 1,
               busyMap,
               firstPeriodCount,
               lastPeriodCount,
-              isOccupiedAtPeriod: period, // For Rule 3 check in period + 1
+              isOccupiedAtPeriod: slot,
             )) {
           return pool.firstWhere((t) => t.teacherCode == preferredCode, orElse: () => pool[0]);
         }
@@ -254,7 +264,7 @@ class AIScheduleService {
       bool ok = _isTeacherAvailable(
         t.teacherCode,
         day,
-        period,
+        slot,
         busyMap,
         firstPeriodCount,
         lastPeriodCount,
@@ -263,11 +273,11 @@ class AIScheduleService {
         ok = _isTeacherAvailable(
           t.teacherCode,
           day,
-          period + 1,
+          slot + 1,
           busyMap,
           firstPeriodCount,
           lastPeriodCount,
-          isOccupiedAtPeriod: period, // For Rule 3 check in period + 1
+          isOccupiedAtPeriod: slot,
         );
       return ok;
     }).toList();
@@ -285,52 +295,32 @@ class AIScheduleService {
   bool _isTeacherAvailable(
     int tCode,
     String day,
-    int period,
+    int slot,
     Map<String, Map<int, Set<int>>> busyMap,
     Map<int, int> firstPeriodCount,
     Map<int, int> lastPeriodCount, {
     int? isOccupiedAtPeriod,
   }) {
-    if (period > periodsPerDay) return false;
-    // Basic availability
-    if (busyMap[day]![period]!.contains(tCode)) return false;
-    // Rule: Equity in first/last periods (Max 2 per week as per Saudi preference)
-    if (period == 1 && (firstPeriodCount[tCode] ?? 0) >= 2) return false;
-    if (period == periodsPerDay && (lastPeriodCount[tCode] ?? 0) >= 2) return false;
-    // Rule: If teacher has 1st period, avoid last period on the same day
-    if (period == periodsPerDay && (busyMap[day]![1]?.contains(tCode) ?? false)) return false;
+    if (slot > totalSlotsPerDay) return false;
+    // Slot 4 is always a break, but we shouldn't be assigning teachers here anyway
+    if (slot == 4) return false;
 
-    // Rule 3: Max 2 consecutive periods (threshold changed from 3 to 2)
-    if (period >= 2) {
+    // Basic availability
+    if (busyMap[day]![slot]!.contains(tCode)) return false;
+
+    // Rule: Equity in first/last periods
+    if (slot == 1 && (firstPeriodCount[tCode] ?? 0) >= 2) return false;
+    if (slot == totalSlotsPerDay && (lastPeriodCount[tCode] ?? 0) >= 2) return false;
+
+    // Rule 3: Max 2 consecutive periods
+    if (slot >= 2) {
       bool p1 =
-          (isOccupiedAtPeriod == period - 1) ||
-          (busyMap[day]![period - 1]?.contains(tCode) ?? false);
-      if (period >= 3) {
+          (isOccupiedAtPeriod == slot - 1) || (busyMap[day]![slot - 1]?.contains(tCode) ?? false);
+      if (slot >= 3) {
         bool p2 =
-            (isOccupiedAtPeriod == period - 2) ||
-            (busyMap[day]![period - 2]?.contains(tCode) ?? false);
+            (isOccupiedAtPeriod == slot - 2) || (busyMap[day]![slot - 2]?.contains(tCode) ?? false);
         if (p1 && p2) return false;
-      } else {
-        // At period 2, if p1 is busy and we are checking ahead for period 3,
-        // it's only a violation if we have a chain.
-        // Actually, the simple logic is: check if period-1 and period-2 are busy.
-        // If we are at period 3, and 1 & 2 are busy, we are not available.
-        if (p1 &&
-            (isOccupiedAtPeriod == period - 2 ||
-                (busyMap[day]![period - 2]?.contains(tCode) ?? false))) {
-          return false;
-        }
       }
-    }
-    // Correct sliding window for Rule 3:
-    if (period > 2) {
-      bool prev1 =
-          (isOccupiedAtPeriod == period - 1) ||
-          (busyMap[day]![period - 1]?.contains(tCode) ?? false);
-      bool prev2 =
-          (isOccupiedAtPeriod == period - 2) ||
-          (busyMap[day]![period - 2]?.contains(tCode) ?? false);
-      if (prev1 && prev2) return false;
     }
 
     return true;
@@ -379,13 +369,31 @@ class AIScheduleService {
   }
 
   // Saudi School Times 1447H: 7:00 AM Start, 45 min periods, 15 min break after 3rd
-  String _getStartTime(int period) {
-    List<String> times = ['07:00', '07:45', '08:30', '09:30', '10:15', '11:00', '11:45'];
-    return times[period - 1];
+  String _getStartTime(int slot) {
+    List<String> times = [
+      '07:00',
+      '07:45',
+      '08:30',
+      '09:15', // Break starts
+      '09:30',
+      '10:15',
+      '11:00',
+      '11:45',
+    ];
+    return times[slot - 1];
   }
 
-  String _getEndTime(int period) {
-    List<String> times = ['07:45', '08:30', '09:15', '10:15', '11:00', '11:45', '12:30'];
-    return times[period - 1];
+  String _getEndTime(int slot) {
+    List<String> times = [
+      '07:45',
+      '08:30',
+      '09:15',
+      '09:30', // Break ends
+      '10:15',
+      '11:00',
+      '11:45',
+      '12:30',
+    ];
+    return times[slot - 1];
   }
 }
