@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/class/data/model/add_timetable_response_model.dart';
 import 'package:my_template/features/class/data/model/level_model.dart';
@@ -24,6 +25,13 @@ class ScheduleState extends Equatable {
 
   final List<ScheduleModel> generatedSchedules;
 
+  final TimeOfDay startTime;
+  final int periodsCount;
+  final int periodDuration;
+  final int breakDuration;
+  final int thursdayPeriodsCount;
+  final int breakAfterPeriod;
+
   const ScheduleState({
     this.sectionDataStatus = const StatusState.initial(),
     this.stageDataStatus = const StatusState.initial(),
@@ -38,6 +46,12 @@ class ScheduleState extends Equatable {
     this.selectedLevel,
     this.selectedClass,
     this.generatedSchedules = const [],
+    this.startTime = const TimeOfDay(hour: 7, minute: 0),
+    this.periodsCount = 7,
+    this.periodDuration = 45,
+    this.breakDuration = 15,
+    this.thursdayPeriodsCount = 5,
+    this.breakAfterPeriod = 3,
   });
 
   ScheduleState copyWith({
@@ -54,6 +68,12 @@ class ScheduleState extends Equatable {
     LevelModel? selectedLevel,
     TeacherClassModels? selectedClass,
     List<ScheduleModel>? generatedSchedules,
+    TimeOfDay? startTime,
+    int? periodsCount,
+    int? periodDuration,
+    int? breakDuration,
+    int? thursdayPeriodsCount,
+    int? breakAfterPeriod,
   }) {
     return ScheduleState(
       sectionDataStatus: sectionDataStatus ?? this.sectionDataStatus,
@@ -69,6 +89,12 @@ class ScheduleState extends Equatable {
       selectedLevel: selectedLevel ?? this.selectedLevel,
       selectedClass: selectedClass ?? this.selectedClass,
       generatedSchedules: generatedSchedules ?? this.generatedSchedules,
+      startTime: startTime ?? this.startTime,
+      periodsCount: periodsCount ?? this.periodsCount,
+      periodDuration: periodDuration ?? this.periodDuration,
+      breakDuration: breakDuration ?? this.breakDuration,
+      thursdayPeriodsCount: thursdayPeriodsCount ?? this.thursdayPeriodsCount,
+      breakAfterPeriod: breakAfterPeriod ?? this.breakAfterPeriod,
     );
   }
 
@@ -87,5 +113,11 @@ class ScheduleState extends Equatable {
     selectedLevel,
     selectedClass,
     generatedSchedules,
+    startTime,
+    periodsCount,
+    periodDuration,
+    breakDuration,
+    thursdayPeriodsCount,
+    breakAfterPeriod,
   ];
 }

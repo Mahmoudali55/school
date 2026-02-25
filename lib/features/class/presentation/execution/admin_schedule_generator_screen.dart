@@ -117,6 +117,121 @@ class _AdminScheduleGeneratorScreenState extends State<AdminScheduleGeneratorScr
                 ),
                 Gap(12.h),
 
+                if (state.selectedLevel != null) ...[
+                  Text(
+                    "إعدادات الجدول",
+                    style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  Gap(8.h),
+
+                  // Start Time
+                  Row(
+                    children: [
+                      Expanded(child: Text("وقت بداية اليوم")),
+                      TextButton(
+                        onPressed: () async {
+                          final picked = await showTimePicker(
+                            context: context,
+                            initialTime: state.startTime,
+                          );
+                          if (picked != null) {
+                            context.read<ScheduleCubit>().updateStartTime(picked);
+                          }
+                        },
+                        child: Text(state.startTime.format(context)),
+                      ),
+                    ],
+                  ),
+
+                  // Periods Count
+                  Row(
+                    children: [
+                      Expanded(child: Text("عدد الحصص (يوم عادي)")),
+                      DropdownButton<int>(
+                        value: state.periodsCount,
+                        items: List.generate(
+                          8,
+                          (i) => i + 3,
+                        ).map((e) => DropdownMenuItem(value: e, child: Text("$e"))).toList(),
+                        onChanged: (val) => context.read<ScheduleCubit>().updatePeriodsCount(val!),
+                      ),
+                    ],
+                  ),
+
+                  // Thursday Periods
+                  Row(
+                    children: [
+                      Expanded(child: Text("عدد حصص يوم الخميس")),
+                      DropdownButton<int>(
+                        value: state.thursdayPeriodsCount,
+                        items: List.generate(
+                          8,
+                          (i) => i + 3,
+                        ).map((e) => DropdownMenuItem(value: e, child: Text("$e"))).toList(),
+                        onChanged: (val) =>
+                            context.read<ScheduleCubit>().updateThursdayPeriodsCount(val!),
+                      ),
+                    ],
+                  ),
+
+                  // Period Duration
+                  Row(
+                    children: [
+                      Expanded(child: Text("مدة الحصة (دقيقة)")),
+                      DropdownButton<int>(
+                        value: state.periodDuration,
+                        items: [
+                          30,
+                          35,
+                          40,
+                          45,
+                          50,
+                          55,
+                          60,
+                        ].map((e) => DropdownMenuItem(value: e, child: Text("$e"))).toList(),
+                        onChanged: (val) =>
+                            context.read<ScheduleCubit>().updatePeriodDuration(val!),
+                      ),
+                    ],
+                  ),
+
+                  // Break Duration
+                  Row(
+                    children: [
+                      Expanded(child: Text("مدة الفسحة (دقيقة)")),
+                      DropdownButton<int>(
+                        value: state.breakDuration,
+                        items: [
+                          5,
+                          10,
+                          15,
+                          20,
+                          25,
+                          30,
+                        ].map((e) => DropdownMenuItem(value: e, child: Text("$e"))).toList(),
+                        onChanged: (val) => context.read<ScheduleCubit>().updateBreakDuration(val!),
+                      ),
+                    ],
+                  ),
+
+                  // Break After Period
+                  Row(
+                    children: [
+                      Expanded(child: Text("الفسحة بعد الحصة رقم")),
+                      DropdownButton<int>(
+                        value: state.breakAfterPeriod,
+                        items: List.generate(
+                          5,
+                          (i) => i + 1,
+                        ).map((e) => DropdownMenuItem(value: e, child: Text("$e"))).toList(),
+                        onChanged: (val) =>
+                            context.read<ScheduleCubit>().updateBreakAfterPeriod(val!),
+                      ),
+                    ],
+                  ),
+                  Gap(12.h),
+                ],
+
                 // Class Dropdown
                 CustomDropdownFormField<TeacherClassModels>(
                   hint: AppLocalKay.select_class_to_generate.tr(),
@@ -169,6 +284,12 @@ class _AdminScheduleGeneratorScreenState extends State<AdminScheduleGeneratorScr
                           child: ScheduleTableBottomSheet(
                             schedule: state.generatedSchedules,
                             className: state.selectedClass?.classNameAr ?? 'Class',
+                            startTime: state.startTime,
+                            periodsCount: state.periodsCount,
+                            periodDuration: state.periodDuration,
+                            breakDuration: state.breakDuration,
+                            thursdayPeriodsCount: state.thursdayPeriodsCount,
+                            breakAfterPeriod: state.breakAfterPeriod,
                           ),
                         ),
                       );

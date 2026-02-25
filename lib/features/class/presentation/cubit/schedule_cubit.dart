@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/class/data/model/level_model.dart';
@@ -164,14 +165,18 @@ class ScheduleCubit extends Cubit<ScheduleState> {
                 );
                 return;
               }
-
               // Generate schedule using the fetched subjects and teachers
               final generated = _aiService.generateSchedules(
                 allTeacherClasses: [selectedClass],
                 subjects: subjects,
                 teachers: teachers,
+                startTime: state.startTime,
+                periodsCount: state.periodsCount,
+                periodDuration: state.periodDuration,
+                breakDuration: state.breakDuration,
+                thursdayPeriodsCount: state.thursdayPeriodsCount,
+                breakAfterPeriod: state.breakAfterPeriod,
               );
-
               if (generated.isEmpty) {
                 emit(
                   state.copyWith(
@@ -182,7 +187,6 @@ class ScheduleCubit extends Cubit<ScheduleState> {
                 );
                 return;
               }
-
               emit(
                 state.copyWith(
                   generateScheduleStatus: StatusState.success(generated),
@@ -196,6 +200,31 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     } catch (e) {
       emit(state.copyWith(generateScheduleStatus: StatusState.failure(e.toString())));
     }
+  }
+
+  void updateBreakAfterPeriod(int period) => emit(state.copyWith(breakAfterPeriod: period));
+  void updateStartTime(TimeOfDay time) {
+    emit(state.copyWith(startTime: time));
+  }
+
+  // تحديث عدد الحصص اليومية
+  void updatePeriodsCount(int count) {
+    emit(state.copyWith(periodsCount: count));
+  }
+
+  // تحديث عدد حصص الخميس
+  void updateThursdayPeriodsCount(int count) {
+    emit(state.copyWith(thursdayPeriodsCount: count));
+  }
+
+  // تحديث مدة الحصة
+  void updatePeriodDuration(int duration) {
+    emit(state.copyWith(periodDuration: duration));
+  }
+
+  // تحديث مدة الفسحة
+  void updateBreakDuration(int duration) {
+    emit(state.copyWith(breakDuration: duration));
   }
 
   Future<void> saveSchedule(int classCode) async {

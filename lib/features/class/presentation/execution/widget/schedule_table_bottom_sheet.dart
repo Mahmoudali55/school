@@ -11,8 +11,24 @@ import 'package:my_template/features/class/domain/services/schedule_pdf_service.
 class ScheduleTableBottomSheet extends StatefulWidget {
   final List<ScheduleModel> schedule;
   final String className;
+  final TimeOfDay startTime;
+  final int periodsCount;
+  final int periodDuration;
+  final int breakDuration;
+  final int thursdayPeriodsCount;
+  final int breakAfterPeriod;
 
-  const ScheduleTableBottomSheet({super.key, required this.schedule, required this.className});
+  const ScheduleTableBottomSheet({
+    super.key,
+    required this.schedule,
+    required this.className,
+    required this.startTime,
+    required this.periodsCount,
+    required this.periodDuration,
+    required this.breakDuration,
+    required this.thursdayPeriodsCount,
+    required this.breakAfterPeriod,
+  });
 
   @override
   State<ScheduleTableBottomSheet> createState() => _ScheduleTableBottomSheetState();
@@ -57,31 +73,43 @@ class _ScheduleTableBottomSheetState extends State<ScheduleTableBottomSheet> {
   }
 
   final days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
-  final periods = List.generate(8, (index) => index + 1);
+  late final List<int> periods;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final maxSlots = widget.periodsCount > widget.thursdayPeriodsCount
+        ? widget.periodsCount + 1
+        : widget.thursdayPeriodsCount + 1;
+    periods = List.generate(maxSlots, (index) => index + 1);
+  }
 
   String _getPeriodTime(int period) {
-    // Saudi School Times 1447H: 7:00 AM Start, 45 min periods, 15 min break after 3rd
-    final startTimes = [
-      '07:00',
-      '07:45',
-      '08:30',
-      '09:15', // Break starts
-      '09:30',
-      '10:15',
-      '11:00',
-      '11:45',
-    ];
-    final endTimes = [
-      '07:45',
-      '08:30',
-      '09:15',
-      '09:30', // Break ends
-      '10:15',
-      '11:00',
-      '11:45',
-      '12:30',
-    ];
-    return "${startTimes[period - 1]} - ${endTimes[period - 1]}";
+    int startMins = widget.startTime.hour * 60 + widget.startTime.minute;
+    int currentStartMins = startMins;
+
+    for (int i = 1; i < period; i++) {
+      if (i == widget.breakAfterPeriod + 1) {
+        currentStartMins += widget.breakDuration;
+      } else {
+        currentStartMins += widget.periodDuration;
+      }
+    }
+
+    int currentEndMins = currentStartMins;
+    if (period == widget.breakAfterPeriod + 1) {
+      currentEndMins += widget.breakDuration;
+    } else {
+      currentEndMins += widget.periodDuration;
+    }
+
+    String formatMins(int mins) {
+      int h = (mins ~/ 60) % 24;
+      int m = mins % 60;
+      return '${h.toString().padLeft(2, '0')}:${m.toString().padLeft(2, '0')}';
+    }
+
+    return "${formatMins(currentStartMins)} - ${formatMins(currentEndMins)}";
   }
 
   @override
@@ -227,6 +255,9 @@ class _ScheduleTableBottomSheetState extends State<ScheduleTableBottomSheet> {
                 onPressed: () => SchedulePdfService.generateAndPrint(
                   schedule: widget.schedule,
                   className: widget.className,
+                  periodsCount: widget.periodsCount,
+                  thursdayPeriodsCount: widget.thursdayPeriodsCount,
+                  breakAfterPeriod: widget.breakAfterPeriod,
                 ),
                 icon: Icon(Icons.print_rounded, color: AppColor.primaryColor(context), size: 24.sp),
                 style: IconButton.styleFrom(
@@ -291,9 +322,9 @@ class _ScheduleTableBottomSheetState extends State<ScheduleTableBottomSheet> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            period == 4
+            period == widget.breakAfterPeriod + 1
                 ? "فسحة / Break"
-                : "${AppLocalKay.period.tr()} ${period < 4 ? period : period - 1}",
+                : "${AppLocalKay.period.tr()} ${period <= widget.breakAfterPeriod ? period : period - 1}",
             style: AppTextStyle.bodyMedium(
               context,
             ).copyWith(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 11.sp),

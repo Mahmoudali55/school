@@ -8,6 +8,9 @@ class SchedulePdfService {
   static Future<void> generateAndPrint({
     required List<ScheduleModel> schedule,
     required String className,
+    required int periodsCount,
+    required int thursdayPeriodsCount,
+    required int breakAfterPeriod,
   }) async {
     final pdf = pw.Document();
 
@@ -16,7 +19,11 @@ class SchedulePdfService {
     final boldFont = await PdfGoogleFonts.cairoBold();
 
     final days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
-    final periods = List.generate(8, (index) => index + 1);
+
+    // Calculate max periods including break
+    final maxPeriodsCount =
+        (periodsCount > thursdayPeriodsCount ? periodsCount : thursdayPeriodsCount) + 1;
+    final periods = List.generate(maxPeriodsCount, (index) => index + 1);
 
     pdf.addPage(
       pw.Page(
@@ -36,7 +43,7 @@ class SchedulePdfService {
                 border: pw.TableBorder.all(),
                 columnWidths: {
                   0: const pw.FixedColumnWidth(80), // Days column
-                  for (int i = 1; i <= 8; i++) i: const pw.FlexColumnWidth(),
+                  for (int i = 1; i <= maxPeriodsCount; i++) i: const pw.FlexColumnWidth(),
                 },
                 children: [
                   // Header Row
@@ -55,7 +62,9 @@ class SchedulePdfService {
                         pw.Padding(
                           padding: const pw.EdgeInsets.all(5),
                           child: pw.Text(
-                            p == 4 ? 'فسحة' : 'الحصة ${p < 4 ? p : p - 1}',
+                            p == breakAfterPeriod + 1
+                                ? 'فسحة'
+                                : 'الحصة ${p <= breakAfterPeriod ? p : p - 1}',
                             textAlign: pw.TextAlign.center,
                             textDirection: pw.TextDirection.rtl,
                           ),
