@@ -17,6 +17,10 @@ abstract interface class ScheduleRepo {
     required int classCode,
     required List<ScheduleModel> schedule,
   });
+  Future<Either<Failure, AddTimetableResponseModel>> editSchedule({
+    required int classCode,
+    required List<ScheduleModel> schedule,
+  });
   Future<Either<Failure, List<ScheduleModel>>> getScheduleFromApi({required int classCode});
 }
 
@@ -76,6 +80,41 @@ class ScheduleRepoImpl implements ScheduleRepo {
       };
 
       final response = await apiConsumer.post(EndPoints.addSchoolTimeTable, body: body);
+
+      final result = AddTimetableResponseModel.fromJson(response);
+
+      if (!result.success) {
+        return Left(ServerFailure(result.msg));
+      }
+
+      return Right(result);
+    } on DioException catch (e) {
+      return Left(ServerFailure.fromDioError(e));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  // ─── Remote POST (one row per entry) ────────────────────────────────────────
+  @override
+  Future<Either<Failure, AddTimetableResponseModel>> editSchedule({
+    required int classCode,
+    required List<ScheduleModel> schedule,
+  }) async {
+    try {
+      final body = {
+        "classCode": classCode,
+        "School_Time_table": schedule
+            .map(
+              (e) => AddTimetableRequestModel.fromScheduleModel(
+                model: e,
+                classCode: classCode,
+              ).toJson(),
+            )
+            .toList(),
+      };
+
+      final response = await apiConsumer.put(EndPoints.editSchoolTimeTable, body: body);
 
       final result = AddTimetableResponseModel.fromJson(response);
 

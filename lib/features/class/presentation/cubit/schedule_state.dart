@@ -17,6 +17,7 @@ class ScheduleState extends Equatable {
   final StatusState<List<ScheduleModel>> getScheduleStatus;
   final StatusState<List<ScheduleModel>> getScheduleApiStatus;
   final StatusState<AddTimetableResponseModel> saveScheduleStatus;
+  final StatusState<AddTimetableResponseModel> editScheduleStatus;
 
   final SectionDataModel? selectedSection;
   final StageDataModel? selectedStage;
@@ -32,6 +33,10 @@ class ScheduleState extends Equatable {
   final int thursdayPeriodsCount;
   final int breakAfterPeriod;
 
+  final bool hasChanges;
+  final ScheduleModel? selectedSlot;
+  final StatusState<void> validationStatus;
+
   const ScheduleState({
     this.sectionDataStatus = const StatusState.initial(),
     this.stageDataStatus = const StatusState.initial(),
@@ -41,6 +46,7 @@ class ScheduleState extends Equatable {
     this.getScheduleStatus = const StatusState.initial(),
     this.getScheduleApiStatus = const StatusState.initial(),
     this.saveScheduleStatus = const StatusState.initial(),
+    this.editScheduleStatus = const StatusState.initial(),
     this.selectedSection,
     this.selectedStage,
     this.selectedLevel,
@@ -52,6 +58,9 @@ class ScheduleState extends Equatable {
     this.breakDuration = 15,
     this.thursdayPeriodsCount = 5,
     this.breakAfterPeriod = 3,
+    this.hasChanges = false,
+    this.selectedSlot,
+    this.validationStatus = const StatusState.initial(),
   });
 
   ScheduleState copyWith({
@@ -63,6 +72,8 @@ class ScheduleState extends Equatable {
     StatusState<List<ScheduleModel>>? getScheduleStatus,
     StatusState<List<ScheduleModel>>? getScheduleApiStatus,
     StatusState<AddTimetableResponseModel>? saveScheduleStatus,
+    StatusState<AddTimetableResponseModel>? editScheduleStatus,
+    StatusState<void>? validationStatus,
     SectionDataModel? selectedSection,
     StageDataModel? selectedStage,
     LevelModel? selectedLevel,
@@ -74,6 +85,9 @@ class ScheduleState extends Equatable {
     int? breakDuration,
     int? thursdayPeriodsCount,
     int? breakAfterPeriod,
+    bool? hasChanges,
+    bool clearSelectedSlot = false,
+    ScheduleModel? selectedSlot,
   }) {
     return ScheduleState(
       sectionDataStatus: sectionDataStatus ?? this.sectionDataStatus,
@@ -84,6 +98,8 @@ class ScheduleState extends Equatable {
       getScheduleStatus: getScheduleStatus ?? this.getScheduleStatus,
       getScheduleApiStatus: getScheduleApiStatus ?? this.getScheduleApiStatus,
       saveScheduleStatus: saveScheduleStatus ?? this.saveScheduleStatus,
+      editScheduleStatus: editScheduleStatus ?? this.editScheduleStatus,
+      validationStatus: validationStatus ?? this.validationStatus,
       selectedSection: selectedSection ?? this.selectedSection,
       selectedStage: selectedStage ?? this.selectedStage,
       selectedLevel: selectedLevel ?? this.selectedLevel,
@@ -95,6 +111,8 @@ class ScheduleState extends Equatable {
       breakDuration: breakDuration ?? this.breakDuration,
       thursdayPeriodsCount: thursdayPeriodsCount ?? this.thursdayPeriodsCount,
       breakAfterPeriod: breakAfterPeriod ?? this.breakAfterPeriod,
+      hasChanges: hasChanges ?? this.hasChanges,
+      selectedSlot: clearSelectedSlot ? null : (selectedSlot ?? this.selectedSlot),
     );
   }
 
@@ -108,6 +126,8 @@ class ScheduleState extends Equatable {
     getScheduleStatus,
     getScheduleApiStatus,
     saveScheduleStatus,
+    editScheduleStatus,
+    validationStatus,
     selectedSection,
     selectedStage,
     selectedLevel,
@@ -119,5 +139,7 @@ class ScheduleState extends Equatable {
     breakDuration,
     thursdayPeriodsCount,
     breakAfterPeriod,
+    hasChanges,
+    selectedSlot,
   ];
 }

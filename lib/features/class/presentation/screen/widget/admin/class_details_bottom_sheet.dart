@@ -3,15 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
+import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
 import 'package:my_template/core/services/services_locator.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/core/utils/common_methods.dart';
 import 'package:my_template/features/class/data/model/schedule_model.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/class/presentation/cubit/class_state.dart';
 import 'package:my_template/features/class/presentation/cubit/schedule_cubit.dart';
 import 'package:my_template/features/class/presentation/cubit/schedule_state.dart';
+import 'package:my_template/features/class/presentation/execution/widget/interactive_schedule_table.dart';
 
 class ClassDetailsBottomSheet extends StatefulWidget {
   final String className;
@@ -200,79 +204,69 @@ class _ClassDetailsBottomSheetState extends State<ClassDetailsBottomSheet>
                         );
                       }
 
-                      final schedule = state.getScheduleApiStatus.data ?? [];
-
-                      if (schedule.isEmpty) {
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.calendar_today, size: 48.w, color: Colors.grey),
-                              Gap(12.h),
-                              Text(
-                                AppLocalKay.schedule_empty_title.tr(),
-                                style: AppTextStyle.bodyMedium(context),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-
                       return Column(
                         children: [
-                          // Day selector
-                          SizedBox(
-                            height: 52.h,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                              itemCount: _daysAr.length,
-                              itemBuilder: (context, index) {
-                                final isSelected = _selectedDay == index;
-                                final daySchedule = schedule
-                                    .where((e) => e.day == _daysEn[index])
-                                    .toList();
-                                return Padding(
-                                  padding: EdgeInsets.only(right: 8.w),
-                                  child: ChoiceChip(
-                                    label: Text('${_daysAr[index]} (${daySchedule.length})'),
-                                    selected: isSelected,
-                                    onSelected: (_) => setState(() => _selectedDay = index),
-                                    selectedColor: AppColor.primaryColor(context),
-                                    labelStyle: AppTextStyle.bodySmall(context).copyWith(
-                                      color: isSelected
-                                          ? AppColor.whiteColor(context)
-                                          : AppColor.textColor(context),
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                );
-                              },
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.all(16.w),
+                              child: InteractiveScheduleTable(
+                                className: widget.className,
+                                startTime: state.startTime,
+                                periodsCount: state.periodsCount,
+                                periodDuration: state.periodDuration,
+                                breakDuration: state.breakDuration,
+                                thursdayPeriodsCount: state.thursdayPeriodsCount,
+                                breakAfterPeriod: state.breakAfterPeriod,
+                                classCode: widget.classCode,
+                              ),
                             ),
                           ),
-                          const Divider(height: 1),
-                          // Periods list
-                          Expanded(
-                            child: Builder(
-                              builder: (_) {
-                                final dayItems =
-                                    schedule.where((e) => e.day == _daysEn[_selectedDay]).toList()
-                                      ..sort((a, b) => a.period.compareTo(b.period));
-
-                                if (dayItems.isEmpty) {
-                                  return Center(
-                                    child: Text(
-                                      'لا توجد حصص هذا اليوم',
-                                      style: AppTextStyle.bodyMedium(context),
-                                    ),
+                          // Save Button Footer
+                          Container(
+                            padding: EdgeInsets.all(16.w),
+                            decoration: BoxDecoration(
+                              color: AppColor.whiteColor(context),
+                              border: Border(top: BorderSide(color: AppColor.borderColor(context))),
+                            ),
+                            child: BlocConsumer<ScheduleCubit, ScheduleState>(
+                              listenWhen: (prev, curr) =>
+                                  prev.editScheduleStatus != curr.editScheduleStatus,
+                              listener: (context, state) {
+                                if (state.editScheduleStatus.isSuccess) {
+                                  CommonMethods.showToast(
+                                    message: state.editScheduleStatus.data?.msg ?? '',
+                                  );
+                                } else if (state.editScheduleStatus.isFailure) {
+                                  CommonMethods.showToast(
+                                    message: state.editScheduleStatus.error ?? '',
+                                    backgroundColor: AppColor.errorColor(context, listen: false),
                                   );
                                 }
-
-                                return ListView.builder(
-                                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-                                  itemCount: dayItems.length,
-                                  itemBuilder: (context, index) =>
-                                      _buildScheduleCard(dayItems[index]),
+                              },
+                              builder: (context, state) {
+                                return Visibility(
+                                  visible: state.hasChanges,
+                                  child: CustomButton(
+                                    radius: 12.r,
+                                    onPressed: state.editScheduleStatus.isLoading
+                                        ? null
+                                        : () {
+                                            context.read<ScheduleCubit>().editSchedule(
+                                              widget.classCode,
+                                            );
+                                          },
+                                    child: state.editScheduleStatus.isLoading
+                                        ? CustomLoading(
+                                            color: AppColor.whiteColor(context),
+                                            size: 20.sp,
+                                          )
+                                        : Text(
+                                            AppLocalKay.edit.tr(),
+                                            style: AppTextStyle.bodyMedium(
+                                              context,
+                                            ).copyWith(color: AppColor.whiteColor(context)),
+                                          ),
+                                  ),
                                 );
                               },
                             ),

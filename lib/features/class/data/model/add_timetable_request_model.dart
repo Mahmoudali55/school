@@ -66,7 +66,7 @@ class AddTimetableRequestModel extends Equatable {
     required int classCode,
   }) {
     return AddTimetableRequestModel(
-      id: '',
+      id: model.id,
       day: model.day,
       period: model.period,
       subjectCode: model.subjectCode,
@@ -74,7 +74,7 @@ class AddTimetableRequestModel extends Equatable {
       eventTime: model.startTime,
       teacherCode: model.teacherCode,
       teacherName: model.teacherName,
-      classCode: classCode, // 👈 ثابت من الباتش
+      classCode: classCode,
       startTime: model.startTime,
       endTime: model.endTime,
       room: model.room ?? '',

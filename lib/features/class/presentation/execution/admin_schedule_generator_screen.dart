@@ -279,17 +279,21 @@ class _AdminScheduleGeneratorScreenState extends State<AdminScheduleGeneratorScr
                         context: context,
                         isScrollControlled: true,
                         backgroundColor: Colors.transparent,
-                        builder: (context) => FractionallySizedBox(
-                          heightFactor: 0.8,
-                          child: ScheduleTableBottomSheet(
-                            schedule: state.generatedSchedules,
-                            className: state.selectedClass?.classNameAr ?? 'Class',
-                            startTime: state.startTime,
-                            periodsCount: state.periodsCount,
-                            periodDuration: state.periodDuration,
-                            breakDuration: state.breakDuration,
-                            thursdayPeriodsCount: state.thursdayPeriodsCount,
-                            breakAfterPeriod: state.breakAfterPeriod,
+                        builder: (bottomSheetContext) => BlocProvider.value(
+                          value: context.read<ScheduleCubit>(),
+                          child: FractionallySizedBox(
+                            heightFactor: 0.8,
+                            child: ScheduleTableBottomSheet(
+                              classCode: state.selectedClass!.classCode,
+                              schedule: state.generatedSchedules,
+                              className: state.selectedClass?.classNameAr ?? 'Class',
+                              startTime: state.startTime,
+                              periodsCount: state.periodsCount,
+                              periodDuration: state.periodDuration,
+                              breakDuration: state.breakDuration,
+                              thursdayPeriodsCount: state.thursdayPeriodsCount,
+                              breakAfterPeriod: state.breakAfterPeriod,
+                            ),
                           ),
                         ),
                       );

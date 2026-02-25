@@ -14,39 +14,9 @@ class GetTimetableResponseModel {
 
     if (rawData is String && rawData.isNotEmpty) {
       final List<dynamic> decoded = jsonDecode(rawData);
-      items = decoded
-          .map(
-            (e) => ScheduleModel(
-              day: e['day'] ?? '',
-              period: e['period'] ?? 0,
-              subjectName: e['SubjectName'] ?? '',
-              subjectCode: e['SubjectCode'] ?? 0,
-              teacherName: e['TeacherName'] ?? '',
-              teacherCode: e['TeacherCode'] ?? 0,
-              classCode: e['ClassCode'] ?? 0,
-              startTime: e['StartTime'] ?? '',
-              endTime: e['EndTime'] ?? '',
-              room: e['room'],
-            ),
-          )
-          .toList();
+      items = decoded.map((e) => ScheduleModel.fromJson(e)).toList();
     } else if (rawData is List) {
-      items = rawData
-          .map(
-            (e) => ScheduleModel(
-              day: e['day'] ?? '',
-              period: e['period'] ?? 0,
-              subjectName: e['SubjectName'] ?? '',
-              subjectCode: e['SubjectCode'] ?? 0,
-              teacherName: e['TeacherName'] ?? '',
-              teacherCode: e['TeacherCode'] ?? 0,
-              classCode: e['ClassCode'] ?? 0,
-              startTime: e['StartTime'] ?? '',
-              endTime: e['EndTime'] ?? '',
-              room: e['room'],
-            ),
-          )
-          .toList();
+      items = rawData.map((e) => ScheduleModel.fromJson(e)).toList();
     }
 
     return GetTimetableResponseModel(data: items);
