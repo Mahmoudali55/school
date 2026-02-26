@@ -19,6 +19,8 @@ class AIScheduleService {
     int breakDuration = 15,
     int thursdayPeriodsCount = 5,
     int breakAfterPeriod = 3,
+    List<int> prioritySubjectCodes = const [],
+    List<int> doublePeriodSubjectCodes = const [],
   }) {
     List<ScheduleModel> generatedSchedule = [];
     if (subjects.isEmpty || teachers.isEmpty) return [];
@@ -28,11 +30,19 @@ class AIScheduleService {
         ? periodsCount + 1
         : thursdayPeriodsCount + 1;
 
-    // Categorize Subjects based on Saudi Curriculum 1447H
-    final highFocusSubjects = subjects.where((s) => _isHighFocus(s.courseNameAr)).toList();
-    final practicalSubjects = subjects.where((s) => _isPractical(s.courseNameAr)).toList();
+    // Categorize Subjects based on Saudi Curriculum 1447H + User overrides
+    final highFocusSubjects = subjects.where((s) {
+      if (prioritySubjectCodes.contains(s.courseCode)) return true;
+      return _isHighFocus(s.courseNameAr);
+    }).toList();
+
+    final practicalSubjects = subjects.where((s) {
+      // Practical classification remains keyword based unless we add another override list
+      return _isPractical(s.courseNameAr);
+    }).toList();
+
     final normalSubjects = subjects
-        .where((s) => !_isHighFocus(s.courseNameAr) && !_isPractical(s.courseNameAr))
+        .where((s) => !highFocusSubjects.contains(s) && !practicalSubjects.contains(s))
         .toList();
 
     // Trackers for constraints
@@ -118,7 +128,9 @@ class AIScheduleService {
           bool isDouble = false;
 
           for (var subject in possibleSubjects) {
-            bool needsDouble = _requiresDoublePeriod(subject.courseNameAr);
+            bool needsDouble =
+                doublePeriodSubjectCodes.contains(subject.courseCode) ||
+                _requiresDoublePeriod(subject.courseNameAr);
             // Double periods cannot span across the break
             bool canDoDouble =
                 needsDouble &&
@@ -136,10 +148,7 @@ class AIScheduleService {
                 return t.teacherCode == assignedTeacherCode;
               }
 
-              final isAssignedToOtherSubjectInClass =
-                  classAssignedTeachersMap[schoolClass.classCode]?.contains(t.teacherCode) ?? false;
-
-              return !isAssignedToOtherSubjectInClass;
+              return true;
             }).toList();
 
             if (subjectTeachersPool.isEmpty) continue;
@@ -390,43 +399,54 @@ class AIScheduleService {
     return true;
   }
 
+  String _normalize(String text) {
+    return text
+        .toLowerCase()
+        .replaceAll('إ', 'ا')
+        .replaceAll('أ', 'ا')
+        .replaceAll('آ', 'ا')
+        .replaceAll('ة', 'ه')
+        .replaceAll('ى', 'ي')
+        .trim();
+  }
+
   bool _requiresDoublePeriod(String name) {
-    final n = name.toLowerCase();
+    final n = _normalize(name);
     return n.contains('art') ||
         n.contains('رسم') ||
-        n.contains('فنية') ||
+        n.contains('فنيه') ||
         n.contains('comp') ||
         n.contains('حاسب') ||
         n.contains('lab') ||
         n.contains('معمل') ||
-        n.contains('نشاط') ||
-        n.contains('activity');
+        n.contains('نشاط');
   }
 
   bool _isHighFocus(String name) {
-    final n = name.toLowerCase();
+    final n = _normalize(name);
     return n.contains('math') ||
         n.contains('رياضيات') ||
         n.contains('science') ||
         n.contains('علوم') ||
         n.contains('english') ||
-        n.contains('إنجليزي') ||
+        n.contains('انجيليزي') ||
+        n.contains('انجليزيه') ||
         n.contains('arabic') ||
         n.contains('عربي') ||
         n.contains('لغتي') ||
-        n.contains('إسلامية') ||
-        n.contains('قرآن') ||
+        n.contains('اسلاميه') ||
+        n.contains('قران') ||
         n.contains('دين');
   }
 
   bool _isPractical(String name) {
-    final n = name.toLowerCase();
+    final n = _normalize(name);
     return n.contains('pe') ||
-        n.contains('بدنية') ||
-        n.contains('رياضية') ||
+        n.contains('بدنيه') ||
+        n.contains('رياضيه') ||
         n.contains('art') ||
         n.contains('رسم') ||
-        n.contains('فنية') ||
+        n.contains('فنيه') ||
         n.contains('comp') ||
         n.contains('حاسب') ||
         n.contains('مهارات');

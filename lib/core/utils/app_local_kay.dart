@@ -1123,4 +1123,11 @@ class AppLocalKay {
   static const String Wednesday = "Wednesday";
   static const String Thursday = "Thursday";
   static const String period = "period";
+  static const String schedule_settings = "schedule_settings";
+  static const String start_time_of_day = "start_time_of_day";
+  static const String periods_count_normal = "periods_count_normal";
+  static const String periods_count_thursday = "periods_count_thursday";
+  static const String period_duration_minutes = "period_duration_minutes";
+  static const String break_duration_minutes = "break_duration_minutes";
+  static const String break_after_period_number = "break_after_period_number";
 }

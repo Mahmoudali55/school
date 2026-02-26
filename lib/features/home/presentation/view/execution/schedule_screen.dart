@@ -11,6 +11,7 @@ import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/schedule_model.dart';
 import 'package:my_template/features/class/presentation/cubit/schedule_cubit.dart';
 import 'package:my_template/features/class/presentation/cubit/schedule_state.dart';
+import 'package:my_template/features/class/presentation/execution/widget/interactive_schedule_table.dart';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});
@@ -130,67 +131,91 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               ),
             ],
           ),
-          body: Column(
-            children: [
-              // أيام الأسبوع
-              SizedBox(
-                height: 70.h,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  itemCount: _days.length,
-                  itemBuilder: (context, index) {
-                    final dayName = _days[index];
-                    final count = scheduleData[dayName]?.length ?? 0;
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _selectedDay = index;
-                        });
-                      },
-                      child: Container(
-                        width: 80.w,
-                        margin: EdgeInsets.symmetric(horizontal: 4.w),
-                        decoration: BoxDecoration(
-                          color: _selectedDay == index
-                              ? AppColor.primaryColor(context)
-                              : AppColor.grey100Color(context),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              dayName,
-                              style: AppTextStyle.bodySmall(context).copyWith(
-                                color: _selectedDay == index
-                                    ? AppColor.whiteColor(context)
-                                    : Colors.grey,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Gap(4.h),
-                            Text(
-                              '$count',
-                              style: AppTextStyle.bodySmall(context).copyWith(
-                                color: _selectedDay == index
-                                    ? AppColor.whiteColor(context)
-                                    : Colors.grey,
-                                fontSize: 10.sp,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              Gap(16.h),
+          body: LayoutBuilder(
+            builder: (context, constraints) {
+              final isLandscape = constraints.maxWidth > constraints.maxHeight;
 
-              // جدول اليوم
-              Expanded(child: _buildDaySchedule(_days[_selectedDay], scheduleData)),
-            ],
+              if (isLandscape) {
+                final classCode = HiveMethods.getUserClassCode();
+                return Padding(
+                  padding: EdgeInsets.all(16.w),
+                  child: InteractiveScheduleTable(
+                    className: AppLocalKay.schedules.tr(),
+                    startTime: state.startTime,
+                    periodsCount: state.periodsCount,
+                    periodDuration: state.periodDuration,
+                    breakDuration: state.breakDuration,
+                    thursdayPeriodsCount: state.thursdayPeriodsCount,
+                    breakAfterPeriod: state.breakAfterPeriod,
+                    classCode: int.tryParse(classCode.toString()) ?? 0,
+                    isReadOnly: true,
+                  ),
+                );
+              }
+
+              return Column(
+                children: [
+                  // أيام الأسبوع
+                  SizedBox(
+                    height: 70.h,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.symmetric(horizontal: 16.w),
+                      itemCount: _days.length,
+                      itemBuilder: (context, index) {
+                        final dayName = _days[index];
+                        final count = scheduleData[dayName]?.length ?? 0;
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _selectedDay = index;
+                            });
+                          },
+                          child: Container(
+                            width: 80.w,
+                            margin: EdgeInsets.symmetric(horizontal: 4.w),
+                            decoration: BoxDecoration(
+                              color: _selectedDay == index
+                                  ? AppColor.primaryColor(context)
+                                  : AppColor.grey100Color(context),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  dayName,
+                                  style: AppTextStyle.bodySmall(context).copyWith(
+                                    color: _selectedDay == index
+                                        ? AppColor.whiteColor(context)
+                                        : Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Gap(4.h),
+                                Text(
+                                  '$count',
+                                  style: AppTextStyle.bodySmall(context).copyWith(
+                                    color: _selectedDay == index
+                                        ? AppColor.whiteColor(context)
+                                        : Colors.grey,
+                                    fontSize: 10.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  Gap(16.h),
+
+                  // جدول اليوم
+                  Expanded(child: _buildDaySchedule(_days[_selectedDay], scheduleData)),
+                ],
+              );
+            },
           ),
         );
       },

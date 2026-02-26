@@ -19,6 +19,7 @@ class InteractiveScheduleTable extends StatefulWidget {
   final int thursdayPeriodsCount;
   final int breakAfterPeriod;
   final int classCode;
+  final bool isReadOnly;
 
   const InteractiveScheduleTable({
     super.key,
@@ -30,6 +31,7 @@ class InteractiveScheduleTable extends StatefulWidget {
     required this.thursdayPeriodsCount,
     required this.breakAfterPeriod,
     required this.classCode,
+    this.isReadOnly = false,
   });
 
   @override
@@ -123,104 +125,137 @@ class _InteractiveScheduleTableState extends State<InteractiveScheduleTable> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<ScheduleCubit, ScheduleState>(
-      listenWhen: (prev, curr) => prev.validationStatus != curr.validationStatus,
-      listener: (context, state) {
-        if (state.validationStatus.isFailure) {
-          CommonMethods.showToast(message: state.validationStatus.error ?? "");
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Defensive check for zero or very small constraints during rotation/transitions
+        if (constraints.maxWidth < 100 || constraints.maxHeight < 100) {
+          return const Center(child: CircularProgressIndicator());
         }
-      },
-      child: BlocBuilder<ScheduleCubit, ScheduleState>(
-        builder: (context, state) {
-          final schedule = state.generatedSchedules;
-          return Container(
-            decoration: BoxDecoration(
-              color: AppColor.surfaceColor(context),
-              borderRadius: BorderRadius.circular(24.r),
-              border: Border.all(color: AppColor.borderColor(context)),
-            ),
-            clipBehavior: Clip.antiAlias,
-            child: Column(
-              children: [
-                // Periods Header (Sticky Top)
-                Row(
+
+        final orientation = MediaQuery.of(context).orientation;
+        final isLandscape = orientation == Orientation.landscape;
+
+        // Responsive sizes with safe minimums
+        final dayWidth = (80.w).clamp(70.0, 100.0);
+        final cellWidth = isLandscape ? (120.w).clamp(110.0, 150.0) : (140.w).clamp(130.0, 180.0);
+        final headerHeight = isLandscape ? (35.h).clamp(30.0, 45.0) : (40.h).clamp(35.0, 50.0);
+        final cellHeight = isLandscape ? (80.h).clamp(70.0, 120.0) : (100.h).clamp(90.0, 150.0);
+
+        return BlocListener<ScheduleCubit, ScheduleState>(
+          listenWhen: (prev, curr) => prev.validationStatus != curr.validationStatus,
+          listener: (context, state) {
+            if (state.validationStatus.isFailure) {
+              CommonMethods.showToast(message: state.validationStatus.error ?? "");
+            }
+          },
+          child: BlocBuilder<ScheduleCubit, ScheduleState>(
+            builder: (context, state) {
+              final schedule = state.generatedSchedules;
+              return Container(
+                decoration: BoxDecoration(
+                  color: AppColor.surfaceColor(context),
+                  borderRadius: BorderRadius.circular(24.r),
+                  border: Border.all(color: AppColor.borderColor(context)),
+                ),
+                clipBehavior: Clip
+                    .hardEdge, // Changed from antiAlias to hardEdge for performance during resize
+                child: Column(
                   children: [
-                    _buildCornerBox(context),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        controller: _horizontalHeaderController,
-                        scrollDirection: Axis.horizontal,
-                        physics: const NeverScrollableScrollPhysics(),
-                        child: Row(
-                          children: periods.map((p) => _buildPeriodHeaderCell(context, p)).toList(),
+                    // Periods Header (Sticky Top)
+                    Row(
+                      children: [
+                        _buildCornerBox(context, dayWidth, headerHeight),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            controller: _horizontalHeaderController,
+                            scrollDirection: Axis.horizontal,
+                            physics: const NeverScrollableScrollPhysics(),
+                            child: Row(
+                              children: periods
+                                  .map(
+                                    (p) =>
+                                        _buildPeriodHeaderCell(context, p, cellWidth, headerHeight),
+                                  )
+                                  .toList(),
+                            ),
+                          ),
                         ),
+                      ],
+                    ),
+                    // Days Vertical Sticky + Main Grid
+                    Expanded(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Sticky Days Column (Vertical)
+                          SingleChildScrollView(
+                            controller: _verticalDayController,
+                            physics: const NeverScrollableScrollPhysics(),
+                            child: Column(
+                              children: days
+                                  .map(
+                                    (day) => _buildDayLabelCell(context, day, dayWidth, cellHeight),
+                                  )
+                                  .toList(),
+                            ),
+                          ),
+                          // Main Scrollable Grid
+                          Expanded(
+                            child: SingleChildScrollView(
+                              controller: _verticalBodyController,
+                              scrollDirection: Axis.vertical,
+                              child: SingleChildScrollView(
+                                controller: _horizontalBodyController,
+                                scrollDirection: Axis.horizontal,
+                                child: Column(
+                                  children: days.map((day) {
+                                    return Row(
+                                      children: periods.map((period) {
+                                        final (st, et) = _getPeriodStartAndEndTime(period);
+                                        final item = schedule.firstWhere(
+                                          (s) => s.day == day && s.period == period,
+                                          orElse: () => ScheduleModel(
+                                            day: day,
+                                            period: period,
+                                            subjectName: '',
+                                            subjectCode: 0,
+                                            teacherName: '',
+                                            teacherCode: 0,
+                                            classCode: widget.classCode,
+                                            startTime: st,
+                                            endTime: et,
+                                          ),
+                                        );
+                                        return _buildDraggableScheduleCell(
+                                          context,
+                                          item,
+                                          cellWidth,
+                                          cellHeight,
+                                        );
+                                      }).toList(),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-                // Days Vertical Sticky + Main Grid
-                Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Sticky Days Column (Vertical)
-                      SingleChildScrollView(
-                        controller: _verticalDayController,
-                        physics: const NeverScrollableScrollPhysics(),
-                        child: Column(
-                          children: days.map((day) => _buildDayLabelCell(context, day)).toList(),
-                        ),
-                      ),
-                      // Main Scrollable Grid
-                      Expanded(
-                        child: SingleChildScrollView(
-                          controller: _verticalBodyController,
-                          scrollDirection: Axis.vertical,
-                          child: SingleChildScrollView(
-                            controller: _horizontalBodyController,
-                            scrollDirection: Axis.horizontal,
-                            child: Column(
-                              children: days.map((day) {
-                                return Row(
-                                  children: periods.map((period) {
-                                    final (st, et) = _getPeriodStartAndEndTime(period);
-                                    final item = schedule.firstWhere(
-                                      (s) => s.day == day && s.period == period,
-                                      orElse: () => ScheduleModel(
-                                        day: day,
-                                        period: period,
-                                        subjectName: '',
-                                        subjectCode: 0,
-                                        teacherName: '',
-                                        teacherCode: 0,
-                                        classCode: widget.classCode,
-                                        startTime: st,
-                                        endTime: et,
-                                      ),
-                                    );
-                                    return _buildDraggableScheduleCell(context, item);
-                                  }).toList(),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildCornerBox(BuildContext context) {
+  Widget _buildCornerBox(BuildContext context, double width, double height) {
     return Container(
-      width: 80.w,
-      height: 40.h,
+      width: width,
+      height: height,
       decoration: BoxDecoration(
         color: AppColor.primaryColor(context).withValues(alpha: 0.1),
         border: Border(
@@ -237,11 +272,11 @@ class _InteractiveScheduleTableState extends State<InteractiveScheduleTable> {
     );
   }
 
-  Widget _buildPeriodHeaderCell(BuildContext context, int period) {
+  Widget _buildPeriodHeaderCell(BuildContext context, int period, double width, double height) {
     final isBreak = period == widget.breakAfterPeriod + 1;
     return Container(
-      width: 140.w,
-      height: 40.h,
+      width: width,
+      height: height,
       decoration: BoxDecoration(
         color: isBreak
             ? Colors.orange.withValues(alpha: 0.1)
@@ -270,7 +305,7 @@ class _InteractiveScheduleTableState extends State<InteractiveScheduleTable> {
     );
   }
 
-  Widget _buildDayLabelCell(BuildContext context, String day) {
+  Widget _buildDayLabelCell(BuildContext context, String day, double width, double height) {
     final Map<String, String> dayNamesAr = {
       'Sunday': 'الأحد',
       'Monday': 'الاثنين',
@@ -279,8 +314,8 @@ class _InteractiveScheduleTableState extends State<InteractiveScheduleTable> {
       'Thursday': 'الخميس',
     };
     return Container(
-      width: 80.w,
-      height: 100.h,
+      width: width,
+      height: height,
       decoration: BoxDecoration(
         color: AppColor.whiteColor(context),
         border: Border(
@@ -297,7 +332,16 @@ class _InteractiveScheduleTableState extends State<InteractiveScheduleTable> {
     );
   }
 
-  Widget _buildDraggableScheduleCell(BuildContext context, ScheduleModel item) {
+  Widget _buildDraggableScheduleCell(
+    BuildContext context,
+    ScheduleModel item,
+    double width,
+    double height,
+  ) {
+    if (widget.isReadOnly) {
+      return _buildScheduleCell(context, item, width, height);
+    }
+
     final isBreak =
         item.subjectName.toLowerCase().contains('break') || item.subjectName.contains('فسحة');
 
@@ -312,7 +356,7 @@ class _InteractiveScheduleTableState extends State<InteractiveScheduleTable> {
         builder: (context, candidateData, rejectedData) {
           return Opacity(
             opacity: candidateData.isNotEmpty ? 0.6 : 1.0,
-            child: _buildScheduleCell(context, item),
+            child: _buildScheduleCell(context, item, width, height),
           );
         },
       );
@@ -338,9 +382,16 @@ class _InteractiveScheduleTableState extends State<InteractiveScheduleTable> {
         elevation: 8,
         borderRadius: BorderRadius.circular(16.r),
         color: Colors.transparent,
-        child: SizedBox(width: 140.w, height: 100.h, child: _buildScheduleCell(context, item)),
+        child: SizedBox(
+          width: width,
+          height: height,
+          child: _buildScheduleCell(context, item, width, height),
+        ),
       ),
-      childWhenDragging: Opacity(opacity: 0.3, child: _buildScheduleCell(context, item)),
+      childWhenDragging: Opacity(
+        opacity: 0.3,
+        child: _buildScheduleCell(context, item, width, height),
+      ),
       child: DragTarget<ScheduleModel>(
         onWillAccept: (data) => data != null && data != item,
         onAccept: (data) {
@@ -354,7 +405,7 @@ class _InteractiveScheduleTableState extends State<InteractiveScheduleTable> {
               builder: (context, state) {
                 return GestureDetector(
                   onTap: () => _showSwapSelectionMenu(context, item, state.generatedSchedules),
-                  child: _buildScheduleCell(context, item, state.selectedSlot),
+                  child: _buildScheduleCell(context, item, width, height, state.selectedSlot),
                 );
               },
             ),
@@ -484,7 +535,9 @@ class _InteractiveScheduleTableState extends State<InteractiveScheduleTable> {
 
   Widget _buildScheduleCell(
     BuildContext context,
-    ScheduleModel item, [
+    ScheduleModel item,
+    double width,
+    double height, [
     ScheduleModel? selectedSlot,
   ]) {
     final isEmpty = item.subjectName.isEmpty;
@@ -499,8 +552,8 @@ class _InteractiveScheduleTableState extends State<InteractiveScheduleTable> {
         (selectedSlot != item && _draggedItem != item);
 
     return Container(
-      width: 140.w,
-      height: 100.h,
+      width: width,
+      height: height,
       padding: EdgeInsets.all(8.w),
       decoration: BoxDecoration(
         color: isBreak
@@ -556,7 +609,7 @@ class _InteractiveScheduleTableState extends State<InteractiveScheduleTable> {
                     textAlign: TextAlign.center,
                     style: AppTextStyle.bodySmall(
                       context,
-                    ).copyWith(fontSize: 9.sp, color: Colors.grey.shade600),
+                    ).copyWith(fontSize: 9.sp, color: AppColor.grey600Color(context)),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -565,7 +618,7 @@ class _InteractiveScheduleTableState extends State<InteractiveScheduleTable> {
                       item.room!,
                       style: AppTextStyle.bodySmall(
                         context,
-                      ).copyWith(fontSize: 8.sp, color: Colors.grey.shade400),
+                      ).copyWith(fontSize: 8.sp, color: AppColor.grey400Color(context)),
                     ),
                 ],
               ],

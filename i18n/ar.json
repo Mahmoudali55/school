@@ -1164,5 +1164,12 @@
   "Tuesday": "الثلاثاء",
   "Wednesday": "الأربعاء",
   "Thursday": "الخميس",
-  "period": "الحصة"
+  "period": "الحصة",
+  "schedule_settings": "إعدادات الجدول",
+  "start_time_of_day": "وقت بداية اليوم",
+  "periods_count_normal": "عدد الحصص (يوم عادي)",
+  "periods_count_thursday": "عدد حصص يوم الخميس",
+  "period_duration_minutes": "مدة الحصة (دقيقة)",
+  "break_duration_minutes": "مدة الفسحة (دقيقة)",
+  "break_after_period_number": "الفسحة بعد الحصة رقم"
 }

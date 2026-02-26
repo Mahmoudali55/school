@@ -6,6 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_dropdown_form_field.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/common_methods.dart';
@@ -60,258 +61,297 @@ class _AdminScheduleGeneratorScreenState extends State<AdminScheduleGeneratorScr
           }
         },
         builder: (context, state) {
-          return SingleChildScrollView(
-            padding: EdgeInsets.all(16.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(AppLocalKay.ai_generation.tr(), style: AppTextStyle.bodyMedium(context)),
-                Gap(12.h),
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              final isLandscape = constraints.maxWidth > constraints.maxHeight;
 
-                // Section Dropdown
-                CustomDropdownFormField<SectionDataModel>(
-                  hint: AppLocalKay.select_section.tr(),
-                  value: (state.sectionDataStatus.data ?? []).contains(state.selectedSection)
-                      ? state.selectedSection
-                      : null,
-                  items: (state.sectionDataStatus.data ?? [])
-                      .toSet() // Ensure uniqueness
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e.sectionName)))
-                      .toList(),
-                  onChanged: (val) => context.read<ScheduleCubit>().onSectionChanged(val),
-                  errorText: AppLocalKay.select_section.tr(),
-                  submitted: _submitted,
-                ),
-                Gap(12.h),
+              Widget buildSelectionAndSettings() {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(AppLocalKay.ai_generation.tr(), style: AppTextStyle.bodyMedium(context)),
+                    Gap(12.h),
 
-                // Stage Dropdown
-                CustomDropdownFormField<StageDataModel>(
-                  hint: AppLocalKay.setting_school
-                      .tr(), // Reusing school/stage keys if specific ones missing
-                  value: (state.stageDataStatus.data ?? []).contains(state.selectedStage)
-                      ? state.selectedStage
-                      : null,
-                  items: (state.stageDataStatus.data ?? [])
-                      .toSet() // Ensure uniqueness
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e.stageNameAr)))
-                      .toList(),
-                  onChanged: (val) => context.read<ScheduleCubit>().onStageChanged(val),
-                  errorText: AppLocalKay.setting_school.tr(),
-                  submitted: _submitted,
-                ),
-                Gap(12.h),
+                    // Section Dropdown
+                    CustomDropdownFormField<SectionDataModel>(
+                      hint: AppLocalKay.select_section.tr(),
+                      value: (state.sectionDataStatus.data ?? []).contains(state.selectedSection)
+                          ? state.selectedSection
+                          : null,
+                      items: (state.sectionDataStatus.data ?? [])
+                          .toSet() // Ensure uniqueness
+                          .map((e) => DropdownMenuItem(value: e, child: Text(e.sectionName)))
+                          .toList(),
+                      onChanged: (val) => context.read<ScheduleCubit>().onSectionChanged(val),
+                      errorText: AppLocalKay.select_section.tr(),
+                      submitted: _submitted,
+                    ),
+                    Gap(12.h),
 
-                // Level Dropdown
-                CustomDropdownFormField<LevelModel>(
-                  hint: AppLocalKay.level.tr(),
-                  value: (state.levelDataStatus.data ?? []).contains(state.selectedLevel)
-                      ? state.selectedLevel
-                      : null,
-                  items: (state.levelDataStatus.data ?? [])
-                      .toSet() // Ensure uniqueness
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e.levelName)))
-                      .toList(),
-                  onChanged: (val) => context.read<ScheduleCubit>().onLevelChanged(val),
-                  errorText: AppLocalKay.level.tr(),
-                  submitted: _submitted,
-                ),
-                Gap(12.h),
+                    // Stage Dropdown
+                    CustomDropdownFormField<StageDataModel>(
+                      hint: AppLocalKay.setting_school.tr(),
+                      value: (state.stageDataStatus.data ?? []).contains(state.selectedStage)
+                          ? state.selectedStage
+                          : null,
+                      items: (state.stageDataStatus.data ?? [])
+                          .toSet() // Ensure uniqueness
+                          .map((e) => DropdownMenuItem(value: e, child: Text(e.stageNameAr)))
+                          .toList(),
+                      onChanged: (val) => context.read<ScheduleCubit>().onStageChanged(val),
+                      errorText: AppLocalKay.setting_school.tr(),
+                      submitted: _submitted,
+                    ),
+                    Gap(12.h),
 
-                if (state.selectedLevel != null) ...[
-                  Text(
-                    "إعدادات الجدول",
-                    style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  Gap(8.h),
+                    // Level Dropdown
+                    CustomDropdownFormField<LevelModel>(
+                      hint: AppLocalKay.level.tr(),
+                      value: (state.levelDataStatus.data ?? []).contains(state.selectedLevel)
+                          ? state.selectedLevel
+                          : null,
+                      items: (state.levelDataStatus.data ?? [])
+                          .toSet() // Ensure uniqueness
+                          .map((e) => DropdownMenuItem(value: e, child: Text(e.levelName)))
+                          .toList(),
+                      onChanged: (val) => context.read<ScheduleCubit>().onLevelChanged(val),
+                      errorText: AppLocalKay.level.tr(),
+                      submitted: _submitted,
+                    ),
+                    Gap(12.h),
 
-                  // Start Time
-                  Row(
-                    children: [
-                      Expanded(child: Text("وقت بداية اليوم")),
-                      TextButton(
-                        onPressed: () async {
-                          final picked = await showTimePicker(
-                            context: context,
-                            initialTime: state.startTime,
-                          );
-                          if (picked != null) {
-                            context.read<ScheduleCubit>().updateStartTime(picked);
-                          }
-                        },
-                        child: Text(state.startTime.format(context)),
+                    if (state.selectedLevel != null) ...[
+                      Text(
+                        AppLocalKay.schedule_settings.tr(),
+                        style: AppTextStyle.bodyMedium(
+                          context,
+                        ).copyWith(fontWeight: FontWeight.bold),
                       ),
-                    ],
-                  ),
+                      Gap(8.h),
 
-                  // Periods Count
-                  Row(
-                    children: [
-                      Expanded(child: Text("عدد الحصص (يوم عادي)")),
-                      DropdownButton<int>(
-                        value: state.periodsCount,
-                        items: List.generate(
-                          8,
-                          (i) => i + 3,
-                        ).map((e) => DropdownMenuItem(value: e, child: Text("$e"))).toList(),
-                        onChanged: (val) => context.read<ScheduleCubit>().updatePeriodsCount(val!),
-                      ),
-                    ],
-                  ),
-
-                  // Thursday Periods
-                  Row(
-                    children: [
-                      Expanded(child: Text("عدد حصص يوم الخميس")),
-                      DropdownButton<int>(
-                        value: state.thursdayPeriodsCount,
-                        items: List.generate(
-                          8,
-                          (i) => i + 3,
-                        ).map((e) => DropdownMenuItem(value: e, child: Text("$e"))).toList(),
-                        onChanged: (val) =>
-                            context.read<ScheduleCubit>().updateThursdayPeriodsCount(val!),
-                      ),
-                    ],
-                  ),
-
-                  // Period Duration
-                  Row(
-                    children: [
-                      Expanded(child: Text("مدة الحصة (دقيقة)")),
-                      DropdownButton<int>(
-                        value: state.periodDuration,
-                        items: [
-                          30,
-                          35,
-                          40,
-                          45,
-                          50,
-                          55,
-                          60,
-                        ].map((e) => DropdownMenuItem(value: e, child: Text("$e"))).toList(),
-                        onChanged: (val) =>
-                            context.read<ScheduleCubit>().updatePeriodDuration(val!),
-                      ),
-                    ],
-                  ),
-
-                  // Break Duration
-                  Row(
-                    children: [
-                      Expanded(child: Text("مدة الفسحة (دقيقة)")),
-                      DropdownButton<int>(
-                        value: state.breakDuration,
-                        items: [
-                          5,
-                          10,
-                          15,
-                          20,
-                          25,
-                          30,
-                        ].map((e) => DropdownMenuItem(value: e, child: Text("$e"))).toList(),
-                        onChanged: (val) => context.read<ScheduleCubit>().updateBreakDuration(val!),
-                      ),
-                    ],
-                  ),
-
-                  // Break After Period
-                  Row(
-                    children: [
-                      Expanded(child: Text("الفسحة بعد الحصة رقم")),
-                      DropdownButton<int>(
-                        value: state.breakAfterPeriod,
-                        items: List.generate(
-                          5,
-                          (i) => i + 1,
-                        ).map((e) => DropdownMenuItem(value: e, child: Text("$e"))).toList(),
-                        onChanged: (val) =>
-                            context.read<ScheduleCubit>().updateBreakAfterPeriod(val!),
-                      ),
-                    ],
-                  ),
-                  Gap(12.h),
-                ],
-
-                // Class Dropdown
-                CustomDropdownFormField<TeacherClassModels>(
-                  hint: AppLocalKay.select_class_to_generate.tr(),
-                  value: (state.classDataStatus.data ?? []).contains(state.selectedClass)
-                      ? state.selectedClass
-                      : null,
-                  items: (state.classDataStatus.data ?? [])
-                      .toSet() // Ensure uniqueness
-                      .map(
-                        (e) => DropdownMenuItem(
-                          value: e,
-                          child: Text(e.classNameAr ?? 'Class ${e.classCode}'),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (val) => context.read<ScheduleCubit>().onClassChanged(val),
-                  errorText: AppLocalKay.select_class_to_generate.tr(),
-                  submitted: _submitted,
-                ),
-                Gap(24.h),
-
-                CustomButton(
-                  text: AppLocalKay.ai_generation.tr(),
-                  cubitState: state.generateScheduleStatus,
-                  radius: 12.r,
-                  onPressed: () {
-                    setState(() => _submitted = true);
-                    if (state.selectedClass != null) {
-                      context.read<ScheduleCubit>().generateAICalendar();
-                    }
-                  },
-                ),
-
-                if (state.generatedSchedules.isNotEmpty && state.selectedClass != null) ...[
-                  Gap(32.h),
-                  Text(AppLocalKay.review_schedule.tr(), style: AppTextStyle.bodyMedium(context)),
-                  Gap(16.h),
-
-                  CustomButton(
-                    text: AppLocalKay.review_schedule.tr(),
-                    radius: 12.r,
-                    color: Colors.orange,
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                        builder: (bottomSheetContext) => BlocProvider.value(
-                          value: context.read<ScheduleCubit>(),
-                          child: FractionallySizedBox(
-                            heightFactor: 0.8,
-                            child: ScheduleTableBottomSheet(
-                              classCode: state.selectedClass!.classCode,
-                              schedule: state.generatedSchedules,
-                              className: state.selectedClass?.classNameAr ?? 'Class',
-                              startTime: state.startTime,
-                              periodsCount: state.periodsCount,
-                              periodDuration: state.periodDuration,
-                              breakDuration: state.breakDuration,
-                              thursdayPeriodsCount: state.thursdayPeriodsCount,
-                              breakAfterPeriod: state.breakAfterPeriod,
-                            ),
+                      // Start Time
+                      Row(
+                        children: [
+                          Expanded(child: Text(AppLocalKay.start_time.tr())),
+                          TextButton(
+                            onPressed: () async {
+                              final picked = await showTimePicker(
+                                context: context,
+                                initialTime: state.startTime,
+                              );
+                              if (picked != null) {
+                                context.read<ScheduleCubit>().updateStartTime(picked);
+                              }
+                            },
+                            child: Text(state.startTime.format(context)),
                           ),
-                        ),
-                      );
-                    },
-                  ),
+                        ],
+                      ),
 
-                  Gap(12.h),
-                  CustomButton(
-                    text: AppLocalKay.save.tr(),
-                    radius: 12.r,
-                    cubitState: state.saveScheduleStatus,
-                    onPressed: () {
-                      context.read<ScheduleCubit>().saveSchedule(state.selectedClass!.classCode);
-                    },
+                      // Periods Count
+                      Row(
+                        children: [
+                          Expanded(child: Text(AppLocalKay.periods_count_normal.tr())),
+                          DropdownButton<int>(
+                            value: state.periodsCount,
+                            items: List.generate(
+                              8,
+                              (i) => i + 3,
+                            ).map((e) => DropdownMenuItem(value: e, child: Text("$e"))).toList(),
+                            onChanged: (val) =>
+                                context.read<ScheduleCubit>().updatePeriodsCount(val!),
+                          ),
+                        ],
+                      ),
+
+                      // Thursday Periods
+                      Row(
+                        children: [
+                          Expanded(child: Text(AppLocalKay.periods_count_thursday.tr())),
+                          DropdownButton<int>(
+                            value: state.thursdayPeriodsCount,
+                            items: List.generate(
+                              8,
+                              (i) => i + 3,
+                            ).map((e) => DropdownMenuItem(value: e, child: Text("$e"))).toList(),
+                            onChanged: (val) =>
+                                context.read<ScheduleCubit>().updateThursdayPeriodsCount(val!),
+                          ),
+                        ],
+                      ),
+
+                      // Period Duration
+                      Row(
+                        children: [
+                          Expanded(child: Text(AppLocalKay.period_duration_minutes.tr())),
+                          DropdownButton<int>(
+                            value: state.periodDuration,
+                            items: [
+                              30,
+                              35,
+                              40,
+                              45,
+                              50,
+                              55,
+                              60,
+                            ].map((e) => DropdownMenuItem(value: e, child: Text("$e"))).toList(),
+                            onChanged: (val) =>
+                                context.read<ScheduleCubit>().updatePeriodDuration(val!),
+                          ),
+                        ],
+                      ),
+
+                      // Break Duration
+                      Row(
+                        children: [
+                          Expanded(child: Text(AppLocalKay.break_duration_minutes.tr())),
+                          DropdownButton<int>(
+                            value: state.breakDuration,
+                            items: [
+                              5,
+                              10,
+                              15,
+                              20,
+                              25,
+                              30,
+                            ].map((e) => DropdownMenuItem(value: e, child: Text("$e"))).toList(),
+                            onChanged: (val) =>
+                                context.read<ScheduleCubit>().updateBreakDuration(val!),
+                          ),
+                        ],
+                      ),
+
+                      // Break After Period
+                      Row(
+                        children: [
+                          Expanded(child: Text(AppLocalKay.break_after_period_number.tr())),
+                          DropdownButton<int>(
+                            value: state.breakAfterPeriod,
+                            items: List.generate(
+                              5,
+                              (i) => i + 1,
+                            ).map((e) => DropdownMenuItem(value: e, child: Text("$e"))).toList(),
+                            onChanged: (val) =>
+                                context.read<ScheduleCubit>().updateBreakAfterPeriod(val!),
+                          ),
+                        ],
+                      ),
+                      Gap(12.h),
+                    ],
+                  ],
+                );
+              }
+
+              Widget buildActions() {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Class Dropdown
+                    CustomDropdownFormField<TeacherClassModels>(
+                      hint: AppLocalKay.select_class_to_generate.tr(),
+                      value: (state.classDataStatus.data ?? []).contains(state.selectedClass)
+                          ? state.selectedClass
+                          : null,
+                      items: (state.classDataStatus.data ?? [])
+                          .toSet() // Ensure uniqueness
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e,
+                              child: Text(e.classNameAr ?? 'Class ${e.classCode}'),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (val) => context.read<ScheduleCubit>().onClassChanged(val),
+                      errorText: AppLocalKay.select_class_to_generate.tr(),
+                      submitted: _submitted,
+                    ),
+                    Gap(24.h),
+
+                    CustomButton(
+                      text: AppLocalKay.ai_generation.tr(),
+                      cubitState: state.generateScheduleStatus,
+                      radius: 12.r,
+                      onPressed: () {
+                        setState(() => _submitted = true);
+                        if (state.selectedClass != null) {
+                          context.read<ScheduleCubit>().generateAICalendar();
+                        }
+                      },
+                    ),
+
+                    if (state.generatedSchedules.isNotEmpty && state.selectedClass != null) ...[
+                      Gap(32.h),
+                      Text(
+                        AppLocalKay.review_schedule.tr(),
+                        style: AppTextStyle.bodyMedium(context),
+                      ),
+                      Gap(16.h),
+
+                      CustomButton(
+                        text: AppLocalKay.review_schedule.tr(),
+                        radius: 12.r,
+                        color: AppColor.accentColor(context),
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            builder: (bottomSheetContext) => BlocProvider.value(
+                              value: context.read<ScheduleCubit>(),
+                              child: ScheduleTableBottomSheet(
+                                classCode: state.selectedClass!.classCode,
+                                schedule: state.generatedSchedules,
+                                className: state.selectedClass?.classNameAr ?? 'Class',
+                                startTime: state.startTime,
+                                periodsCount: state.periodsCount,
+                                periodDuration: state.periodDuration,
+                                breakDuration: state.breakDuration,
+                                thursdayPeriodsCount: state.thursdayPeriodsCount,
+                                breakAfterPeriod: state.breakAfterPeriod,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+
+                      Gap(12.h),
+                      CustomButton(
+                        text: AppLocalKay.save.tr(),
+                        radius: 12.r,
+                        cubitState: state.saveScheduleStatus,
+                        onPressed: () {
+                          context.read<ScheduleCubit>().saveSchedule(
+                            state.selectedClass!.classCode,
+                          );
+                        },
+                      ),
+                    ],
+                  ],
+                );
+              }
+
+              if (isLandscape) {
+                return SingleChildScrollView(
+                  padding: EdgeInsets.all(16.w),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(child: buildSelectionAndSettings()),
+                      Gap(24.w),
+                      Expanded(child: buildActions()),
+                    ],
                   ),
-                ],
-              ],
-            ),
+                );
+              }
+
+              return SingleChildScrollView(
+                padding: EdgeInsets.all(16.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [buildSelectionAndSettings(), buildActions()],
+                ),
+              );
+            },
           );
         },
       ),

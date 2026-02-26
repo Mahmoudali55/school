@@ -13,6 +13,7 @@ import 'package:my_template/features/class/data/model/schedule_model.dart';
 import 'package:my_template/features/class/data/model/school_class_model.dart';
 import 'package:my_template/features/class/presentation/cubit/schedule_cubit.dart';
 import 'package:my_template/features/class/presentation/cubit/schedule_state.dart';
+import 'package:my_template/features/class/presentation/execution/widget/interactive_schedule_table.dart';
 
 class ClassScheduleScreen extends StatefulWidget {
   final SchoolClass schoolClass;
@@ -109,50 +110,74 @@ class _ClassScheduleScreenState extends State<ClassScheduleScreen> {
               );
             }
 
-            return Column(
-              children: [
-                // أيام الأسبوع
-                SizedBox(
-                  height: 60.h,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: _daysAr.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-                        child: ChoiceChip(
-                          label: Text(_daysAr[index]),
-                          selected: _selectedDay == index,
-                          onSelected: (selected) {
-                            setState(() {
-                              _selectedDay = index;
-                            });
-                          },
-                          selectedColor: Colors.blue,
-                          labelStyle: AppTextStyle.titleSmall(context).copyWith(
-                            color: _selectedDay == index
-                                ? AppColor.whiteColor(context)
-                                : Colors.black,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                final isLandscape = constraints.maxWidth > constraints.maxHeight;
 
-                // جدول الحصص
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: schedule.where((e) => e.day == _daysEn[_selectedDay]).length,
-                    itemBuilder: (context, index) {
-                      final items = schedule.where((e) => e.day == _daysEn[_selectedDay]).toList()
-                        ..sort((a, b) => a.period.compareTo(b.period));
-                      final period = items[index];
-                      return _buildPeriodCard(period);
-                    },
-                  ),
-                ),
-              ],
+                if (isLandscape) {
+                  return Padding(
+                    padding: EdgeInsets.all(16.w),
+                    child: InteractiveScheduleTable(
+                      className: widget.schoolClass.name,
+                      startTime: state.startTime,
+                      periodsCount: state.periodsCount,
+                      periodDuration: state.periodDuration,
+                      breakDuration: state.breakDuration,
+                      thursdayPeriodsCount: state.thursdayPeriodsCount,
+                      breakAfterPeriod: state.breakAfterPeriod,
+                      classCode: int.tryParse(widget.schoolClass.id) ?? 0,
+                      isReadOnly: true,
+                    ),
+                  );
+                }
+
+                return Column(
+                  children: [
+                    // أيام الأسبوع
+                    SizedBox(
+                      height: 60.h,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: _daysAr.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+                            child: ChoiceChip(
+                              label: Text(_daysAr[index]),
+                              selected: _selectedDay == index,
+                              onSelected: (selected) {
+                                setState(() {
+                                  _selectedDay = index;
+                                });
+                              },
+                              selectedColor: Colors.blue,
+                              labelStyle: AppTextStyle.titleSmall(context).copyWith(
+                                color: _selectedDay == index
+                                    ? AppColor.whiteColor(context)
+                                    : Colors.black,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+
+                    // جدول الحصص
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: schedule.where((e) => e.day == _daysEn[_selectedDay]).length,
+                        itemBuilder: (context, index) {
+                          final items =
+                              schedule.where((e) => e.day == _daysEn[_selectedDay]).toList()
+                                ..sort((a, b) => a.period.compareTo(b.period));
+                          final period = items[index];
+                          return _buildPeriodCard(period);
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
             );
           },
         ),

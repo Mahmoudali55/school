@@ -1095,5 +1095,12 @@
   "Tuesday": "Tuesday",
   "Wednesday": "Wednesday",
   "Thursday": "Thursday",
-  "period": "Period"
+  "period": "Period",
+  "schedule_settings": "Schedule Settings",
+  "start_time_of_day": "Start Time of Day",
+  "periods_count_normal": "Number of Periods (Normal Day)",
+  "periods_count_thursday": "Number of Thursday Periods",
+  "period_duration_minutes": "Period Duration (Minutes)",
+  "break_duration_minutes": "Break Duration (Minutes)",
+  "break_after_period_number": "Break After Period Number"
 }

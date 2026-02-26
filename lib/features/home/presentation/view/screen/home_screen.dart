@@ -27,25 +27,66 @@ class HomeScreen extends StatelessWidget {
             if (state.isLoading && data == null) {
               return const Center(child: CircularProgressIndicator());
             } else if (studentData != null) {
-              return SingleChildScrollView(
-                padding: EdgeInsets.all(16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    HomeHeaderWidget(
-                      studentName: HiveMethods.getUserName(),
-                      classInfo: studentData.classInfo,
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  final isLandscape = constraints.maxWidth > constraints.maxHeight;
+
+                  if (isLandscape) {
+                    return SingleChildScrollView(
+                      padding: EdgeInsets.all(16.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          HomeHeaderWidget(
+                            studentName: HiveMethods.getUserName(),
+                            classInfo: studentData.classInfo,
+                          ),
+                          Gap(25.h),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Column(
+                                  children: [
+                                    const HeroNextClassCard(),
+                                    Gap(25.h),
+                                    const UpcomingTasksSection(),
+                                    Gap(25.h),
+                                    const RecentNotificationsSection(),
+                                  ],
+                                ),
+                              ),
+                              Gap(25.w),
+                              const Expanded(flex: 2, child: QuickActionsSection()),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return SingleChildScrollView(
+                    padding: EdgeInsets.all(16.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        HomeHeaderWidget(
+                          studentName: HiveMethods.getUserName(),
+                          classInfo: studentData.classInfo,
+                        ),
+                        Gap(25.h),
+                        const HeroNextClassCard(),
+                        Gap(25.h),
+                        const QuickActionsSection(),
+                        Gap(25.h),
+                        const UpcomingTasksSection(),
+                        Gap(25.h),
+                        const RecentNotificationsSection(),
+                      ],
                     ),
-                    Gap(25.h),
-                    const HeroNextClassCard(),
-                    Gap(25.h),
-                    const QuickActionsSection(),
-                    Gap(25.h),
-                    const UpcomingTasksSection(),
-                    Gap(25.h),
-                    const RecentNotificationsSection(),
-                  ],
-                ),
+                  );
+                },
               );
             } else if (state.errorMessage != null && data == null) {
               return Center(child: Text(state.errorMessage!));

@@ -31,23 +31,61 @@ class AdminHomeScreen extends StatelessWidget {
             if (state.isLoading && data == null) {
               return const Center(child: CircularProgressIndicator());
             } else if (adminData != null) {
-              return SingleChildScrollView(
-                padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AdminHeader(name: HiveMethods.getUserName2()),
-                    Gap(20.h),
-                    MetricsDashboard(metricsData: adminData.metrics),
-                    Gap(20.h),
-                    MiniCharts(),
-                    Gap(20.h),
-                    AlertsAndActivity(),
-                    Gap(20.h),
-                    ManagementShortcuts(),
-                    Gap(20.h),
-                  ],
-                ),
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  final isLandscape = constraints.maxWidth > constraints.maxHeight;
+
+                  if (isLandscape) {
+                    return SingleChildScrollView(
+                      padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AdminHeader(name: HiveMethods.getUserName2()),
+                          Gap(20.h),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Column(
+                                  children: [
+                                    MetricsDashboard(metricsData: adminData.metrics),
+                                    Gap(20.h),
+                                    MiniCharts(),
+                                    Gap(20.h),
+                                    AlertsAndActivity(),
+                                  ],
+                                ),
+                              ),
+                              Gap(20.w),
+                              Expanded(flex: 2, child: ManagementShortcuts()),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AdminHeader(name: HiveMethods.getUserName2()),
+                        Gap(20.h),
+                        MetricsDashboard(metricsData: adminData.metrics),
+                        Gap(20.h),
+                        MiniCharts(),
+                        Gap(20.h),
+                        AlertsAndActivity(),
+                        Gap(20.h),
+                        ManagementShortcuts(),
+                        Gap(20.h),
+                      ],
+                    ),
+                  );
+                },
               );
             } else if (state.errorMessage != null && data == null) {
               return Center(child: Text(state.errorMessage!));

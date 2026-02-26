@@ -22,6 +22,8 @@ class _schoolAppState extends State<schoolApp> {
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
+      ensureScreenSize: true,
+      useInheritedMediaQuery: true,
       builder: (_, child) {
         return MaterialApp(
           localizationsDelegates: [...context.localizationDelegates, CountryLocalizations.delegate],
