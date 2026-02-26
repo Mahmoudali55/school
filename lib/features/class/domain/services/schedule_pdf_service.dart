@@ -86,7 +86,7 @@ class SchedulePdfService {
                         for (var p in periods)
                           pw.Padding(
                             padding: const pw.EdgeInsets.all(5),
-                            child: _buildTableCell(schedule, day, p),
+                            child: _buildTableCell(schedule, day, p, breakAfterPeriod),
                           ),
                       ],
                     ),
@@ -104,9 +104,16 @@ class SchedulePdfService {
     );
   }
 
-  static pw.Widget _buildTableCell(List<ScheduleModel> schedule, String day, int period) {
+  static pw.Widget _buildTableCell(
+    List<ScheduleModel> schedule,
+    String day,
+    int period,
+    int breakAfter,
+  ) {
     try {
-      final item = schedule.firstWhere((s) => s.day == day && s.period == period);
+      final isBreakSlot = period == breakAfter + 1;
+      final searchPeriod = isBreakSlot ? 0 : (period > breakAfter + 1 ? period - 1 : period);
+      final item = schedule.firstWhere((s) => s.day == day && s.period == searchPeriod);
       return pw.Column(
         children: [
           pw.Text(

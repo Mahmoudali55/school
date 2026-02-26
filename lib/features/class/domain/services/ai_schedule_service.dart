@@ -71,6 +71,7 @@ class AIScheduleService {
       Map<String, Set<int>> classDailySubjects = {for (var day in days) day: {}};
       for (var day in days) {
         int slot = 1;
+        int academicPeriod = 1;
         int dayTotalSlots = totalSlots(day);
         while (slot <= dayTotalSlots) {
           // Rule: Insert Break after breakAfterPeriod teaching period
@@ -78,7 +79,7 @@ class AIScheduleService {
             generatedSchedule.add(
               ScheduleModel(
                 day: day,
-                period: slot,
+                period: 0, // 0 indicates a break, doesn't consume academic period number
                 subjectName: "فسحة / Break",
                 subjectCode: 0,
                 teacherName: "",
@@ -197,10 +198,12 @@ class AIScheduleService {
               periodDuration,
               breakDuration,
               breakAfterPeriod,
+              academicPeriod,
               dayTotalSlots,
             );
             if (isDouble) {
               slot++;
+              academicPeriod++;
               _assignSlot(
                 generatedSchedule,
                 day,
@@ -217,9 +220,11 @@ class AIScheduleService {
                 periodDuration,
                 breakDuration,
                 breakAfterPeriod,
+                academicPeriod,
                 dayTotalSlots,
               );
             }
+            academicPeriod++;
           }
           slot++;
         }
@@ -244,12 +249,13 @@ class AIScheduleService {
     int configPeriodDuration,
     int configBreakDuration,
     int configBreakAfterPeriod,
+    int academicPeriod,
     int dayTotalSlots,
   ) {
     schedule.add(
       ScheduleModel(
         day: day,
-        period: slot,
+        period: academicPeriod,
         subjectName: subject.courseNameAr,
         subjectCode: subject.courseCode,
         teacherName: teacher.teacherNameAr,

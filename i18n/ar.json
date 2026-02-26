@@ -1171,5 +1171,6 @@
   "periods_count_thursday": "عدد حصص يوم الخميس",
   "period_duration_minutes": "مدة الحصة (دقيقة)",
   "break_duration_minutes": "مدة الفسحة (دقيقة)",
-  "break_after_period_number": "الفسحة بعد الحصة رقم"
+  "break_after_period_number": "الفسحة بعد الحصة رقم",
+  "print_schedule":"طباعة الجدول"
 }

@@ -1102,5 +1102,6 @@
   "periods_count_thursday": "Number of Thursday Periods",
   "period_duration_minutes": "Period Duration (Minutes)",
   "break_duration_minutes": "Break Duration (Minutes)",
-  "break_after_period_number": "Break After Period Number"
+  "break_after_period_number": "Break After Period Number",
+  "print_schedule":"Print Schedule"
 }

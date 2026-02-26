@@ -212,8 +212,14 @@ class _InteractiveScheduleTableState extends State<InteractiveScheduleTable> {
                                     return Row(
                                       children: periods.map((period) {
                                         final (st, et) = _getPeriodStartAndEndTime(period);
+                                        final isBreakSlot = period == widget.breakAfterPeriod + 1;
+                                        final searchPeriod = isBreakSlot
+                                            ? 0
+                                            : (period > widget.breakAfterPeriod + 1
+                                                  ? period - 1
+                                                  : period);
                                         final item = schedule.firstWhere(
-                                          (s) => s.day == day && s.period == period,
+                                          (s) => s.day == day && s.period == searchPeriod,
                                           orElse: () => ScheduleModel(
                                             day: day,
                                             period: period,
@@ -290,7 +296,9 @@ class _InteractiveScheduleTableState extends State<InteractiveScheduleTable> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            isBreak ? 'فسحة' : 'الحصة $period',
+            isBreak
+                ? 'فسحة'
+                : 'الحصة ${period > widget.breakAfterPeriod + 1 ? period - 1 : period}',
             style: AppTextStyle.bodySmall(context).copyWith(
               fontWeight: FontWeight.bold,
               color: isBreak ? Colors.orange.shade800 : AppColor.primaryColor(context),
@@ -425,108 +433,120 @@ class _InteractiveScheduleTableState extends State<InteractiveScheduleTable> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (bottomSheetContext) {
-        final List<ScheduleModel> otherSlots = [];
-        final daysOrder = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
+        return BlocProvider.value(
+          value: context.read<ScheduleCubit>(),
+          child: Builder(
+            builder: (sheetContentContext) {
+              final List<ScheduleModel> otherSlots = [];
+              final daysOrder = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
 
-        for (var day in daysOrder) {
-          final dayPeriods = allSchedules.where((s) => s.day == day).toList();
-          dayPeriods.sort((a, b) => a.period.compareTo(b.period));
-          for (var p in dayPeriods) {
-            final isBreak =
-                p.subjectName.toLowerCase().contains('break') || p.subjectName.contains('فسحة');
-            if (!isBreak && p != currentItem) {
-              otherSlots.add(p);
-            }
-          }
-        }
+              for (var day in daysOrder) {
+                final dayPeriods = allSchedules.where((s) => s.day == day).toList();
+                dayPeriods.sort((a, b) => a.period.compareTo(b.period));
+                for (var p in dayPeriods) {
+                  final isBreak =
+                      p.subjectName.toLowerCase().contains('break') ||
+                      p.subjectName.contains('فسحة');
+                  if (!isBreak && p != currentItem) {
+                    otherSlots.add(p);
+                  }
+                }
+              }
 
-        return Container(
-          height: 0.7.sh,
-          decoration: BoxDecoration(
-            color: AppColor.surfaceColor(context),
-            borderRadius: BorderRadius.vertical(top: Radius.circular(32.r)),
-          ),
-          child: Column(
-            children: [
-              Gap(12.h),
-              Container(
-                width: 40.w,
-                height: 4.h,
+              return Container(
+                height: 0.7.sh,
                 decoration: BoxDecoration(
-                  color: AppColor.borderColor(context),
-                  borderRadius: BorderRadius.circular(2.r),
+                  color: AppColor.surfaceColor(sheetContentContext),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(32.r)),
                 ),
-              ),
-              Gap(16.h),
-              Text(
-                'تبديل " ${currentItem.subjectName.isEmpty ? 'حصة فارغة' : currentItem.subjectName} " مع ...',
-                style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
-              ),
-              Gap(16.h),
-              Expanded(
-                child: ListView.separated(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                  itemCount: otherSlots.length,
-                  separatorBuilder: (_, __) => Divider(
-                    height: 1.h,
-                    color: AppColor.borderColor(context).withValues(alpha: 0.5),
-                  ),
-                  itemBuilder: (context, index) {
-                    final target = otherSlots[index];
-                    final dayAr =
-                        {
-                          'Sunday': 'الأحد',
-                          'Monday': 'الاثنين',
-                          'Tuesday': 'الثلاثاء',
-                          'Wednesday': 'الأربعاء',
-                          'Thursday': 'الخميس',
-                        }[target.day] ??
-                        target.day;
+                child: Column(
+                  children: [
+                    Gap(12.h),
+                    Container(
+                      width: 40.w,
+                      height: 4.h,
+                      decoration: BoxDecoration(
+                        color: AppColor.borderColor(sheetContentContext),
+                        borderRadius: BorderRadius.circular(2.r),
+                      ),
+                    ),
+                    Gap(16.h),
+                    Text(
+                      'تبديل " ${currentItem.subjectName.isEmpty ? 'حصة فارغة' : currentItem.subjectName} " مع ...',
+                      style: AppTextStyle.titleMedium(
+                        sheetContentContext,
+                      ).copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    Gap(16.h),
+                    Expanded(
+                      child: ListView.separated(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                        itemCount: otherSlots.length,
+                        separatorBuilder: (_, __) => Divider(
+                          height: 1.h,
+                          color: AppColor.borderColor(sheetContentContext).withValues(alpha: 0.5),
+                        ),
+                        itemBuilder: (itemContext, index) {
+                          final target = otherSlots[index];
+                          final dayAr =
+                              {
+                                'Sunday': 'الأحد',
+                                'Monday': 'الاثنين',
+                                'Tuesday': 'الثلاثاء',
+                                'Wednesday': 'الأربعاء',
+                                'Thursday': 'الخميس',
+                              }[target.day] ??
+                              target.day;
 
-                    return ListTile(
-                      contentPadding: EdgeInsets.symmetric(vertical: 4.h),
-                      leading: Container(
-                        width: 36.w,
-                        height: 36.w,
-                        decoration: BoxDecoration(
-                          color: AppColor.primaryColor(context).withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        child: Center(
-                          child: Text(
-                            '${target.period}',
-                            style: AppTextStyle.bodySmall(context).copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: AppColor.primaryColor(context),
+                          return ListTile(
+                            contentPadding: EdgeInsets.symmetric(vertical: 4.h),
+                            leading: Container(
+                              width: 36.w,
+                              height: 36.w,
+                              decoration: BoxDecoration(
+                                color: AppColor.primaryColor(itemContext).withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  '${target.period}',
+                                  style: AppTextStyle.bodySmall(itemContext).copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColor.primaryColor(itemContext),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
+                            title: Text(
+                              target.subjectName.isEmpty ? 'حصة فارغة' : target.subjectName,
+                              style: AppTextStyle.bodyMedium(itemContext).copyWith(
+                                fontWeight: target.subjectName.isNotEmpty
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                              ),
+                            ),
+                            subtitle: Text(
+                              '$dayAr - ${target.teacherName.isEmpty ? 'بدون معلم' : target.teacherName}',
+                              style: AppTextStyle.bodySmall(
+                                itemContext,
+                              ).copyWith(color: Colors.grey),
+                            ),
+                            trailing: Icon(
+                              Icons.swap_horiz_rounded,
+                              color: AppColor.primaryColor(itemContext),
+                            ),
+                            onTap: () {
+                              context.read<ScheduleCubit>().swapPeriods(currentItem, target);
+                              Navigator.pop(bottomSheetContext);
+                            },
+                          );
+                        },
                       ),
-                      title: Text(
-                        target.subjectName.isEmpty ? 'حصة فارغة' : target.subjectName,
-                        style: AppTextStyle.bodyMedium(context).copyWith(
-                          fontWeight: target.subjectName.isNotEmpty
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                        ),
-                      ),
-                      subtitle: Text(
-                        '$dayAr - ${target.teacherName.isEmpty ? 'بدون معلم' : target.teacherName}',
-                        style: AppTextStyle.bodySmall(context).copyWith(color: Colors.grey),
-                      ),
-                      trailing: Icon(
-                        Icons.swap_horiz_rounded,
-                        color: AppColor.primaryColor(context),
-                      ),
-                      onTap: () {
-                        context.read<ScheduleCubit>().swapPeriods(currentItem, target);
-                        Navigator.pop(bottomSheetContext);
-                      },
-                    );
-                  },
+                    ),
+                  ],
                 ),
-              ),
-            ],
+              );
+            },
           ),
         );
       },

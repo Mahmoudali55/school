@@ -11,6 +11,7 @@ import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/common_methods.dart';
 import 'package:my_template/features/class/data/model/schedule_model.dart';
+import 'package:my_template/features/class/domain/services/schedule_pdf_service.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/class/presentation/cubit/class_state.dart';
 import 'package:my_template/features/class/presentation/cubit/schedule_cubit.dart';
@@ -244,29 +245,51 @@ class _ClassDetailsBottomSheetState extends State<ClassDetailsBottomSheet>
                                 }
                               },
                               builder: (context, state) {
-                                return Visibility(
-                                  visible: state.hasChanges,
-                                  child: CustomButton(
-                                    radius: 12.r,
-                                    onPressed: state.editScheduleStatus.isLoading
-                                        ? null
-                                        : () {
-                                            context.read<ScheduleCubit>().editSchedule(
-                                              widget.classCode,
-                                            );
-                                          },
-                                    child: state.editScheduleStatus.isLoading
-                                        ? CustomLoading(
-                                            color: AppColor.whiteColor(context),
-                                            size: 20.sp,
-                                          )
-                                        : Text(
-                                            AppLocalKay.edit.tr(),
-                                            style: AppTextStyle.bodyMedium(
-                                              context,
-                                            ).copyWith(color: AppColor.whiteColor(context)),
-                                          ),
-                                  ),
+                                return Row(
+                                  children: [
+                                    Expanded(
+                                      child: CustomButton(
+                                        radius: 12.r,
+                                        text: AppLocalKay.print_schedule.tr(),
+
+                                        onPressed: () {
+                                          SchedulePdfService.generateAndPrint(
+                                            schedule: state.generatedSchedules,
+                                            className: widget.className,
+                                            periodsCount: state.periodsCount,
+                                            thursdayPeriodsCount: state.thursdayPeriodsCount,
+                                            breakAfterPeriod: state.breakAfterPeriod,
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    if (state.hasChanges) ...[
+                                      Gap(12.w),
+                                      Expanded(
+                                        child: CustomButton(
+                                          radius: 12.r,
+                                          onPressed: state.editScheduleStatus.isLoading
+                                              ? null
+                                              : () {
+                                                  context.read<ScheduleCubit>().editSchedule(
+                                                    widget.classCode,
+                                                  );
+                                                },
+                                          child: state.editScheduleStatus.isLoading
+                                              ? CustomLoading(
+                                                  color: AppColor.whiteColor(context),
+                                                  size: 20.sp,
+                                                )
+                                              : Text(
+                                                  AppLocalKay.edit.tr(),
+                                                  style: AppTextStyle.bodyMedium(
+                                                    context,
+                                                  ).copyWith(color: AppColor.whiteColor(context)),
+                                                ),
+                                        ),
+                                      ),
+                                    ],
+                                  ],
                                 );
                               },
                             ),
