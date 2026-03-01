@@ -1131,4 +1131,5 @@ class AppLocalKay {
   static const String break_duration_minutes = "break_duration_minutes";
   static const String break_after_period_number = "break_after_period_number";
   static const String print_schedule = "print_schedule";
+  static const String academic_schedule = "academic_schedule";
 }

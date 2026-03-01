@@ -1103,5 +1103,6 @@
   "period_duration_minutes": "Period Duration (Minutes)",
   "break_duration_minutes": "Break Duration (Minutes)",
   "break_after_period_number": "Break After Period Number",
-  "print_schedule":"Print Schedule"
+  "print_schedule":"Print Schedule",
+  "academic_schedule":"Academic Schedule"
 }

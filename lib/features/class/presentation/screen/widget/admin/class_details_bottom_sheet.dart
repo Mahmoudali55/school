@@ -134,7 +134,7 @@ class _ClassDetailsBottomSheetState extends State<ClassDetailsBottomSheet>
                 labelStyle: AppTextStyle.bodySmall(context).copyWith(fontWeight: FontWeight.bold),
                 tabs: [
                   Tab(text: AppLocalKay.class_details.tr()),
-                  const Tab(text: 'الجدول الدراسي'),
+                  Tab(text: AppLocalKay.academic_schedule.tr()),
                 ],
               ),
             ),

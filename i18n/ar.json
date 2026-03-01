@@ -1172,5 +1172,6 @@
   "period_duration_minutes": "مدة الحصة (دقيقة)",
   "break_duration_minutes": "مدة الفسحة (دقيقة)",
   "break_after_period_number": "الفسحة بعد الحصة رقم",
-  "print_schedule":"طباعة الجدول"
+  "print_schedule":"طباعة الجدول",
+  "academic_schedule":"الجدول الدراسي"
 }

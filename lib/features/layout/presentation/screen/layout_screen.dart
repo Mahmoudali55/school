@@ -19,14 +19,12 @@ import 'package:my_template/features/setting/presentation/cubit/settings_cubit.d
 class LayoutScreen extends StatefulWidget {
   const LayoutScreen({super.key, required this.type});
   final String type;
-
   @override
   State<LayoutScreen> createState() => _LayoutScreenState();
 }
 
 class _LayoutScreenState extends State<LayoutScreen> {
   int _currentIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     // Normalize user type for consistent state and logic
@@ -41,7 +39,6 @@ class _LayoutScreenState extends State<LayoutScreen> {
     } else {
       role = 'admin';
     }
-
     final List<NavItemData> _navItems = [
       NavItemData(
         label: AppLocalKay.home.tr(),
