@@ -39,7 +39,7 @@ class MetricCardWidget extends StatelessWidget {
             metric.title,
             style: AppTextStyle.bodySmall(
               context,
-              color: Colors.grey[700],
+              color: AppColor.grey600Color(context),
             ).copyWith(fontSize: 10.sp),
           ),
         ],

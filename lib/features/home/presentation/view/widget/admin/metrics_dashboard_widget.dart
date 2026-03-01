@@ -18,7 +18,6 @@ class MetricsDashboard extends StatelessWidget {
     metricsData.forEach((key, data) {
       IconData icon = Icons.info;
       Color color = Colors.blue;
-
       if (key.contains("طلاب")) {
         icon = Icons.school;
         color = const Color(0xFF2E5BFF);
@@ -29,7 +28,6 @@ class MetricsDashboard extends StatelessWidget {
         icon = Icons.directions_bus;
         color = const Color(0xFF9C27B0);
       }
-
       list.add(
         MetricCard(
           title: key,
