@@ -9,7 +9,6 @@ import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 import 'package:my_template/features/home/presentation/view/widget/teacher/header_widget_screen.dart';
 import 'package:my_template/features/home/presentation/view/widget/teacher/quick_actions_widget.dart';
 import 'package:my_template/features/home/presentation/view/widget/teacher/quick_stats_widget.dart';
-import 'package:my_template/features/home/presentation/view/widget/teacher/recent_messages_widget.dart';
 import 'package:my_template/features/home/presentation/view/widget/teacher/schedule_widget.dart';
 
 class TeacherHomeScreen extends StatefulWidget {
@@ -63,8 +62,8 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
                     Gap(25.h),
                     QuickActionsWidget(),
                     Gap(25.h),
-                    RecentMessagesWidget(),
-                    Gap(30.h),
+                    // RecentMessagesWidget(),
+                    //Gap(30.h),
                   ],
                 ),
               );

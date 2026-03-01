@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:my_template/features/class/data/model/schedule_model.dart';
 import 'package:my_template/features/class/data/model/student_courses_model.dart';
@@ -8,7 +10,6 @@ class AIScheduleService {
   final List<String> days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'];
 
   /// Rules-based Schedule Generation for Saudi Schools (1447H)
-
   List<ScheduleModel> generateSchedules({
     required List<TeacherClassModels> allTeacherClasses,
     required List<StudentCoursesModel> subjects,
@@ -17,7 +18,7 @@ class AIScheduleService {
     int periodsCount = 7,
     int periodDuration = 45,
     int breakDuration = 15,
-    int thursdayPeriodsCount = 5,
+    int thursdayPeriodsCount = 6,
     int breakAfterPeriod = 3,
     List<int> prioritySubjectCodes = const [],
     List<int> doublePeriodSubjectCodes = const [],
@@ -25,19 +26,17 @@ class AIScheduleService {
     List<ScheduleModel> generatedSchedule = [];
     if (subjects.isEmpty || teachers.isEmpty) return [];
 
+    // --- 1. Global Constraints & Setup ---
     int totalSlots(String day) => (day == 'Thursday' ? thursdayPeriodsCount : periodsCount) + 1;
-    int maxTotalSlots = periodsCount > thursdayPeriodsCount
-        ? periodsCount + 1
-        : thursdayPeriodsCount + 1;
+    final int baseMaxTeacherPeriodsPerDay = 5; // Saudi typical max per day (approx 20-24 per week)
 
-    // Categorize Subjects based on Saudi Curriculum 1447H + User overrides
+    // Categorize Subjects
     final highFocusSubjects = subjects.where((s) {
       if (prioritySubjectCodes.contains(s.courseCode)) return true;
       return _isHighFocus(s.courseNameAr);
     }).toList();
 
     final practicalSubjects = subjects.where((s) {
-      // Practical classification remains keyword based unless we add another override list
       return _isPractical(s.courseNameAr);
     }).toList();
 
@@ -45,41 +44,66 @@ class AIScheduleService {
         .where((s) => !highFocusSubjects.contains(s) && !practicalSubjects.contains(s))
         .toList();
 
-    // Trackers for constraints
-    Map<String, Map<int, Set<int>>> teacherBusyMap = {};
-    Map<int, int> teacherFirstPeriodCount = {};
-    Map<int, int> teacherLastPeriodCount = {};
-    Map<int, Map<String, int>> teacherConsecutivePeriods = {};
-
-    // Map to ensure (classCode, subjectCode) -> teacherCode consistency
-    Map<int, Map<int, int>> classSubjectTeacherMap = {};
-
-    // Map to ensure a teacher only teaches ONE subject in a specific class
-    Map<int, Set<int>> classAssignedTeachersMap = {};
-
-    for (var day in days) {
-      teacherBusyMap[day] = {for (int i = 1; i <= maxTotalSlots; i++) i: {}};
+    // Subject frequency limits (heuristics for Saudi curriculum)
+    // E.g. Math/Lughati -> 5 times a week, Science -> 4, etc.
+    Map<int, int> maxSubjectPeriodsPerWeek = {};
+    for (var sub in subjects) {
+      if (_isHighFocus(sub.courseNameAr)) {
+        maxSubjectPeriodsPerWeek[sub.courseCode] = 5; // Once a day maximum ideally
+      } else if (sub.courseNameAr.contains('قرآن') || sub.courseNameAr.contains('قراءات')) {
+        maxSubjectPeriodsPerWeek[sub.courseCode] = 4;
+      } else if (_isPractical(sub.courseNameAr)) {
+        maxSubjectPeriodsPerWeek[sub.courseCode] = 2; // Art/PE -> twice a week
+      } else {
+        maxSubjectPeriodsPerWeek[sub.courseCode] = 3; // Others
+      }
     }
 
-    // Process unique classes to avoid duplicate schedules
+    // --- 2. Trackers ---
+    Map<String, Map<int, Set<int>>> teacherBusyMap = {};
+    Map<int, int> teacherFirstPeriodCount = {}; // Track first periods for equity
+    Map<int, int> teacherLastPeriodCount = {}; // Track last periods for equity
+    Map<int, Map<String, int>> teacherDailyLoad = {}; // Track daily total load
+    Map<int, Map<String, int>> teacherConsecutivePeriods = {}; // Track consecutive load
+
+    // Map to ensure (classCode, subjectCode) -> assignedTeacherCode
+    Map<int, Map<int, int>> classSubjectTeacherMap = {};
+
+    // Track weekly subject counts per class to avoid exceeding plan
+    Map<int, Map<int, int>> classWeeklySubjectCounts = {};
+
+    for (var day in days) {
+      teacherBusyMap[day] = {};
+      for (int i = 1; i <= periodsCount + 1; i++) {
+        teacherBusyMap[day]![i] = {};
+      }
+    }
+
+    // Unique Classes to process
     final uniqueClasses = <int, TeacherClassModels>{};
     for (var tc in allTeacherClasses) {
       uniqueClasses[tc.classCode] = tc;
+      classWeeklySubjectCounts[tc.classCode] = {for (var s in subjects) s.courseCode: 0};
     }
 
+    final rand = Random();
+
+    // --- 3. Generation Loop ---
     for (var schoolClass in uniqueClasses.values) {
       Map<String, Set<int>> classDailySubjects = {for (var day in days) day: {}};
+
       for (var day in days) {
         int slot = 1;
         int academicPeriod = 1;
         int dayTotalSlots = totalSlots(day);
+
         while (slot <= dayTotalSlots) {
-          // Rule: Insert Break after breakAfterPeriod teaching period
+          // Rule: Insert Break
           if (slot == breakAfterPeriod + 1) {
             generatedSchedule.add(
               ScheduleModel(
                 day: day,
-                period: 0, // 0 indicates a break, doesn't consume academic period number
+                period: 0,
                 subjectName: "فسحة / Break",
                 subjectCode: 0,
                 teacherName: "",
@@ -106,23 +130,40 @@ class AIScheduleService {
             continue;
           }
 
+          // Rule: Priority sorting based on slot time
           List<StudentCoursesModel> possibleSubjects = [];
-
-          // Rule: Priority for Quran, Islamic, Lughati in early teaching periods (Slots 1-3)
           if (slot <= 3 && highFocusSubjects.isNotEmpty) {
-            possibleSubjects = List.from(highFocusSubjects);
-          }
-          // Rule: Practical/Activity/Skills in late periods (Slots 6-8)
-          else if (slot >= 6) {
-            possibleSubjects = List.from(practicalSubjects)..addAll(normalSubjects);
+            possibleSubjects = List.from(highFocusSubjects)..shuffle(rand);
+            possibleSubjects.addAll(List.from(normalSubjects)..shuffle(rand));
+            possibleSubjects.addAll(List.from(practicalSubjects)..shuffle(rand));
+          } else if (slot >= dayTotalSlots - 1) {
+            possibleSubjects = List.from(practicalSubjects)..shuffle(rand);
+            possibleSubjects.addAll(List.from(normalSubjects)..shuffle(rand));
+            possibleSubjects.addAll(List.from(highFocusSubjects)..shuffle(rand));
           } else {
-            possibleSubjects = List.from(subjects);
+            possibleSubjects = List.from(subjects)..shuffle(rand);
           }
 
-          // Rule: Avoid repeating the same core subject in one day
-          possibleSubjects.removeWhere((s) => classDailySubjects[day]!.contains(s.courseCode));
-          if (possibleSubjects.isEmpty) possibleSubjects = List.from(subjects);
-          possibleSubjects.shuffle();
+          // Filter out subjects that have exceeded their weekly limit
+          possibleSubjects.removeWhere((s) {
+            int currentCount = classWeeklySubjectCounts[schoolClass.classCode]![s.courseCode] ?? 0;
+            return currentCount >= (maxSubjectPeriodsPerWeek[s.courseCode] ?? 5);
+          });
+
+          // Rule: Avoid repeating same core subject in one day
+          possibleSubjects.removeWhere((s) {
+            // Allow PE/Art to repeat on the same day ONLY IF it's a consecutive double period
+            // So for general selection, don't allow it if it already exists that day.
+            return classDailySubjects[day]!.contains(s.courseCode);
+          });
+
+          // Fallback if strict limits are causing dead-ends (rare, but prevents infinite loop)
+          if (possibleSubjects.isEmpty) {
+            possibleSubjects = List.from(subjects)..shuffle(rand);
+            possibleSubjects.removeWhere((s) => classDailySubjects[day]!.contains(s.courseCode));
+            if (possibleSubjects.isEmpty)
+              possibleSubjects = List.from(subjects)..shuffle(rand); // Absolute fallback
+          }
 
           TeacherDataModel? selectedTeacher;
           StudentCoursesModel? selectedSubject;
@@ -132,22 +173,22 @@ class AIScheduleService {
             bool needsDouble =
                 doublePeriodSubjectCodes.contains(subject.courseCode) ||
                 _requiresDoublePeriod(subject.courseNameAr);
-            // Double periods cannot span across the break
+
+            // Cannot span across break, and consecutive cannot exceed day limits
             bool canDoDouble =
-                needsDouble &&
-                (slot + 1 <= dayTotalSlots && slot + 1 != breakAfterPeriod + 1) &&
-                !classDailySubjects[day]!.contains(subject.courseCode);
+                needsDouble && (slot + 1 <= dayTotalSlots && slot + 1 != breakAfterPeriod + 1);
 
             int? assignedTeacherCode =
                 classSubjectTeacherMap[schoolClass.classCode]?[subject.courseCode];
 
             final subjectTeachersPool = teachers.where((t) {
-              final isQualifiedForSubject = t.COURSE_CODE == subject.courseCode;
-              if (!isQualifiedForSubject) return false;
+              if (t.COURSE_CODE != subject.courseCode) return false;
+              if (assignedTeacherCode != null && t.teacherCode != assignedTeacherCode) return false;
 
-              if (assignedTeacherCode != null) {
-                return t.teacherCode == assignedTeacherCode;
-              }
+              // Check max daily load
+              int currentLoad = teacherDailyLoad[t.teacherCode]?[day] ?? 0;
+              if (currentLoad >= baseMaxTeacherPeriodsPerDay) return false;
+              if (canDoDouble && currentLoad + 1 >= baseMaxTeacherPeriodsPerDay) return false;
 
               return true;
             }).toList();
@@ -174,9 +215,6 @@ class AIScheduleService {
 
               classSubjectTeacherMap[schoolClass.classCode] ??= {};
               classSubjectTeacherMap[schoolClass.classCode]![subject.courseCode] = t.teacherCode;
-
-              classAssignedTeachersMap[schoolClass.classCode] ??= {};
-              classAssignedTeachersMap[schoolClass.classCode]!.add(t.teacherCode);
               break;
             }
           }
@@ -191,6 +229,8 @@ class AIScheduleService {
               schoolClass,
               teacherBusyMap,
               classDailySubjects,
+              classWeeklySubjectCounts,
+              teacherDailyLoad,
               teacherFirstPeriodCount,
               teacherLastPeriodCount,
               teacherConsecutivePeriods,
@@ -201,6 +241,7 @@ class AIScheduleService {
               academicPeriod,
               dayTotalSlots,
             );
+
             if (isDouble) {
               slot++;
               academicPeriod++;
@@ -213,6 +254,8 @@ class AIScheduleService {
                 schoolClass,
                 teacherBusyMap,
                 classDailySubjects,
+                classWeeklySubjectCounts,
+                teacherDailyLoad,
                 teacherFirstPeriodCount,
                 teacherLastPeriodCount,
                 teacherConsecutivePeriods,
@@ -242,6 +285,8 @@ class AIScheduleService {
     TeacherClassModels schoolClass,
     Map<String, Map<int, Set<int>>> busyMap,
     Map<String, Set<int>> classDailySubjects,
+    Map<int, Map<int, int>> weeklyCounts,
+    Map<int, Map<String, int>> teacherDailyLoad,
     Map<int, int> firstPeriodCount,
     Map<int, int> lastPeriodCount,
     Map<int, Map<String, int>> consecutiveMap,
@@ -279,16 +324,24 @@ class AIScheduleService {
       ),
     );
 
-    busyMap[day]![slot]!.add(teacher.teacherCode);
+    // Track class subject
     classDailySubjects[day]!.add(subject.courseCode);
+    weeklyCounts[schoolClass.classCode]![subject.courseCode] =
+        (weeklyCounts[schoolClass.classCode]![subject.courseCode] ?? 0) + 1;
 
-    // Rule: Equity in 1st and Last periods
+    // Track teacher occupation
+    busyMap[day]![slot]!.add(teacher.teacherCode);
+    teacherDailyLoad[teacher.teacherCode] ??= {};
+    teacherDailyLoad[teacher.teacherCode]![day] =
+        (teacherDailyLoad[teacher.teacherCode]![day] ?? 0) + 1;
+
+    // Equity tracking
     if (slot == 1)
       firstPeriodCount[teacher.teacherCode] = (firstPeriodCount[teacher.teacherCode] ?? 0) + 1;
     if (slot == dayTotalSlots)
       lastPeriodCount[teacher.teacherCode] = (lastPeriodCount[teacher.teacherCode] ?? 0) + 1;
 
-    // Track consecutive periods per day
+    // Consecutive tracking
     consecutiveMap[teacher.teacherCode] ??= {};
     consecutiveMap[teacher.teacherCode]![day] =
         (consecutiveMap[teacher.teacherCode]![day] ?? 0) + 1;
@@ -306,6 +359,7 @@ class AIScheduleService {
     required int dayTotalSlots,
     bool checkNextPeriod = false,
   }) {
+    // 1. Check preferred teacher first
     if (preferredCode != null) {
       if (_isTeacherAvailable(preferredCode, day, slot, busyMap, dayTotalSlots: dayTotalSlots)) {
         if (!checkNextPeriod ||
@@ -317,56 +371,55 @@ class AIScheduleService {
               dayTotalSlots: dayTotalSlots,
               isOccupiedAtPeriod: slot,
             )) {
-          return pool.firstWhere((t) => t.teacherCode == preferredCode, orElse: () => pool[0]);
+          final t = pool.where((t) => t.teacherCode == preferredCode).firstOrNull;
+          if (t != null) return t;
         }
       }
     }
+
+    // 2. Filter available pool
     final available = pool.where((t) {
-      bool ok = _isTeacherAvailable(
-        t.teacherCode,
-        day,
-        slot,
-        busyMap,
-        dayTotalSlots: dayTotalSlots,
-      );
-      if (ok && checkNextPeriod)
-        ok = _isTeacherAvailable(
-          t.teacherCode,
-          day,
-          slot + 1,
-          busyMap,
-          dayTotalSlots: dayTotalSlots,
-          isOccupiedAtPeriod: slot,
-        );
-
-      return ok;
+      if (!_isTeacherAvailable(t.teacherCode, day, slot, busyMap, dayTotalSlots: dayTotalSlots))
+        return false;
+      if (checkNextPeriod &&
+          !_isTeacherAvailable(
+            t.teacherCode,
+            day,
+            slot + 1,
+            busyMap,
+            dayTotalSlots: dayTotalSlots,
+            isOccupiedAtPeriod: slot,
+          )) {
+        return false;
+      }
+      return true;
     }).toList();
-    if (available.isNotEmpty) {
-      available.sort((a, b) {
-        // Preference 1: Consecutive periods (fewer is better)
-        int aLoad = (consecutiveMap[a.teacherCode]?[day] ?? 0);
-        int bLoad = (consecutiveMap[b.teacherCode]?[day] ?? 0);
-        if (aLoad != bLoad) return aLoad.compareTo(bLoad);
 
-        // Preference 2: Equity in First periods (only applies if current slot is 1)
-        if (slot == 1) {
-          int aFirst = firstPeriodCount[a.teacherCode] ?? 0;
-          int bFirst = firstPeriodCount[b.teacherCode] ?? 0;
-          if (aFirst != bFirst) return aFirst.compareTo(bFirst);
-        }
+    if (available.isEmpty) return null;
 
-        // Preference 3: Equity in Last periods (only applies if current slot is last)
-        if (slot == dayTotalSlots) {
-          int aLast = lastPeriodCount[a.teacherCode] ?? 0;
-          int bLast = lastPeriodCount[b.teacherCode] ?? 0;
-          if (aLast != bLast) return aLast.compareTo(bLast);
-        }
+    // 3. Sort by Equity Rules
+    available.sort((a, b) {
+      int aLoad = (consecutiveMap[a.teacherCode]?[day] ?? 0);
+      int bLoad = (consecutiveMap[b.teacherCode]?[day] ?? 0);
+      if (aLoad != bLoad)
+        return aLoad.compareTo(bLoad); // Prefer teacher with less consecutive periods today
 
-        return 0;
-      });
-      return available[0];
-    }
-    return null;
+      if (slot == 1) {
+        int aFirst = firstPeriodCount[a.teacherCode] ?? 0;
+        int bFirst = firstPeriodCount[b.teacherCode] ?? 0;
+        if (aFirst != bFirst) return aFirst.compareTo(bFirst); // Fairness in 1st period
+      }
+
+      if (slot == dayTotalSlots) {
+        int aLast = lastPeriodCount[a.teacherCode] ?? 0;
+        int bLast = lastPeriodCount[b.teacherCode] ?? 0;
+        if (aLast != bLast) return aLast.compareTo(bLast); // Fairness in last period
+      }
+
+      return 0; // Equal
+    });
+
+    return available.first;
   }
 
   bool _isTeacherAvailable(
@@ -378,27 +431,18 @@ class AIScheduleService {
     int? isOccupiedAtPeriod,
   }) {
     if (slot > dayTotalSlots) return false;
-    // Break slot is always unavailable for teaching
-    // We assume slot indexing is 1-based, and break handles itself in the main loop
-    // But let's add a safety check if we pass the break slot here.
-    // However, the main loop skips the break slot for teachers.
 
-    // Basic availability
-    if (busyMap[day]![slot]!.contains(tCode)) return false;
+    // Safety check: is it already busy?
+    if (busyMap[day]?[slot]?.contains(tCode) ?? false) return false;
 
-    // Rule 3: Max 3 consecutive periods (increased from 2 for better flexibility)
-    if (slot >= 2) {
+    // Rule: Max 3 consecutive periods strictly enforced
+    if (slot >= 3) {
       bool p1 =
           (isOccupiedAtPeriod == slot - 1) || (busyMap[day]![slot - 1]?.contains(tCode) ?? false);
-      if (slot >= 3) {
-        bool p2 =
-            (isOccupiedAtPeriod == slot - 2) || (busyMap[day]![slot - 2]?.contains(tCode) ?? false);
-        if (slot >= 4) {
-          bool p3 =
-              (isOccupiedAtPeriod == slot - 3) ||
-              (busyMap[day]![slot - 3]?.contains(tCode) ?? false);
-          if (p1 && p2 && p3) return false;
-        }
+      bool p2 =
+          (isOccupiedAtPeriod == slot - 2) || (busyMap[day]![slot - 2]?.contains(tCode) ?? false);
+      if (p1 && p2) {
+        return false; // Already teaching 2 periods right before this, so a 3rd would make it 3 consecutive which is the absolute limit, but giving them a break is preferred.
       }
     }
 
@@ -425,6 +469,7 @@ class AIScheduleService {
         n.contains('حاسب') ||
         n.contains('lab') ||
         n.contains('معمل') ||
+        n.contains('اسريه') ||
         n.contains('نشاط');
   }
 
@@ -455,6 +500,7 @@ class AIScheduleService {
         n.contains('فنيه') ||
         n.contains('comp') ||
         n.contains('حاسب') ||
+        n.contains('اسريه') ||
         n.contains('مهارات');
   }
 
@@ -465,32 +511,28 @@ class AIScheduleService {
     int breakDur,
     int breakAfter,
   ) {
-    int startMins = start.hour * 60 + start.minute;
-    int currentMins = startMins;
+    int currentMins = start.hour * 60 + start.minute;
     for (int i = 1; i < slot; i++) {
-      if (i == breakAfter + 1) {
+      if (i == breakAfter + 1)
         currentMins += breakDur;
-      } else {
+      else
         currentMins += duration;
-      }
     }
-    int h = (currentMins ~/ 60) % 24;
-    int m = currentMins % 60;
-    return '${h.toString().padLeft(2, '0')}:${m.toString().padLeft(2, '0')}';
+    return '${(currentMins ~/ 60) % 24}'.padLeft(2, '0') +
+        ':' +
+        '${currentMins % 60}'.padLeft(2, '0');
   }
 
   String _calculateEndTime(int slot, TimeOfDay start, int duration, int breakDur, int breakAfter) {
-    int startMins = start.hour * 60 + start.minute;
-    int currentMins = startMins;
+    int currentMins = start.hour * 60 + start.minute;
     for (int i = 1; i <= slot; i++) {
-      if (i == breakAfter + 1) {
+      if (i == breakAfter + 1)
         currentMins += breakDur;
-      } else {
+      else
         currentMins += duration;
-      }
     }
-    int h = (currentMins ~/ 60) % 24;
-    int m = currentMins % 60;
-    return '${h.toString().padLeft(2, '0')}:${m.toString().padLeft(2, '0')}';
+    return '${(currentMins ~/ 60) % 24}'.padLeft(2, '0') +
+        ':' +
+        '${currentMins % 60}'.padLeft(2, '0');
   }
 }

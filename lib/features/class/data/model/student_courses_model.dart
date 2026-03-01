@@ -11,6 +11,7 @@ class StudentCoursesModel extends Equatable {
     required this.courseCode,
     required this.courseNameAr,
     this.notes,
+    required String courseNameEn,
   });
 
   factory StudentCoursesModel.fromJson(Map<String, dynamic> json) {
@@ -19,6 +20,7 @@ class StudentCoursesModel extends Equatable {
       courseCode: json['COURSE_CODE'] as int,
       courseNameAr: json['COURSE_NAME_AR'] as String,
       notes: json['NOTES'],
+      courseNameEn: '',
     );
   }
 
