@@ -1,7 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/schedule_Item_model.dart';
 
 class ScheduleItemWidget extends StatelessWidget {
@@ -14,21 +17,21 @@ class ScheduleItemWidget extends StatelessWidget {
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         border: Border(bottom: BorderSide(color: const Color(0xFFE5E7EB), width: 1)),
-        color: item.isCurrent ? const Color(0xFFEFF6FF) : Colors.white,
+        color: item.isCurrent ? const Color(0xFFEFF6FF) : AppColor.whiteColor(context),
       ),
       child: Row(
         children: [
           Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
             decoration: BoxDecoration(
-              color: item.isCurrent ? const Color(0xFF2E5BFF) : const Color(0xFFF3F4F6),
+              color: item.isCurrent ? AppColor.primaryColor(context) : AppColor.whiteColor(context),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
               item.time,
               style: AppTextStyle.bodySmall(
                 context,
-                color: item.isCurrent ? Colors.white : const Color(0xFF6B7280),
+                color: item.isCurrent ? AppColor.whiteColor(context) : AppColor.greyColor(context),
               ).copyWith(fontSize: 12.sp, fontWeight: FontWeight.bold),
             ),
           ),
@@ -47,24 +50,30 @@ class ScheduleItemWidget extends StatelessWidget {
                 Gap(4.h),
                 Row(
                   children: [
-                    Icon(Icons.class_, size: 14.w, color: const Color(0xFF6B7280)),
+                    Icon(Icons.class_, size: 14.w, color: AppColor.greyColor(context)),
                     Gap(4.w),
-                    Text(
-                      item.classroom,
-                      style: AppTextStyle.bodySmall(
-                        context,
-                        color: const Color(0xFF6B7280),
-                      ).copyWith(fontSize: 12.sp),
+                    Flexible(
+                      child: Text(
+                        item.classroom,
+                        style: AppTextStyle.bodySmall(
+                          context,
+                          color: AppColor.greyColor(context),
+                        ).copyWith(fontSize: 12.sp),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     Gap(12.w),
-                    Icon(Icons.room, size: 14.w, color: const Color(0xFF6B7280)),
+                    Icon(Icons.room, size: 14.w, color: AppColor.greyColor(context)),
                     Gap(4.w),
-                    Text(
-                      item.room,
-                      style: AppTextStyle.bodySmall(
-                        context,
-                        color: const Color(0xFF6B7280),
-                      ).copyWith(fontSize: 12.sp),
+                    Flexible(
+                      child: Text(
+                        item.room,
+                        style: AppTextStyle.bodySmall(
+                          context,
+                          color: AppColor.greyColor(context),
+                        ).copyWith(fontSize: 12.sp),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ],
                 ),
@@ -75,14 +84,14 @@ class ScheduleItemWidget extends StatelessWidget {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
               decoration: BoxDecoration(
-                color: const Color(0xFF10B981),
+                color: AppColor.secondAppColor(context),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                "الآن",
+                AppLocalKay.now.tr(),
                 style: AppTextStyle.bodySmall(
                   context,
-                  color: Colors.white,
+                  color: AppColor.whiteColor(context),
                 ).copyWith(fontSize: 10.sp, fontWeight: FontWeight.bold),
               ),
             ),

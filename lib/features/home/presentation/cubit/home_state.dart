@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/features/class/data/model/class_month_result_model.dart';
 import 'package:my_template/features/class/data/model/student_class_data_model.dart';
 import 'package:my_template/features/home/data/models/add_class_absent_response_model.dart';
 import 'package:my_template/features/home/data/models/add_homework_response_model.dart';
@@ -21,8 +22,8 @@ import 'package:my_template/features/home/data/models/student_course_degree_mode
 import 'package:my_template/features/home/data/models/teacher_class_model.dart';
 import 'package:my_template/features/home/data/models/teacher_courses_model.dart';
 import 'package:my_template/features/home/data/models/teacher_data_model.dart';
-import 'package:my_template/features/class/data/model/class_month_result_model.dart';
 import 'package:my_template/features/home/data/models/teacher_level_model.dart';
+import 'package:my_template/features/home/data/models/teacher_time_table_model.dart';
 
 import '../../data/models/home_models.dart';
 
@@ -60,6 +61,7 @@ class HomeState extends Equatable {
     this.errorMessage,
 
     this.todayAbsencesStatus = const StatusState.initial(),
+    this.teacherTimeTableStatus = const StatusState.initial(),
     this.classMonthResultStatus = const StatusState.initial(),
   });
 
@@ -90,7 +92,7 @@ class HomeState extends Equatable {
   final StatusState<String> imageFileNameStatus;
   final StudentMiniInfo? selectedStudent;
   final StatusState<List<TeacherDataModel>>? teacherDataStatus;
-
+  final StatusState<List<TeacherTimeTableModel>>? teacherTimeTableStatus;
   final StatusState<List<StudentAbsentData>> todayAbsencesStatus;
   final StatusState<List<ClassMonthResultModel>> classMonthResultStatus;
 
@@ -134,6 +136,7 @@ class HomeState extends Equatable {
 
     todayAbsencesStatus,
     classMonthResultStatus,
+    teacherTimeTableStatus,
   ];
 
   HomeState copyWith({
@@ -167,6 +170,8 @@ class HomeState extends Equatable {
     HomeModel? data,
     bool? isLoading,
     String? errorMessage,
+
+    StatusState<List<TeacherTimeTableModel>>? teacherTimeTableStatus,
 
     StatusState<List<StudentAbsentData>>? todayAbsencesStatus,
     StatusState<List<ClassMonthResultModel>>? classMonthResultStatus,
@@ -204,6 +209,7 @@ class HomeState extends Equatable {
       teacherDataStatus: teacherDataStatus ?? this.teacherDataStatus,
       todayAbsencesStatus: todayAbsencesStatus ?? this.todayAbsencesStatus,
       classMonthResultStatus: classMonthResultStatus ?? this.classMonthResultStatus,
+      teacherTimeTableStatus: teacherTimeTableStatus ?? this.teacherTimeTableStatus,
     );
   }
 }

@@ -35,6 +35,7 @@ import 'package:my_template/features/home/data/models/teacher_class_model.dart';
 import 'package:my_template/features/home/data/models/teacher_courses_model.dart';
 import 'package:my_template/features/home/data/models/teacher_data_model.dart';
 import 'package:my_template/features/home/data/models/teacher_level_model.dart';
+import 'package:my_template/features/home/data/models/teacher_time_table_model.dart';
 
 import '../models/home_models.dart';
 
@@ -57,7 +58,7 @@ abstract interface class HomeRepo {
     int? monthNo,
   });
   Future<Either<Failure, GetPermissionsMobile>> getPermissions({int? code});
-
+  Future<Either<Failure, List<TeacherTimeTableModel>>> teacherTimeTable({required int code});
   Future<Either<Failure, EditPermissionsMobileResponse>> editPermissions({
     required EditPermissionsMobileRequest request,
   });
@@ -503,6 +504,18 @@ class HomeRepoImpl implements HomeRepo {
       request: () async {
         final response = await apiConsumer.get(EndPoints.getBus);
         return BusDataModel.listFromResponse(response);
+      },
+    );
+  }
+
+  Future<Either<Failure, List<TeacherTimeTableModel>>> teacherTimeTable({required int code}) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.getTeacherTimeTable,
+          queryParameters: {"Code": code},
+        );
+        return TeacherTimeTableModel.fromApiResponse(response);
       },
     );
   }

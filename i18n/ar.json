@@ -1177,7 +1177,9 @@
   "daily_schedule":"حصص اليوم",
   "classes_count":"عدد الحصص اليوم",
   "absences_count":"غياب اليوم",
-  "absent_student":"طلاب مسجلين غياب"
+  "no_classe_today": "لا توجد حصص مجدولة لليوم",
+  "absent_student":"طلاب مسجلين غياب",
+  "now":"الآن"
 
 
 }

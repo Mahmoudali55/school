@@ -1136,4 +1136,6 @@ class AppLocalKay {
   static const String classes_count = "classes_count";
   static const String absences_count = "absences_count";
   static const String absent_student = "absent_student";
+  static const String no_classe_today = "no_classe_today";
+  static const String now = "now";
 }

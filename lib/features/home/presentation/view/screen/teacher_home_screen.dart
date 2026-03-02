@@ -32,6 +32,7 @@ class _TeacherHomeScreenState extends State<TeacherHomeScreen> {
 
         context.read<HomeCubit>().teacherCourses(userCode);
         context.read<HomeCubit>().teacherClasses(sectionCode, stageCode, levelCode);
+        context.read<HomeCubit>().teacherTimeTable(Code: userCode);
       }
     });
   }

@@ -322,6 +322,19 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  Future<void> teacherTimeTable({required int Code}) async {
+    if (isClosed) return;
+    emit(state.copyWith(teacherTimeTableStatus: StatusState.loading()));
+
+    final result = await _homeRepo.teacherTimeTable(code: Code);
+    if (isClosed) return;
+    result.fold(
+      (error) =>
+          emit(state.copyWith(teacherTimeTableStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(teacherTimeTableStatus: StatusState.success(success))),
+    );
+  }
+
   Future<void> deleteHomework({required int classCode, required String HWDATE}) async {
     if (isClosed) return;
     emit(state.copyWith(deleteHomeworkStatus: StatusState.loading()));
