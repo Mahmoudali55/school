@@ -21,6 +21,7 @@ import 'package:my_template/features/home/data/models/student_course_degree_mode
 import 'package:my_template/features/home/data/models/teacher_class_model.dart';
 import 'package:my_template/features/home/data/models/teacher_courses_model.dart';
 import 'package:my_template/features/home/data/models/teacher_data_model.dart';
+import 'package:my_template/features/class/data/model/class_month_result_model.dart';
 import 'package:my_template/features/home/data/models/teacher_level_model.dart';
 
 import '../../data/models/home_models.dart';
@@ -59,6 +60,7 @@ class HomeState extends Equatable {
     this.errorMessage,
 
     this.todayAbsencesStatus = const StatusState.initial(),
+    this.classMonthResultStatus = const StatusState.initial(),
   });
 
   final StatusState<List<ParentsStudentData>> parentsStudentStatus;
@@ -90,6 +92,7 @@ class HomeState extends Equatable {
   final StatusState<List<TeacherDataModel>>? teacherDataStatus;
 
   final StatusState<List<StudentAbsentData>> todayAbsencesStatus;
+  final StatusState<List<ClassMonthResultModel>> classMonthResultStatus;
 
   /// Main home data (TeacherHomeModel, StudentHomeModel, etc.)
   final HomeModel? data;
@@ -130,6 +133,7 @@ class HomeState extends Equatable {
     teacherDataStatus,
 
     todayAbsencesStatus,
+    classMonthResultStatus,
   ];
 
   HomeState copyWith({
@@ -165,6 +169,7 @@ class HomeState extends Equatable {
     String? errorMessage,
 
     StatusState<List<StudentAbsentData>>? todayAbsencesStatus,
+    StatusState<List<ClassMonthResultModel>>? classMonthResultStatus,
   }) {
     return HomeState(
       parentsStudentStatus: parentsStudentStatus ?? this.parentsStudentStatus,
@@ -198,6 +203,7 @@ class HomeState extends Equatable {
       busDataStatus: busDataStatus ?? this.busDataStatus,
       teacherDataStatus: teacherDataStatus ?? this.teacherDataStatus,
       todayAbsencesStatus: todayAbsencesStatus ?? this.todayAbsencesStatus,
+      classMonthResultStatus: classMonthResultStatus ?? this.classMonthResultStatus,
     );
   }
 }

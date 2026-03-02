@@ -470,6 +470,18 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(imageFileNameStatus: const StatusState.initial()));
   }
 
+  Future<void> classMonthResult({required int classCode, required int month}) async {
+    if (isClosed) return;
+    emit(state.copyWith(classMonthResultStatus: const StatusState.loading()));
+    final result = await _classRepo.classMonthResult(classCode: classCode, month: month);
+    if (isClosed) return;
+    result.fold(
+      (error) =>
+          emit(state.copyWith(classMonthResultStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(classMonthResultStatus: StatusState.success(success))),
+    );
+  }
+
   void resetAddUniformStatus() {
     if (isClosed) return;
     emit(state.copyWith(addUniformStatus: const StatusState.initial()));
