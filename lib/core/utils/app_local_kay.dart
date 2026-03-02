@@ -1138,4 +1138,8 @@ class AppLocalKay {
   static const String absent_student = "absent_student";
   static const String no_classe_today = "no_classe_today";
   static const String now = "now";
+  static const String no_results = "no_results";
+  static const String selectClassToGenerate = "select_term_and_month";
+  static const String select_month = "select_month";
+  static const String subject_analysis = "subject_analysis";
 }

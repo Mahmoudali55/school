@@ -17,21 +17,21 @@ class ScheduleItemWidget extends StatelessWidget {
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         border: Border(bottom: BorderSide(color: const Color(0xFFE5E7EB), width: 1)),
-        color: item.isCurrent ? const Color(0xFFEFF6FF) : AppColor.whiteColor(context),
+        color: item.isCurrent ? const Color(0xFFEFF6FF) : Colors.white,
       ),
       child: Row(
         children: [
           Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
             decoration: BoxDecoration(
-              color: item.isCurrent ? AppColor.primaryColor(context) : AppColor.whiteColor(context),
+              color: item.isCurrent ? const Color(0xFF2E5BFF) : const Color(0xFFF3F4F6),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
               item.time,
               style: AppTextStyle.bodySmall(
                 context,
-                color: item.isCurrent ? AppColor.whiteColor(context) : AppColor.greyColor(context),
+                color: item.isCurrent ? AppColor.whiteColor(context) : const Color(0xFF6B7280),
               ).copyWith(fontSize: 12.sp, fontWeight: FontWeight.bold),
             ),
           ),

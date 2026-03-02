@@ -114,11 +114,13 @@ class _TeacherGradesExamsScreenState extends State<TeacherGradesExamsScreen> {
                     Center(
                       child: Column(
                         children: [
-                          Icon(Icons.info_outline, size: 50.sp, color: Colors.grey),
+                          Icon(Icons.info_outline, size: 50.sp, color: AppColor.greyColor(context)),
                           Gap(10.h),
                           Text(
-                            "لا توجد نتائج لهذا الشهر",
-                            style: AppTextStyle.bodyLarge(context).copyWith(color: Colors.grey),
+                            AppLocalKay.no_results.tr(),
+                            style: AppTextStyle.bodyLarge(
+                              context,
+                            ).copyWith(color: AppColor.greyColor(context)),
                           ),
                         ],
                       ),
@@ -143,8 +145,10 @@ class _TeacherGradesExamsScreenState extends State<TeacherGradesExamsScreen> {
                 ] else
                   Center(
                     child: Text(
-                      "يرجى اختيار الفصل والشهر لعرض النتائج",
-                      style: AppTextStyle.bodyLarge(context).copyWith(color: Colors.grey),
+                      AppLocalKay.selectClassToGenerate.tr(),
+                      style: AppTextStyle.bodyLarge(
+                        context,
+                      ).copyWith(color: AppColor.greyColor(context)),
                     ),
                   ),
                 Gap(20.h),
@@ -176,11 +180,11 @@ class _TeacherGradesExamsScreenState extends State<TeacherGradesExamsScreen> {
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(24.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withValues(alpha: (0.05)),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -220,7 +224,7 @@ class _TeacherGradesExamsScreenState extends State<TeacherGradesExamsScreen> {
             value: _selectedMonth,
             errorText: '',
             submitted: false,
-            hint: "اختر الشهر",
+            hint: AppLocalKay.select_month.tr(),
             items: months.map((m) => DropdownMenuItem(value: m, child: Text("شهر $m"))).toList(),
             onChanged: _onMonthChanged,
           ),
@@ -234,11 +238,11 @@ class _TeacherGradesExamsScreenState extends State<TeacherGradesExamsScreen> {
       height: 280.h,
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.whiteColor(context),
         borderRadius: BorderRadius.circular(24.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.blackColor(context).withValues(alpha: (0.05)),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -248,7 +252,7 @@ class _TeacherGradesExamsScreenState extends State<TeacherGradesExamsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "تحليل أداء المواد",
+            AppLocalKay.subject_analysis.tr(),
             style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
           ),
           Gap(20.h),
@@ -340,11 +344,11 @@ class _TeacherGradesExamsScreenState extends State<TeacherGradesExamsScreen> {
         margin: EdgeInsets.only(bottom: 16.h),
         padding: EdgeInsets.all(20.w),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColor.whiteColor(context),
           borderRadius: BorderRadius.circular(24.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
+              color: AppColor.blackColor(context).withOpacity(0.04),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),

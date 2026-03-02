@@ -1110,5 +1110,7 @@
   "absences_count":"Absences Count",
   "absent_student":"Absent Student",
   "no_classe_today": "No Classes Scheduled for Today",
-  "now": "Now"
+  "now": "Now",
+   "select_term_and_month":"Please select term and month to view results",
+   "subject_analysis":"Subject Analysis"
 }

@@ -1179,7 +1179,9 @@
   "absences_count":"غياب اليوم",
   "no_classe_today": "لا توجد حصص مجدولة لليوم",
   "absent_student":"طلاب مسجلين غياب",
-  "now":"الآن"
+  "now":"الآن",
+  "select_term_and_month":"يرجى اختيار الفصل والشهر لعرض النتائج",
+  "subject_analysis":"تحليل أداء المواد"
 
 
 }
