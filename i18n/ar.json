@@ -1173,5 +1173,11 @@
   "break_duration_minutes": "مدة الفسحة (دقيقة)",
   "break_after_period_number": "الفسحة بعد الحصة رقم",
   "print_schedule":"طباعة الجدول",
-  "academic_schedule":"الجدول الدراسي"
+  "academic_schedule":"الجدول الدراسي",
+  "daily_schedule":"حصص اليوم",
+  "classes_count":"عدد الحصص اليوم",
+  "absences_count":"غياب اليوم",
+  "absent_student":"طلاب مسجلين غياب"
+
+
 }

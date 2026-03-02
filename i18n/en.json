@@ -1104,5 +1104,9 @@
   "break_duration_minutes": "Break Duration (Minutes)",
   "break_after_period_number": "Break After Period Number",
   "print_schedule":"Print Schedule",
-  "academic_schedule":"Academic Schedule"
+  "academic_schedule":"Academic Schedule",
+  "daily_schedule":"Daily Schedule",
+  "classes_count":"Classes Count",
+  "absences_count":"Absences Count",
+  "absent_student":"Absent Student"
 }

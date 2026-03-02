@@ -57,6 +57,8 @@ class HomeState extends Equatable {
     this.data,
     this.isLoading = false,
     this.errorMessage,
+
+    this.todayAbsencesStatus = const StatusState.initial(),
   });
 
   final StatusState<List<ParentsStudentData>> parentsStudentStatus;
@@ -86,6 +88,8 @@ class HomeState extends Equatable {
   final StatusState<String> imageFileNameStatus;
   final StudentMiniInfo? selectedStudent;
   final StatusState<List<TeacherDataModel>>? teacherDataStatus;
+
+  final StatusState<List<StudentAbsentData>> todayAbsencesStatus;
 
   /// Main home data (TeacherHomeModel, StudentHomeModel, etc.)
   final HomeModel? data;
@@ -124,6 +128,8 @@ class HomeState extends Equatable {
     imageFileNameStatus,
     busDataStatus,
     teacherDataStatus,
+
+    todayAbsencesStatus,
   ];
 
   HomeState copyWith({
@@ -157,6 +163,8 @@ class HomeState extends Equatable {
     HomeModel? data,
     bool? isLoading,
     String? errorMessage,
+
+    StatusState<List<StudentAbsentData>>? todayAbsencesStatus,
   }) {
     return HomeState(
       parentsStudentStatus: parentsStudentStatus ?? this.parentsStudentStatus,
@@ -189,6 +197,7 @@ class HomeState extends Equatable {
       imageFileNameStatus: imageFileNameStatus ?? this.imageFileNameStatus,
       busDataStatus: busDataStatus ?? this.busDataStatus,
       teacherDataStatus: teacherDataStatus ?? this.teacherDataStatus,
+      todayAbsencesStatus: todayAbsencesStatus ?? this.todayAbsencesStatus,
     );
   }
 }

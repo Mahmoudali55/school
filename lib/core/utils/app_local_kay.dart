@@ -1132,4 +1132,8 @@ class AppLocalKay {
   static const String break_after_period_number = "break_after_period_number";
   static const String print_schedule = "print_schedule";
   static const String academic_schedule = "academic_schedule";
+  static const String daily_schedule = "daily_schedule";
+  static const String classes_count = "classes_count";
+  static const String absences_count = "absences_count";
+  static const String absent_student = "absent_student";
 }
