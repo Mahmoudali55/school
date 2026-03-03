@@ -1112,5 +1112,11 @@
   "no_classe_today": "No Classes Scheduled for Today",
   "now": "Now",
    "select_term_and_month":"Please select term and month to view results",
-   "subject_analysis":"Subject Analysis"
+   "subject_analysis":"Subject Analysis",
+  "no_classes_today_schedule":"No Classes Scheduled for Today",
+  "end_of_class":"End of Class",
+  "end_of_day":"End of Day",
+  "no_schedule": "Have a nice day!",
+  "current_class":"Current Class",
+  "join_default_class":"Join Default Class"
 }

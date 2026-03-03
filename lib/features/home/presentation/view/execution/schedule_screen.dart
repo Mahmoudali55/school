@@ -251,6 +251,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   }
 
   Widget _buildScheduleItem(ScheduleModel item) {
+    final isBreak =
+        item.subjectName.toLowerCase().contains('break') || item.subjectName.contains('فسحة');
+
     return Card(
       margin: EdgeInsets.only(bottom: 12.h),
       child: ListTile(
@@ -258,10 +261,15 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           width: 50.w,
           height: 50.w,
           decoration: BoxDecoration(
-            color: AppColor.primaryColor(context).withOpacity(0.1),
+            color: isBreak
+                ? Colors.orange.withOpacity(0.1)
+                : AppColor.primaryColor(context).withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(Icons.school, color: AppColor.primaryColor(context)),
+          child: Icon(
+            isBreak ? Icons.coffee_rounded : Icons.school,
+            color: isBreak ? Colors.orange : AppColor.primaryColor(context),
+          ),
         ),
         title: Text(
           item.subjectName,
@@ -272,16 +280,20 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           children: [
             Gap(4.h),
             Text('${item.startTime} - ${item.endTime}'),
-            Gap(2.h),
-            Text('${AppLocalKay.teachers.tr()}: ${item.teacherName}'),
-            Gap(2.h),
-            Text('${AppLocalKay.room.tr()}: ${item.room ?? "-"}'),
+            if (!isBreak) ...[
+              Gap(2.h),
+              Text('${AppLocalKay.teachers.tr()}: ${item.teacherName}'),
+              Gap(2.h),
+              Text('${AppLocalKay.room.tr()}: ${item.room ?? "-"}'),
+            ],
           ],
         ),
-        trailing: IconButton(
-          icon: const Icon(Icons.notifications),
-          onPressed: () => _setClassReminder(item),
-        ),
+        trailing: isBreak
+            ? null
+            : IconButton(
+                icon: const Icon(Icons.notifications),
+                onPressed: () => _setClassReminder(item),
+              ),
       ),
     );
   }

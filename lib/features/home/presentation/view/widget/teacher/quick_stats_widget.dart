@@ -15,13 +15,29 @@ class QuickStatsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
-        final teacherCourses = state.teacherCoursesStatus.data ?? [];
-        final totalTodayLessons = teacherCourses.length;
         final teacherClasses = state.teacherClassesStatus.data ?? [];
         final totalAbsentStudents = teacherClasses.fold<int>(
           0,
           (sum, classItem) => sum + (classItem.oldStudent ?? 0),
         );
+
+        final allTimeTable = state.teacherTimeTableStatus?.data ?? [];
+        final now = DateTime.now();
+        final days = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+        final englishToArabicDays = {
+          'Sunday': 'الأحد',
+          'Monday': 'الاثنين',
+          'Tuesday': 'الثلاثاء',
+          'Wednesday': 'الأربعاء',
+          'Thursday': 'الخميس',
+          'Friday': 'الجمعة',
+          'Saturday': 'السبت',
+        };
+        final currentDayArabic = days[now.weekday % 7];
+        final totalTodayLessons = allTimeTable.where((item) {
+          final arabicDay = englishToArabicDays[item.day] ?? item.day;
+          return arabicDay == currentDayArabic;
+        }).length;
         return Row(
           spacing: 12.w,
           children: [

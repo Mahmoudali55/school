@@ -1142,4 +1142,10 @@ class AppLocalKay {
   static const String selectClassToGenerate = "select_term_and_month";
   static const String select_month = "select_month";
   static const String subject_analysis = "subject_analysis";
+  static const String no_classes_today_schedule = "no_classes_today_schedule";
+  static const String end_of_class = "end_of_class";
+  static const String end_of_day = "end_of_day";
+  static const String no_schedule = "no_schedule";
+  static const String current_class = "current_class";
+  static const String join_default_class = "join_default_class";
 }

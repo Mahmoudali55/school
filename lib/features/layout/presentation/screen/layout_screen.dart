@@ -8,6 +8,7 @@ import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
 import 'package:my_template/features/calendar/presentation/cubit/calendar_cubit.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
+import 'package:my_template/features/class/presentation/cubit/schedule_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/layout/presentation/screen/widget/bottom_nav_bar_screen.dart';
 import 'package:my_template/features/layout/presentation/screen/widget/get_screen_widget.dart';
@@ -97,6 +98,7 @@ class _LayoutScreenState extends State<LayoutScreen> {
         BlocProvider(create: (context) => sl<NotificationCubit>()..loadNotifications()),
         BlocProvider(create: (context) => sl<SettingsCubit>()..loadSettings()),
         BlocProvider(create: (context) => sl<ProfileCubit>(), lazy: true),
+        BlocProvider(create: (context) => sl<ScheduleCubit>()),
       ],
       child: Scaffold(
         backgroundColor: AppColor.scaffoldColor(context),

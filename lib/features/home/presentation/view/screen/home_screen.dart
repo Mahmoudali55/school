@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
+import 'package:my_template/features/class/presentation/cubit/schedule_cubit.dart';
 import 'package:my_template/features/home/data/models/home_models.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
@@ -12,8 +13,27 @@ import 'package:my_template/features/home/presentation/view/widget/quick_actions
 import 'package:my_template/features/home/presentation/view/widget/recent_notifications_section.dart';
 import 'package:my_template/features/home/presentation/view/widget/upcoming_tasks_section.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final role = HiveMethods.getType();
+      if (role == '1' || role == 'student') {
+        final classCode = int.tryParse(HiveMethods.getUserClassCode().toString()) ?? 0;
+        if (classCode != 0) {
+          context.read<ScheduleCubit>().getScheduleFromApi(classCode);
+        }
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

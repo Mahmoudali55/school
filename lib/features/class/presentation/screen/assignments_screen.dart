@@ -2,9 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/images/app_images.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -81,20 +83,43 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
             return const Center(child: CircularProgressIndicator());
           } else if (state.homeWorkStatus.isFailure) {
             return Center(
-              child: Text(
-                state.homeWorkStatus.error ?? "حدث خطأ ما",
-                style: AppTextStyle.bodyMedium(
-                  context,
-                ).copyWith(color: AppColor.errorColor(context)),
+              child: Column(
+                children: [
+                  SvgPicture.asset(AppImages.assetsGlobalIconEmptyFolderIcon),
+                  Gap(20.h),
+                  Text(
+                    state.homeWorkStatus.error ?? "حدث خطأ ما",
+                    style: AppTextStyle.bodyMedium(
+                      context,
+                    ).copyWith(color: AppColor.errorColor(context)),
+                  ),
+                ],
               ),
             );
           } else if (state.homeWorkStatus.isSuccess) {
             final assignments = state.homeWorkStatus.data ?? [];
             if (assignments.isEmpty) {
               return Center(
-                child: Text(
-                  AppLocalKay.no_assignments.tr(),
-                  style: AppTextStyle.bodyMedium(context),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      AppImages.assetsGlobalIconEmptyFolderIcon,
+                      colorFilter: ColorFilter.mode(
+                        AppColor.primaryColor(context),
+                        BlendMode.srcIn,
+                      ),
+                      width: 150.w,
+                      height: 150.h,
+                    ),
+                    Gap(20.h),
+                    Text(
+                      AppLocalKay.no_assignments.tr(),
+                      style: AppTextStyle.bodyLarge(
+                        context,
+                      ).copyWith(color: AppColor.blackColor(context), fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               );
             }
@@ -119,13 +144,16 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
         gradient: LinearGradient(
-          colors: [AppColor.primaryColor(context).withOpacity(0.05), AppColor.whiteColor(context)],
+          colors: [
+            AppColor.primaryColor(context).withValues(alpha: (0.05)),
+            AppColor.whiteColor(context),
+          ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: AppColor.blackColor(context).withValues(alpha: (0.06)),
             blurRadius: 12,
             offset: const Offset(0, 6),
           ),
@@ -135,7 +163,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
         padding: EdgeInsets.all(18.w),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(color: AppColor.primaryColor(context).withOpacity(0.15)),
+          border: Border.all(color: AppColor.primaryColor(context).withValues(alpha: (0.1))),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,7 +176,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
                   padding: EdgeInsets.all(10.w),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: AppColor.primaryColor(context).withOpacity(0.1),
+                    color: AppColor.primaryColor(context).withValues(alpha: (0.1)),
                   ),
                   child: Icon(
                     Icons.menu_book_rounded,
@@ -156,7 +184,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
                     size: 20,
                   ),
                 ),
-                Gap( 10.w),
+                Gap(10.w),
 
                 /// Course Name
                 Expanded(
@@ -177,13 +205,13 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
                     assignment.hwDate,
                     style: AppTextStyle.bodySmall(
                       context,
-                    ).copyWith(color: Colors.white, fontWeight: FontWeight.w600),
+                    ).copyWith(color: AppColor.whiteColor(context), fontWeight: FontWeight.w600),
                   ),
                 ),
               ],
             ),
 
-            Gap( 16.h),
+            Gap(16.h),
 
             /// Homework Title
             Text(
@@ -194,7 +222,7 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
             ),
 
             if (assignment.notes.isNotEmpty) ...[
-              Gap( 8.h),
+              Gap(8.h),
               Text(
                 assignment.notes,
                 maxLines: 3,
@@ -205,17 +233,17 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
               ),
             ],
 
-            Gap( 16.h),
+            Gap(16.h),
 
             Divider(color: AppColor.grey300Color(context)),
 
-            Gap( 8.h),
+            Gap(8.h),
 
             /// Bottom Row
             Row(
               children: [
                 Icon(Icons.class_, size: 16, color: AppColor.greyColor(context)),
-                Gap( 6.w),
+                Gap(6.w),
                 Text(
                   "${AppLocalKay.code.tr()}: ${assignment.classCode}",
                   style: AppTextStyle.bodySmall(

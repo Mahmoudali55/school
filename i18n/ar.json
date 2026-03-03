@@ -1181,7 +1181,13 @@
   "absent_student":"طلاب مسجلين غياب",
   "now":"الآن",
   "select_term_and_month":"يرجى اختيار الفصل والشهر لعرض النتائج",
-  "subject_analysis":"تحليل أداء المواد"
+  "subject_analysis":"تحليل أداء المواد",
+  "no_classes_today_schedule":"لا يوجد حصص اليوم",
+  "end_of_class":"انتهت الحصص",
+  "end_of_day":"لقد انتهى يومك الدراسي، استرخِ جيداً!",
+  "no_schedule": "استمتع بعطلتك، لا يوجد حصص مجدولة اليوم.",
+  "current_class":"الحصة الحالية",
+  "join_default_class":"انضم إلى الحصة الافتراضية"
 
 
 }
