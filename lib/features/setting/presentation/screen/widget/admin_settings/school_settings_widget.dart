@@ -23,24 +23,24 @@ class SchoolSettingsWidget extends StatelessWidget {
           subtitle: AppLocalKay.schoolInfoSub.tr(),
           onTap: () => editSchoolInfo(context),
         ),
-        SettingItemWidget(
-          icon: Icons.group,
-          title: AppLocalKay.users.tr(),
-          subtitle: AppLocalKay.usersSub.tr(),
-          onTap: () => manageUsers(context),
-        ),
-        SettingItemWidget(
-          icon: Icons.class_,
-          title: AppLocalKay.manageClasses.tr(),
-          subtitle: AppLocalKay.classesSub.tr(),
-          onTap: () => manageClasses(context),
-        ),
-        SettingItemWidget(
-          icon: Icons.assignment,
-          title: AppLocalKay.system.tr(),
-          subtitle: AppLocalKay.systemSub.tr(),
-          onTap: () => systemSettings(context),
-        ),
+        // SettingItemWidget(
+        //   icon: Icons.group,
+        //   title: AppLocalKay.users.tr(),
+        //   subtitle: AppLocalKay.usersSub.tr(),
+        //   onTap: () => manageUsers(context),
+        // ),
+        // SettingItemWidget(
+        //   icon: Icons.class_,
+        //   title: AppLocalKay.manageClasses.tr(),
+        //   subtitle: AppLocalKay.classesSub.tr(),
+        //   onTap: () => manageClasses(context),
+        // ),
+        // SettingItemWidget(
+        //   icon: Icons.assignment,
+        //   title: AppLocalKay.system.tr(),
+        //   subtitle: AppLocalKay.systemSub.tr(),
+        //   onTap: () => systemSettings(context),
+        // ),
       ],
     );
   }

@@ -35,7 +35,6 @@ class RecentMessagesWidget extends StatelessWidget {
         unread: false,
       ),
     ];
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

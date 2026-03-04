@@ -11,7 +11,6 @@ import 'package:my_template/features/setting/presentation/cubit/settings_state.d
 import 'package:my_template/features/setting/presentation/screen/widget/admin_settings/account_settings.dart';
 import 'package:my_template/features/setting/presentation/screen/widget/admin_settings/action_buttons_widget.dart';
 import 'package:my_template/features/setting/presentation/screen/widget/admin_settings/app_info_widget.dart';
-import 'package:my_template/features/setting/presentation/screen/widget/admin_settings/app_settings_widget.dart';
 import 'package:my_template/features/setting/presentation/screen/widget/admin_settings/school_settings_widget.dart';
 import 'package:my_template/features/setting/presentation/screen/widget/admin_settings/section_title_widget.dart';
 
@@ -91,10 +90,10 @@ class _AdminSettingsScreenState extends State<AdminSettingsScreen> {
                 },
               ),
               SchoolSettingsWidget(),
-              Gap(24.h),
-              SectionTitleWidget(title: AppLocalKay.setting_app.tr()),
-              Gap(16.h),
-              AppSettingsWidget(),
+              //Gap(24.h),
+              // SectionTitleWidget(title: AppLocalKay.setting_app.tr()),
+              // Gap(16.h),
+              // AppSettingsWidget(),
               Gap(24.h),
               SectionTitleWidget(title: AppLocalKay.setting_info.tr()),
               Gap(16.h),
