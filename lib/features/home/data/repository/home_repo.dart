@@ -7,6 +7,8 @@ import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/error/failures.dart';
 import 'package:my_template/core/network/api_consumer.dart';
 import 'package:my_template/core/network/end_points.dart';
+import 'package:my_template/features/home/data/models/add_automatic_call_request_model.dart';
+import 'package:my_template/features/home/data/models/add_automatic_call_response_model.dart';
 import 'package:my_template/features/home/data/models/add_class_absent_request_model.dart';
 import 'package:my_template/features/home/data/models/add_class_absent_response_model.dart';
 import 'package:my_template/features/home/data/models/add_home_work_request_model.dart';
@@ -106,6 +108,9 @@ abstract interface class HomeRepo {
   Future<Either<Failure, String>> imageFileName({required String filePath});
   Future<Either<Failure, List<BusDataModel>>> busData();
   Future<Either<Failure, List<TeacherDataModel>>> teacherData({required var searchVal});
+  Future<Either<Failure, AddAutomaticCallResponseModel>> addAutomaticCall({
+    required AddAutomaticCallRequestModel request,
+  });
 }
 
 class HomeRepoImpl implements HomeRepo {
@@ -516,6 +521,17 @@ class HomeRepoImpl implements HomeRepo {
           queryParameters: {"Code": code},
         );
         return TeacherTimeTableModel.fromApiResponse(response);
+      },
+    );
+  }
+
+  Future<Either<Failure, AddAutomaticCallResponseModel>> addAutomaticCall({
+    required AddAutomaticCallRequestModel request,
+  }) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.post(EndPoints.addAutomaticCall, body: request.toJson());
+        return AddAutomaticCallResponseModel.fromJson(response);
       },
     );
   }

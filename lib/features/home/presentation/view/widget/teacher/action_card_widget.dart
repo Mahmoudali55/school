@@ -14,6 +14,8 @@ import 'package:my_template/features/home/presentation/view/execution/teacher_di
 import 'package:my_template/features/home/presentation/view/execution/teacher_full_schedule_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/teacher_grades_exams_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/upload_lesson_screen.dart';
+import 'package:my_template/features/pickup/presentation/cubit/pickup_cubit.dart';
+import 'package:my_template/features/pickup/presentation/screen/pickup_admin_screen.dart';
 
 class ActionCardWidget extends StatelessWidget {
   final QuickAction action;
@@ -36,10 +38,7 @@ class ActionCardWidget extends StatelessWidget {
               offset: const Offset(0, 4),
             ),
           ],
-          border: Border.all(
-            color: action.color.withValues(alpha: 0.1),
-            width: 1.5,
-          ),
+          border: Border.all(color: action.color.withValues(alpha: 0.1), width: 1.5),
         ),
         padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
         child: Column(
@@ -112,6 +111,8 @@ class ActionCardWidget extends StatelessWidget {
           create: (context) => sl<HomeCubit>(),
           child: const TeacherGradesExamsScreen(),
         );
+      case AppLocalKay.student_call:
+        screen = BlocProvider(create: (context) => sl<PickUpCubit>(), child: PickUpAdminScreen());
         break;
       default:
         screen = const UploadLessonScreen();

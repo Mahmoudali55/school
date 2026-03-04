@@ -111,6 +111,7 @@ class StudentMiniInfo extends Equatable {
   final String grade;
   final int studentCode;
   final int? classCode;
+  final int? stageCode;
   final String? school;
 
   StudentMiniInfo({
@@ -118,11 +119,12 @@ class StudentMiniInfo extends Equatable {
     required this.grade,
     required this.studentCode,
     this.classCode,
+    this.stageCode,
     this.school,
   });
 
   @override
-  List<Object?> get props => [name, grade, studentCode, classCode, school];
+  List<Object?> get props => [name, grade, studentCode, classCode, stageCode, school];
 }
 
 // Parent Specific

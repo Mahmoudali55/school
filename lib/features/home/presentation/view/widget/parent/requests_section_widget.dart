@@ -5,13 +5,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
+import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
 import 'package:my_template/core/routes/routes_name.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/core/utils/common_methods.dart';
+import 'package:my_template/features/home/data/models/add_automatic_call_request_model.dart';
 import 'package:my_template/features/home/data/models/home_models.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
+import 'package:uuid/uuid.dart';
 
 class RequestsSectionWidget extends StatefulWidget {
   final StudentMiniInfo? selectedStudent;
@@ -124,9 +128,12 @@ class _RequestsSectionWidgetState extends State<RequestsSectionWidget> {
   }
 
   void _showArrivingConfirmation(BuildContext context) {
-    final String displayNames = widget.students.isNotEmpty
-        ? widget.students.map((s) => "${s.name} (${s.grade})").join(" - ")
-        : (widget.selectedStudent?.name ?? '');
+    final homeCubit = context.read<HomeCubit>();
+    final List<StudentMiniInfo> allStudents = widget.students.isNotEmpty
+        ? List.from(widget.students)
+        : (widget.selectedStudent != null ? [widget.selectedStudent!] : []);
+
+    final List<StudentMiniInfo> selectedStudents = List.from(allStudents);
 
     showModalBottomSheet(
       context: context,
@@ -136,93 +143,160 @@ class _RequestsSectionWidgetState extends State<RequestsSectionWidget> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (dialogContext) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: Column(
-            children: [
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  margin: const EdgeInsets.only(bottom: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-              Text(AppLocalKay.student_call.tr(), style: AppTextStyle.headlineMedium(context)),
-              const Gap(12),
-              Text("${AppLocalKay.i_am_arriving.tr()}:", style: AppTextStyle.bodyMedium(context)),
-              const Gap(10),
-              Expanded(
-                child: ListView(
-                  children: widget.students
-                      .map(
-                        (s) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 6),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Icon(
-                                Icons.check_circle,
-                                color: AppColor.successColor(context),
-                                size: 18,
-                              ),
-                              const Gap(10),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      s.name,
-                                      style: AppTextStyle.bodyMedium(
-                                        context,
-                                      ).copyWith(fontWeight: FontWeight.bold),
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return BlocProvider.value(
+              value: homeCubit,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                child: Column(
+                  children: [
+                    Center(
+                      child: Container(
+                        width: 40,
+                        height: 4,
+                        margin: const EdgeInsets.only(bottom: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      AppLocalKay.student_call.tr(),
+                      style: AppTextStyle.headlineMedium(context),
+                    ),
+                    const Gap(12),
+                    Text(
+                      "${AppLocalKay.i_am_arriving.tr()}:",
+                      style: AppTextStyle.bodyMedium(context),
+                    ),
+                    const Gap(10),
+                    Expanded(
+                      child: ListView(
+                        children: allStudents.map((s) {
+                          final isSelected = selectedStudents.contains(s);
+                          return InkWell(
+                            onTap: () {
+                              setModalState(() {
+                                if (isSelected) {
+                                  selectedStudents.remove(s);
+                                } else {
+                                  selectedStudents.add(s);
+                                }
+                              });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 6),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    isSelected ? Icons.check_circle : Icons.radio_button_unchecked,
+                                    color: isSelected
+                                        ? AppColor.successColor(context)
+                                        : AppColor.grey400Color(context),
+                                    size: 24,
+                                  ),
+                                  const Gap(10),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          s.name,
+                                          style: AppTextStyle.bodyMedium(
+                                            context,
+                                          ).copyWith(fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          "${s.grade}${s.school != null ? ' - ${s.school}' : ''}",
+                                          style: AppTextStyle.labelSmall(
+                                            context,
+                                            color: AppColor.grey600Color(context),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      "${s.grade}${s.school != null ? ' - ${s.school}' : ''}",
-                                      style: AppTextStyle.labelSmall(
-                                        context,
-                                        color: AppColor.grey600Color(context),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    const Gap(10),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomButton(
+                            text: AppLocalKay.cancel.tr(),
+                            radius: 12,
+                            color: AppColor.errorColor(context),
+                            onPressed: () => Navigator.pop(dialogContext),
                           ),
                         ),
-                      )
-                      .toList(),
+                        const Gap(12),
+                        Expanded(
+                          child: BlocConsumer<HomeCubit, HomeState>(
+                            listener: (context, state) {
+                              if (state.addAutomaticCallStatus?.isSuccess == true) {
+                                CommonMethods.showToast(
+                                  message: state.addAutomaticCallStatus?.data?.msg ?? "",
+                                  type: ToastType.success,
+                                );
+                                Navigator.pop(dialogContext);
+                              } else if (state.addAutomaticCallStatus?.isFailure == true) {
+                                CommonMethods.showToast(
+                                  message: state.addAutomaticCallStatus?.error ?? "",
+                                  type: ToastType.error,
+                                );
+                              }
+                            },
+                            builder: (context, state) {
+                              return CustomButton(
+                                text: AppLocalKay.i_am_arriving.tr(),
+                                radius: 12,
+                                color: selectedStudents.isEmpty ? Colors.grey : null,
+                                cubitState: state.addAutomaticCallStatus,
+                                onPressed: selectedStudents.isEmpty
+                                    ? null
+                                    : () {
+                                        final List<AutomaticCallItem> items = selectedStudents.map((
+                                          s,
+                                        ) {
+                                          return AutomaticCallItem(
+                                            id: const Uuid().v4(),
+                                            transdate: DateFormat(
+                                              'yyyy-MM-dd HH:mm:ss',
+                                            ).format(DateTime.now()),
+                                            studentcode: s.studentCode,
+                                            stageCode: s.stageCode ?? 0,
+                                            notes: "I am arriving",
+                                            flag: 1,
+                                          );
+                                        }).toList();
+
+                                        if (items.isNotEmpty) {
+                                          context.read<HomeCubit>().addAutomaticCall(
+                                            request: AddAutomaticCallRequestModel(
+                                              automaticCall: items,
+                                            ),
+                                          );
+                                        }
+                                      },
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-
-              const Gap(10),
-
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomButton(
-                      text: AppLocalKay.cancel.tr(),
-                      radius: 12,
-                      color: AppColor.errorColor(context),
-                      onPressed: () => Navigator.pop(dialogContext),
-                    ),
-                  ),
-                  const Gap(12),
-                  Expanded(
-                    child: CustomButton(
-                      text: AppLocalKay.i_am_arriving.tr(),
-                      radius: 12,
-                      onPressed: () => Navigator.pop(dialogContext),
-                    ),
-                  ),
-                  const Gap(12),
-                ],
-              ),
-            ],
-          ),
+            );
+          },
         );
       },
     );

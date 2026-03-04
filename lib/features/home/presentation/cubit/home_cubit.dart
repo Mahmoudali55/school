@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/features/home/data/models/add_automatic_call_request_model.dart';
 import 'package:my_template/features/home/data/models/add_class_absent_request_model.dart';
 import 'package:my_template/features/home/data/models/add_home_work_request_model.dart';
 import 'package:my_template/features/home/data/models/add_lessons_request_model.dart';
@@ -445,6 +446,19 @@ class HomeCubit extends Cubit<HomeState> {
     result.fold(
       (error) => emit(state.copyWith(teacherDataStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(teacherDataStatus: StatusState.success(success))),
+    );
+  }
+
+  Future addAutomaticCall({required AddAutomaticCallRequestModel request}) async {
+    if (isClosed) return;
+    emit(state.copyWith(addAutomaticCallStatus: StatusState.loading()));
+
+    final result = await _homeRepo.addAutomaticCall(request: request);
+    if (isClosed) return;
+    result.fold(
+      (error) =>
+          emit(state.copyWith(addAutomaticCallStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(addAutomaticCallStatus: StatusState.success(success))),
     );
   }
 

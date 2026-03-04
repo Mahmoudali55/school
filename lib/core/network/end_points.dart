@@ -57,4 +57,5 @@ class EndPoints {
   static const String getSchoolTimeTable = 'DeltagroupService/School/GetSchoolTimeTable';
   static const String editSchoolTimeTable = 'DeltagroupService/School/EditSchoolTimeTable';
   static const String getTeacherTimeTable = 'DeltagroupService/School/GetTeacherTimeTable';
+  static const String addAutomaticCall = 'DeltagroupService/School/AddAutomaticCall';
 }

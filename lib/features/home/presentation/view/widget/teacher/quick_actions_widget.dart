@@ -50,6 +50,12 @@ class QuickActionsWidget extends StatelessWidget {
         icon: Icons.grade,
         color: const Color(0xFF7C3AED),
       ),
+      QuickAction(
+        key: AppLocalKay.student_call,
+        title: AppLocalKay.pick_up_requests.tr(),
+        icon: Icons.record_voice_over,
+        color: Colors.deepOrange,
+      ),
     ];
 
     return Column(
