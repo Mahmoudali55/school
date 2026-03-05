@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/routes/routes_name.dart';
+import 'package:my_template/features/auth/presentation/view/screen/admission_request_screen.dart';
 import 'package:my_template/features/auth/presentation/view/screen/login_screen.dart';
 import 'package:my_template/features/auth/presentation/view/screen/register_screen.dart';
 import 'package:my_template/features/chat/presentation/screen/messages_screen.dart';

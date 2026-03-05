@@ -27,4 +27,5 @@ class RoutesName {
   static const String studentAIAssistantScreen = 'studentAIAssistantScreen';
   static const String teacherScreen = 'teacherScreen';
   static const String adminScheduleGeneratorScreen = 'adminScheduleGeneratorScreen';
+  static const String admissionRequestScreen = 'admissionRequestScreen';
 }

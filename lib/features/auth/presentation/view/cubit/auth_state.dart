@@ -9,6 +9,7 @@ class AuthState extends Equatable {
   /// Auth
   final StatusState<UserLoginModel> loginStatus;
   final StatusState<RegistrationResponse> registerStatus;
+  final StatusState<dynamic> admissionStatus;
 
   /// Password validation
   final bool hasUpperCase;
@@ -27,6 +28,7 @@ class AuthState extends Equatable {
     this.rememberMe = false,
     this.loginStatus = const StatusState.initial(),
     this.registerStatus = const StatusState.initial(),
+    this.admissionStatus = const StatusState.initial(),
 
     this.hasUpperCase = false,
     this.hasLowerCase = false,
@@ -45,6 +47,7 @@ class AuthState extends Equatable {
     bool? rememberMe,
     StatusState<UserLoginModel>? loginStatus,
     StatusState<RegistrationResponse>? registerStatus,
+    StatusState<dynamic>? admissionStatus,
 
     bool? hasUpperCase,
     bool? hasLowerCase,
@@ -59,6 +62,7 @@ class AuthState extends Equatable {
       rememberMe: rememberMe ?? this.rememberMe,
       loginStatus: loginStatus ?? this.loginStatus,
       registerStatus: registerStatus ?? this.registerStatus,
+      admissionStatus: admissionStatus ?? this.admissionStatus,
 
       hasUpperCase: hasUpperCase ?? this.hasUpperCase,
       hasLowerCase: hasLowerCase ?? this.hasLowerCase,
@@ -76,6 +80,7 @@ class AuthState extends Equatable {
     rememberMe,
     loginStatus,
     registerStatus,
+    admissionStatus,
     hasUpperCase,
     hasLowerCase,
     hasNumber,

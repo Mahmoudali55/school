@@ -6,6 +6,7 @@ import 'package:my_template/features/auth/data/model/registration_response_model
 import 'package:my_template/features/auth/data/model/user_login_model.dart';
 
 import '../../../../core/error/failures.dart' hide handleDioRequest;
+import '../model/admission_request_model.dart';
 import '../model/registration_model.dart';
 
 abstract interface class AuthRepo {
@@ -18,6 +19,9 @@ abstract interface class AuthRepo {
   Future<Either<Failure, UserLoginModel>> login({
     required String username,
     required String password,
+  });
+  Future<Either<Failure, dynamic>> submitAdmissionRequest({
+    required AdmissionRequestModel admissionRequestModel,
   });
 }
 
@@ -60,6 +64,21 @@ class AuthRepoImpl implements AuthRepo {
           body: {"grant_type": "password", "username": username, "password": password},
         );
         return UserLoginModel.fromJson(response);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, dynamic>> submitAdmissionRequest({
+    required AdmissionRequestModel admissionRequestModel,
+  }) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.post(
+          EndPoints.admissionRequest,
+          body: admissionRequestModel.toJson(),
+        );
+        return response;
       },
     );
   }

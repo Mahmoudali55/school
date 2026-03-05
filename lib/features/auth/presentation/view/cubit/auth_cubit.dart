@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/auth/data/repository/auth_repo.dart';
+import 'package:my_template/features/auth/data/model/admission_request_model.dart';
 import 'package:my_template/features/auth/presentation/view/cubit/auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -187,5 +188,22 @@ class AuthCubit extends Cubit<AuthState> {
       return "teacher";
     }
     return "admin";
+  }
+
+  Future<void> submitAdmissionRequest(AdmissionRequestModel model) async {
+    if (isClosed) return;
+    emit(state.copyWith(admissionStatus: const StatusState.loading()));
+
+    final result = await authRepo.submitAdmissionRequest(admissionRequestModel: model);
+
+    if (isClosed) return;
+    result.fold(
+      (error) => emit(state.copyWith(admissionStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(admissionStatus: StatusState.success(success))),
+    );
+  }
+
+  void clearAdmissionStatus() {
+    emit(state.copyWith(admissionStatus: const StatusState.initial()));
   }
 }

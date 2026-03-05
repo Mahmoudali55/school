@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
 import 'package:my_template/core/routes/routes_name.dart';
 import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/common_methods.dart';
 import 'package:my_template/core/utils/navigator_methods.dart';
@@ -46,7 +48,26 @@ class LoginScreen extends StatelessWidget {
                 );
               }
             },
-            child: const Column(children: [LoginHeader(), LoginForm(), SignUpLink()]),
+            child: Column(
+              children: [
+                const LoginHeader(),
+                const LoginForm(),
+                const SignUpLink(),
+                const Gap(10),
+                TextButton(
+                  onPressed: () =>
+                      NavigatorMethods.pushNamed(context, RoutesName.admissionRequestScreen),
+                  child: Text(
+                    AppLocalKay.admission_navigation.tr(),
+                    style: AppTextStyle.bodyMedium(context).copyWith(
+                      color: AppColor.primaryColor(context),
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

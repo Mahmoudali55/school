@@ -143,6 +143,13 @@ class AppRouters {
             child: const AdminScheduleGeneratorScreen(),
           ),
         );
+      case RoutesName.admissionRequestScreen:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<AuthCubit>(),
+            child: const AdmissionRequestScreen(),
+          ),
+        );
       default:
         return null;
     }
