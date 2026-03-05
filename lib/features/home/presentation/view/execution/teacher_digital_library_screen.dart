@@ -7,7 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
-import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
 import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
@@ -16,6 +15,7 @@ import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/common_methods.dart';
 import 'package:my_template/features/home/data/models/add_digital_library_model.dart';
+import 'package:my_template/features/home/data/models/get_digital_library_model.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 
@@ -27,241 +27,456 @@ class TeacherDigitalLibraryScreen extends StatefulWidget {
 }
 
 class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScreen> {
-  String _selectedCategory = "all";
   String? _uploadedFileUrl;
   String? _fileName;
+  int? _selectedLevelCode;
+  String _searchQuery = '';
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    // Load teacher levels based on stageCode from Hive
-    final stageCode = int.tryParse(HiveMethods.getUserStage().toString()) ?? 0;
-    if (stageCode > 0) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Default load level 111 as requested by user manual edit
+      _selectedLevelCode = 111;
+      context.read<HomeCubit>().getDigitalLibrary(levelCode: 111);
+
+      // Load teacher levels based on stageCode from Hive
+      final stageCode = int.tryParse(HiveMethods.getUserStage().toString()) ?? 0;
+      if (stageCode > 0) {
         context.read<HomeCubit>().teacherLevel(stageCode);
-      });
-    }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.whiteColor(context),
+      backgroundColor: const Color(0xFFF8FAFC),
       floatingActionButton: FloatingActionButton(
         onPressed: _showUploadBottomSheet,
         backgroundColor: const Color(0xFF10B981),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-        child: Icon(Icons.add_rounded, color: AppColor.whiteColor(context)),
+        tooltip: AppLocalKay.add.tr(),
+        child: Icon(Icons.add_rounded, color: Colors.white, size: 28.w),
       ),
-      appBar: CustomAppBar(
-        context,
-        title: Text(
-          AppLocalKay.digital_library.tr(),
-          style: AppTextStyle.titleLarge(
-            context,
-          ).copyWith(fontWeight: FontWeight.bold, color: AppColor.blackColor(context)),
-        ),
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
-        ),
-      ),
-      body: Column(
-        children: [
-          _buildSearchAndFilters(),
-          Expanded(child: _buildResourcesList()),
-        ],
-      ),
-    );
-  }
+      body: BlocConsumer<HomeCubit, HomeState>(
+        listener: (context, state) {
+          if (state.addDigitalLibraryStatus.isSuccess) {
+            CommonMethods.showToast(
+              message: state.addDigitalLibraryStatus.data?.msg ?? AppLocalKay.done.tr(),
+            );
+            context.read<HomeCubit>().resetAddDigitalLibraryStatus();
+            if (_selectedLevelCode != null) {
+              context.read<HomeCubit>().getDigitalLibrary(levelCode: _selectedLevelCode!);
+            }
+          } else if (state.addDigitalLibraryStatus.isFailure) {
+            CommonMethods.showToast(
+              message: state.addDigitalLibraryStatus.error ?? '',
+              type: ToastType.error,
+            );
+            context.read<HomeCubit>().resetAddDigitalLibraryStatus();
+          }
+        },
+        builder: (context, state) {
+          final levels = state.teacherLevelStatus.data ?? [];
+          final allItems = state.getDigitalLibraryStatus.data ?? [];
+          final filteredItems = _searchQuery.isEmpty
+              ? allItems
+              : allItems
+                    .where(
+                      (e) =>
+                          e.fileName.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+                          e.teacherName.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+                          e.notes.toLowerCase().contains(_searchQuery.toLowerCase()),
+                    )
+                    .toList();
 
-  Widget _buildSearchAndFilters() {
-    return Container(
-      padding: EdgeInsets.all(20.w),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(32.r),
-          bottomRight: Radius.circular(32.r),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          FadeInDown(
-            duration: const Duration(milliseconds: 600),
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              decoration: BoxDecoration(
-                color: const Color(0xFFF1F5F9),
-                borderRadius: BorderRadius.circular(16.r),
-              ),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: "ابحث عن كتب، فيديوهات، أو ملخصات...",
-                  hintStyle: AppTextStyle.bodySmall(
-                    context,
-                  ).copyWith(color: AppColor.greyColor(context)),
-                  border: InputBorder.none,
-                  icon: Icon(Icons.search_rounded, color: AppColor.greyColor(context)),
+          return Column(
+            children: [
+              // ── Modern Gradient Header ──
+              FadeInDown(
+                duration: const Duration(milliseconds: 500),
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.fromLTRB(
+                    20.w,
+                    MediaQuery.of(context).padding.top + 10.h,
+                    20.w,
+                    20.h,
+                  ),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Color(0xFF0D9F6F), Color(0xFF10B981)],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () => Navigator.pop(context),
+                            icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
+                            padding: EdgeInsets.zero,
+                          ),
+                          Gap(8.w),
+                          Text(
+                            AppLocalKay.digital_library.tr(),
+                            style: AppTextStyle.titleLarge(
+                              context,
+                            ).copyWith(fontWeight: FontWeight.bold, color: Colors.white),
+                          ),
+                          const Spacer(),
+                          Container(
+                            padding: EdgeInsets.all(8.w),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.2),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.library_books_rounded,
+                              color: Colors.white,
+                              size: 20.w,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Gap(20.h),
+                      // Search Bar
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: TextField(
+                          controller: _searchController,
+                          onChanged: (v) => setState(() => _searchQuery = v),
+                          decoration: InputDecoration(
+                            hintText: 'ابحث في المكتبة...',
+                            hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 13.sp),
+                            prefixIcon: Icon(
+                              Icons.search_rounded,
+                              color: Colors.grey.shade400,
+                              size: 22.w,
+                            ),
+                            suffixIcon: _searchQuery.isNotEmpty
+                                ? IconButton(
+                                    icon: const Icon(Icons.clear_rounded, size: 20),
+                                    color: Colors.grey.shade400,
+                                    onPressed: () {
+                                      _searchController.clear();
+                                      setState(() => _searchQuery = '');
+                                    },
+                                  )
+                                : null,
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(vertical: 14.h),
+                          ),
+                        ),
+                      ),
+                      Gap(12.h),
+                      // Level Dropdown
+                      Text(
+                        AppLocalKay.select_level.tr(),
+                        style: AppTextStyle.titleMedium(
+                          context,
+                        ).copyWith(fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
+                      Gap(8.h),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 12.w),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(15.r),
+                          border: Border.all(color: Colors.white.withOpacity(0.3)),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<int>(
+                            value: _selectedLevelCode,
+                            dropdownColor: Colors.white,
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down_rounded,
+                              color: Colors.white,
+                            ),
+                            hint: Text(
+                              AppLocalKay.level.tr(),
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.9),
+                                fontSize: 13.sp,
+                              ),
+                            ),
+                            isExpanded: true,
+                            items: levels
+                                .map(
+                                  (level) => DropdownMenuItem<int>(
+                                    value: level.levelCode,
+                                    child: Text(
+                                      level.levelName,
+                                      style: TextStyle(
+                                        fontSize: 14.sp,
+                                        color: _selectedLevelCode == level.levelCode
+                                            ? Colors.white
+                                            : Colors.black87,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: (v) {
+                              setState(() => _selectedLevelCode = v);
+                              if (v != null) {
+                                context.read<HomeCubit>().getDigitalLibrary(levelCode: v);
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ),
-          Gap(20.h),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                _buildCategoryChip("all", "الكل", Icons.grid_view_rounded),
-                _buildCategoryChip("books", "الكتب", Icons.book_rounded),
-                _buildCategoryChip("videos", "الفيديوهات", Icons.play_circle_fill_rounded),
-                _buildCategoryChip("files", "الملفات", Icons.description_rounded),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCategoryChip(String id, String label, IconData icon) {
-    bool isSelected = _selectedCategory == id;
-    return FadeInRight(
-      child: GestureDetector(
-        onTap: () => setState(() => _selectedCategory = id),
-        child: Container(
-          margin: EdgeInsets.only(left: 12.w),
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-          decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFF10B981) : const Color(0xFFF1F5F9),
-            borderRadius: BorderRadius.circular(12.r),
-          ),
-          child: Row(
-            children: [
-              Icon(
-                icon,
-                size: 18.w,
-                color: isSelected ? Colors.white : AppColor.greyColor(context),
-              ),
-              Gap(8.w),
-              Text(
-                label,
-                style: AppTextStyle.bodySmall(context).copyWith(
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                  color: isSelected ? Colors.white : AppColor.blackColor(context),
+              // ── Files List ──
+              Expanded(
+                child: Builder(
+                  builder: (context) {
+                    if (_selectedLevelCode == null) {
+                      return FadeInUp(
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.filter_list_rounded,
+                                size: 70.w,
+                                color: Colors.grey.shade200,
+                              ),
+                              Gap(16.h),
+                              Text(
+                                'اختر الصف لعرض الملفات',
+                                style: AppTextStyle.titleMedium(
+                                  context,
+                                ).copyWith(color: Colors.grey.shade400),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                    if (state.getDigitalLibraryStatus.isLoading) {
+                      return Center(
+                        child: CustomLoading(color: const Color(0xFF10B981), size: 40.w),
+                      );
+                    }
+                    if (filteredItems.isEmpty) {
+                      return FadeInUp(
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.search_off_rounded,
+                                size: 70.w,
+                                color: Colors.grey.shade200,
+                              ),
+                              Gap(16.h),
+                              Text(
+                                _searchQuery.isNotEmpty
+                                    ? 'لا توجد نتائج للبحث'
+                                    : 'لا توجد ملفات في هذا الصف',
+                                style: AppTextStyle.titleMedium(
+                                  context,
+                                ).copyWith(color: Colors.grey.shade400),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                    return ListView.builder(
+                      padding: EdgeInsets.fromLTRB(20.w, 15.h, 20.w, 80.h),
+                      itemCount: filteredItems.length,
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return _buildResourceCard(filteredItems[index], index);
+                      },
+                    );
+                  },
                 ),
               ),
             ],
-          ),
-        ),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildResourcesList() {
-    return ListView(
-      padding: EdgeInsets.all(20.w),
-      children: [
-        FadeInUp(
-          duration: const Duration(milliseconds: 600),
-          child: Text(
-            "المصادر الحديثة",
-            style: AppTextStyle.titleMedium(context).copyWith(fontWeight: FontWeight.bold),
-          ),
-        ),
-        Gap(16.h),
-        _buildResourceCard(
-          "كتاب الرياضيات - المستوى الثالث",
-          "PDF • 12.5 MB",
-          Icons.picture_as_pdf_rounded,
-          Colors.redAccent,
-          200,
-        ),
-        _buildResourceCard(
-          "شرح الوحدة الخامسة (فيديو)",
-          "MP4 • 45:12",
-          Icons.play_circle_outline_rounded,
-          Colors.blueAccent,
-          400,
-        ),
-        _buildResourceCard(
-          "ملخص قوانين الفيزياء",
-          "DOCX • 2.1 MB",
-          Icons.article_rounded,
-          Colors.indigoAccent,
-          600,
-        ),
-        _buildResourceCard(
-          "خطة الفصل الدراسي الثاني",
-          "PDF • 1.2 MB",
-          Icons.picture_as_pdf_rounded,
-          Colors.redAccent,
-          800,
-        ),
-      ],
-    );
-  }
+  Widget _buildResourceCard(DigitalLibraryItem item, int index) {
+    final ext = item.fileExtension;
+    IconData icon;
+    Color iconColor;
+    Color cardAccent;
 
-  Widget _buildResourceCard(String title, String info, IconData icon, Color color, int delay) {
+    if (['pdf'].contains(ext)) {
+      icon = Icons.picture_as_pdf_rounded;
+      iconColor = const Color(0xFFEF4444);
+      cardAccent = const Color(0xFFEF4444);
+    } else if (['mp4', 'avi', 'mov'].contains(ext)) {
+      icon = Icons.play_circle_fill_rounded;
+      iconColor = const Color(0xFF3B82F6);
+      cardAccent = const Color(0xFF3B82F6);
+    } else if (['doc', 'docx'].contains(ext)) {
+      icon = Icons.article_rounded;
+      iconColor = const Color(0xFF6366F1);
+      cardAccent = const Color(0xFF6366F1);
+    } else if (['ppt', 'pptx'].contains(ext)) {
+      icon = Icons.slideshow_rounded;
+      iconColor = const Color(0xFFF97316);
+      cardAccent = const Color(0xFFF97316);
+    } else if (['png', 'jpg', 'jpeg'].contains(ext)) {
+      icon = Icons.image_rounded;
+      iconColor = const Color(0xFF8B5CF6);
+      cardAccent = const Color(0xFF8B5CF6);
+    } else {
+      icon = Icons.insert_drive_file_rounded;
+      iconColor = const Color(0xFF10B981);
+      cardAccent = const Color(0xFF10B981);
+    }
+
     return FadeInUp(
-      duration: const Duration(milliseconds: 600),
-      delay: Duration(milliseconds: delay),
+      duration: const Duration(milliseconds: 400),
+      delay: Duration(milliseconds: index * 80),
       child: Container(
-        margin: EdgeInsets.only(bottom: 16.h),
-        padding: EdgeInsets.all(16.w),
+        margin: EdgeInsets.only(bottom: 14.h),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(20.r),
+          borderRadius: BorderRadius.circular(18.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
-              blurRadius: 10,
+              color: cardAccent.withOpacity(0.08),
+              blurRadius: 12,
+              spreadRadius: 1,
               offset: const Offset(0, 4),
             ),
           ],
         ),
-        child: Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(12.w),
-              decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(14.r),
-              ),
-              child: Icon(icon, color: color, size: 24.w),
-            ),
-            Gap(16.w),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: AppTextStyle.bodyLarge(context).copyWith(fontWeight: FontWeight.bold),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(18.r),
+          child: IntrinsicHeight(
+            child: Row(
+              children: [
+                // Colored left accent bar
+                Container(width: 5.w, color: cardAccent),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.all(14.w),
+                    child: Row(
+                      children: [
+                        // File type icon circle
+                        Container(
+                          width: 48.w,
+                          height: 48.w,
+                          decoration: BoxDecoration(
+                            color: iconColor.withOpacity(0.12),
+                            borderRadius: BorderRadius.circular(14.r),
+                          ),
+                          child: Center(
+                            child: Icon(icon, color: iconColor, size: 26.w),
+                          ),
+                        ),
+                        Gap(12.w),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item.fileName,
+                                style: AppTextStyle.bodyLarge(
+                                  context,
+                                ).copyWith(fontWeight: FontWeight.bold),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              if (item.teacherName.isNotEmpty) ...[
+                                Gap(3.h),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.person_outline_rounded,
+                                      size: 13.w,
+                                      color: Colors.grey.shade500,
+                                    ),
+                                    Gap(4.w),
+                                    Flexible(
+                                      child: Text(
+                                        item.teacherName,
+                                        style: AppTextStyle.bodySmall(
+                                          context,
+                                        ).copyWith(color: Colors.grey.shade500),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                              if (item.notes.isNotEmpty) ...[
+                                Gap(3.h),
+                                Text(
+                                  item.notes,
+                                  style: AppTextStyle.bodySmall(
+                                    context,
+                                  ).copyWith(color: Colors.grey.shade400),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ],
+                          ),
+                        ),
+                        // Extension badge
+                        if (ext.isNotEmpty)
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                            decoration: BoxDecoration(
+                              color: cardAccent.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: Text(
+                              ext.toUpperCase(),
+                              style: TextStyle(
+                                fontSize: 10.sp,
+                                fontWeight: FontWeight.bold,
+                                color: cardAccent,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
-                  Gap(4.h),
-                  Text(
-                    info,
-                    style: AppTextStyle.bodySmall(
-                      context,
-                    ).copyWith(color: AppColor.greyColor(context)),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.more_vert_rounded),
-              color: AppColor.greyColor(context),
-            ),
-          ],
+          ),
         ),
       ),
     );

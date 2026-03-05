@@ -27,6 +27,7 @@ import 'package:my_template/features/home/data/models/edit_permissions_mobile_re
 import 'package:my_template/features/home/data/models/edit_uniform_request_model.dart';
 import 'package:my_template/features/home/data/models/edit_uniform_response_model.dart';
 import 'package:my_template/features/home/data/models/get_automatic_call_model.dart';
+import 'package:my_template/features/home/data/models/get_digital_library_model.dart';
 import 'package:my_template/features/home/data/models/get_permissions_mobile_model.dart';
 import 'package:my_template/features/home/data/models/get_uniform_data_model.dart';
 import 'package:my_template/features/home/data/models/parent_balance_model.dart';
@@ -117,6 +118,7 @@ abstract interface class HomeRepo {
   Future<Either<Failure, AddDigitalLibraryResponseModel>> addDigitalLibrary({
     required AddDigitalLibraryRequestModel request,
   });
+  Future<Either<Failure, List<DigitalLibraryItem>>> getDigitalLibrary({required int levelCode});
 }
 
 class HomeRepoImpl implements HomeRepo {
@@ -565,6 +567,21 @@ class HomeRepoImpl implements HomeRepo {
           body: request.toJson(),
         );
         return AddDigitalLibraryResponseModel.fromJson(response);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, List<DigitalLibraryItem>>> getDigitalLibrary({
+    required int levelCode,
+  }) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.getDigitalLibrary,
+          queryParameters: {"levelcode": levelCode},
+        );
+        return DigitalLibraryItem.listFromResponse(response);
       },
     );
   }

@@ -554,4 +554,16 @@ class HomeCubit extends Cubit<HomeState> {
     if (isClosed) return;
     emit(state.copyWith(addDigitalLibraryStatus: const StatusState.initial()));
   }
+
+  Future<void> getDigitalLibrary({required int levelCode}) async {
+    if (isClosed) return;
+    emit(state.copyWith(getDigitalLibraryStatus: StatusState.loading()));
+    final result = await _homeRepo.getDigitalLibrary(levelCode: levelCode);
+    if (isClosed) return;
+    result.fold(
+      (error) =>
+          emit(state.copyWith(getDigitalLibraryStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(getDigitalLibraryStatus: StatusState.success(success))),
+    );
+  }
 }
