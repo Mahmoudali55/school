@@ -117,6 +117,23 @@ class _ControlBarWidgetState extends State<ControlBarWidget> {
         ),
       );
     }
+    // Show loading or placeholder if data is not ready
+    if (state.classesStatus.isInitial || state.classesStatus.data == null) {
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+        decoration: BoxDecoration(
+          color: AppColor.whiteColor(context),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppColor.accentColor(context).withOpacity(0.1)),
+        ),
+        child: Center(
+          child: Text(
+            'اختر المستوى أولاً',
+            style: TextStyle(fontSize: 14.sp, color: AppColor.hintColor(context)),
+          ),
+        ),
+      );
+    }
 
     // Show class selector when data is loaded
     return ClassSelectorWidget(

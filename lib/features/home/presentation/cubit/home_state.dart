@@ -12,6 +12,7 @@ import 'package:my_template/features/home/data/models/bus_data_model.dart';
 import 'package:my_template/features/home/data/models/class_hW_del_model.dart';
 import 'package:my_template/features/home/data/models/edit_permissions_mobile_response_model.dart';
 import 'package:my_template/features/home/data/models/edit_uniform_response_model.dart';
+import 'package:my_template/features/home/data/models/get_automatic_call_model.dart';
 import 'package:my_template/features/home/data/models/get_permissions_mobile_model.dart';
 import 'package:my_template/features/home/data/models/get_uniform_data_model.dart';
 import 'package:my_template/features/home/data/models/parent_balance_model.dart';
@@ -56,6 +57,7 @@ class HomeState extends Equatable {
     this.imageFileNameStatus = const StatusState.initial(),
     this.busDataStatus = const StatusState.initial(),
     this.teacherDataStatus = const StatusState.initial(),
+
     this.selectedStudent,
     this.data,
     this.isLoading = false,
@@ -65,6 +67,7 @@ class HomeState extends Equatable {
     this.teacherTimeTableStatus = const StatusState.initial(),
     this.classMonthResultStatus = const StatusState.initial(),
     this.addAutomaticCallStatus = const StatusState.initial(),
+    this.getAutomaticCallStatus = const StatusState.initial(),
   });
 
   final StatusState<List<ParentsStudentData>> parentsStudentStatus;
@@ -98,6 +101,7 @@ class HomeState extends Equatable {
   final StatusState<List<StudentAbsentData>> todayAbsencesStatus;
   final StatusState<List<ClassMonthResultModel>> classMonthResultStatus;
   final StatusState<AddAutomaticCallResponseModel>? addAutomaticCallStatus;
+  final StatusState<GetAutomaticCallModel>? getAutomaticCallStatus;
 
   /// Main home data (TeacherHomeModel, StudentHomeModel, etc.)
   final HomeModel? data;
@@ -141,6 +145,7 @@ class HomeState extends Equatable {
     classMonthResultStatus,
     teacherTimeTableStatus,
     addAutomaticCallStatus,
+    getAutomaticCallStatus,
   ];
 
   HomeState copyWith({
@@ -181,6 +186,7 @@ class HomeState extends Equatable {
     StatusState<List<ClassMonthResultModel>>? classMonthResultStatus,
 
     StatusState<AddAutomaticCallResponseModel>? addAutomaticCallStatus,
+    StatusState<GetAutomaticCallModel>? getAutomaticCallStatus,
   }) {
     return HomeState(
       parentsStudentStatus: parentsStudentStatus ?? this.parentsStudentStatus,
@@ -217,6 +223,7 @@ class HomeState extends Equatable {
       classMonthResultStatus: classMonthResultStatus ?? this.classMonthResultStatus,
       teacherTimeTableStatus: teacherTimeTableStatus ?? this.teacherTimeTableStatus,
       addAutomaticCallStatus: addAutomaticCallStatus ?? this.addAutomaticCallStatus,
+      getAutomaticCallStatus: getAutomaticCallStatus ?? this.getAutomaticCallStatus,
     );
   }
 }

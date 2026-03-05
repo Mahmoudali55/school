@@ -14,8 +14,7 @@ import 'package:my_template/features/home/presentation/view/execution/teacher_di
 import 'package:my_template/features/home/presentation/view/execution/teacher_full_schedule_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/teacher_grades_exams_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/upload_lesson_screen.dart';
-import 'package:my_template/features/pickup/presentation/cubit/pickup_cubit.dart';
-import 'package:my_template/features/pickup/presentation/screen/pickup_admin_screen.dart';
+import 'package:my_template/features/pickup/presentation/screen/pickup_screen.dart';
 
 class ActionCardWidget extends StatelessWidget {
   final QuickAction action;
@@ -112,7 +111,10 @@ class ActionCardWidget extends StatelessWidget {
           child: const TeacherGradesExamsScreen(),
         );
       case AppLocalKay.student_call:
-        screen = BlocProvider(create: (context) => sl<PickUpCubit>(), child: PickUpAdminScreen());
+        screen = BlocProvider(
+          create: (context) => sl<HomeCubit>(),
+          child: const PickUpAdminScreen(),
+        );
         break;
       default:
         screen = const UploadLessonScreen();

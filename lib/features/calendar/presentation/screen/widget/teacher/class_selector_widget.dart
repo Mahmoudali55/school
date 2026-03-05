@@ -28,7 +28,7 @@ class ClassSelectorWidget extends StatelessWidget {
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<ClassInfo?>(
-          value: selectedClass,
+          value: classes.contains(selectedClass) ? selectedClass : null,
           icon: Icon(Icons.arrow_drop_down_rounded, color: AppColor.accentColor(context)),
           isExpanded: true,
           style: AppTextStyle.titleMedium(

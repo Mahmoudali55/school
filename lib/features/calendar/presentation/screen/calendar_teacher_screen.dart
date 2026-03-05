@@ -93,10 +93,9 @@ class _CalendarTeacherScreenState extends State<CalendarTeacherScreen> {
           }
         }
       },
-      child: Scaffold(
-        backgroundColor: AppColor.whiteColor(context),
-        body: SafeArea(
-          child: Column(
+      child: Stack(
+        children: [
+          Column(
             children: [
               // رأس الصفحة
               const CalendarHeaderWidget(),
@@ -111,8 +110,13 @@ class _CalendarTeacherScreenState extends State<CalendarTeacherScreen> {
               Expanded(child: _buildCalendarContent()),
             ],
           ),
-        ),
-        floatingActionButton: _buildFloatingActionButton(context),
+          Positioned(
+            bottom: 20.h,
+            left: context.locale.languageCode == 'ar' ? 20.w : null,
+            right: context.locale.languageCode == 'en' ? 20.w : null,
+            child: _buildFloatingActionButton(context),
+          ),
+        ],
       ),
     );
   }
@@ -157,7 +161,9 @@ class _CalendarTeacherScreenState extends State<CalendarTeacherScreen> {
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<int>(
-              value: _selectedLevelCode,
+              value: levels.any((l) => l.levelCode == _selectedLevelCode)
+                  ? _selectedLevelCode
+                  : null,
               hint: Text(AppLocalKay.level.tr(), style: AppTextStyle.bodySmall(context)),
               icon: const Icon(Icons.arrow_drop_down_rounded, color: Color(0xFFFF9800)),
               isExpanded: true,

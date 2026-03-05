@@ -25,6 +25,7 @@ import 'package:my_template/features/home/data/models/edit_permissions_mobile_re
 import 'package:my_template/features/home/data/models/edit_permissions_mobile_response_model.dart';
 import 'package:my_template/features/home/data/models/edit_uniform_request_model.dart';
 import 'package:my_template/features/home/data/models/edit_uniform_response_model.dart';
+import 'package:my_template/features/home/data/models/get_automatic_call_model.dart';
 import 'package:my_template/features/home/data/models/get_permissions_mobile_model.dart';
 import 'package:my_template/features/home/data/models/get_uniform_data_model.dart';
 import 'package:my_template/features/home/data/models/parent_balance_model.dart';
@@ -111,6 +112,7 @@ abstract interface class HomeRepo {
   Future<Either<Failure, AddAutomaticCallResponseModel>> addAutomaticCall({
     required AddAutomaticCallRequestModel request,
   });
+  Future<Either<Failure, GetAutomaticCallModel>> getAutomaticCall({required int stageCode});
 }
 
 class HomeRepoImpl implements HomeRepo {
@@ -532,6 +534,18 @@ class HomeRepoImpl implements HomeRepo {
       request: () async {
         final response = await apiConsumer.post(EndPoints.addAutomaticCall, body: request.toJson());
         return AddAutomaticCallResponseModel.fromJson(response);
+      },
+    );
+  }
+
+  Future<Either<Failure, GetAutomaticCallModel>> getAutomaticCall({required int stageCode}) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.getAutomaticCall,
+          queryParameters: {"stagecode": stageCode},
+        );
+        return GetAutomaticCallModel.fromJson(response);
       },
     );
   }

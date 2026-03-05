@@ -462,6 +462,19 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  Future getAutomaticCallStatus({required int stageCode}) async {
+    if (isClosed) return;
+    emit(state.copyWith(getAutomaticCallStatus: StatusState.loading()));
+
+    final result = await _homeRepo.getAutomaticCall(stageCode: stageCode);
+    if (isClosed) return;
+    result.fold(
+      (error) =>
+          emit(state.copyWith(getAutomaticCallStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(getAutomaticCallStatus: StatusState.success(success))),
+    );
+  }
+
   void resetAddHomeworkStatus() {
     if (isClosed) return;
     emit(state.copyWith(addHomeworkStatus: const StatusState.initial()));

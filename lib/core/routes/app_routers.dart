@@ -126,10 +126,8 @@ class AppRouters {
         );
       case RoutesName.pickupAdminScreen:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => sl<PickUpCubit>()..getPickUpRequests(),
-            child: const PickUpAdminScreen(),
-          ),
+          builder: (context) =>
+              BlocProvider(create: (context) => sl<HomeCubit>(), child: const PickUpAdminScreen()),
         );
       case RoutesName.studentAIAssistantScreen:
         return MaterialPageRoute(builder: (_) => const StudentAIAssistantScreen());

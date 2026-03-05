@@ -80,6 +80,7 @@ class CalendarCubit extends Cubit<CalendarState> {
   }
 
   List<ClassInfo> _mapTeacherClassesToClassInfo(List<TeacherClassModels> teacherClasses) {
+    final seenIds = <String>{};
     return teacherClasses
         .map(
           (teacherClass) => ClassInfo(
@@ -89,6 +90,7 @@ class CalendarCubit extends Cubit<CalendarState> {
             specialization: teacherClass.classNameAr,
           ),
         )
+        .where((classInfo) => seenIds.add(classInfo.id))
         .toList();
   }
 

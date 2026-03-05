@@ -168,13 +168,13 @@ class TeacherCalendarEvent extends Equatable {
   ];
 }
 
-class ClassInfo {
+class ClassInfo extends Equatable {
   final String id;
   final String name;
   final String grade;
   final String specialization;
 
-  ClassInfo({
+  const ClassInfo({
     required this.id,
     required this.name,
     required this.grade,
@@ -182,4 +182,7 @@ class ClassInfo {
   });
 
   String get fullName => '$grade - $specialization';
+
+  @override
+  List<Object?> get props => [id];
 }
