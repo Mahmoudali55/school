@@ -4,6 +4,7 @@ import 'package:my_template/features/class/data/model/class_month_result_model.d
 import 'package:my_template/features/class/data/model/student_class_data_model.dart';
 import 'package:my_template/features/home/data/models/add_automatic_call_response_model.dart';
 import 'package:my_template/features/home/data/models/add_class_absent_response_model.dart';
+import 'package:my_template/features/home/data/models/add_digital_library_model.dart';
 import 'package:my_template/features/home/data/models/add_homework_response_model.dart';
 import 'package:my_template/features/home/data/models/add_lessons_response_model.dart';
 import 'package:my_template/features/home/data/models/add_permissions_response_model.dart';
@@ -68,6 +69,7 @@ class HomeState extends Equatable {
     this.classMonthResultStatus = const StatusState.initial(),
     this.addAutomaticCallStatus = const StatusState.initial(),
     this.getAutomaticCallStatus = const StatusState.initial(),
+    this.addDigitalLibraryStatus = const StatusState.initial(),
   });
 
   final StatusState<List<ParentsStudentData>> parentsStudentStatus;
@@ -102,6 +104,7 @@ class HomeState extends Equatable {
   final StatusState<List<ClassMonthResultModel>> classMonthResultStatus;
   final StatusState<AddAutomaticCallResponseModel>? addAutomaticCallStatus;
   final StatusState<GetAutomaticCallModel>? getAutomaticCallStatus;
+  final StatusState<AddDigitalLibraryResponseModel> addDigitalLibraryStatus;
 
   /// Main home data (TeacherHomeModel, StudentHomeModel, etc.)
   final HomeModel? data;
@@ -146,6 +149,7 @@ class HomeState extends Equatable {
     teacherTimeTableStatus,
     addAutomaticCallStatus,
     getAutomaticCallStatus,
+    addDigitalLibraryStatus,
   ];
 
   HomeState copyWith({
@@ -187,6 +191,7 @@ class HomeState extends Equatable {
 
     StatusState<AddAutomaticCallResponseModel>? addAutomaticCallStatus,
     StatusState<GetAutomaticCallModel>? getAutomaticCallStatus,
+    StatusState<AddDigitalLibraryResponseModel>? addDigitalLibraryStatus,
   }) {
     return HomeState(
       parentsStudentStatus: parentsStudentStatus ?? this.parentsStudentStatus,
@@ -224,6 +229,7 @@ class HomeState extends Equatable {
       teacherTimeTableStatus: teacherTimeTableStatus ?? this.teacherTimeTableStatus,
       addAutomaticCallStatus: addAutomaticCallStatus ?? this.addAutomaticCallStatus,
       getAutomaticCallStatus: getAutomaticCallStatus ?? this.getAutomaticCallStatus,
+      addDigitalLibraryStatus: addDigitalLibraryStatus ?? this.addDigitalLibraryStatus,
     );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/home/data/models/add_automatic_call_request_model.dart';
 import 'package:my_template/features/home/data/models/add_class_absent_request_model.dart';
+import 'package:my_template/features/home/data/models/add_digital_library_model.dart';
 import 'package:my_template/features/home/data/models/add_home_work_request_model.dart';
 import 'package:my_template/features/home/data/models/add_lessons_request_model.dart';
 import 'package:my_template/features/home/data/models/add_permissions_mobile_model.dart';
@@ -475,6 +476,18 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  Future addDigitalLibrary({required AddDigitalLibraryRequestModel request}) async {
+    if (isClosed) return;
+    emit(state.copyWith(addDigitalLibraryStatus: StatusState.loading()));
+    final result = await _homeRepo.addDigitalLibrary(request: request);
+    if (isClosed) return;
+    result.fold(
+      (error) =>
+          emit(state.copyWith(addDigitalLibraryStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(addDigitalLibraryStatus: StatusState.success(success))),
+    );
+  }
+
   void resetAddHomeworkStatus() {
     if (isClosed) return;
     emit(state.copyWith(addHomeworkStatus: const StatusState.initial()));
@@ -535,5 +548,10 @@ class HomeCubit extends Cubit<HomeState> {
   void resetUploadedFilesStatus() {
     if (isClosed) return;
     emit(state.copyWith(uploadedFilesStatus: const StatusState.initial()));
+  }
+
+  void resetAddDigitalLibraryStatus() {
+    if (isClosed) return;
+    emit(state.copyWith(addDigitalLibraryStatus: const StatusState.initial()));
   }
 }

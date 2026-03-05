@@ -60,4 +60,5 @@ class EndPoints {
   static const String addAutomaticCall = 'DeltagroupService/School/AddAutomaticCall';
   static const String getAutomaticCall = 'DeltagroupService/School/GetAutomaticCall';
   static const String admissionRequest = 'DeltagroupService/School/AddAdmissionRequest';
+  static const String addDigitalLibrary = 'DeltagroupService/School/AddDigitalLibrary';
 }

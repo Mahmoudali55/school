@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
-import 'package:my_template/core/custom_widgets/custom_form_field/custom_dropdown_form_field.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
 import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
@@ -15,6 +15,7 @@ import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/common_methods.dart';
+import 'package:my_template/features/home/data/models/add_digital_library_model.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 
@@ -29,6 +30,19 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
   String _selectedCategory = "all";
   String? _uploadedFileUrl;
   String? _fileName;
+
+  @override
+  void initState() {
+    super.initState();
+    // Load teacher levels based on stageCode from Hive
+    final stageCode = int.tryParse(HiveMethods.getUserStage().toString()) ?? 0;
+    if (stageCode > 0) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.read<HomeCubit>().teacherLevel(stageCode);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -255,8 +269,8 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
 
   void _showUploadBottomSheet() {
     String? title;
-    String? category = "books";
-    List<String> filePaths = [];
+    String notes = "";
+    int? selectedLevelCode;
     bool submitted = false;
     final formKey = GlobalKey<FormState>();
     _uploadedFileUrl = null;
@@ -293,12 +307,20 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
                       });
                       CommonMethods.showToast(message: AppLocalKay.file_uploaded.tr());
                       context.read<HomeCubit>().resetUploadedFilesStatus();
-                    } else if (state.uploadedFilesStatus?.isFailure ?? false) {
+                    }
+
+                    if (state.addDigitalLibraryStatus.isSuccess) {
                       CommonMethods.showToast(
-                        message: state.uploadedFilesStatus?.error ?? "",
+                        message: state.addDigitalLibraryStatus.data?.msg ?? AppLocalKay.done.tr(),
+                      );
+                      context.read<HomeCubit>().resetAddDigitalLibraryStatus();
+                      Navigator.pop(context);
+                    } else if (state.addDigitalLibraryStatus.isFailure) {
+                      CommonMethods.showToast(
+                        message: state.addDigitalLibraryStatus.error ?? "",
                         type: ToastType.error,
                       );
-                      context.read<HomeCubit>().resetUploadedFilesStatus();
+                      context.read<HomeCubit>().resetAddDigitalLibraryStatus();
                     }
                   },
                   builder: (context, state) {
@@ -329,33 +351,57 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
                               onChanged: (v) => title = v,
                             ),
                             Gap(16.h),
+                            // Level dropdown from teacherLevel API
                             Text(
-                              AppLocalKay.file_type.tr(),
+                              AppLocalKay.student_grade.tr(),
                               style: AppTextStyle.formTitleStyle(context),
                             ),
                             Gap(8.h),
-                            CustomDropdownFormField<String>(
-                              errorText: '',
-
-                              hint: AppLocalKay.file_type.tr(),
-
-                              value: category,
-                              items: [
-                                DropdownMenuItem(
-                                  value: "books",
-                                  child: Text(AppLocalKay.books.tr()),
+                            if (state.teacherLevelStatus.isLoading)
+                              Center(
+                                child: CustomLoading(
+                                  color: AppColor.accentColor(context),
+                                  size: 24.w,
                                 ),
-                                DropdownMenuItem(
-                                  value: "videos",
-                                  child: Text(AppLocalKay.videos.tr()),
+                              )
+                            else
+                              DropdownButtonFormField<int>(
+                                value: selectedLevelCode,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    borderSide: BorderSide(color: Colors.grey.shade300),
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 16.w,
+                                    vertical: 14.h,
+                                  ),
+                                  errorText: submitted && selectedLevelCode == null
+                                      ? AppLocalKay.required.tr()
+                                      : null,
                                 ),
-                                DropdownMenuItem(
-                                  value: "files",
-                                  child: Text(AppLocalKay.worksheets.tr()),
-                                ),
-                              ],
-                              onChanged: (v) => setModalState(() => category = v),
-                              submitted: submitted,
+                                hint: Text(AppLocalKay.level.tr()),
+                                items: [
+                                  ...(state.teacherLevelStatus.data ?? []).map(
+                                    (level) => DropdownMenuItem<int>(
+                                      value: level.levelCode,
+                                      child: Text(level.levelName),
+                                    ),
+                                  ),
+                                ],
+                                onChanged: (v) => setModalState(() => selectedLevelCode = v),
+                                validator: (_) => null,
+                              ),
+                            Gap(16.h),
+                            Text(
+                              AppLocalKay.notes.tr(),
+                              style: AppTextStyle.formTitleStyle(context),
+                            ),
+                            Gap(8.h),
+                            CustomFormField(
+                              hintText: AppLocalKay.notes.tr(),
+                              onChanged: (v) => notes = v,
+                              maxLines: 3,
                             ),
                             Gap(16.h),
                             Text(
@@ -472,19 +518,36 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
                                 ),
                               ),
                             Gap(32.h),
-
                             CustomButton(
                               radius: 12.r,
-                              color: AppColor.secondAppColor(context),
-                              child: Text(
-                                AppLocalKay.save.tr(),
-                                style: AppTextStyle.bodyLarge(context, color: Colors.white),
-                                textAlign: TextAlign.center,
-                              ),
+                              child: state.addDigitalLibraryStatus.isLoading
+                                  ? CustomLoading(color: AppColor.whiteColor(context), size: 20.w)
+                                  : Text(
+                                      AppLocalKay.save.tr(),
+                                      style: AppTextStyle.bodyLarge(context, color: Colors.white),
+                                      textAlign: TextAlign.center,
+                                    ),
+
                               onPressed: () {
                                 setModalState(() => submitted = true);
                                 if (formKey.currentState!.validate() && _uploadedFileUrl != null) {
-                                  Navigator.pop(context);
+                                  final teacherCode =
+                                      int.tryParse(HiveMethods.getUserCode().toString()) ?? 0;
+
+                                  if (selectedLevelCode == null) {
+                                    setModalState(() {});
+                                    return;
+                                  }
+
+                                  context.read<HomeCubit>().addDigitalLibrary(
+                                    request: AddDigitalLibraryRequestModel(
+                                      fileName: title ?? "",
+                                      filepath: _uploadedFileUrl!,
+                                      levelCode: selectedLevelCode!,
+                                      teacherCode: teacherCode,
+                                      notes: notes,
+                                    ),
+                                  );
                                 }
                               },
                             ),

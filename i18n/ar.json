@@ -1222,5 +1222,6 @@
   "female": "أنثى",
   "national_id_card": "هوية وطنية",
   "resident_card": "إقامة",
-  "student_id_no": "رقم الهوية"
+  "student_id_no": "رقم الهوية",
+  "notes": "الملاحظات"
 }
