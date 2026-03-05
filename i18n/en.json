@@ -1118,5 +1118,12 @@
   "end_of_day":"End of Day",
   "no_schedule": "Have a nice day!",
   "current_class":"Current Class",
-  "join_default_class":"Join Default Class"
+  "join_default_class":"Join Default Class",
+  "digital_library_upload": "Upload Files",
+  "upload_file": "Upload File",
+  "file_name": "File Name",
+  "file_type": "File Type",
+  "choose_file": "Choose File",
+  "enter_file_name": "Please enter file name"
+
 }

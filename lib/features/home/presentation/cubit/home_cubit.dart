@@ -531,4 +531,9 @@ class HomeCubit extends Cubit<HomeState> {
     if (isClosed) return;
     emit(state.copyWith(editUniformStatus: const StatusState.initial()));
   }
+
+  void resetUploadedFilesStatus() {
+    if (isClosed) return;
+    emit(state.copyWith(uploadedFilesStatus: const StatusState.initial()));
+  }
 }

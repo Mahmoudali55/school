@@ -9,7 +9,6 @@ class SettingsState extends Equatable {
   final StatusState<SchoolDataModel> schoolDataStatus;
   final StatusState<String> logoutStatus;
   final SettingsModel? settings;
-
   const SettingsState({
     this.changePasswordStatus = const StatusState.initial(),
     this.settings,

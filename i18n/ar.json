@@ -1187,7 +1187,13 @@
   "end_of_day":"لقد انتهى يومك الدراسي، استرخِ جيداً!",
   "no_schedule": "استمتع بعطلتك، لا يوجد حصص مجدولة اليوم.",
   "current_class":"الحصة الحالية",
-  "join_default_class":"انضم إلى الحصة الافتراضية"
+  "join_default_class":"انضم إلى الحصة الافتراضية",
+  "digital_library_upload": "رفع ملفات",
+  "upload_file": "رفع ملف",
+  "file_name": "اسم الملف",
+  "file_type": "نوع الملف",
+  "choose_file": "اختر الملف",
+  "enter_file_name": "يرجى إدخال اسم الملف"
 
 
 }

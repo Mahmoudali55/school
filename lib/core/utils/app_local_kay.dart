@@ -1148,4 +1148,10 @@ class AppLocalKay {
   static const String no_schedule = "no_schedule";
   static const String current_class = "current_class";
   static const String join_default_class = "join_default_class";
+  static const String digital_library_upload = "digital_library_upload";
+  static const String upload_file = "upload_file";
+  static const String file_name = "file_name";
+  static const String file_type = "file_type";
+  static const String choose_file = "choose_file";
+  static const String enter_file_name = "enter_file_name";
 }

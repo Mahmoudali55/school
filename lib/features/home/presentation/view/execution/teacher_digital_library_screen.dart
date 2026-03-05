@@ -1,12 +1,22 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/custom_widgets/custom_form_field/custom_dropdown_form_field.dart';
+import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
+import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
+import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/core/utils/common_methods.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
+import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 
 class TeacherDigitalLibraryScreen extends StatefulWidget {
   const TeacherDigitalLibraryScreen({super.key});
@@ -17,11 +27,18 @@ class TeacherDigitalLibraryScreen extends StatefulWidget {
 
 class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScreen> {
   String _selectedCategory = "all";
-
+  String? _uploadedFileUrl;
+  String? _fileName;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showUploadBottomSheet,
+        backgroundColor: const Color(0xFF10B981),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+        child: const Icon(Icons.add_rounded, color: Colors.white),
+      ),
       appBar: CustomAppBar(
         context,
         title: Text(
@@ -233,6 +250,256 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
           ],
         ),
       ),
+    );
+  }
+
+  void _showUploadBottomSheet() {
+    String? title;
+    String? category = "books";
+    List<String> filePaths = [];
+    bool submitted = false;
+    final formKey = GlobalKey<FormState>();
+    _uploadedFileUrl = null;
+    _fileName = null;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (bottomSheetContext) {
+        return BlocProvider.value(
+          value: context.read<HomeCubit>(),
+          child: StatefulBuilder(
+            builder: (context, setModalState) {
+              return Container(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                  left: 20.w,
+                  right: 20.w,
+                  top: 20.h,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(32.r),
+                    topRight: Radius.circular(32.r),
+                  ),
+                ),
+                child: BlocConsumer<HomeCubit, HomeState>(
+                  listener: (context, state) {
+                    if (state.uploadedFilesStatus?.isSuccess ?? false) {
+                      setState(() {
+                        _uploadedFileUrl = state.uploadedFilesStatus?.data?.first;
+                      });
+                      CommonMethods.showToast(message: AppLocalKay.file_uploaded.tr());
+                      context.read<HomeCubit>().resetUploadedFilesStatus();
+                    } else if (state.uploadedFilesStatus?.isFailure ?? false) {
+                      CommonMethods.showToast(
+                        message: state.uploadedFilesStatus?.error ?? "",
+                        type: ToastType.error,
+                      );
+                      context.read<HomeCubit>().resetUploadedFilesStatus();
+                    }
+                  },
+                  builder: (context, state) {
+                    return Form(
+                      key: formKey,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              AppLocalKay.digital_library_upload.tr(),
+                              style: AppTextStyle.titleMedium(
+                                context,
+                              ).copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            Gap(20.h),
+                            Text(
+                              AppLocalKay.file_name.tr(),
+                              style: AppTextStyle.formTitleStyle(context),
+                            ),
+                            Gap(8.h),
+                            CustomFormField(
+                              hintText: AppLocalKay.enter_file_name.tr(),
+                              validator: (v) =>
+                                  v!.isEmpty ? AppLocalKay.enter_file_name.tr() : null,
+
+                              onChanged: (v) => title = v,
+                            ),
+                            Gap(16.h),
+                            Text(
+                              AppLocalKay.file_type.tr(),
+                              style: AppTextStyle.formTitleStyle(context),
+                            ),
+                            Gap(8.h),
+                            CustomDropdownFormField<String>(
+                              errorText: '',
+
+                              hint: AppLocalKay.file_type.tr(),
+
+                              value: category,
+                              items: [
+                                DropdownMenuItem(
+                                  value: "books",
+                                  child: Text(AppLocalKay.books.tr()),
+                                ),
+                                DropdownMenuItem(
+                                  value: "videos",
+                                  child: Text(AppLocalKay.videos.tr()),
+                                ),
+                                DropdownMenuItem(
+                                  value: "files",
+                                  child: Text(AppLocalKay.worksheets.tr()),
+                                ),
+                              ],
+                              onChanged: (v) => setModalState(() => category = v),
+                              submitted: submitted,
+                            ),
+                            Gap(16.h),
+                            Text(
+                              AppLocalKay.upload_file.tr(),
+                              style: AppTextStyle.formTitleStyle(context),
+                            ),
+                            Gap(8.h),
+                            GestureDetector(
+                              onTap: () async {
+                                final result = await FilePicker.platform.pickFiles(
+                                  type: FileType.custom,
+                                  allowedExtensions: [
+                                    'pdf',
+                                    'ppt',
+                                    'pptx',
+                                    'doc',
+                                    'docx',
+                                    'mp4',
+                                    'avi',
+                                  ],
+                                );
+
+                                if (result != null && result.files.single.path != null) {
+                                  setState(() {
+                                    _fileName = result.files.single.name;
+                                  });
+                                  if (context.mounted) {
+                                    context.read<HomeCubit>().uploadFiles([
+                                      result.files.single.path!,
+                                    ]);
+                                  }
+                                }
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.all(16.w),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey.shade300),
+                                  borderRadius: BorderRadius.circular(12.r),
+                                ),
+                                child: state.uploadedFilesStatus?.isLoading ?? false
+                                    ? Column(
+                                        children: [
+                                          CustomLoading(
+                                            color: AppColor.accentColor(context),
+                                            size: 30.w,
+                                          ),
+                                          Gap(8.h),
+                                          Text(AppLocalKay.loading.tr()),
+                                        ],
+                                      )
+                                    : Column(
+                                        children: [
+                                          Icon(
+                                            _uploadedFileUrl != null
+                                                ? Icons.check_circle
+                                                : Icons.cloud_upload,
+                                            size: 40.w,
+                                            color: _uploadedFileUrl != null
+                                                ? AppColor.secondAppColor(context)
+                                                : AppColor.greyColor(context),
+                                          ),
+                                          Gap(8.h),
+                                          Text(
+                                            _fileName ?? AppLocalKay.choose_file.tr(),
+                                            textAlign: TextAlign.center,
+                                            style: AppTextStyle.titleMedium(
+                                              context,
+                                            ).copyWith(fontWeight: FontWeight.bold),
+                                          ),
+                                          Gap(8.h),
+                                          if (_uploadedFileUrl != null &&
+                                              _uploadedFileUrl!.isNotEmpty) ...[
+                                            Gap(12.h),
+                                            CustomButton(
+                                              radius: 12.r,
+                                              onPressed: () {
+                                                context.read<HomeCubit>().imageFileName(
+                                                  _uploadedFileUrl!,
+                                                );
+                                              },
+                                              child:
+                                                  context
+                                                          .watch<HomeCubit>()
+                                                          .state
+                                                          .imageFileNameStatus
+                                                          ?.isLoading ??
+                                                      false
+                                                  ? CustomLoading(
+                                                      color: AppColor.whiteColor(context),
+                                                      size: 15.w,
+                                                    )
+                                                  : Text(
+                                                      AppLocalKay.display.tr(),
+                                                      style: AppTextStyle.titleLarge(context)
+                                                          .copyWith(
+                                                            color: AppColor.whiteColor(context),
+                                                          ),
+                                                    ),
+                                            ),
+                                          ],
+                                        ],
+                                      ),
+                              ),
+                            ),
+                            if (submitted && _uploadedFileUrl == null)
+                              Padding(
+                                padding: EdgeInsets.only(top: 8.h),
+                                child: Text(
+                                  AppLocalKay.required.tr(),
+                                  style: AppTextStyle.bodySmall(
+                                    context,
+                                  ).copyWith(color: Colors.red),
+                                ),
+                              ),
+                            Gap(32.h),
+
+                            CustomButton(
+                              radius: 12.r,
+                              color: AppColor.secondAppColor(context),
+                              child: Text(
+                                AppLocalKay.save.tr(),
+                                style: AppTextStyle.bodyLarge(context, color: Colors.white),
+                                textAlign: TextAlign.center,
+                              ),
+                              onPressed: () {
+                                setModalState(() => submitted = true);
+                                if (formKey.currentState!.validate() && _uploadedFileUrl != null) {
+                                  Navigator.pop(context);
+                                }
+                              },
+                            ),
+                            Gap(32.h),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
