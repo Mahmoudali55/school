@@ -32,12 +32,12 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: AppColor.whiteColor(context),
       floatingActionButton: FloatingActionButton(
         onPressed: _showUploadBottomSheet,
         backgroundColor: const Color(0xFF10B981),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
-        child: const Icon(Icons.add_rounded, color: Colors.white),
+        child: Icon(Icons.add_rounded, color: AppColor.whiteColor(context)),
       ),
       appBar: CustomAppBar(
         context,
