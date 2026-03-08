@@ -39,8 +39,8 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
   final _parentNationalIdController = TextEditingController();
   final _studentCountController = TextEditingController(text: "1");
 
-  String _parentResidencyType = "national_id_card";
-  String _parentGender = "male";
+  String _parentResidencyType = "2";
+  String _parentGender = "0";
   int? _parentNationalityCode;
   int? _parentReligionCode;
 
@@ -53,6 +53,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
     _updateStudentForms(1);
     context.read<AuthCubit>().loadReligionCodes();
     context.read<AuthCubit>().loadNationalityCodes();
+    context.read<AuthCubit>().loadSections();
   }
 
   void _updateStudentForms(int count) {
@@ -269,14 +270,8 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
                   CustomDropdownFormField<String>(
                     value: _parentResidencyType,
                     items: [
-                      DropdownMenuItem(
-                        value: "national_id_card",
-                        child: Text(AppLocalKay.national_id_card.tr()),
-                      ),
-                      DropdownMenuItem(
-                        value: "resident_card",
-                        child: Text(AppLocalKay.resident_card.tr()),
-                      ),
+                      DropdownMenuItem(value: "2", child: Text(AppLocalKay.national_id_card.tr())),
+                      DropdownMenuItem(value: "1", child: Text(AppLocalKay.resident_card.tr())),
                     ],
                     onChanged: (v) => setState(() => _parentResidencyType = v!),
                     errorText: '',
@@ -309,8 +304,8 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
                     submitted: false,
                     value: _parentGender,
                     items: [
-                      DropdownMenuItem(value: "male", child: Text(AppLocalKay.male.tr())),
-                      DropdownMenuItem(value: "female", child: Text(AppLocalKay.female.tr())),
+                      DropdownMenuItem(value: "0", child: Text(AppLocalKay.male.tr())),
+                      DropdownMenuItem(value: "1", child: Text(AppLocalKay.female.tr())),
                     ],
                     onChanged: (v) => setState(() => _parentGender = v!),
                   ),
@@ -356,7 +351,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
                               studentBirthDate: s.birthDate.text,
                               studentIdNo: s.idNo.text,
                               gender: s.gender,
-                              section: s.section,
+                              section: s.section ?? '',
                               stage: s.stage,
                               grade: s.grade,
                             );
@@ -482,8 +477,8 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
           CustomDropdownFormField<String>(
             value: s.gender,
             items: [
-              DropdownMenuItem(value: "male", child: Text(AppLocalKay.male.tr())),
-              DropdownMenuItem(value: "female", child: Text(AppLocalKay.female.tr())),
+              DropdownMenuItem(value: "0", child: Text(AppLocalKay.male.tr())),
+              DropdownMenuItem(value: "1", child: Text(AppLocalKay.female.tr())),
             ],
             onChanged: (v) => setState(() => s.gender = v!),
             errorText: '',
@@ -492,15 +487,37 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
           Gap(12.h),
           Text(AppLocalKay.student_section.tr(), style: AppTextStyle.formTitleStyle(context)),
           Gap(8.h),
-          CustomDropdownFormField<String>(
-            value: s.section,
-            items: const [
-              DropdownMenuItem(value: "arabic", child: Text("عربي")),
-              DropdownMenuItem(value: "language", child: Text("لغات")),
-            ],
-            onChanged: (v) => setState(() => s.section = v!),
-            errorText: '',
-            submitted: false,
+          BlocBuilder<AuthCubit, AuthState>(
+            buildWhen: (p, c) => p.sectionStatus != c.sectionStatus,
+            builder: (context, state) {
+              final sections = state.sectionStatus.data ?? [];
+              final isLoading = state.sectionStatus.isLoading;
+
+              // Auto-select first if not selected and data available
+              if (s.section == null && sections.isNotEmpty) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  setState(() => s.section = sections.first.sectionCode.toString());
+                });
+              }
+
+              return CustomDropdownFormField<String>(
+                value: s.section,
+                hint: isLoading ? "Loading..." : AppLocalKay.student_section.tr(),
+                items: isLoading
+                    ? []
+                    : sections
+                          .map(
+                            (sec) => DropdownMenuItem<String>(
+                              value: sec.sectionCode.toString(),
+                              child: Text(sec.sectionNameAr),
+                            ),
+                          )
+                          .toList(),
+                onChanged: isLoading ? null : (v) => setState(() => s.section = v!),
+                errorText: AppLocalKay.required.tr(),
+                submitted: false,
+              );
+            },
           ),
           Gap(12.h),
           Text(AppLocalKay.student_stage.tr(), style: AppTextStyle.formTitleStyle(context)),
@@ -567,8 +584,8 @@ class _StudentFormControllers {
   final years = TextEditingController();
   final months = TextEditingController();
   final days = TextEditingController();
-  String gender = "male";
-  String section = "arabic";
+  String gender = "0";
+  String? section;
   String stage = "primary";
   String grade = "1";
 

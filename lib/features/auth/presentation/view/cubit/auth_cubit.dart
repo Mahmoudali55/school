@@ -228,4 +228,15 @@ class AuthCubit extends Cubit<AuthState> {
       (data) => emit(state.copyWith(nationalityStatus: StatusState.success(data))),
     );
   }
+
+  Future<void> loadSections() async {
+    if (isClosed) return;
+    emit(state.copyWith(sectionStatus: const StatusState.loading()));
+    final result = await authRepo.getSections();
+    if (isClosed) return;
+    result.fold(
+      (error) => emit(state.copyWith(sectionStatus: StatusState.failure(error.errMessage))),
+      (data) => emit(state.copyWith(sectionStatus: StatusState.success(data))),
+    );
+  }
 }

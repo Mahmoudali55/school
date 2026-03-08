@@ -3,6 +3,7 @@ import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/auth/data/model/nationality_model.dart';
 import 'package:my_template/features/auth/data/model/registration_response_model.dart';
 import 'package:my_template/features/auth/data/model/religion_model.dart';
+import 'package:my_template/features/auth/data/model/section_model.dart';
 import 'package:my_template/features/auth/data/model/user_login_model.dart';
 
 class AuthState extends Equatable {
@@ -14,6 +15,7 @@ class AuthState extends Equatable {
   final StatusState<dynamic> admissionStatus;
   final StatusState<List<ReligionModel>> religionStatus;
   final StatusState<List<NationalityModel>> nationalityStatus;
+  final StatusState<List<SectionModel>> sectionStatus;
 
   /// Password validation
   final bool hasUpperCase;
@@ -35,6 +37,7 @@ class AuthState extends Equatable {
     this.admissionStatus = const StatusState.initial(),
     this.religionStatus = const StatusState.initial(),
     this.nationalityStatus = const StatusState.initial(),
+    this.sectionStatus = const StatusState.initial(),
 
     this.hasUpperCase = false,
     this.hasLowerCase = false,
@@ -56,6 +59,7 @@ class AuthState extends Equatable {
     StatusState<dynamic>? admissionStatus,
     StatusState<List<ReligionModel>>? religionStatus,
     StatusState<List<NationalityModel>>? nationalityStatus,
+    StatusState<List<SectionModel>>? sectionStatus,
 
     bool? hasUpperCase,
     bool? hasLowerCase,
@@ -73,6 +77,7 @@ class AuthState extends Equatable {
       admissionStatus: admissionStatus ?? this.admissionStatus,
       religionStatus: religionStatus ?? this.religionStatus,
       nationalityStatus: nationalityStatus ?? this.nationalityStatus,
+      sectionStatus: sectionStatus ?? this.sectionStatus,
 
       hasUpperCase: hasUpperCase ?? this.hasUpperCase,
       hasLowerCase: hasLowerCase ?? this.hasLowerCase,
@@ -93,6 +98,7 @@ class AuthState extends Equatable {
     admissionStatus,
     religionStatus,
     nationalityStatus,
+    sectionStatus,
     hasUpperCase,
     hasLowerCase,
     hasNumber,
