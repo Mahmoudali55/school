@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:my_template/core/network/api_consumer.dart';
 import 'package:my_template/core/network/end_points.dart';
@@ -8,6 +10,7 @@ import 'package:my_template/features/auth/data/model/user_login_model.dart';
 import '../../../../core/error/failures.dart' hide handleDioRequest;
 import '../model/admission_request_model.dart';
 import '../model/registration_model.dart';
+import '../model/religion_model.dart';
 
 abstract interface class AuthRepo {
   Future<Either<Failure, RegistrationResponse>> register({
@@ -23,6 +26,7 @@ abstract interface class AuthRepo {
   Future<Either<Failure, dynamic>> submitAdmissionRequest({
     required AdmissionRequestModel admissionRequestModel,
   });
+  Future<Either<Failure, List<ReligionModel>>> getReligionCodes();
 }
 
 class AuthRepoImpl implements AuthRepo {
@@ -79,6 +83,22 @@ class AuthRepoImpl implements AuthRepo {
           body: admissionRequestModel.toJson(),
         );
         return response;
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, List<ReligionModel>>> getReligionCodes() {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.getReligionCodes,
+          extra: {'skipAuth': true},
+        );
+        final List data = response['Data'] is String
+            ? (jsonDecode(response['Data']) as List)
+            : (response['Data'] as List);
+        return data.map((e) => ReligionModel.fromJson(e)).toList();
       },
     );
   }

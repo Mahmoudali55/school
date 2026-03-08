@@ -40,7 +40,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
   String _parentResidencyType = "national_id_card";
   String _parentGender = "male";
   String _parentNationality = "saudi";
-  String _parentReligion = "islam";
+  int? _parentReligionCode;
 
   // Student data list
   List<_StudentFormControllers> _studentControllers = [];
@@ -49,6 +49,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
   void initState() {
     super.initState();
     _updateStudentForms(1);
+    context.read<AuthCubit>().loadReligionCodes();
   }
 
   void _updateStudentForms(int count) {
@@ -215,16 +216,39 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
                   Gap(12.h),
                   Text(AppLocalKay.religion.tr(), style: AppTextStyle.formTitleStyle(context)),
                   Gap(8.h),
-                  CustomDropdownFormField<String>(
-                    value: _parentReligion,
-                    items: const [
-                      DropdownMenuItem(value: 'islam', child: Text('إسلام')),
-                      DropdownMenuItem(value: 'christianity', child: Text('مسيحية')),
-                      DropdownMenuItem(value: 'other', child: Text('أخرى')),
-                    ],
-                    onChanged: (v) => setState(() => _parentReligion = v!),
-                    errorText: '',
-                    submitted: false,
+                  BlocBuilder<AuthCubit, AuthState>(
+                    buildWhen: (p, c) => p.religionStatus != c.religionStatus,
+                    builder: (context, state) {
+                      final religions = state.religionStatus.data ?? [];
+                      final isLoading = state.religionStatus.isLoading;
+
+                      // Auto-select first if not selected yet and data is available
+                      if (_parentReligionCode == null && religions.isNotEmpty) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          setState(() => _parentReligionCode = religions.first.religionCode);
+                        });
+                      }
+
+                      return CustomDropdownFormField<int>(
+                        value: _parentReligionCode,
+                        hint: isLoading ? "Loading..." : AppLocalKay.religion.tr(),
+                        items: isLoading
+                            ? []
+                            : religions
+                                  .map(
+                                    (r) => DropdownMenuItem<int>(
+                                      value: r.religionCode,
+                                      child: Text(r.religionNameAr),
+                                    ),
+                                  )
+                                  .toList(),
+                        onChanged: isLoading
+                            ? null
+                            : (v) => setState(() => _parentReligionCode = v),
+                        errorText: AppLocalKay.required.tr(),
+                        submitted: false,
+                      );
+                    },
                   ),
                   Gap(12.h),
                   Text(
@@ -308,7 +332,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
                           parentFamilyName: _parentFamilyNameController.text,
                           parentGrandfatherName: _parentGrandfatherNameController.text,
                           parentNationality: _parentNationality,
-                          parentReligion: _parentReligion,
+                          parentReligion: _parentReligionCode?.toString() ?? '',
                           parentResidencyType: _parentResidencyType,
                           parentPhone: _parentPhoneController.text,
                           parentGender: _parentGender,

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/auth/data/model/registration_response_model.dart';
+import 'package:my_template/features/auth/data/model/religion_model.dart';
 import 'package:my_template/features/auth/data/model/user_login_model.dart';
 
 class AuthState extends Equatable {
@@ -10,6 +11,7 @@ class AuthState extends Equatable {
   final StatusState<UserLoginModel> loginStatus;
   final StatusState<RegistrationResponse> registerStatus;
   final StatusState<dynamic> admissionStatus;
+  final StatusState<List<ReligionModel>> religionStatus;
 
   /// Password validation
   final bool hasUpperCase;
@@ -29,6 +31,7 @@ class AuthState extends Equatable {
     this.loginStatus = const StatusState.initial(),
     this.registerStatus = const StatusState.initial(),
     this.admissionStatus = const StatusState.initial(),
+    this.religionStatus = const StatusState.initial(),
 
     this.hasUpperCase = false,
     this.hasLowerCase = false,
@@ -48,6 +51,7 @@ class AuthState extends Equatable {
     StatusState<UserLoginModel>? loginStatus,
     StatusState<RegistrationResponse>? registerStatus,
     StatusState<dynamic>? admissionStatus,
+    StatusState<List<ReligionModel>>? religionStatus,
 
     bool? hasUpperCase,
     bool? hasLowerCase,
@@ -63,6 +67,7 @@ class AuthState extends Equatable {
       loginStatus: loginStatus ?? this.loginStatus,
       registerStatus: registerStatus ?? this.registerStatus,
       admissionStatus: admissionStatus ?? this.admissionStatus,
+      religionStatus: religionStatus ?? this.religionStatus,
 
       hasUpperCase: hasUpperCase ?? this.hasUpperCase,
       hasLowerCase: hasLowerCase ?? this.hasLowerCase,
@@ -81,6 +86,7 @@ class AuthState extends Equatable {
     loginStatus,
     registerStatus,
     admissionStatus,
+    religionStatus,
     hasUpperCase,
     hasLowerCase,
     hasNumber,

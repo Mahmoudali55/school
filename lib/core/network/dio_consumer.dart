@@ -40,12 +40,13 @@ class DioConsumer implements ApiConsumer {
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? body,
     Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
   }) async {
     final response = await client.request(
       path,
       data: body,
       queryParameters: queryParameters,
-      options: Options(method: 'GET', headers: headers),
+      options: Options(method: 'GET', headers: headers, extra: extra),
     );
     return response.data;
   }
@@ -56,13 +57,14 @@ class DioConsumer implements ApiConsumer {
     Map<String, dynamic>? body,
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
     bool? isFormData,
   }) async {
     var response = await client.post(
       path,
       data: isFormData == true ? FormData.fromMap(body!) : body,
       queryParameters: queryParameters,
-      options: Options(headers: headers),
+      options: Options(headers: headers, extra: extra),
     );
     return response.data;
   }
@@ -73,13 +75,14 @@ class DioConsumer implements ApiConsumer {
     Map<String, dynamic>? body,
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
     bool? isFormData,
   }) async {
     final response = await client.put(
       path,
       data: isFormData == true ? FormData.fromMap(body!) : body,
       queryParameters: queryParameters,
-      options: Options(headers: headers),
+      options: Options(headers: headers, extra: extra),
     );
     return response.data;
   }
@@ -90,13 +93,14 @@ class DioConsumer implements ApiConsumer {
     Map<String, dynamic>? body,
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
     bool? isFormData,
   }) async {
     final response = await client.request(
       path,
       data: isFormData == true ? FormData.fromMap(body!) : body,
       queryParameters: queryParameters,
-      options: Options(method: 'DELETE', headers: headers),
+      options: Options(method: 'DELETE', headers: headers, extra: extra),
     );
     return response.data;
   }

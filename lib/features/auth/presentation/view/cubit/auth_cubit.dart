@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/network/status.state.dart';
-import 'package:my_template/features/auth/data/repository/auth_repo.dart';
 import 'package:my_template/features/auth/data/model/admission_request_model.dart';
+import 'package:my_template/features/auth/data/repository/auth_repo.dart';
 import 'package:my_template/features/auth/presentation/view/cubit/auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -205,5 +205,16 @@ class AuthCubit extends Cubit<AuthState> {
 
   void clearAdmissionStatus() {
     emit(state.copyWith(admissionStatus: const StatusState.initial()));
+  }
+
+  Future<void> loadReligionCodes() async {
+    if (isClosed) return;
+    emit(state.copyWith(religionStatus: const StatusState.loading()));
+    final result = await authRepo.getReligionCodes();
+    if (isClosed) return;
+    result.fold(
+      (error) => emit(state.copyWith(religionStatus: StatusState.failure(error.errMessage))),
+      (data) => emit(state.copyWith(religionStatus: StatusState.success(data))),
+    );
   }
 }

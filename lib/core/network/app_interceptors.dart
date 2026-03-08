@@ -16,7 +16,7 @@ class AppInterceptors extends Interceptor {
     options.headers['lang'] = lang == 'en' ? 'en-GB' : lang;
 
     final token = HiveMethods.getToken();
-    if (token != null) {
+    if (token != null && options.extra['skipAuth'] != true) {
       options.headers['Authorization'] = 'Bearer $token';
     }
 
