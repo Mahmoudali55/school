@@ -11,6 +11,7 @@ import '../../../../core/error/failures.dart' hide handleDioRequest;
 import '../model/admission_request_model.dart';
 import '../model/level_model.dart';
 import '../model/nationality_model.dart';
+import '../model/parent_registration_model.dart';
 import '../model/registration_model.dart';
 import '../model/religion_model.dart';
 import '../model/section_model.dart';
@@ -35,6 +36,9 @@ abstract interface class AuthRepo {
   Future<Either<Failure, List<SectionModel>>> getSections();
   Future<Either<Failure, List<StageModel>>> getStages(int sectionCode);
   Future<Either<Failure, List<LevelModel>>> getLevels(int sectionCode, int stageCode);
+  Future<Either<Failure, dynamic>> registerParent({
+    required ParentRegistrationModel parentRegistrationModel,
+  });
 }
 
 class AuthRepoImpl implements AuthRepo {
@@ -174,6 +178,22 @@ class AuthRepoImpl implements AuthRepo {
             ? (jsonDecode(response['Data']) as List)
             : (response['Data'] as List);
         return data.map((e) => LevelModel.fromJson(e)).toList();
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, dynamic>> registerParent({
+    required ParentRegistrationModel parentRegistrationModel,
+  }) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.post(
+          EndPoints.addRegistrationParents,
+          body: parentRegistrationModel.toJson(),
+          extra: {'skipAuth': true},
+        );
+        return response;
       },
     );
   }

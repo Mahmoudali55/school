@@ -4,6 +4,7 @@ import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/auth/data/model/admission_request_model.dart';
 import 'package:my_template/features/auth/data/model/level_model.dart';
+import 'package:my_template/features/auth/data/model/parent_registration_model.dart';
 import 'package:my_template/features/auth/data/model/stage_model.dart';
 import 'package:my_template/features/auth/data/repository/auth_repo.dart';
 import 'package:my_template/features/auth/presentation/view/cubit/auth_state.dart';
@@ -298,6 +299,17 @@ class AuthCubit extends Cubit<AuthState> {
         newMap[key] = data;
         emit(state.copyWith(levelsMapStatus: StatusState.success(newMap)));
       },
+    );
+  }
+
+  Future<void> registerParent(ParentRegistrationModel parentRegistrationModel) async {
+    if (isClosed) return;
+    emit(state.copyWith(admissionStatus: const StatusState.loading()));
+    final result = await authRepo.registerParent(parentRegistrationModel: parentRegistrationModel);
+    if (isClosed) return;
+    result.fold(
+      (error) => emit(state.copyWith(admissionStatus: StatusState.failure(error.errMessage))),
+      (data) => emit(state.copyWith(admissionStatus: StatusState.success(data))),
     );
   }
 }

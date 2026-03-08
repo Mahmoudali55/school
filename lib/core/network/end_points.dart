@@ -59,6 +59,7 @@ class EndPoints {
   static const String getTeacherTimeTable = 'DeltagroupService/School/GetTeacherTimeTable';
   static const String addAutomaticCall = 'DeltagroupService/School/AddAutomaticCall';
   static const String getAutomaticCall = 'DeltagroupService/School/GetAutomaticCall';
+  static const String addRegistrationParents = 'DeltagroupService/School/AddRegistrationparents';
   static const String admissionRequest = 'DeltagroupService/School/AddAdmissionRequest';
   static const String getReligionCodes = 'DeltagroupService/School/GetPRELIGIONCODE';
   static const String getNationalityCodes = 'DeltagroupService/School/GetPNATIONCODE';

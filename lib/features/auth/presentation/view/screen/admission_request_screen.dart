@@ -8,13 +8,14 @@ import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.da
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_dropdown_form_field.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_searchable_dropdown.dart';
+import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
 import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/common_methods.dart';
-import 'package:my_template/features/auth/data/model/admission_request_model.dart';
 import 'package:my_template/features/auth/data/model/nationality_model.dart';
+import 'package:my_template/features/auth/data/model/parent_registration_model.dart';
 import 'package:my_template/features/auth/presentation/view/cubit/auth_cubit.dart';
 import 'package:my_template/features/auth/presentation/view/cubit/auth_state.dart';
 
@@ -130,7 +131,10 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state.admissionStatus.isSuccess) {
-            CommonMethods.showToast(message: "تم إرسال الطلبات بنجاح", type: ToastType.success);
+            final msg = (state.admissionStatus.data is Map)
+                ? (state.admissionStatus.data['msg'] ?? "تم إرسال الطلبات بنجاح")
+                : "تم إرسال الطلبات بنجاح";
+            CommonMethods.showToast(message: msg, type: ToastType.success);
             Navigator.pop(context);
           } else if (state.admissionStatus.isFailure) {
             CommonMethods.showToast(
@@ -274,7 +278,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
                       DropdownMenuItem(value: "1", child: Text(AppLocalKay.resident_card.tr())),
                     ],
                     onChanged: (v) => setState(() => _parentResidencyType = v!),
-                    errorText: '',
+                    errorText: AppLocalKay.required.tr(),
                     submitted: false,
                   ),
                   Gap(12.h),
@@ -282,7 +286,11 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
                     title: AppLocalKay.nationalId.tr(),
                     controller: _parentNationalIdController,
                     keyboardType: TextInputType.number,
-                    validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
+                    validator: (v) {
+                      if (v!.isEmpty) return AppLocalKay.required.tr();
+                      if (v.length != 10) return "يجب أن يكون 10 أرقام";
+                      return null;
+                    },
                   ),
                   Gap(12.h),
                   CustomFormField(
@@ -292,9 +300,15 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
                   Gap(12.h),
                   CustomFormField(
                     title: AppLocalKay.student_phone.tr(),
-                    controller: _parentPhoneController,
                     keyboardType: TextInputType.phone,
-                    validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
+                    controller: _parentPhoneController,
+                    validator: (v) {
+                      if (v!.isEmpty) return AppLocalKay.required.tr();
+                      if (v.length != 10 || !v.startsWith("05")) {
+                        return "يجب أن يكون 10 أرقام ويبدأ بـ 05";
+                      }
+                      return null;
+                    },
                   ),
                   Gap(12.h),
                   Text(AppLocalKay.gender.tr(), style: AppTextStyle.formTitleStyle(context)),
@@ -331,36 +345,46 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
                     radius: 12.r,
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        final admissionModel = AdmissionRequestModel(
-                          parentFirstName: _parentFirstNameController.text,
-                          parentLastName: _parentLastNameController.text,
-                          parentFamilyName: _parentFamilyNameController.text,
-                          parentGrandfatherName: _parentGrandfatherNameController.text,
-                          parentNationality: _parentNationalityCode?.toString() ?? '',
-                          parentReligion: _parentReligionCode?.toString() ?? '',
-                          parentResidencyType: _parentResidencyType,
-                          parentPhone: _parentPhoneController.text,
-                          parentGender: _parentGender,
-                          parentPassportNumber: _parentPassportNumberController.text,
-                          parentNationalId: _parentNationalIdController.text,
-                          studentCount: _studentControllers.length,
-                          students: _studentControllers.map((s) {
-                            return StudentAdmissionModel(
-                              studentName: s.name.text,
-                              registrationDate: s.regDate.text,
-                              studentBirthDate: s.birthDate.text,
-                              studentIdNo: s.idNo.text,
-                              gender: s.gender,
-                              section: s.section ?? '',
-                              stage: s.stage ?? '',
-                              grade: s.grade ?? '',
+                        final parentModel = ParentRegistrationModel(
+                          pFirstName: _parentFirstNameController.text,
+                          pSecondName: _parentLastNameController.text,
+                          pGrandName: _parentGrandfatherNameController.text,
+                          pFamilyName: _parentFamilyNameController.text,
+                          pNationCode: _parentNationalityCode ?? 0,
+                          pReligionCode: _parentReligionCode ?? 0,
+                          idType: int.tryParse(_parentResidencyType) ?? 1,
+                          idNo: _parentNationalIdController.text,
+                          pPassportNo: _parentPassportNumberController.text,
+                          pMobNo: _parentPhoneController.text,
+                          pGender: int.tryParse(_parentGender) ?? 0,
+                          registrationStudents: _studentControllers.map((s) {
+                            return StudentRegistrationModel(
+                              sFirstName: s.name.text,
+                              sIdNo: s.idNo.text,
+                              regDate: s.regDate.text,
+                              birthDate: s.birthDate.text,
+                              ageYear: int.tryParse(s.years.text) ?? 0,
+                              ageMonth: int.tryParse(s.months.text) ?? 0,
+                              ageDay: int.tryParse(s.days.text) ?? 0,
+                              gender: int.tryParse(s.gender) ?? 0,
+                              sectionCode: int.tryParse(s.section ?? '') ?? 0,
+                              stageCode: int.tryParse(s.stage ?? '') ?? 0,
+                              levelCode: int.tryParse(s.grade ?? '') ?? 0,
                             );
                           }).toList(),
                         );
-                        context.read<AuthCubit>().submitAdmissionRequest(admissionModel);
+                        context.read<AuthCubit>().registerParent(parentModel);
                       }
                     },
-                    text: AppLocalKay.submit_admission.tr(),
+                    child: state.admissionStatus.isLoading
+                        ? CustomLoading(color: AppColor.whiteColor(context), size: 20)
+                        : Text(
+                            AppLocalKay.submit_admission.tr(),
+                            style: AppTextStyle.bodyLarge(
+                              context,
+                              color: AppColor.whiteColor(context),
+                            ),
+                          ),
                   ),
                   Gap(40.h),
                 ],
@@ -400,7 +424,11 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
             title: AppLocalKay.student_id_no.tr(),
             controller: s.idNo,
             keyboardType: TextInputType.number,
-            validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
+            validator: (v) {
+              if (v!.isEmpty) return AppLocalKay.required.tr();
+              if (v.length != 10) return "يجب أن يكون 10 أرقام";
+              return null;
+            },
           ),
           Gap(12.h),
           CustomFormField(
@@ -481,7 +509,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
               DropdownMenuItem(value: "1", child: Text(AppLocalKay.female.tr())),
             ],
             onChanged: (v) => setState(() => s.gender = v!),
-            errorText: '',
+            errorText: AppLocalKay.required.tr(),
             submitted: false,
           ),
           Gap(12.h),
