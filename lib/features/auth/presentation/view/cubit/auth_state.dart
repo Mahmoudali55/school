@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/features/auth/data/model/level_model.dart';
 import 'package:my_template/features/auth/data/model/nationality_model.dart';
 import 'package:my_template/features/auth/data/model/registration_response_model.dart';
 import 'package:my_template/features/auth/data/model/religion_model.dart';
@@ -18,6 +19,7 @@ class AuthState extends Equatable {
   final StatusState<List<NationalityModel>> nationalityStatus;
   final StatusState<List<SectionModel>> sectionStatus;
   final StatusState<Map<int, List<StageModel>>> stagesMapStatus;
+  final StatusState<Map<String, List<LevelModel>>> levelsMapStatus;
 
   /// Password validation
   final bool hasUpperCase;
@@ -41,6 +43,7 @@ class AuthState extends Equatable {
     this.nationalityStatus = const StatusState.initial(),
     this.sectionStatus = const StatusState.initial(),
     this.stagesMapStatus = const StatusState.initial(),
+    this.levelsMapStatus = const StatusState.initial(),
 
     this.hasUpperCase = false,
     this.hasLowerCase = false,
@@ -64,6 +67,7 @@ class AuthState extends Equatable {
     StatusState<List<NationalityModel>>? nationalityStatus,
     StatusState<List<SectionModel>>? sectionStatus,
     StatusState<Map<int, List<StageModel>>>? stagesMapStatus,
+    StatusState<Map<String, List<LevelModel>>>? levelsMapStatus,
 
     bool? hasUpperCase,
     bool? hasLowerCase,
@@ -83,6 +87,7 @@ class AuthState extends Equatable {
       nationalityStatus: nationalityStatus ?? this.nationalityStatus,
       sectionStatus: sectionStatus ?? this.sectionStatus,
       stagesMapStatus: stagesMapStatus ?? this.stagesMapStatus,
+      levelsMapStatus: levelsMapStatus ?? this.levelsMapStatus,
 
       hasUpperCase: hasUpperCase ?? this.hasUpperCase,
       hasLowerCase: hasLowerCase ?? this.hasLowerCase,
@@ -105,6 +110,7 @@ class AuthState extends Equatable {
     nationalityStatus,
     sectionStatus,
     stagesMapStatus,
+    levelsMapStatus,
     hasUpperCase,
     hasLowerCase,
     hasNumber,

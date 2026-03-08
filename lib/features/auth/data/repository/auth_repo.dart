@@ -9,6 +9,7 @@ import 'package:my_template/features/auth/data/model/user_login_model.dart';
 
 import '../../../../core/error/failures.dart' hide handleDioRequest;
 import '../model/admission_request_model.dart';
+import '../model/level_model.dart';
 import '../model/nationality_model.dart';
 import '../model/registration_model.dart';
 import '../model/religion_model.dart';
@@ -33,6 +34,7 @@ abstract interface class AuthRepo {
   Future<Either<Failure, List<NationalityModel>>> getNationalityCodes();
   Future<Either<Failure, List<SectionModel>>> getSections();
   Future<Either<Failure, List<StageModel>>> getStages(int sectionCode);
+  Future<Either<Failure, List<LevelModel>>> getLevels(int sectionCode, int stageCode);
 }
 
 class AuthRepoImpl implements AuthRepo {
@@ -155,6 +157,23 @@ class AuthRepoImpl implements AuthRepo {
             ? (jsonDecode(response['Data']) as List)
             : (response['Data'] as List);
         return data.map((e) => StageModel.fromJson(e)).toList();
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, List<LevelModel>>> getLevels(int sectionCode, int stageCode) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.getLevels,
+          extra: {'skipAuth': true},
+          queryParameters: {"sectioncode": sectionCode, "stagecode": stageCode},
+        );
+        final List data = response['Data'] is String
+            ? (jsonDecode(response['Data']) as List)
+            : (response['Data'] as List);
+        return data.map((e) => LevelModel.fromJson(e)).toList();
       },
     );
   }

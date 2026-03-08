@@ -353,7 +353,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
                               gender: s.gender,
                               section: s.section ?? '',
                               stage: s.stage ?? '',
-                              grade: s.grade,
+                              grade: s.grade ?? '',
                             );
                           }).toList(),
                         );
@@ -563,23 +563,55 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
                       ),
                     )
                     .toList(),
-                onChanged: (v) => setState(() => s.stage = v!),
+                onChanged: (v) {
+                  setState(() {
+                    s.stage = v;
+                    s.grade = null; // Reset grade when stage changes
+                  });
+                  if (v != null && s.section != null) {
+                    context.read<AuthCubit>().loadLevels(int.parse(s.section!), int.parse(v));
+                  }
+                },
               );
             },
           ),
           Gap(12.h),
           Text(AppLocalKay.student_grade.tr(), style: AppTextStyle.formTitleStyle(context)),
           Gap(8.h),
-          CustomDropdownFormField<String>(
-            errorText: '',
-            submitted: false,
-            value: s.grade,
-            items: const [
-              DropdownMenuItem(value: "1", child: Text("الصف الأول")),
-              DropdownMenuItem(value: "2", child: Text("الصف الثاني")),
-              DropdownMenuItem(value: "3", child: Text("الصف الثالث")),
-            ],
-            onChanged: (v) => setState(() => s.grade = v!),
+          BlocBuilder<AuthCubit, AuthState>(
+            buildWhen: (p, c) => p.levelsMapStatus != c.levelsMapStatus,
+            builder: (context, state) {
+              final sectionCode = int.tryParse(s.section ?? '');
+              final stageCode = int.tryParse(s.stage ?? '');
+              final key = "${sectionCode}_$stageCode";
+              final levels = (sectionCode != null && stageCode != null)
+                  ? (state.levelsMapStatus.data?[key] ?? [])
+                  : [];
+              final isLoading = state.levelsMapStatus.isLoading;
+
+              // Auto-select first if not selected and data available
+              if (s.grade == null && levels.isNotEmpty) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  setState(() => s.grade = levels.first.levelCode.toString());
+                });
+              }
+
+              return CustomDropdownFormField<String>(
+                errorText: AppLocalKay.required.tr(),
+                submitted: false,
+                value: s.grade,
+                hint: isLoading ? "Loading..." : AppLocalKay.student_grade.tr(),
+                items: levels
+                    .map(
+                      (lvl) => DropdownMenuItem<String>(
+                        value: lvl.levelCode.toString(),
+                        child: Text(lvl.levelNameAr),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (v) => setState(() => s.grade = v!),
+              );
+            },
           ),
         ],
       ),
@@ -620,7 +652,7 @@ class _StudentFormControllers {
   String gender = "0";
   String? section;
   String? stage;
-  String grade = "1";
+  String? grade;
 
   void dispose() {
     name.dispose();

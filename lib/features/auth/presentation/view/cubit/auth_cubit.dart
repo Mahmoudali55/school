@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/auth/data/model/admission_request_model.dart';
+import 'package:my_template/features/auth/data/model/level_model.dart';
 import 'package:my_template/features/auth/data/model/stage_model.dart';
 import 'package:my_template/features/auth/data/repository/auth_repo.dart';
 import 'package:my_template/features/auth/presentation/view/cubit/auth_state.dart';
@@ -267,6 +268,35 @@ class AuthCubit extends Cubit<AuthState> {
         final newMap = Map<int, List<StageModel>>.from(state.stagesMapStatus.data ?? {});
         newMap[sectionCode] = data;
         emit(state.copyWith(stagesMapStatus: StatusState.success(newMap)));
+      },
+    );
+  }
+
+  Future<void> loadLevels(int sectionCode, int stageCode) async {
+    if (isClosed) return;
+
+    final key = "${sectionCode}_$stageCode";
+    final currentMap = state.levelsMapStatus.data ?? {};
+    if (currentMap.containsKey(key)) return;
+
+    emit(state.copyWith(levelsMapStatus: state.levelsMapStatus.copyWith(status: Status.loading)));
+
+    final result = await authRepo.getLevels(sectionCode, stageCode);
+    if (isClosed) return;
+
+    result.fold(
+      (error) => emit(
+        state.copyWith(
+          levelsMapStatus: state.levelsMapStatus.copyWith(
+            status: Status.failure,
+            error: error.errMessage,
+          ),
+        ),
+      ),
+      (data) {
+        final newMap = Map<String, List<LevelModel>>.from(state.levelsMapStatus.data ?? {});
+        newMap[key] = data;
+        emit(state.copyWith(levelsMapStatus: StatusState.success(newMap)));
       },
     );
   }

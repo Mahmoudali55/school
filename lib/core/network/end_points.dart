@@ -64,6 +64,7 @@ class EndPoints {
   static const String getNationalityCodes = 'DeltagroupService/School/GetPNATIONCODE';
   static const String getSections = 'DeltagroupService/School/GetSection';
   static const String getStages = 'DeltagroupService/School/GetSatge';
+  static const String getLevels = 'DeltagroupService/School/GetLevel';
   static const String addDigitalLibrary = 'DeltagroupService/School/AddDigitalLibrary';
   static const String getDigitalLibrary = 'DeltagroupService/School/GetDigitalLibrary';
 }
