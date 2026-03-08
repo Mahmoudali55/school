@@ -4,6 +4,7 @@ import 'package:my_template/features/auth/data/model/nationality_model.dart';
 import 'package:my_template/features/auth/data/model/registration_response_model.dart';
 import 'package:my_template/features/auth/data/model/religion_model.dart';
 import 'package:my_template/features/auth/data/model/section_model.dart';
+import 'package:my_template/features/auth/data/model/stage_model.dart';
 import 'package:my_template/features/auth/data/model/user_login_model.dart';
 
 class AuthState extends Equatable {
@@ -16,6 +17,7 @@ class AuthState extends Equatable {
   final StatusState<List<ReligionModel>> religionStatus;
   final StatusState<List<NationalityModel>> nationalityStatus;
   final StatusState<List<SectionModel>> sectionStatus;
+  final StatusState<Map<int, List<StageModel>>> stagesMapStatus;
 
   /// Password validation
   final bool hasUpperCase;
@@ -38,6 +40,7 @@ class AuthState extends Equatable {
     this.religionStatus = const StatusState.initial(),
     this.nationalityStatus = const StatusState.initial(),
     this.sectionStatus = const StatusState.initial(),
+    this.stagesMapStatus = const StatusState.initial(),
 
     this.hasUpperCase = false,
     this.hasLowerCase = false,
@@ -60,6 +63,7 @@ class AuthState extends Equatable {
     StatusState<List<ReligionModel>>? religionStatus,
     StatusState<List<NationalityModel>>? nationalityStatus,
     StatusState<List<SectionModel>>? sectionStatus,
+    StatusState<Map<int, List<StageModel>>>? stagesMapStatus,
 
     bool? hasUpperCase,
     bool? hasLowerCase,
@@ -78,6 +82,7 @@ class AuthState extends Equatable {
       religionStatus: religionStatus ?? this.religionStatus,
       nationalityStatus: nationalityStatus ?? this.nationalityStatus,
       sectionStatus: sectionStatus ?? this.sectionStatus,
+      stagesMapStatus: stagesMapStatus ?? this.stagesMapStatus,
 
       hasUpperCase: hasUpperCase ?? this.hasUpperCase,
       hasLowerCase: hasLowerCase ?? this.hasLowerCase,
@@ -99,6 +104,7 @@ class AuthState extends Equatable {
     religionStatus,
     nationalityStatus,
     sectionStatus,
+    stagesMapStatus,
     hasUpperCase,
     hasLowerCase,
     hasNumber,

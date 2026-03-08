@@ -13,6 +13,7 @@ import '../model/nationality_model.dart';
 import '../model/registration_model.dart';
 import '../model/religion_model.dart';
 import '../model/section_model.dart';
+import '../model/stage_model.dart';
 
 abstract interface class AuthRepo {
   Future<Either<Failure, RegistrationResponse>> register({
@@ -31,6 +32,7 @@ abstract interface class AuthRepo {
   Future<Either<Failure, List<ReligionModel>>> getReligionCodes();
   Future<Either<Failure, List<NationalityModel>>> getNationalityCodes();
   Future<Either<Failure, List<SectionModel>>> getSections();
+  Future<Either<Failure, List<StageModel>>> getStages(int sectionCode);
 }
 
 class AuthRepoImpl implements AuthRepo {
@@ -136,6 +138,23 @@ class AuthRepoImpl implements AuthRepo {
             ? (jsonDecode(response['Data']) as List)
             : (response['Data'] as List);
         return data.map((e) => SectionModel.fromJson(e)).toList();
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, List<StageModel>>> getStages(int sectionCode) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.getStages,
+          extra: {'skipAuth': true},
+          queryParameters: {"sectioncode": sectionCode},
+        );
+        final List data = response['Data'] is String
+            ? (jsonDecode(response['Data']) as List)
+            : (response['Data'] as List);
+        return data.map((e) => StageModel.fromJson(e)).toList();
       },
     );
   }

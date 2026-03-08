@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/auth/data/model/admission_request_model.dart';
+import 'package:my_template/features/auth/data/model/stage_model.dart';
 import 'package:my_template/features/auth/data/repository/auth_repo.dart';
 import 'package:my_template/features/auth/presentation/view/cubit/auth_state.dart';
 
@@ -237,6 +238,36 @@ class AuthCubit extends Cubit<AuthState> {
     result.fold(
       (error) => emit(state.copyWith(sectionStatus: StatusState.failure(error.errMessage))),
       (data) => emit(state.copyWith(sectionStatus: StatusState.success(data))),
+    );
+  }
+
+  Future<void> loadStages(int sectionCode) async {
+    if (isClosed) return;
+
+    // Check if data already exists in map
+    final currentMap = state.stagesMapStatus.data ?? {};
+    if (currentMap.containsKey(sectionCode)) return;
+
+    // Set loading state for the map if needed or just fetch
+    emit(state.copyWith(stagesMapStatus: state.stagesMapStatus.copyWith(status: Status.loading)));
+
+    final result = await authRepo.getStages(sectionCode);
+    if (isClosed) return;
+
+    result.fold(
+      (error) => emit(
+        state.copyWith(
+          stagesMapStatus: state.stagesMapStatus.copyWith(
+            status: Status.failure,
+            error: error.errMessage,
+          ),
+        ),
+      ),
+      (data) {
+        final newMap = Map<int, List<StageModel>>.from(state.stagesMapStatus.data ?? {});
+        newMap[sectionCode] = data;
+        emit(state.copyWith(stagesMapStatus: StatusState.success(newMap)));
+      },
     );
   }
 }

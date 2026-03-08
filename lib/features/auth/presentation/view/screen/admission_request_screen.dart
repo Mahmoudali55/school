@@ -352,7 +352,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
                               studentIdNo: s.idNo.text,
                               gender: s.gender,
                               section: s.section ?? '',
-                              stage: s.stage,
+                              stage: s.stage ?? '',
                               grade: s.grade,
                             );
                           }).toList(),
@@ -495,8 +495,10 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
 
               // Auto-select first if not selected and data available
               if (s.section == null && sections.isNotEmpty) {
+                final firstSection = sections.first.sectionCode;
                 WidgetsBinding.instance.addPostFrameCallback((_) {
-                  setState(() => s.section = sections.first.sectionCode.toString());
+                  setState(() => s.section = firstSection.toString());
+                  context.read<AuthCubit>().loadStages(firstSection);
                 });
               }
 
@@ -513,7 +515,17 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
                             ),
                           )
                           .toList(),
-                onChanged: isLoading ? null : (v) => setState(() => s.section = v!),
+                onChanged: isLoading
+                    ? null
+                    : (v) {
+                        setState(() {
+                          s.section = v;
+                          s.stage = null; // Reset stage when section changes
+                        });
+                        if (v != null) {
+                          context.read<AuthCubit>().loadStages(int.parse(v));
+                        }
+                      },
                 errorText: AppLocalKay.required.tr(),
                 submitted: false,
               );
@@ -522,17 +534,38 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
           Gap(12.h),
           Text(AppLocalKay.student_stage.tr(), style: AppTextStyle.formTitleStyle(context)),
           Gap(8.h),
-          CustomDropdownFormField<String>(
-            errorText: '',
-            submitted: false,
-            value: s.stage,
-            items: const [
-              DropdownMenuItem(value: "kg", child: Text("رياض أطفال")),
-              DropdownMenuItem(value: "primary", child: Text("ابتدائي")),
-              DropdownMenuItem(value: "preparatory", child: Text("اعدادي")),
-              DropdownMenuItem(value: "secondary", child: Text("ثانوي")),
-            ],
-            onChanged: (v) => setState(() => s.stage = v!),
+          BlocBuilder<AuthCubit, AuthState>(
+            buildWhen: (p, c) => p.stagesMapStatus != c.stagesMapStatus,
+            builder: (context, state) {
+              final sectionCode = int.tryParse(s.section ?? '');
+              final stages = sectionCode != null
+                  ? (state.stagesMapStatus.data?[sectionCode] ?? [])
+                  : [];
+              final isLoading = state.stagesMapStatus.isLoading;
+
+              // Auto-select first if not selected and data available
+              if (s.stage == null && stages.isNotEmpty) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  setState(() => s.stage = stages.first.stageCode.toString());
+                });
+              }
+
+              return CustomDropdownFormField<String>(
+                errorText: AppLocalKay.required.tr(),
+                submitted: false,
+                value: s.stage,
+                hint: isLoading ? "Loading..." : AppLocalKay.student_stage.tr(),
+                items: stages
+                    .map(
+                      (stg) => DropdownMenuItem<String>(
+                        value: stg.stageCode.toString(),
+                        child: Text(stg.stageNameAr),
+                      ),
+                    )
+                    .toList(),
+                onChanged: (v) => setState(() => s.stage = v!),
+              );
+            },
           ),
           Gap(12.h),
           Text(AppLocalKay.student_grade.tr(), style: AppTextStyle.formTitleStyle(context)),
@@ -586,7 +619,7 @@ class _StudentFormControllers {
   final days = TextEditingController();
   String gender = "0";
   String? section;
-  String stage = "primary";
+  String? stage;
   String grade = "1";
 
   void dispose() {
