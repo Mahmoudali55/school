@@ -1,13 +1,17 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
-import 'package:my_template/core/theme/app_colors.dart';
+import 'package:my_template/core/cache/hive/hive_methods.dart';
+import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/home/data/models/get_digital_library_model.dart';
+import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
+import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 import 'package:my_template/features/home/presentation/view/execution/library_item_detail_screen.dart';
-import 'package:my_template/features/home/presentation/view/execution/library_search_delegate_screen.dart';
 
 class DigitalLibraryScreen extends StatefulWidget {
   const DigitalLibraryScreen({super.key});
@@ -19,254 +23,364 @@ class DigitalLibraryScreen extends StatefulWidget {
 class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  int _selectedCategory = 0;
+  int _selectedCategoryIndex = 0;
+  String _searchQuery = '';
+  final TextEditingController _searchController = TextEditingController();
 
-  final List<String> _categories = ['الكل', 'الكتب', 'الفيديوهات', 'الملخصات', 'أوراق العمل'];
-
-  final List<Map<String, dynamic>> _libraryItems = [
-    {
-      'title': 'كتاب الرياضيات',
-      'type': 'كتاب',
-      'subject': 'الرياضيات',
-      'size': '15.2 MB',
-      'icon': Icons.picture_as_pdf,
-      'color': Colors.red,
-    },
-    {
-      'title': 'فيديو شرح الفيزياء',
-      'type': 'فيديو',
-      'subject': 'الفيزياء',
-      'size': '45.7 MB',
-      'icon': Icons.video_library,
-      'color': Colors.blue,
-    },
-    {
-      'title': 'ملخص الكيمياء',
-      'type': 'ملخص',
-      'subject': 'الكيمياء',
-      'size': '2.1 MB',
-      'icon': Icons.description,
-      'color': Colors.green,
-    },
-    {
-      'title': 'ورقة عمل الرياضيات',
-      'type': 'ورقة عمل',
-      'subject': 'الرياضيات',
-      'size': '1.8 MB',
-      'icon': Icons.assignment,
-      'color': Colors.orange,
-    },
-    {
-      'title': 'كتاب اللغة العربية',
-      'type': 'كتاب',
-      'subject': 'اللغة العربية',
-      'size': '12.3 MB',
-      'icon': Icons.picture_as_pdf,
-      'color': Colors.red,
-    },
-  ];
+  final List<String> _categories = ['الكل', 'الكتب', 'الفيديوهات', 'المذكرات'];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(
-      length: _categories.length,
-      vsync: this,
-      initialIndex: _selectedCategory,
-    );
-    _tabController.addListener(_handleTabSelection);
-  }
+    _tabController = TabController(length: _categories.length, vsync: this);
+    _tabController.addListener(() {
+      if (_tabController.indexIsChanging) {
+        setState(() => _selectedCategoryIndex = _tabController.index);
+      }
+    });
 
-  void _handleTabSelection() {
-    if (_tabController.indexIsChanging) {
-      setState(() {
-        _selectedCategory = _tabController.index;
-      });
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final levelCodeStr = HiveMethods.getUserLevelCode().toString();
+      final levelCode = int.tryParse(levelCodeStr) ?? 0;
+      if (levelCode > 0) {
+        context.read<HomeCubit>().getDigitalLibrary(levelCode: levelCode);
+      }
+    });
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        context,
-        title: Text(
-          AppLocalKay.digital_library.tr(),
-          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
-        ),
-        actions: [IconButton(icon: const Icon(Icons.search), onPressed: _searchLibrary)],
-      ),
-      body: Column(
-        children: [
-          Container(
-            color: AppColor.whiteColor(context),
-            child: TabBar(
-              controller: _tabController,
-              tabs: _categories.map((category) {
-                return Tab(text: category);
-              }).toList(),
-              labelColor: AppColor.primaryColor(context),
-              unselectedLabelColor: Colors.grey,
-              indicatorColor: AppColor.primaryColor(context),
-              indicatorWeight: 3.0,
-              indicatorSize: TabBarIndicatorSize.tab,
-              labelStyle: AppTextStyle.titleSmall(context).copyWith(fontWeight: FontWeight.bold),
-              unselectedLabelStyle: AppTextStyle.titleSmall(
-                context,
-              ).copyWith(fontWeight: FontWeight.normal),
-              isScrollable: true,
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              labelPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-            ),
-          ),
-          Gap( 8.h),
+      backgroundColor: const Color(0xFFF8FAFC),
+      body: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          final allItems = state.getDigitalLibraryStatus.data ?? [];
 
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: _categories.map((category) {
-                return _buildTabContent(category);
-              }).toList(),
-            ),
-          ),
-        ],
+          return Column(
+            children: [
+              // ── Modern Gradient Header ──
+              FadeInDown(
+                duration: const Duration(milliseconds: 500),
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.fromLTRB(
+                    20.w,
+                    MediaQuery.of(context).padding.top + 10.h,
+                    20.w,
+                    10.h,
+                  ),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xFF4F46E5),
+                        Color(0xFF6366F1),
+                      ], // Indigo gradient for students
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () => Navigator.pop(context),
+                            icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
+                            padding: EdgeInsets.zero,
+                          ),
+                          Gap(8.w),
+                          Text(
+                            AppLocalKay.digital_library.tr(),
+                            style: AppTextStyle.titleLarge(
+                              context,
+                            ).copyWith(fontWeight: FontWeight.bold, color: Colors.white),
+                          ),
+                          const Spacer(),
+                          Icon(
+                            Icons.auto_stories_rounded,
+                            color: Colors.white.withOpacity(0.8),
+                            size: 24.w,
+                          ),
+                        ],
+                      ),
+                      Gap(15.h),
+                      // Search Bar
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: TextField(
+                          controller: _searchController,
+                          onChanged: (v) => setState(() => _searchQuery = v),
+                          decoration: InputDecoration(
+                            hintText: 'ابحث عن كتب، مذكرات، أو فيديوهات...',
+                            hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 13.sp),
+                            prefixIcon: Icon(
+                              Icons.search_rounded,
+                              color: Colors.grey.shade400,
+                              size: 22.w,
+                            ),
+                            suffixIcon: _searchQuery.isNotEmpty
+                                ? IconButton(
+                                    icon: const Icon(Icons.clear_rounded, size: 20),
+                                    color: Colors.grey.shade400,
+                                    onPressed: () {
+                                      _searchController.clear();
+                                      setState(() => _searchQuery = '');
+                                    },
+                                  )
+                                : null,
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(vertical: 14.h),
+                          ),
+                        ),
+                      ),
+                      Gap(15.h),
+                      // Custom Tabs Implementation
+                      TabBar(
+                        controller: _tabController,
+                        isScrollable: true,
+                        indicatorColor: Colors.white,
+                        indicatorWeight: 3,
+                        indicatorSize: TabBarIndicatorSize.label,
+                        dividerColor: Colors.transparent,
+                        labelColor: Colors.white,
+                        unselectedLabelColor: Colors.white.withOpacity(0.6),
+                        labelStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                        tabs: _categories.map((cat) => Tab(text: cat)).toList(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // ── Files List ──
+              Expanded(
+                child: state.getDigitalLibraryStatus.isLoading
+                    ? Center(
+                        child: CustomLoading(color: const Color(0xFF4F46E5), size: 40.w),
+                      )
+                    : _buildFilesList(allItems),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
 
-  Widget _buildTabContent(String category) {
-    List<Map<String, dynamic>> filteredItems = _libraryItems.where((item) {
-      if (category == AppLocalKay.all.tr()) return true;
-      if (category == AppLocalKay.books.tr()) return item['type'] == AppLocalKay.book.tr();
-      if (category == AppLocalKay.videos.tr()) return item['type'] == AppLocalKay.video.tr();
-      if (category == AppLocalKay.summaries.tr()) return item['type'] == AppLocalKay.summary.tr();
-      if (category == AppLocalKay.worksheets.tr())
-        return item['type'] == AppLocalKay.worksheet.tr();
-      return true;
+  Widget _buildFilesList(List<DigitalLibraryItem> allItems) {
+    // 1. Filter by Search
+    var filteredItems = allItems.where((item) {
+      if (_searchQuery.isEmpty) return true;
+      return item.fileName.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+          item.notes.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+          item.teacherName.toLowerCase().contains(_searchQuery.toLowerCase());
     }).toList();
 
+    // 2. Filter by Category
+    if (_selectedCategoryIndex > 0) {
+      final category = _categories[_selectedCategoryIndex];
+      filteredItems = filteredItems.where((item) {
+        final ext = item.fileExtension.toLowerCase();
+        if (category == 'الكتب') return ['pdf'].contains(ext);
+        if (category == 'الفيديوهات') return ['mp4', 'avi', 'mov'].contains(ext);
+        if (category == 'المذكرات') return ['doc', 'docx', 'ppt', 'pptx'].contains(ext);
+        return true;
+      }).toList();
+    }
+
     if (filteredItems.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(_getCategoryIcon(category), size: 60.w, color: Colors.grey.shade400),
-            Gap( 16.h),
-            Text(
-              'لا توجد عناصر في $category',
-              style: AppTextStyle.titleMedium(context).copyWith(color: Colors.grey.shade600),
-            ),
-          ],
+      return FadeInUp(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.search_off_rounded, size: 70.w, color: Colors.grey.shade200),
+              Gap(16.h),
+              Text(
+                _searchQuery.isNotEmpty ? 'لا توجد نتائج للبحث' : 'لا توجد ملفات حالياً',
+                style: AppTextStyle.titleMedium(context).copyWith(color: Colors.grey.shade400),
+              ),
+            ],
+          ),
         ),
       );
     }
 
     return ListView.builder(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      padding: EdgeInsets.fromLTRB(20.w, 15.h, 20.w, 20.h),
       itemCount: filteredItems.length,
+      physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) {
-        final item = filteredItems[index];
-        return _buildLibraryItem(item, index);
+        return _buildResourceCard(filteredItems[index], index);
       },
     );
   }
 
-  IconData _getCategoryIcon(String category) {
-    switch (category) {
-      case AppLocalKay.all:
-        return Icons.all_inclusive;
-      case AppLocalKay.books:
-        return Icons.menu_book;
-      case AppLocalKay.videos:
-        return Icons.video_library;
-      case AppLocalKay.summaries:
-        return Icons.description;
-      case AppLocalKay.worksheets:
-        return Icons.assignment;
-      default:
-        return Icons.folder;
+  Widget _buildResourceCard(DigitalLibraryItem item, int index) {
+    final ext = item.fileExtension.toLowerCase();
+    IconData icon;
+    Color iconColor;
+    Color cardAccent;
+
+    if (['pdf'].contains(ext)) {
+      icon = Icons.picture_as_pdf_rounded;
+      iconColor = const Color(0xFFEF4444);
+      cardAccent = const Color(0xFFEF4444);
+    } else if (['mp4', 'avi', 'mov'].contains(ext)) {
+      icon = Icons.play_circle_fill_rounded;
+      iconColor = const Color(0xFF3B82F6);
+      cardAccent = const Color(0xFF3B82F6);
+    } else if (['doc', 'docx'].contains(ext)) {
+      icon = Icons.article_rounded;
+      iconColor = const Color(0xFF6366F1);
+      cardAccent = const Color(0xFF6366F1);
+    } else if (['ppt', 'pptx'].contains(ext)) {
+      icon = Icons.slideshow_rounded;
+      iconColor = const Color(0xFFF97316);
+      cardAccent = const Color(0xFFF97316);
+    } else {
+      icon = Icons.insert_drive_file_rounded;
+      iconColor = const Color(0xFF10B981);
+      cardAccent = const Color(0xFF10B981);
     }
-  }
 
-  Widget _buildLibraryItem(Map<String, dynamic> item, int index) {
-    return Card(
-      margin: EdgeInsets.only(bottom: 12.h),
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-      child: ListTile(
-        leading: Container(
-          width: 50.w,
-          height: 50.w,
-          decoration: BoxDecoration(
-            color: item['color'].withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12.r),
+    return FadeInUp(
+      duration: const Duration(milliseconds: 400),
+      delay: Duration(milliseconds: index * 50),
+      child: Container(
+        margin: EdgeInsets.only(bottom: 14.h),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(18.r),
+          boxShadow: [
+            BoxShadow(
+              color: cardAccent.withOpacity(0.08),
+              blurRadius: 12,
+              spreadRadius: 1,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: InkWell(
+          onTap: () {
+            final homeCubit = context.read<HomeCubit>();
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BlocProvider.value(
+                  value: homeCubit,
+                  child: LibraryItemDetailScreen(item: item),
+                ),
+              ),
+            );
+          },
+          borderRadius: BorderRadius.circular(18.r),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(18.r),
+            child: IntrinsicHeight(
+              child: Row(
+                children: [
+                  Container(width: 5.w, color: cardAccent),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.all(14.w),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 48.w,
+                            height: 48.w,
+                            decoration: BoxDecoration(
+                              color: iconColor.withOpacity(0.12),
+                              borderRadius: BorderRadius.circular(14.r),
+                            ),
+                            child: Center(
+                              child: Icon(icon, color: iconColor, size: 26.w),
+                            ),
+                          ),
+                          Gap(12.w),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  item.fileName,
+                                  style: AppTextStyle.bodyLarge(
+                                    context,
+                                  ).copyWith(fontWeight: FontWeight.bold),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Gap(3.h),
+                                Text(
+                                  item.teacherName.isNotEmpty ? item.teacherName : 'المدرسة',
+                                  style: AppTextStyle.bodySmall(
+                                    context,
+                                  ).copyWith(color: Colors.grey.shade500),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                if (item.notes.isNotEmpty) ...[
+                                  Gap(3.h),
+                                  Text(
+                                    item.notes,
+                                    style: AppTextStyle.bodySmall(
+                                      context,
+                                    ).copyWith(color: Colors.grey.shade400),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ),
+                          if (ext.isNotEmpty)
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                              decoration: BoxDecoration(
+                                color: cardAccent.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                              child: Text(
+                                ext.toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: cardAccent,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-          child: Icon(item['icon'], color: item['color']),
         ),
-        title: Text(
-          item['title'],
-          style: AppTextStyle.titleSmall(context).copyWith(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Gap( 4.h),
-            Text('${item['type']} - ${item['subject']}'),
-            Gap( 2.h),
-            Text(
-              item['size'],
-              style: AppTextStyle.bodySmall(context).copyWith(fontSize: 10.sp, color: Colors.grey),
-            ),
-          ],
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: Icon(Icons.download, color: AppColor.primaryColor(context), size: 20.w),
-              onPressed: () => _downloadItem(item),
-            ),
-            IconButton(
-              icon: Icon(Icons.info_outline, color: Colors.grey, size: 20.w),
-              onPressed: () => _viewItem(item),
-            ),
-          ],
-        ),
-        onTap: () => _viewItem(item),
       ),
-    );
-  }
-
-  void _searchLibrary() {
-    showSearch(context: context, delegate: LibrarySearchDelegate());
-  }
-
-  void _downloadItem(Map<String, dynamic> item) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('جاري تحميل ${item['title']}'),
-        backgroundColor: Colors.green,
-        duration: const Duration(seconds: 2),
-      ),
-    );
-  }
-
-  void _viewItem(Map<String, dynamic> item) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => LibraryItemDetailScreen(item: item)),
     );
   }
 }

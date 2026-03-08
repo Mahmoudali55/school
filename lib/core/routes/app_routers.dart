@@ -61,7 +61,12 @@ class AppRouters {
               BlocProvider(create: (context) => sl<HomeCubit>(), child: ShowStudentBalanceScreen()),
         );
       case RoutesName.digitalLibraryScreen:
-        return MaterialPageRoute(builder: (_) => DigitalLibraryScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => sl<HomeCubit>(),
+            child: const DigitalLibraryScreen(),
+          ),
+        );
       case RoutesName.assignmentsScreen:
         int? code;
         String? date;

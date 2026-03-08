@@ -351,6 +351,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
           CustomFormField(
             title: AppLocalKay.registration_date.tr(),
             controller: s.regDate,
+            suffixIcon: IconButton(icon: const Icon(Icons.calendar_month), onPressed: () {}),
             readOnly: true,
             onTap: () async {
               DateTime? picked = await showDatePicker(
@@ -369,6 +370,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
           CustomFormField(
             title: AppLocalKay.student_birthday.tr(),
             controller: s.birthDate,
+            suffixIcon: IconButton(icon: const Icon(Icons.calendar_month), onPressed: () {}),
             readOnly: true,
             onTap: () async {
               DateTime? picked = await showDatePicker(

@@ -18,6 +18,7 @@ import 'package:my_template/features/home/data/models/add_digital_library_model.
 import 'package:my_template/features/home/data/models/get_digital_library_model.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
+import 'package:my_template/features/home/presentation/view/execution/library_item_detail_screen.dart';
 
 class TeacherDigitalLibraryScreen extends StatefulWidget {
   const TeacherDigitalLibraryScreen({super.key});
@@ -379,102 +380,117 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
             ),
           ],
         ),
-        child: ClipRRect(
+        child: InkWell(
+          onTap: () {
+            final homeCubit = context.read<HomeCubit>();
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BlocProvider.value(
+                  value: homeCubit,
+                  child: LibraryItemDetailScreen(item: item),
+                ),
+              ),
+            );
+          },
           borderRadius: BorderRadius.circular(18.r),
-          child: IntrinsicHeight(
-            child: Row(
-              children: [
-                // Colored left accent bar
-                Container(width: 5.w, color: cardAccent),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.all(14.w),
-                    child: Row(
-                      children: [
-                        // File type icon circle
-                        Container(
-                          width: 48.w,
-                          height: 48.w,
-                          decoration: BoxDecoration(
-                            color: iconColor.withOpacity(0.12),
-                            borderRadius: BorderRadius.circular(14.r),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(18.r),
+            child: IntrinsicHeight(
+              child: Row(
+                children: [
+                  // Colored left accent bar
+                  Container(width: 5.w, color: cardAccent),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.all(14.w),
+                      child: Row(
+                        children: [
+                          // File type icon circle
+                          Container(
+                            width: 48.w,
+                            height: 48.w,
+                            decoration: BoxDecoration(
+                              color: iconColor.withOpacity(0.12),
+                              borderRadius: BorderRadius.circular(14.r),
+                            ),
+                            child: Center(
+                              child: Icon(icon, color: iconColor, size: 26.w),
+                            ),
                           ),
-                          child: Center(
-                            child: Icon(icon, color: iconColor, size: 26.w),
-                          ),
-                        ),
-                        Gap(12.w),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                item.fileName,
-                                style: AppTextStyle.bodyLarge(
-                                  context,
-                                ).copyWith(fontWeight: FontWeight.bold),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              if (item.teacherName.isNotEmpty) ...[
-                                Gap(3.h),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.person_outline_rounded,
-                                      size: 13.w,
-                                      color: Colors.grey.shade500,
-                                    ),
-                                    Gap(4.w),
-                                    Flexible(
-                                      child: Text(
-                                        item.teacherName,
-                                        style: AppTextStyle.bodySmall(
-                                          context,
-                                        ).copyWith(color: Colors.grey.shade500),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                              if (item.notes.isNotEmpty) ...[
-                                Gap(3.h),
+                          Gap(12.w),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
                                 Text(
-                                  item.notes,
-                                  style: AppTextStyle.bodySmall(
+                                  item.fileName,
+                                  style: AppTextStyle.bodyLarge(
                                     context,
-                                  ).copyWith(color: Colors.grey.shade400),
+                                  ).copyWith(fontWeight: FontWeight.bold),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
+                                if (item.teacherName.isNotEmpty) ...[
+                                  Gap(3.h),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.person_outline_rounded,
+                                        size: 13.w,
+                                        color: Colors.grey.shade500,
+                                      ),
+                                      Gap(4.w),
+                                      Flexible(
+                                        child: Text(
+                                          item.teacherName,
+                                          style: AppTextStyle.bodySmall(
+                                            context,
+                                          ).copyWith(color: Colors.grey.shade500),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                                if (item.notes.isNotEmpty) ...[
+                                  Gap(3.h),
+                                  Text(
+                                    item.notes,
+                                    style: AppTextStyle.bodySmall(
+                                      context,
+                                    ).copyWith(color: Colors.grey.shade400),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
                               ],
-                            ],
-                          ),
-                        ),
-                        // Extension badge
-                        if (ext.isNotEmpty)
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                            decoration: BoxDecoration(
-                              color: cardAccent.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(8.r),
                             ),
-                            child: Text(
-                              ext.toUpperCase(),
-                              style: TextStyle(
-                                fontSize: 10.sp,
-                                fontWeight: FontWeight.bold,
-                                color: cardAccent,
+                          ),
+                          // Extension badge
+                          if (ext.isNotEmpty)
+                            Container(
+                              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                              decoration: BoxDecoration(
+                                color: cardAccent.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                              child: Text(
+                                ext.toUpperCase(),
+                                style: TextStyle(
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: cardAccent,
+                                ),
                               ),
                             ),
-                          ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
