@@ -1138,7 +1138,7 @@
   "grandfather_name": "Grandfather Name",
   "nationality": "Nationality",
   "religion": "Religion",
-  "residency_type": "Residency Type",
+  "residency_type": "Identity type",
   "passport_number": "Passport Number",
   "gender": "Gender",
   "student_count": "Number of Children",
@@ -1153,6 +1153,7 @@
   "female": "Female",
   "national_id_card": "National ID",
   "resident_card": "Resident Card",
-  "student_id_no": "National ID No"
+  "student_id_no": "National ID No",
+  "student_phone": "Phone Number"
 }
 

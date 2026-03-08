@@ -31,8 +31,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
   final _parentLastNameController = TextEditingController();
   final _parentFamilyNameController = TextEditingController();
   final _parentGrandfatherNameController = TextEditingController();
-  final _parentNationalityController = TextEditingController();
-  final _parentReligionController = TextEditingController();
+
   final _parentPhoneController = TextEditingController();
   final _parentPassportNumberController = TextEditingController();
   final _parentNationalIdController = TextEditingController();
@@ -40,6 +39,8 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
 
   String _parentResidencyType = "national_id_card";
   String _parentGender = "male";
+  String _parentNationality = "saudi";
+  String _parentReligion = "islam";
 
   // Student data list
   List<_StudentFormControllers> _studentControllers = [];
@@ -69,8 +70,6 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
     _parentLastNameController.dispose();
     _parentFamilyNameController.dispose();
     _parentGrandfatherNameController.dispose();
-    _parentNationalityController.dispose();
-    _parentReligionController.dispose();
     _parentPhoneController.dispose();
     _parentPassportNumberController.dispose();
     _parentNationalIdController.dispose();
@@ -118,6 +117,10 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
         context,
         title: Text(AppLocalKay.apply_for_admission.tr()),
         centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
@@ -181,24 +184,47 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
                     ],
                   ),
                   Gap(12.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomFormField(
-                          title: AppLocalKay.nationality.tr(),
-                          controller: _parentNationalityController,
-                          validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
-                        ),
-                      ),
-                      Gap(12.w),
-                      Expanded(
-                        child: CustomFormField(
-                          title: AppLocalKay.religion.tr(),
-                          controller: _parentReligionController,
-                          validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
-                        ),
-                      ),
+                  Text(AppLocalKay.nationality.tr(), style: AppTextStyle.formTitleStyle(context)),
+                  Gap(8.h),
+                  CustomDropdownFormField<String>(
+                    value: _parentNationality,
+                    items: const [
+                      DropdownMenuItem(value: 'saudi', child: Text('سعودي')),
+                      DropdownMenuItem(value: 'egyptian', child: Text('مصري')),
+                      DropdownMenuItem(value: 'emirati', child: Text('إماراتي')),
+                      DropdownMenuItem(value: 'kuwaiti', child: Text('كويتي')),
+                      DropdownMenuItem(value: 'qatari', child: Text('قطري')),
+                      DropdownMenuItem(value: 'bahraini', child: Text('بحريني')),
+                      DropdownMenuItem(value: 'omani', child: Text('عماني')),
+                      DropdownMenuItem(value: 'jordanian', child: Text('أردني')),
+                      DropdownMenuItem(value: 'lebanese', child: Text('لبناني')),
+                      DropdownMenuItem(value: 'syrian', child: Text('سوري')),
+                      DropdownMenuItem(value: 'iraqi', child: Text('عراقي')),
+                      DropdownMenuItem(value: 'yemeni', child: Text('يمني')),
+                      DropdownMenuItem(value: 'libyan', child: Text('ليبي')),
+                      DropdownMenuItem(value: 'tunisian', child: Text('تونسي')),
+                      DropdownMenuItem(value: 'algerian', child: Text('جزائري')),
+                      DropdownMenuItem(value: 'moroccan', child: Text('مغربي')),
+                      DropdownMenuItem(value: 'sudanese', child: Text('سوداني')),
+                      DropdownMenuItem(value: 'other', child: Text('أخرى')),
                     ],
+                    onChanged: (v) => setState(() => _parentNationality = v!),
+                    errorText: '',
+                    submitted: false,
+                  ),
+                  Gap(12.h),
+                  Text(AppLocalKay.religion.tr(), style: AppTextStyle.formTitleStyle(context)),
+                  Gap(8.h),
+                  CustomDropdownFormField<String>(
+                    value: _parentReligion,
+                    items: const [
+                      DropdownMenuItem(value: 'islam', child: Text('إسلام')),
+                      DropdownMenuItem(value: 'christianity', child: Text('مسيحية')),
+                      DropdownMenuItem(value: 'other', child: Text('أخرى')),
+                    ],
+                    onChanged: (v) => setState(() => _parentReligion = v!),
+                    errorText: '',
+                    submitted: false,
                   ),
                   Gap(12.h),
                   Text(
@@ -236,7 +262,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
                   ),
                   Gap(12.h),
                   CustomFormField(
-                    title: "رقم الهاتف",
+                    title: AppLocalKay.student_phone.tr(),
                     controller: _parentPhoneController,
                     keyboardType: TextInputType.phone,
                     validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
@@ -281,8 +307,8 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
                           parentLastName: _parentLastNameController.text,
                           parentFamilyName: _parentFamilyNameController.text,
                           parentGrandfatherName: _parentGrandfatherNameController.text,
-                          parentNationality: _parentNationalityController.text,
-                          parentReligion: _parentReligionController.text,
+                          parentNationality: _parentNationality,
+                          parentReligion: _parentReligion,
                           parentResidencyType: _parentResidencyType,
                           parentPhone: _parentPhoneController.text,
                           parentGender: _parentGender,

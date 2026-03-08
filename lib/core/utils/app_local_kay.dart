@@ -1182,4 +1182,5 @@ class AppLocalKay {
   static const String national_id_card = "national_id_card";
   static const String resident_card = "resident_card";
   static const String student_id_no = "student_id_no";
+  static const String student_phone = "student_phone";
 }

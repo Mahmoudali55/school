@@ -1207,7 +1207,7 @@
   "grandfather_name": "اسم الجد",
   "nationality": "الجنسية",
   "religion": "الديانة",
-  "residency_type": "نوع الإقامة",
+  "residency_type": "نوع الهوية ",
   "passport_number": "رقم جواز السفر",
   "gender": "النوع",
   "student_count": "عدد الأبناء",
@@ -1223,5 +1223,6 @@
   "national_id_card": "هوية وطنية",
   "resident_card": "إقامة",
   "student_id_no": "رقم الهوية",
-  "notes": "الملاحظات"
+  "notes": "الملاحظات",
+  "student_phone": "رقم الجوال"
 }
