@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/features/auth/data/model/nationality_model.dart';
 import 'package:my_template/features/auth/data/model/registration_response_model.dart';
 import 'package:my_template/features/auth/data/model/religion_model.dart';
 import 'package:my_template/features/auth/data/model/user_login_model.dart';
@@ -12,6 +13,7 @@ class AuthState extends Equatable {
   final StatusState<RegistrationResponse> registerStatus;
   final StatusState<dynamic> admissionStatus;
   final StatusState<List<ReligionModel>> religionStatus;
+  final StatusState<List<NationalityModel>> nationalityStatus;
 
   /// Password validation
   final bool hasUpperCase;
@@ -32,6 +34,7 @@ class AuthState extends Equatable {
     this.registerStatus = const StatusState.initial(),
     this.admissionStatus = const StatusState.initial(),
     this.religionStatus = const StatusState.initial(),
+    this.nationalityStatus = const StatusState.initial(),
 
     this.hasUpperCase = false,
     this.hasLowerCase = false,
@@ -52,6 +55,7 @@ class AuthState extends Equatable {
     StatusState<RegistrationResponse>? registerStatus,
     StatusState<dynamic>? admissionStatus,
     StatusState<List<ReligionModel>>? religionStatus,
+    StatusState<List<NationalityModel>>? nationalityStatus,
 
     bool? hasUpperCase,
     bool? hasLowerCase,
@@ -68,6 +72,7 @@ class AuthState extends Equatable {
       registerStatus: registerStatus ?? this.registerStatus,
       admissionStatus: admissionStatus ?? this.admissionStatus,
       religionStatus: religionStatus ?? this.religionStatus,
+      nationalityStatus: nationalityStatus ?? this.nationalityStatus,
 
       hasUpperCase: hasUpperCase ?? this.hasUpperCase,
       hasLowerCase: hasLowerCase ?? this.hasLowerCase,
@@ -87,6 +92,7 @@ class AuthState extends Equatable {
     registerStatus,
     admissionStatus,
     religionStatus,
+    nationalityStatus,
     hasUpperCase,
     hasLowerCase,
     hasNumber,

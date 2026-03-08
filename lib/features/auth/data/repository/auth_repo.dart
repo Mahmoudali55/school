@@ -9,6 +9,7 @@ import 'package:my_template/features/auth/data/model/user_login_model.dart';
 
 import '../../../../core/error/failures.dart' hide handleDioRequest;
 import '../model/admission_request_model.dart';
+import '../model/nationality_model.dart';
 import '../model/registration_model.dart';
 import '../model/religion_model.dart';
 
@@ -27,6 +28,7 @@ abstract interface class AuthRepo {
     required AdmissionRequestModel admissionRequestModel,
   });
   Future<Either<Failure, List<ReligionModel>>> getReligionCodes();
+  Future<Either<Failure, List<NationalityModel>>> getNationalityCodes();
 }
 
 class AuthRepoImpl implements AuthRepo {
@@ -99,6 +101,22 @@ class AuthRepoImpl implements AuthRepo {
             ? (jsonDecode(response['Data']) as List)
             : (response['Data'] as List);
         return data.map((e) => ReligionModel.fromJson(e)).toList();
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, List<NationalityModel>>> getNationalityCodes() {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.getNationalityCodes,
+          extra: {'skipAuth': true},
+        );
+        final List data = response['Data'] is String
+            ? (jsonDecode(response['Data']) as List)
+            : (response['Data'] as List);
+        return data.map((e) => NationalityModel.fromJson(e)).toList();
       },
     );
   }

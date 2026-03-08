@@ -7,12 +7,14 @@ import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_dropdown_form_field.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
+import 'package:my_template/core/custom_widgets/custom_form_field/custom_searchable_dropdown.dart';
 import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/common_methods.dart';
 import 'package:my_template/features/auth/data/model/admission_request_model.dart';
+import 'package:my_template/features/auth/data/model/nationality_model.dart';
 import 'package:my_template/features/auth/presentation/view/cubit/auth_cubit.dart';
 import 'package:my_template/features/auth/presentation/view/cubit/auth_state.dart';
 
@@ -39,7 +41,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
 
   String _parentResidencyType = "national_id_card";
   String _parentGender = "male";
-  String _parentNationality = "saudi";
+  int? _parentNationalityCode;
   int? _parentReligionCode;
 
   // Student data list
@@ -50,6 +52,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
     super.initState();
     _updateStudentForms(1);
     context.read<AuthCubit>().loadReligionCodes();
+    context.read<AuthCubit>().loadNationalityCodes();
   }
 
   void _updateStudentForms(int count) {
@@ -185,33 +188,40 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
                     ],
                   ),
                   Gap(12.h),
-                  Text(AppLocalKay.nationality.tr(), style: AppTextStyle.formTitleStyle(context)),
-                  Gap(8.h),
-                  CustomDropdownFormField<String>(
-                    value: _parentNationality,
-                    items: const [
-                      DropdownMenuItem(value: 'saudi', child: Text('سعودي')),
-                      DropdownMenuItem(value: 'egyptian', child: Text('مصري')),
-                      DropdownMenuItem(value: 'emirati', child: Text('إماراتي')),
-                      DropdownMenuItem(value: 'kuwaiti', child: Text('كويتي')),
-                      DropdownMenuItem(value: 'qatari', child: Text('قطري')),
-                      DropdownMenuItem(value: 'bahraini', child: Text('بحريني')),
-                      DropdownMenuItem(value: 'omani', child: Text('عماني')),
-                      DropdownMenuItem(value: 'jordanian', child: Text('أردني')),
-                      DropdownMenuItem(value: 'lebanese', child: Text('لبناني')),
-                      DropdownMenuItem(value: 'syrian', child: Text('سوري')),
-                      DropdownMenuItem(value: 'iraqi', child: Text('عراقي')),
-                      DropdownMenuItem(value: 'yemeni', child: Text('يمني')),
-                      DropdownMenuItem(value: 'libyan', child: Text('ليبي')),
-                      DropdownMenuItem(value: 'tunisian', child: Text('تونسي')),
-                      DropdownMenuItem(value: 'algerian', child: Text('جزائري')),
-                      DropdownMenuItem(value: 'moroccan', child: Text('مغربي')),
-                      DropdownMenuItem(value: 'sudanese', child: Text('سوداني')),
-                      DropdownMenuItem(value: 'other', child: Text('أخرى')),
-                    ],
-                    onChanged: (v) => setState(() => _parentNationality = v!),
-                    errorText: '',
-                    submitted: false,
+                  BlocBuilder<AuthCubit, AuthState>(
+                    buildWhen: (p, c) => p.nationalityStatus != c.nationalityStatus,
+                    builder: (context, state) {
+                      final nationalities = state.nationalityStatus.data ?? [];
+                      final isLoading = state.nationalityStatus.isLoading;
+
+                      // Auto-select first if not selected and data available
+                      if (_parentNationalityCode == null && nationalities.isNotEmpty) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          setState(
+                            () => _parentNationalityCode = nationalities.first.nationalityCode,
+                          );
+                        });
+                      }
+
+                      final selectedNationality = nationalities.firstWhere(
+                        (n) => n.nationalityCode == _parentNationalityCode,
+                        orElse: () => NationalityModel(nationalityCode: 0, nationalityNameAr: ''),
+                      );
+
+                      return CustomSearchableDropdown<NationalityModel>(
+                        title: AppLocalKay.nationality.tr(),
+                        hint: isLoading ? "Loading..." : AppLocalKay.nationality.tr(),
+                        value: selectedNationality.nationalityCode == 0
+                            ? null
+                            : selectedNationality,
+                        items: nationalities,
+                        itemLabel: (n) => n.nationalityNameAr,
+                        onChanged: (n) =>
+                            setState(() => _parentNationalityCode = n?.nationalityCode),
+                        submitted: false,
+                        errorText: AppLocalKay.required.tr(),
+                      );
+                    },
                   ),
                   Gap(12.h),
                   Text(AppLocalKay.religion.tr(), style: AppTextStyle.formTitleStyle(context)),
@@ -331,7 +341,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
                           parentLastName: _parentLastNameController.text,
                           parentFamilyName: _parentFamilyNameController.text,
                           parentGrandfatherName: _parentGrandfatherNameController.text,
-                          parentNationality: _parentNationality,
+                          parentNationality: _parentNationalityCode?.toString() ?? '',
                           parentReligion: _parentReligionCode?.toString() ?? '',
                           parentResidencyType: _parentResidencyType,
                           parentPhone: _parentPhoneController.text,
