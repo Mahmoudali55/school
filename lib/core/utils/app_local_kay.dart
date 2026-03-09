@@ -1183,4 +1183,9 @@ class AppLocalKay {
   static const String resident_card = "resident_card";
   static const String student_id_no = "student_id_no";
   static const String student_phone = "student_phone";
+  static const String balance_details_trans_no = "balance_details_trans_no";
+  static const String uniform_tax = "uniform_tax";
+  static const String total_fees = "total_fees";
+  static const String start_date = "start_date";
+  static const String end_date = "end_date";
 }

@@ -28,6 +28,7 @@ import 'package:my_template/features/home/data/models/edit_uniform_request_model
 import 'package:my_template/features/home/data/models/edit_uniform_response_model.dart';
 import 'package:my_template/features/home/data/models/get_automatic_call_model.dart';
 import 'package:my_template/features/home/data/models/get_digital_library_model.dart';
+import 'package:my_template/features/home/data/models/get_income_list_model.dart';
 import 'package:my_template/features/home/data/models/get_permissions_mobile_model.dart';
 import 'package:my_template/features/home/data/models/get_uniform_data_model.dart';
 import 'package:my_template/features/home/data/models/parent_balance_model.dart';
@@ -54,6 +55,10 @@ abstract interface class HomeRepo {
   Future<Either<Failure, List<StudentAbsentCount>>> studentAbsentCount({required int code});
   Future<Either<Failure, List<ParentBalanceModel>>> parentBalance({required int code});
   Future<Either<Failure, List<StudentBalanceModel>>> studentBalance({required int code});
+  Future<Either<Failure, List<GetIncomeListModel>>> getincomelist({
+    required String fromdate,
+    required String todate,
+  });
   Future<Either<Failure, AddPermissionsResponse>> addPermissions({
     required AddPermissionsMobile request,
   });
@@ -582,6 +587,22 @@ class HomeRepoImpl implements HomeRepo {
           queryParameters: {"levelcode": levelCode},
         );
         return DigitalLibraryItem.listFromResponse(response);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, List<GetIncomeListModel>>> getincomelist({
+    required String fromdate,
+    required String todate,
+  }) async {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.get(
+          EndPoints.getincomelist,
+          queryParameters: {"fromdate": fromdate, "todate": todate},
+        );
+        return GetIncomeListModel.listFromResponse(response);
       },
     );
   }

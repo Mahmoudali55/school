@@ -488,6 +488,17 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
+  Future getincomelist({required String fromdate, required String todate}) async {
+    if (isClosed) return;
+    emit(state.copyWith(getincomelistStatus: StatusState.loading()));
+    final result = await _homeRepo.getincomelist(fromdate: fromdate, todate: todate);
+    if (isClosed) return;
+    result.fold(
+      (error) => emit(state.copyWith(getincomelistStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(getincomelistStatus: StatusState.success(success))),
+    );
+  }
+
   void resetAddHomeworkStatus() {
     if (isClosed) return;
     emit(state.copyWith(addHomeworkStatus: const StatusState.initial()));

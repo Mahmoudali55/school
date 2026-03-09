@@ -46,7 +46,12 @@ class ManagementShortcuts extends StatelessWidget {
       color: Colors.pink,
       onTap: (context) => Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => FinancialSettingsScreen()),
+        MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => sl<HomeCubit>(),
+            child: const FinancialSettingsScreen(),
+          ),
+        ),
       ),
     ),
 

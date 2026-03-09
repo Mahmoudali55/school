@@ -15,6 +15,7 @@ import 'package:my_template/features/home/data/models/edit_permissions_mobile_re
 import 'package:my_template/features/home/data/models/edit_uniform_response_model.dart';
 import 'package:my_template/features/home/data/models/get_automatic_call_model.dart';
 import 'package:my_template/features/home/data/models/get_digital_library_model.dart';
+import 'package:my_template/features/home/data/models/get_income_list_model.dart';
 import 'package:my_template/features/home/data/models/get_permissions_mobile_model.dart';
 import 'package:my_template/features/home/data/models/get_uniform_data_model.dart';
 import 'package:my_template/features/home/data/models/parent_balance_model.dart';
@@ -72,6 +73,7 @@ class HomeState extends Equatable {
     this.getAutomaticCallStatus = const StatusState.initial(),
     this.addDigitalLibraryStatus = const StatusState.initial(),
     this.getDigitalLibraryStatus = const StatusState.initial(),
+    this.getincomelistStatus = const StatusState.initial(),
   });
 
   final StatusState<List<ParentsStudentData>> parentsStudentStatus;
@@ -108,6 +110,7 @@ class HomeState extends Equatable {
   final StatusState<GetAutomaticCallModel>? getAutomaticCallStatus;
   final StatusState<AddDigitalLibraryResponseModel> addDigitalLibraryStatus;
   final StatusState<List<DigitalLibraryItem>> getDigitalLibraryStatus;
+  final StatusState<List<GetIncomeListModel>> getincomelistStatus;
 
   /// Main home data (TeacherHomeModel, StudentHomeModel, etc.)
   final HomeModel? data;
@@ -154,6 +157,7 @@ class HomeState extends Equatable {
     getAutomaticCallStatus,
     addDigitalLibraryStatus,
     getDigitalLibraryStatus,
+    getincomelistStatus,
   ];
 
   HomeState copyWith({
@@ -189,6 +193,7 @@ class HomeState extends Equatable {
     String? errorMessage,
 
     StatusState<List<TeacherTimeTableModel>>? teacherTimeTableStatus,
+    StatusState<List<GetIncomeListModel>>? getincomelistStatus,
 
     StatusState<List<StudentAbsentData>>? todayAbsencesStatus,
     StatusState<List<ClassMonthResultModel>>? classMonthResultStatus,
@@ -236,6 +241,7 @@ class HomeState extends Equatable {
       getAutomaticCallStatus: getAutomaticCallStatus ?? this.getAutomaticCallStatus,
       addDigitalLibraryStatus: addDigitalLibraryStatus ?? this.addDigitalLibraryStatus,
       getDigitalLibraryStatus: getDigitalLibraryStatus ?? this.getDigitalLibraryStatus,
+      getincomelistStatus: getincomelistStatus ?? this.getincomelistStatus,
     );
   }
 }

@@ -1224,5 +1224,9 @@
   "resident_card": "إقامة",
   "student_id_no": "رقم الهوية",
   "notes": "الملاحظات",
-  "student_phone": "رقم الجوال"
+  "student_phone": "رقم الجوال",
+  "balance_details_trans_no": "رقم التحويل",
+  "uniform_tax": "الضريبة",
+  "total_fees":"إجمالي الرسوم"
+
 }

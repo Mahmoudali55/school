@@ -1154,6 +1154,9 @@
   "national_id_card": "National ID",
   "resident_card": "Resident Card",
   "student_id_no": "National ID No",
-  "student_phone": "Phone Number"
+  "student_phone": "Phone Number",
+  "balance_details_trans_no": "Transfer No",
+  "uniform_tax": "Uniform Tax",
+  "total_fees": "Total Fees"
 }
 
