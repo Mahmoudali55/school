@@ -12,12 +12,11 @@ class AppRouters {
         return MaterialPageRoute(builder: (_) => HomeScreen());
       case RoutesName.loginScreen:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(create: (context) => sl<AuthCubit>(), child: LoginScreen()),
+          builder: (_) => BlocProvider.value(value: sl<AuthCubit>(), child: const LoginScreen()),
         );
       case RoutesName.registerScreen:
         return MaterialPageRoute(
-          builder: (_) =>
-              BlocProvider(create: (context) => sl<AuthCubit>(), child: RegisterScreen()),
+          builder: (_) => BlocProvider.value(value: sl<AuthCubit>(), child: const RegisterScreen()),
         );
 
       case RoutesName.onBoardingScreen:
@@ -150,10 +149,8 @@ class AppRouters {
         );
       case RoutesName.admissionRequestScreen:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => sl<AuthCubit>(),
-            child: const AdmissionRequestScreen(),
-          ),
+          builder: (_) =>
+              BlocProvider.value(value: sl<AuthCubit>(), child: const AdmissionRequestScreen()),
         );
       default:
         return null;
