@@ -10,6 +10,8 @@ import 'package:my_template/core/utils/app_local_kay.dart';
 import '../../../cubit/calendar_cubit.dart';
 import '../../../cubit/calendar_state.dart';
 import 'api_event_item_widget.dart';
+import 'calender_control_bar.dart';
+import 'level_selector_widget.dart';
 
 class DailyViewWidget extends StatelessWidget {
   const DailyViewWidget({super.key});
@@ -25,8 +27,11 @@ class DailyViewWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const LevelSelectorWidget(),
+              const ControlBarWidget(),
+              Gap(8.h),
               _buildDailyHeader(state, events.length, context: context),
-              Gap(16.h),
+              Gap(24.h),
               if (events.isEmpty)
                 _buildEmptySchedule(context)
               else
@@ -46,9 +51,9 @@ class DailyViewWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: AppColor.blackColor(context).withOpacity(0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 1),
+            color: AppColor.accentColor(context).withOpacity(0.05),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
       ),

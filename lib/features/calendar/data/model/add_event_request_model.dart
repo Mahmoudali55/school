@@ -11,7 +11,9 @@ class AddEventRequestModel extends Equatable {
   final int sectionCode;
   final int stageCode;
   final int levelCode;
-  final int classCode;
+
+  final int? classCode;
+  final String? loginType;
 
   const AddEventRequestModel({
     required this.id,
@@ -23,7 +25,8 @@ class AddEventRequestModel extends Equatable {
     required this.sectionCode,
     required this.stageCode,
     required this.levelCode,
-    required this.classCode,
+    this.classCode,
+    this.loginType,
   });
 
   Map<String, dynamic> toJson() {
@@ -38,6 +41,7 @@ class AddEventRequestModel extends Equatable {
       "StageCode": stageCode,
       "LevelCode": levelCode,
       "ClassCode": classCode,
+      "logintype": loginType,
     };
   }
 
@@ -52,7 +56,8 @@ class AddEventRequestModel extends Equatable {
       sectionCode: json["SectionCode"] ?? 0,
       stageCode: json["StageCode"] ?? 0,
       levelCode: json["LevelCode"] ?? 0,
-      classCode: json["ClassCode"] ?? 0,
+      classCode: json["ClassCode"],
+      loginType: json["logintype"],
     );
   }
 
@@ -68,5 +73,6 @@ class AddEventRequestModel extends Equatable {
     stageCode,
     levelCode,
     classCode,
+    loginType,
   ];
 }

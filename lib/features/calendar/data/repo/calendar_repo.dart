@@ -15,7 +15,7 @@ abstract interface class CalendarRepo {
 
   Future<Either<Failure, GetEventsResponse>> getEvents({
     required String date,
-    required int Classcode,
+    required int levelcode,
   });
   Future<Either<Failure, AddEventResponseModel>> addEvent(AddEventRequestModel event);
   Future<Either<Failure, AddEventResponseModel>> editEvent(AddEventRequestModel event);
@@ -28,11 +28,6 @@ class CalendarRepoImpl implements CalendarRepo {
   CalendarRepoImpl(this.apiConsumer);
 
   /// Dummy Classes
-  final List<ClassInfo> _dummyClasses = [
-    ClassInfo(id: '1', name: 'الصف العاشر', grade: 'العاشر', specialization: 'علمي'),
-    ClassInfo(id: '2', name: 'الصف التاسع', grade: 'التاسع', specialization: 'أدبي'),
-    ClassInfo(id: '3', name: 'الصف الحادي عشر', grade: 'الحادي عشر', specialization: 'علمي'),
-  ];
 
   /// Dummy Events
   final List<TeacherCalendarEvent> _teacherEvents = [
@@ -63,25 +58,15 @@ class CalendarRepoImpl implements CalendarRepo {
   ];
 
   @override
-  Future<Either<Failure, List<ClassInfo>>> getClasses({required String userTypeId}) {
-    return handleDioRequest(
-      request: () async {
-        // 🔜 هنا تقدر تبدل Dummy بـ API
-        return _dummyClasses;
-      },
-    );
-  }
-
-  @override
   Future<Either<Failure, GetEventsResponse>> getEvents({
     required String date,
-    required int Classcode,
+    required int levelcode,
   }) {
     return handleDioRequest(
       request: () async {
         final response = await apiConsumer.get(
           EndPoints.getEvents,
-          queryParameters: {"EVENTDATE": date, "Classcode": Classcode},
+          queryParameters: {"EVENTDATE": date, "levelcode": levelcode},
         );
         return GetEventsResponse.fromJson(response);
       },
@@ -116,5 +101,11 @@ class CalendarRepoImpl implements CalendarRepo {
         return EventsDelModel.fromJson(response);
       },
     );
+  }
+
+  @override
+  Future<Either<Failure, List<ClassInfo>>> getClasses({required String userTypeId}) {
+    // TODO: implement getClasses
+    throw UnimplementedError();
   }
 }

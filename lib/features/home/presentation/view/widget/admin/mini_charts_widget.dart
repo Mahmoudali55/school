@@ -5,12 +5,17 @@ import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/features/home/data/models/home_models.dart';
 
 class MiniCharts extends StatelessWidget {
-  const MiniCharts({super.key});
+  final List<MiniChartData> chartsData;
+
+  const MiniCharts({super.key, required this.chartsData});
 
   @override
   Widget build(BuildContext context) {
+    if (chartsData.isEmpty) return SizedBox.shrink();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -24,40 +29,23 @@ class MiniCharts extends StatelessWidget {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: [
-              _buildProgressAnalysisCard(
-                context,
-                title: "معدل الحضور اليومي",
-                percentage: 0.92,
-                percentageText: "92%",
-                subtitle: "ارتفاع بنسبة 2% عن الأسبوع الماضي",
-                isPositiveTrend: true,
-                icon: Icons.how_to_reg_rounded,
-                color: AppColor.successColor(context),
-              ),
-              Gap(16.w),
-              _buildProgressAnalysisCard(
-                context,
-                title: "نسبة تحصيل الرسوم",
-                percentage: 0.78,
-                percentageText: "78%",
-                subtitle: "ثبات مقارنة بالشهر السابق",
-                isPositiveTrend: null, // Neutral
-                icon: Icons.account_balance_wallet_rounded,
-                color: AppColor.primaryColor(context),
-              ),
-              Gap(16.w),
-              _buildProgressAnalysisCard(
-                context,
-                title: "اكتمال المهام والخطة",
-                percentage: 0.65,
-                percentageText: "65%",
-                subtitle: "انخفاض بنسبة 5% للأسف",
-                isPositiveTrend: false,
-                icon: Icons.assignment_turned_in_rounded,
-                color: AppColor.warningColor(context),
-              ),
-            ],
+            children: chartsData.asMap().entries.map((entry) {
+              int idx = entry.key;
+              MiniChartData data = entry.value;
+              return Padding(
+                padding: EdgeInsets.only(right: idx != chartsData.length - 1 ? 16.w : 0),
+                child: _buildProgressAnalysisCard(
+                  context,
+                  title: data.title,
+                  percentage: data.percentage,
+                  percentageText: data.percentageText,
+                  subtitle: data.subtitle,
+                  isPositiveTrend: data.isPositiveTrend,
+                  icon: data.icon,
+                  color: data.color,
+                ),
+              );
+            }).toList(),
           ),
         ),
       ],

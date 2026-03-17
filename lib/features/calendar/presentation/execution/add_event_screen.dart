@@ -407,7 +407,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                     : null,
                                 submitted: _submitted,
                                 hint: AppLocalKay.class_name_assigment.tr(),
-                                errorText: AppLocalKay.user_management_select_classs.tr(),
+                                errorText: '',
                                 items: classesList
                                     .map(
                                       (e) => DropdownMenuItem(
@@ -552,8 +552,9 @@ class _AddEventScreenState extends State<AddEventScreen> {
                                           ? _selectedStageCode
                                           : int.tryParse(HiveMethods.getUserStage().toString())) ??
                                       0,
-                                  levelCode: int.parse(_selectedLevelCode.toString()),
-                                  classCode: int.parse(_selectedClassCode.toString()),
+                                  levelCode: _selectedLevelCode ?? 0,
+                                  classCode: _selectedClassCode,
+                                  loginType: widget.isManagement == true ? "3" : "",
                                 );
 
                                 if (widget.eventToEdit != null) {

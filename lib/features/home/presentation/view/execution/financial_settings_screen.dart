@@ -4,8 +4,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/images/app_images.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -68,9 +70,21 @@ class _FinancialSettingsScreenState extends State<FinancialSettingsScreen> {
   Widget _buildDataList(List<GetIncomeListModel> data, Color color, IconData icon) {
     if (data.isEmpty) {
       return Center(
-        child: Text(
-          AppLocalKay.user_management_no_reports.tr(),
-          style: AppTextStyle.bodyMedium(context),
+        child: Column(
+          children: [
+            SvgPicture.asset(
+              AppImages.assetsGlobalIconEmptyFolderIcon,
+              height: 200.h,
+              width: 200.w,
+              fit: BoxFit.contain,
+              colorFilter: ColorFilter.mode(AppColor.primaryColor(context), BlendMode.srcIn),
+            ),
+            Gap(20.h),
+            Text(
+              AppLocalKay.user_management_no_reports.tr(),
+              style: AppTextStyle.bodyMedium(context),
+            ),
+          ],
         ),
       );
     }

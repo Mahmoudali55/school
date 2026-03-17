@@ -16,18 +16,9 @@ class MetricsDashboard extends StatelessWidget {
     final List<MetricCard> list = [];
 
     metricsData.forEach((key, data) {
-      IconData icon = Icons.info;
-      Color color = Colors.blue;
-      if (key.contains("طلاب")) {
-        icon = Icons.school;
-        color = const Color(0xFF2E5BFF);
-      } else if (key.contains("معلم")) {
-        icon = Icons.person;
-        color = const Color(0xFFF59E0B);
-      } else if (key.contains("حافلات")) {
-        icon = Icons.directions_bus;
-        color = const Color(0xFF9C27B0);
-      }
+      IconData icon = data['icon'] ?? Icons.info;
+      Color color = data['color'] ?? Colors.blue;
+
       list.add(
         MetricCard(
           title: key,

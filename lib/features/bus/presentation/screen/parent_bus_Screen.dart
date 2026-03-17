@@ -19,7 +19,6 @@ import 'package:my_template/features/bus/presentation/screen/widget/parent/all_c
 import 'package:my_template/features/bus/presentation/screen/widget/parent/bus_details.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/parent/children_selector.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/parent/main_tracking_card.dart';
-import 'package:my_template/features/bus/presentation/screen/widget/parent/parent_emergency_button.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -182,12 +181,12 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
         ),
       ),
       // Emergency Button
-      floatingActionButton: BlocBuilder<BusCubit, BusState>(
-        builder: (context, state) {
-          if (state.selectedClass == null) return const SizedBox.shrink();
-          return ParentEmergencyButton(onPressed: () => _showEmergencyDialog(state.selectedClass!));
-        },
-      ),
+      // floatingActionButton: BlocBuilder<BusCubit, BusState>(
+      //   builder: (context, state) {
+      //     if (state.selectedClass == null) return const SizedBox.shrink();
+      //     return ParentEmergencyButton(onPressed: () => _showEmergencyDialog(state.selectedClass!));
+      //   },
+      // ),
     );
   }
 

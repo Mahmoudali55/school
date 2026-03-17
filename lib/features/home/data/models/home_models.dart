@@ -186,6 +186,7 @@ class ScheduleItem extends Equatable {
 class AdminHomeModel extends HomeModel {
   final Map<String, Map<String, dynamic>> metrics;
   final List<AdminAlert>? alerts;
+  final List<MiniChartData>? miniCharts;
 
   AdminHomeModel({
     required super.userName,
@@ -197,10 +198,11 @@ class AdminHomeModel extends HomeModel {
     super.badges,
     required this.metrics,
     this.alerts,
+    this.miniCharts,
   });
 
   @override
-  List<Object?> get props => [...super.props, metrics, alerts];
+  List<Object?> get props => [...super.props, metrics, alerts, miniCharts];
 }
 
 class AdminAlert extends Equatable {
@@ -212,4 +214,35 @@ class AdminAlert extends Equatable {
 
   @override
   List<Object?> get props => [title, time, severity];
+}
+
+class MiniChartData extends Equatable {
+  final String title;
+  final double percentage;
+  final String percentageText;
+  final String subtitle;
+  final bool? isPositiveTrend;
+  final IconData icon;
+  final Color color;
+
+  MiniChartData({
+    required this.title,
+    required this.percentage,
+    required this.percentageText,
+    required this.subtitle,
+    this.isPositiveTrend,
+    required this.icon,
+    required this.color,
+  });
+
+  @override
+  List<Object?> get props => [
+    title,
+    percentage,
+    percentageText,
+    subtitle,
+    isPositiveTrend,
+    icon,
+    color,
+  ];
 }

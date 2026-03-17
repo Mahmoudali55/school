@@ -64,6 +64,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                   name: c.classNameAr,
                   grade: c.levelCode.toString(),
                   specialization: c.classNameAr,
+                  levelCode: c.levelCode,
                 );
               }).toList();
 

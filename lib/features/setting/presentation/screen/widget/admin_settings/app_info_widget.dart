@@ -15,12 +15,6 @@ class AppInfoWidget extends StatelessWidget {
     return Column(
       children: [
         SettingItemWidget(
-          icon: Icons.help,
-          title: AppLocalKay.helpCenter_title.tr(),
-          subtitle: AppLocalKay.helpCenter_subtitle.tr(),
-          onTap: () => showHelpCenter(context),
-        ),
-        SettingItemWidget(
           icon: Icons.privacy_tip,
           title: AppLocalKay.privacyPolicy_title.tr(),
           subtitle: AppLocalKay.privacyPolicy_subtitle.tr(),

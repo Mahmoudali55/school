@@ -14,23 +14,12 @@ class ViewSelectorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 36.h,
-      decoration: BoxDecoration(
-        color: AppColor.whiteColor(context),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          _buildViewButton(
-            AppLocalKay.backup_frequency_monthly.tr(),
-            CalendarView.monthly,
-            context,
-          ),
-          _buildViewButton(AppLocalKay.backup_frequency_weekly.tr(), CalendarView.weekly, context),
-          _buildViewButton(AppLocalKay.backup_frequency_daily.tr(), CalendarView.daily, context),
-        ],
-      ),
+    return Row(
+      children: [
+        _buildViewButton(AppLocalKay.backup_frequency_monthly.tr(), CalendarView.monthly, context),
+        _buildViewButton(AppLocalKay.backup_frequency_weekly.tr(), CalendarView.weekly, context),
+        _buildViewButton(AppLocalKay.backup_frequency_daily.tr(), CalendarView.daily, context),
+      ],
     );
   }
 
@@ -39,17 +28,27 @@ class ViewSelectorWidget extends StatelessWidget {
     return Expanded(
       child: GestureDetector(
         onTap: () => onViewChanged(view),
-        child: Container(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
           decoration: BoxDecoration(
-            color: isSelected ? AppColor.accentColor(context) : Colors.transparent,
-            borderRadius: BorderRadius.circular(6),
+            color: isSelected ? AppColor.whiteColor(context) : Colors.transparent,
+            borderRadius: BorderRadius.circular(8.r),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ]
+                : [],
           ),
           child: Center(
             child: Text(
               text,
               style: AppTextStyle.bodySmall(context).copyWith(
-                fontWeight: FontWeight.w600,
-                color: isSelected ? AppColor.whiteColor(context) : AppColor.greyColor(context),
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                color: isSelected ? AppColor.accentColor(context) : AppColor.greyColor(context),
               ),
             ),
           ),

@@ -22,13 +22,6 @@ class AccountSettingsWidget extends StatelessWidget {
           subtitle: AppLocalKay.setting_password_change.tr(),
           onTap: () => changePassword(context),
         ),
-
-        SettingItemWidget(
-          icon: Icons.notifications,
-          title: AppLocalKay.setting_notification.tr(),
-          subtitle: AppLocalKay.setting_notification_alert.tr(),
-          onTap: () => notificationSettings(context),
-        ),
       ],
     );
   }

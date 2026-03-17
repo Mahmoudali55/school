@@ -24,6 +24,7 @@ class CalendarCubit extends Cubit<CalendarState> {
                   name: '',
                   grade: '',
                   specialization: '',
+                  levelCode: int.tryParse(HiveMethods.getUserLevelCode().toString()) ?? 0,
                 )
               : null,
         ),
@@ -88,6 +89,7 @@ class CalendarCubit extends Cubit<CalendarState> {
             name: teacherClass.classNameAr,
             grade: '',
             specialization: teacherClass.classNameAr,
+            levelCode: teacherClass.levelCode,
           ),
         )
         .where((classInfo) => seenIds.add(classInfo.id))
@@ -109,20 +111,36 @@ class CalendarCubit extends Cubit<CalendarState> {
     getEvents();
   }
 
+  void changeLevel(int levelCode) {
+    emit(
+      state.copyWith(
+        selectedClass: ClassInfo(
+          id: '0',
+          name: '',
+          grade: '',
+          specialization: '',
+          levelCode: levelCode,
+        ),
+      ),
+    );
+    getEvents();
+  }
+
   void updateParentClasses(List<ClassInfo> classes) {
     if (classes.isEmpty) return;
     emit(state.copyWith(classesStatus: StatusState.success(classes), selectedClass: classes.first));
     getEvents();
   }
 
-  void changeStudent(int studentClassCode) {
+  void changeStudent(int studentClassCode, int levelCode) {
     emit(
       state.copyWith(
         selectedClass: ClassInfo(
           id: studentClassCode.toString(),
           name: '',
-          grade: '',
+          grade: levelCode.toString(),
           specialization: '',
+          levelCode: levelCode,
         ),
       ),
     );
@@ -202,9 +220,9 @@ class CalendarCubit extends Cubit<CalendarState> {
     final dateStr =
         "${state.selectedDate.year}-${state.selectedDate.month.toString().padLeft(2, '0')}-${state.selectedDate.day.toString().padLeft(2, '0')}";
 
-    final classCode = int.tryParse(state.selectedClass?.id ?? '0') ?? 0;
+    final levelCode = state.selectedClass?.levelCode ?? 0;
 
-    final result = await _calendarRepo.getEvents(date: dateStr, Classcode: classCode);
+    final result = await _calendarRepo.getEvents(date: dateStr, levelcode: levelCode);
     result.fold(
       (error) => emit(state.copyWith(getEventsStatus: StatusState.failure(error.errMessage))),
       (success) => emit(state.copyWith(getEventsStatus: StatusState.success(success))),

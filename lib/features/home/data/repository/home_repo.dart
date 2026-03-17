@@ -666,22 +666,67 @@ class HomeRepoImpl implements HomeRepo {
 
     int teachersCount = 0;
     int busesCount = 0;
+    int alertsCount = 0; // Simulated alerts count logic
 
     teachersResult.fold((_) {}, (list) => teachersCount = list.length);
     busesResult.fold((_) {}, (list) => busesCount = list.length);
+    alertsCount = 2; // In a real scenario, this would come from an API
 
     return Right(
       AdminHomeModel(
         userName: HiveMethods.getUserName(),
         userRole: "مدير",
+        miniCharts: [
+          MiniChartData(
+            title: "معدل الحضور اليومي",
+            percentage: 0.92,
+            percentageText: "92%",
+            subtitle: "ارتفاع بنسبة 2% عن الأسبوع الماضي",
+            isPositiveTrend: true,
+            icon: Icons.how_to_reg_rounded,
+            color: const Color(0xFF10B981), // success
+          ),
+          MiniChartData(
+            title: "الحافلات النشطة الآن",
+            percentage: busesCount > 0 ? 0.85 : 0.0, // Example logic
+            percentageText: "$busesCount حافلة",
+            subtitle: busesCount > 0 ? "تعمل بكفاءة" : "لا توجد رحلات",
+            isPositiveTrend: busesCount > 0 ? true : null,
+            icon: Icons.directions_bus_rounded,
+            color: const Color(0xFF3B82F6), // primary
+          ),
+          MiniChartData(
+            title: "التنبيهات غير المقروءة",
+            percentage: alertsCount > 0 ? 0.40 : 1.0,
+            percentageText: "$alertsCount تنبيه",
+            subtitle: alertsCount > 0 ? "تحتاج انتباهك" : "لا يوجد تنبيهات",
+            isPositiveTrend: alertsCount == 0,
+            icon: Icons.notifications_active_rounded,
+            color: const Color(0xFFF59E0B), // warning
+          ),
+        ],
         metrics: {
-          "عدد الطلاب": {"value": "450", "change": "+15", "isPositive": true},
           "عدد المعلمين": {
             "value": "$teachersCount",
             "change": teachersCount > 0 ? "+${(teachersCount * 0.05).toInt()}" : "0",
             "isPositive": true,
+            "icon": Icons.person,
+            "color": const Color(0xFFF59E0B),
           },
-          "الحافلات النشطة": {"value": "$busesCount", "change": "0", "isPositive": true},
+          "الحافلات النشطة": {
+            "value": "$busesCount",
+            "change": "0",
+            "isPositive": true,
+            "icon": Icons.directions_bus,
+            "color": const Color(0xFF9C27B0),
+          },
+          "التنبيهات": {
+            "value": "2", // dynamic based on alerts loaded below
+            "change": "+1",
+            "isPositive": false,
+            "icon": Icons.notifications_active,
+            "color": Colors.red,
+          },
         },
         quickActions: [
           HomeQuickAction(

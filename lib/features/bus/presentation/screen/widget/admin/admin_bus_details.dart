@@ -7,6 +7,8 @@ import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/home/data/models/bus_data_model.dart';
 
+import 'admin_bus_route_bottom_sheet.dart';
+
 class AdminBusDetails extends StatelessWidget {
   final BusDataModel selectedBusData;
 
@@ -71,11 +73,22 @@ class AdminBusDetails extends StatelessWidget {
               ),
 
               /// Line Name
-              _buildDetailItem(
-                context,
-                "خط السير",
-                selectedBusData.lineNameAr ?? "-",
-                Icons.route_rounded,
+              InkWell(
+                borderRadius: BorderRadius.circular(12),
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    builder: (context) => AdminBusRouteBottomSheet(busData: selectedBusData),
+                  );
+                },
+                child: _buildDetailItem(
+                  context,
+                  "خط السير",
+                  selectedBusData.lineNameAr ?? "-",
+                  Icons.route_rounded,
+                ),
               ),
 
               /// Section

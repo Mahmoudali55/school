@@ -39,9 +39,9 @@ class EventsDelData extends Equatable {
       dataTable: json['dataTable'],
       dataTables: json['dataTables'],
       outputParams: Map<String, dynamic>.from(json['outputparams'] ?? {}),
-      errorId: json['errorid'] as int,
-      errorMsg: json['errormsg'] as String,
-      success: json['Success'] as bool,
+      errorId: int.tryParse(json['errorid']?.toString() ?? '') ?? 0,
+      errorMsg: json['errormsg']?.toString() ?? '',
+      success: json['Success'] == true || json['success'] == true,
     );
   }
 

@@ -33,11 +33,11 @@ class CustomDropdownFormField<T> extends StatelessWidget {
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.r)),
         filled: true,
         fillColor: AppColor.textFormFillColor(context),
-        errorText: submitted && value == null ? errorText : null,
+        errorText: submitted && value == null && errorText.isNotEmpty ? errorText : null,
       ),
       items: items,
       onChanged: onChanged,
-      validator: (v) => v == null ? errorText : null,
+      validator: (v) => v == null && errorText.isNotEmpty ? errorText : null,
     );
   }
 }

@@ -20,7 +20,6 @@ import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_state.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/bus_Information_widget.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/bus_tracking_card.dart';
-import 'package:my_template/features/bus/presentation/screen/widget/student/emergency_button.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/student/route_progress_widget.dart';
 import 'package:my_template/features/home/data/models/bus_data_model.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -276,7 +275,7 @@ class _StudentBusTrackingScreenState extends State<StudentBusTrackingScreen>
           return const Center(child: CustomLoading());
         },
       ),
-      floatingActionButton: EmergencyButton(showDialogCallback: () => _showEmergencyDialog()),
+      // floatingActionButton: EmergencyButton(showDialogCallback: () => _showEmergencyDialog()),
     );
   }
 }

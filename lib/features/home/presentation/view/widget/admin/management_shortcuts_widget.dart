@@ -10,20 +10,19 @@ import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/alert_model.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/view/execution/financial_settings_screen.dart';
-import 'package:my_template/features/home/presentation/view/execution/reports_page.dart';
 import 'package:my_template/features/home/presentation/view/execution/transport_management_screen.dart';
 import 'package:my_template/features/home/presentation/view/widget/admin/shortcut_card_widget.dart';
 
 class ManagementShortcuts extends StatelessWidget {
   final List<ManagementShortcut> shortcuts = [
-    ManagementShortcut(
-      title: AppLocalKay.reports_title.tr(),
-      description: AppLocalKay.reports_desc.tr(),
-      icon: Icons.analytics,
-      color: Colors.orange,
-      onTap: (context) =>
-          Navigator.push(context, MaterialPageRoute(builder: (context) => ReportsPage())),
-    ),
+    // ManagementShortcut(
+    //   title: AppLocalKay.reports_title.tr(),
+    //   description: AppLocalKay.reports_desc.tr(),
+    //   icon: Icons.analytics,
+    //   color: Colors.orange,
+    //   onTap: (context) =>
+    //       Navigator.push(context, MaterialPageRoute(builder: (context) => ReportsPage())),
+    // ),
     ManagementShortcut(
       title: AppLocalKay.transport_title.tr(),
       description: AppLocalKay.transport_desc.tr(),

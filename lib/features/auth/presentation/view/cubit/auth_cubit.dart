@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/network/status.state.dart';
@@ -96,11 +97,13 @@ class AuthCubit extends Cubit<AuthState> {
     if (isClosed) return;
     emit(state.copyWith(registerStatus: StatusState.loading()));
 
+    final fcmToken = await FirebaseMessaging.instance.getToken();
     final result = await authRepo.register(
       username: userNameController.text,
       nationalId: nationalIdController.text,
       password: registerPasswordController.text,
       email: emailController.text,
+      fcmToken: fcmToken,
     );
 
     if (isClosed) return;
@@ -123,9 +126,11 @@ class AuthCubit extends Cubit<AuthState> {
     if (isClosed) return;
     emit(state.copyWith(loginStatus: StatusState.loading()));
 
+    final fcmToken = await FirebaseMessaging.instance.getToken();
     final result = await authRepo.login(
       username: usernameLoginController.text,
       password: passwordLoginController.text,
+      fcmToken: fcmToken,
     );
 
     if (isClosed) return;

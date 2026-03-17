@@ -9,9 +9,12 @@ class AddEventResponseModel extends Equatable {
 
   factory AddEventResponseModel.fromJson(Map<String, dynamic> json) {
     return AddEventResponseModel(
-      success: json['success'] ?? false,
-      id: json['id'] ?? 0,
-      msg: json['msg'] ?? '',
+      success: json['success'] ?? json['Success'] ?? false,
+      id:
+          int.tryParse(json['id']?.toString() ?? '') ??
+          int.tryParse(json['ID']?.toString() ?? '') ??
+          0,
+      msg: json['msg'] ?? json['msg'] ?? '',
     );
   }
 

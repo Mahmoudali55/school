@@ -160,12 +160,19 @@ class PushNotificationService {
   void _handleNotificationClick(String? payload) {
     if (payload == null) return;
 
-    print("Notification payload: $payload");
+    try {
+      final Map<String, dynamic> data = jsonDecode(payload);
+      print("Notification data: $data");
 
-    /// مثال للتعامل مع البيانات
-    /// final data = jsonDecode(payload);
+      /// handle navigation based on notification_type
+      final String? type = data['notification_type']?.toString();
 
-    /// لو عندك Navigation
-    /// Routes.navigatorKey.currentState?.pushNamed("/invoice");
+      if (type == '1') {
+        // Example: Navigate to a specific screen
+        // navigatorKey.currentState?.pushNamed(RoutesName.home);
+      }
+    } catch (e) {
+      print("Error handling notification click: $e");
+    }
   }
 }

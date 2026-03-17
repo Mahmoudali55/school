@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 
 class Event extends Equatable {
@@ -13,7 +12,7 @@ class Event extends Equatable {
   final int sectionCode;
   final int stageCode;
   final int levelCode;
-  final int classCode;
+  final int? classCode;
 
   const Event({
     required this.id,
@@ -25,7 +24,7 @@ class Event extends Equatable {
     required this.sectionCode,
     required this.stageCode,
     required this.levelCode,
-    required this.classCode,
+    this.classCode,
   });
 
   factory Event.fromJson(Map<String, dynamic> json) {
@@ -39,7 +38,7 @@ class Event extends Equatable {
       sectionCode: json['SectionCode'] ?? 0,
       stageCode: json['StageCode'] ?? 0,
       levelCode: json['LevelCode'] ?? 0,
-      classCode: json['ClassCode'] ?? 0,
+      classCode: json['ClassCode'], // nullable
     );
   }
 
@@ -90,7 +89,9 @@ class GetEventsResponse extends Equatable {
 
   factory GetEventsResponse.fromJson(Map<String, dynamic> json) {
     final dataString = json['Data'] ?? '[]';
+
     final List<dynamic> dataList = jsonDecode(dataString);
+
     final events = dataList.map((e) => Event.fromJson(e as Map<String, dynamic>)).toList();
 
     return GetEventsResponse(events: events);

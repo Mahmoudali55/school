@@ -11,7 +11,6 @@ import 'package:my_template/features/bus/presentation/cubit/bus_cubit.dart';
 import 'package:my_template/features/bus/presentation/cubit/bus_state.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/admin/admin_bus_details.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/admin/admin_buses_selector.dart';
-import 'package:my_template/features/bus/presentation/screen/widget/admin/admin_emergency_button.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/admin/admin_main_tracking_card.dart';
 import 'package:my_template/features/bus/presentation/screen/widget/admin/admin_quick_overview.dart';
 import 'package:my_template/features/home/data/models/bus_data_model.dart';
@@ -139,7 +138,7 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
                     ],
                   ),
                 ),
-                floatingActionButton: AdminEmergencyButton(onPressed: _showEmergencyDialog),
+                //   floatingActionButton: AdminEmergencyButton(onPressed: _showEmergencyDialog),
               );
             },
           );

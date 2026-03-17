@@ -9,6 +9,8 @@ import 'package:table_calendar/table_calendar.dart';
 
 import '../../../cubit/calendar_cubit.dart';
 import '../../../cubit/calendar_state.dart';
+import 'calender_control_bar.dart';
+import 'level_selector_widget.dart';
 import 'upcoming_tasks_widget.dart';
 
 class MonthlyViewWidget extends StatelessWidget {
@@ -22,9 +24,9 @@ class MonthlyViewWidget extends StatelessWidget {
           padding: EdgeInsets.all(16.w),
           child: Column(
             children: [
+              const LevelSelectorWidget(),
+              const ControlBarWidget(),
               _buildTableCalendar(context, state),
-              Gap(20.h),
-              // MonthlyStatsWidget(selectedDate: state.selectedDate),
               Gap(20.h),
               const UpcomingTasksWidget(),
             ],
@@ -41,11 +43,12 @@ class MonthlyViewWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: AppColor.blackColor(context).withOpacity(0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 1),
+            color: AppColor.accentColor(context).withOpacity(0.05),
+            blurRadius: 15,
+            offset: const Offset(0, 6),
           ),
         ],
+        border: Border.all(color: AppColor.greyColor(context).withOpacity(0.05)),
       ),
       child: TableCalendar(
         firstDay: DateTime.utc(2023, 1, 1),

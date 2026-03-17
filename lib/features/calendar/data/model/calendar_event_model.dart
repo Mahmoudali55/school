@@ -173,16 +173,18 @@ class ClassInfo extends Equatable {
   final String name;
   final String grade;
   final String specialization;
+  final int levelCode;
 
   const ClassInfo({
     required this.id,
     required this.name,
     required this.grade,
     required this.specialization,
+    required this.levelCode,
   });
 
   String get fullName => '$grade - $specialization';
 
   @override
-  List<Object?> get props => [id];
+  List<Object?> get props => [id, levelCode];
 }

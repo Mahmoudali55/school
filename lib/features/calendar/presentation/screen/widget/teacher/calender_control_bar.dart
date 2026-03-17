@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/theme/app_colors.dart';
-import 'package:my_template/features/calendar/presentation/screen/widget/teacher/class_selector_widget.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/teacher/view_selector_widget.dart';
 
 import '../../../cubit/calendar_cubit.dart';
@@ -18,37 +17,36 @@ class ControlBarWidget extends StatefulWidget {
 
 class _ControlBarWidgetState extends State<ControlBarWidget> {
   @override
-  void initState() {
-    super.initState();
-    // Fetch teacher classes when widget is initialized
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        context.read<CalendarCubit>().loadTeacherClasses();
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocBuilder<CalendarCubit, CalendarState>(
       builder: (context, state) {
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-          color: AppColor.whiteColor(context),
+          decoration: BoxDecoration(
+            color: AppColor.whiteColor(context),
+            border: Border(
+              top: BorderSide(color: AppColor.greyColor(context).withOpacity(0.05)),
+              bottom: BorderSide(color: AppColor.greyColor(context).withOpacity(0.05)),
+            ),
+          ),
           child: Column(
             children: [
-              // اختيار الصف مع معالجة حالة التحميل
-              _buildClassSelector(context, state),
-              Gap(12.h),
               // شريط العرض والتنقل
               Row(
                 children: [
                   Expanded(
-                    child: ViewSelectorWidget(
-                      currentView: state.currentView,
-                      onViewChanged: (view) {
-                        context.read<CalendarCubit>().changeView(view);
-                      },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColor.greyColor(context).withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      padding: EdgeInsets.all(4.w),
+                      child: ViewSelectorWidget(
+                        currentView: state.currentView,
+                        onViewChanged: (view) {
+                          context.read<CalendarCubit>().changeView(view);
+                        },
+                      ),
                     ),
                   ),
                   Gap(12.w),
@@ -58,89 +56,6 @@ class _ControlBarWidgetState extends State<ControlBarWidget> {
             ],
           ),
         );
-      },
-    );
-  }
-
-  Widget _buildClassSelector(BuildContext context, CalendarState state) {
-    // Show loading indicator while fetching classes
-    if (state.classesStatus.isLoading) {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
-        decoration: BoxDecoration(
-          color: AppColor.whiteColor(context),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColor.accentColor(context).withOpacity(0.3)),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 16.w,
-              height: 16.h,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(AppColor.accentColor(context)),
-              ),
-            ),
-            Gap(8.w),
-            Text('جاري تحميل الصفوف...', style: TextStyle(fontSize: 14.sp)),
-          ],
-        ),
-      );
-    }
-
-    // Show error message if fetching failed
-    if (state.classesStatus.isFailure) {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
-        decoration: BoxDecoration(
-          color: Colors.red.shade50,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.red.shade200),
-        ),
-        child: Row(
-          children: [
-            Icon(Icons.error_outline, color: Colors.red, size: 20.w),
-            Gap(8.w),
-            Expanded(
-              child: Text(
-                state.classesStatus.error ?? "Unknown Error",
-                style: TextStyle(fontSize: 12.sp, color: Colors.red.shade700),
-              ),
-            ),
-            IconButton(
-              icon: Icon(Icons.refresh, color: Colors.red, size: 20.w),
-              onPressed: () => context.read<CalendarCubit>().loadTeacherClasses(),
-            ),
-          ],
-        ),
-      );
-    }
-    // Show loading or placeholder if data is not ready
-    if (state.classesStatus.isInitial || state.classesStatus.data == null) {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
-        decoration: BoxDecoration(
-          color: AppColor.whiteColor(context),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColor.accentColor(context).withOpacity(0.1)),
-        ),
-        child: Center(
-          child: Text(
-            'اختر المستوى أولاً',
-            style: TextStyle(fontSize: 14.sp, color: AppColor.hintColor(context)),
-          ),
-        ),
-      );
-    }
-
-    // Show class selector when data is loaded
-    return ClassSelectorWidget(
-      selectedClass: state.selectedClass,
-      classes: state.classesStatus.data ?? [],
-      onChanged: (classInfo) {
-        context.read<CalendarCubit>().changeClass(classInfo);
       },
     );
   }

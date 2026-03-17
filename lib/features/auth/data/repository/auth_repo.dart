@@ -23,10 +23,12 @@ abstract interface class AuthRepo {
     required String nationalId,
     required String password,
     required String email,
+    String? fcmToken,
   });
   Future<Either<Failure, UserLoginModel>> login({
     required String username,
     required String password,
+    String? fcmToken,
   });
   Future<Either<Failure, dynamic>> submitAdmissionRequest({
     required AdmissionRequestModel admissionRequestModel,
@@ -51,16 +53,18 @@ class AuthRepoImpl implements AuthRepo {
     required String nationalId,
     required String password,
     required String email,
+    String? fcmToken,
   }) {
     return handleDioRequest(
       request: () async {
         final response = await apiConsumer.post(
           EndPoints.register,
           body: RegistrationModel(
-            UserName: username,
+            userName: username,
             email: email,
-            iDNO: nationalId,
+            idNo: nationalId,
             password: password,
+            fcm: fcmToken,
           ).toJson(),
         );
         return RegistrationResponse.fromJson(response);
@@ -72,12 +76,18 @@ class AuthRepoImpl implements AuthRepo {
   Future<Either<Failure, UserLoginModel>> login({
     required String username,
     required String password,
+    String? fcmToken,
   }) {
     return handleDioRequest(
       request: () async {
         final response = await apiConsumer.post(
           EndPoints.login,
-          body: {"grant_type": "password", "username": username, "password": password},
+          body: {
+            "grant_type": "password",
+            "username": username,
+            "password": password,
+            if (fcmToken != null) "FCM": fcmToken,
+          },
         );
         return UserLoginModel.fromJson(response);
       },

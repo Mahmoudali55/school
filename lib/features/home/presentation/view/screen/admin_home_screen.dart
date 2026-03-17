@@ -52,7 +52,7 @@ class AdminHomeScreen extends StatelessWidget {
                                   children: [
                                     MetricsDashboard(metricsData: adminData.metrics),
                                     Gap(20.h),
-                                    MiniCharts(),
+                                    MiniCharts(chartsData: adminData.miniCharts ?? []),
                                     Gap(20.h),
                                     AlertsAndActivity(),
                                   ],
@@ -76,7 +76,7 @@ class AdminHomeScreen extends StatelessWidget {
                         Gap(20.h),
                         MetricsDashboard(metricsData: adminData.metrics),
                         Gap(20.h),
-                        MiniCharts(),
+                        // MiniCharts(chartsData: adminData.miniCharts ?? []),
                         Gap(20.h),
                         AlertsAndActivity(),
                         Gap(20.h),

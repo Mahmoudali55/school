@@ -40,7 +40,10 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
         _isInitialized = true;
         _selectedStudent = students.first.studentName;
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          context.read<CalendarCubit>().changeStudent(students.first.classCode);
+          context.read<CalendarCubit>().changeStudent(
+            students.first.classCode,
+            students.first.levelCode,
+          );
         });
       }
     }
@@ -71,6 +74,7 @@ class _CalendarPatentScreenState extends State<CalendarPatentScreen> {
                 name: profile.className,
                 grade: profile.levelName,
                 specialization: profile.className,
+                levelCode: profile.levelCode,
               );
               context.read<CalendarCubit>().emit(
                 context.read<CalendarCubit>().state.copyWith(

@@ -10,6 +10,8 @@ import 'package:my_template/core/utils/app_local_kay.dart';
 import '../../../cubit/calendar_cubit.dart';
 import '../../../cubit/calendar_state.dart';
 import 'api_event_item_widget.dart';
+import 'calender_control_bar.dart';
+import 'level_selector_widget.dart';
 
 class WeeklyViewWidget extends StatelessWidget {
   const WeeklyViewWidget({super.key});
@@ -20,35 +22,30 @@ class WeeklyViewWidget extends StatelessWidget {
       builder: (context, state) {
         final events = state.getEventsStatus.data?.events ?? [];
 
-        return Column(
-          children: [
-            _buildWeekDaySelector(context, state),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      AppLocalKay.upcoming.tr(),
-                      style: AppTextStyle.titleMedium(
-                        context,
-                      ).copyWith(color: const Color(0xFF1F2937)),
-                    ),
-                    Gap(12.h),
-                    if (state.getEventsStatus.isLoading)
-                      const Center(child: CircularProgressIndicator())
-                    else if (events.isEmpty)
-                      _buildEmptyTasks(context)
-                    else
-                      Column(
-                        children: events.map((event) => ApiEventItemWidget(event: event)).toList(),
-                      ),
-                  ],
-                ),
+        return SingleChildScrollView(
+          padding: EdgeInsets.all(16.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const LevelSelectorWidget(),
+              const ControlBarWidget(),
+              _buildWeekDaySelector(context, state),
+              Gap(16.h),
+              Text(
+                AppLocalKay.upcoming.tr(),
+                style: AppTextStyle.titleMedium(
+                  context,
+                ).copyWith(color: AppColor.blackColor(context), fontWeight: FontWeight.bold),
               ),
-            ),
-          ],
+              Gap(12.h),
+              if (state.getEventsStatus.isLoading)
+                const Center(child: CircularProgressIndicator())
+              else if (events.isEmpty)
+                _buildEmptyTasks(context)
+              else
+                Column(children: events.map((event) => ApiEventItemWidget(event: event)).toList()),
+            ],
+          ),
         );
       },
     );
@@ -64,59 +61,80 @@ class WeeklyViewWidget extends StatelessWidget {
       return startOfWeek.add(Duration(days: index));
     });
 
-    return Container(
-      height: 100.h,
-      padding: EdgeInsets.symmetric(vertical: 12.h),
-      decoration: BoxDecoration(
-        color: AppColor.whiteColor(context),
-        border: Border(bottom: BorderSide(color: AppColor.greyColor(context).withOpacity(0.1))),
-      ),
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: days.length,
-        padding: EdgeInsets.symmetric(horizontal: 8.w),
-        itemBuilder: (context, index) {
-          final date = days[index];
-          final isSelected = DateUtils.isSameDay(date, state.selectedDate);
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 12.h),
+          decoration: BoxDecoration(
+            color: AppColor.whiteColor(context),
+            borderRadius: BorderRadius.circular(12.r),
+            border: Border.all(color: AppColor.greyColor(context).withOpacity(0.05)),
+          ),
+          child: SizedBox(
+            height: 70.h,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: days.length,
+              padding: EdgeInsets.symmetric(horizontal: 8.w),
+              itemBuilder: (context, index) {
+                final date = days[index];
+                final isSelected = DateUtils.isSameDay(date, state.selectedDate);
 
-          return GestureDetector(
-            onTap: () {
-              context.read<CalendarCubit>().changeDate(date);
-            },
-            child: Container(
-              width: 50.w,
-              margin: EdgeInsets.symmetric(horizontal: 4.w),
-              decoration: BoxDecoration(
-                color: isSelected ? AppColor.accentColor(context) : Colors.transparent,
-                borderRadius: BorderRadius.circular(12),
-                border: isSelected
-                    ? null
-                    : Border.all(color: AppColor.greyColor(context).withOpacity(0.2)),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    _getDayName(date.weekday),
-                    style: AppTextStyle.bodySmall(context).copyWith(
-                      color: isSelected ? Colors.white : AppColor.greyColor(context),
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                return GestureDetector(
+                  onTap: () {
+                    context.read<CalendarCubit>().changeDate(date);
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: 55.w,
+                    margin: EdgeInsets.symmetric(horizontal: 4.w),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? AppColor.accentColor(context)
+                          : AppColor.greyColor(context).withOpacity(0.02),
+                      borderRadius: BorderRadius.circular(12.r),
+                      border: isSelected
+                          ? null
+                          : Border.all(color: AppColor.greyColor(context).withOpacity(0.1)),
+                      boxShadow: isSelected
+                          ? [
+                              BoxShadow(
+                                color: AppColor.accentColor(context).withOpacity(0.3),
+                                blurRadius: 8,
+                                offset: const Offset(0, 4),
+                              ),
+                            ]
+                          : [],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          _getDayName(date.weekday),
+                          style: AppTextStyle.bodySmall(context).copyWith(
+                            color: isSelected ? Colors.white : AppColor.greyColor(context),
+                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            fontSize: 10.sp,
+                          ),
+                        ),
+                        Gap(4.h),
+                        Text(
+                          date.day.toString(),
+                          style: AppTextStyle.titleMedium(context).copyWith(
+                            color: isSelected ? Colors.white : AppColor.blackColor(context),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.sp,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Gap(4.h),
-                  Text(
-                    date.day.toString(),
-                    style: AppTextStyle.titleMedium(context).copyWith(
-                      color: isSelected ? Colors.white : AppColor.blackColor(context),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
+                );
+              },
             ),
-          );
-        },
-      ),
+          ),
+        ),
+      ],
     );
   }
 
