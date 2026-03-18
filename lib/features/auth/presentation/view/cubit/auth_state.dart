@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:my_template/core/network/status.state.dart';
+import 'package:my_template/features/auth/data/model/edit_fCM_response_model.dart';
 import 'package:my_template/features/auth/data/model/level_model.dart';
 import 'package:my_template/features/auth/data/model/nationality_model.dart';
 import 'package:my_template/features/auth/data/model/registration_response_model.dart';
@@ -20,6 +21,7 @@ class AuthState extends Equatable {
   final StatusState<List<SectionModel>> sectionStatus;
   final StatusState<Map<int, List<StageModel>>> stagesMapStatus;
   final StatusState<Map<String, List<LevelModel>>> levelsMapStatus;
+  final StatusState<EditFCMResponseModel> fcmStatus;
 
   /// Password validation
   final bool hasUpperCase;
@@ -44,6 +46,7 @@ class AuthState extends Equatable {
     this.sectionStatus = const StatusState.initial(),
     this.stagesMapStatus = const StatusState.initial(),
     this.levelsMapStatus = const StatusState.initial(),
+    this.fcmStatus = const StatusState.initial(),
 
     this.hasUpperCase = false,
     this.hasLowerCase = false,
@@ -68,6 +71,7 @@ class AuthState extends Equatable {
     StatusState<List<SectionModel>>? sectionStatus,
     StatusState<Map<int, List<StageModel>>>? stagesMapStatus,
     StatusState<Map<String, List<LevelModel>>>? levelsMapStatus,
+    StatusState<EditFCMResponseModel>? fcmStatus,
 
     bool? hasUpperCase,
     bool? hasLowerCase,
@@ -97,6 +101,7 @@ class AuthState extends Equatable {
 
       isPasswordMatch: isPasswordMatch ?? this.isPasswordMatch,
       isBirthDateSelected: isBirthDateSelected ?? this.isBirthDateSelected,
+      fcmStatus: fcmStatus ?? this.fcmStatus,
     );
   }
 
@@ -118,5 +123,6 @@ class AuthState extends Equatable {
     hasMinLength,
     isPasswordMatch,
     isBirthDateSelected,
+    fcmStatus,
   ];
 }

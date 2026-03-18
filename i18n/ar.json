@@ -893,7 +893,7 @@
   "leave_requests": "طلبات الاستئذان",
   "request_leave": "طلب استئذان",
   "leave_reason": "سبب الاستئذان",
-  "start_time": "وقت الخروج",
+  "start_time": "وقت الدخول",
   "end_time": "وقت العودة (اختياري)",
   "leave_date": "تاريخ الاستئذان",
   "new_leave_request": "طلب استئذان جديد",

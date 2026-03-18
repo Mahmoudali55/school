@@ -4,6 +4,8 @@ import 'package:dartz/dartz.dart';
 import 'package:my_template/core/network/api_consumer.dart';
 import 'package:my_template/core/network/end_points.dart';
 import 'package:my_template/core/network/handle_dio_request.dart';
+import 'package:my_template/features/auth/data/model/edit_fCM_request_model.dart';
+import 'package:my_template/features/auth/data/model/edit_fCM_response_model.dart';
 import 'package:my_template/features/auth/data/model/registration_response_model.dart';
 import 'package:my_template/features/auth/data/model/user_login_model.dart';
 
@@ -30,6 +32,7 @@ abstract interface class AuthRepo {
     required String password,
     String? fcmToken,
   });
+  Future<Either<Failure, EditFCMResponseModel>> editFCM({required EditFCMModel editFCMModel});
   Future<Either<Failure, dynamic>> submitAdmissionRequest({
     required AdmissionRequestModel admissionRequestModel,
   });
@@ -82,12 +85,7 @@ class AuthRepoImpl implements AuthRepo {
       request: () async {
         final response = await apiConsumer.post(
           EndPoints.login,
-          body: {
-            "grant_type": "password",
-            "username": username,
-            "password": password,
-            if (fcmToken != null) "FCM": fcmToken,
-          },
+          body: {"grant_type": "password", "username": username, "password": password},
         );
         return UserLoginModel.fromJson(response);
       },
@@ -204,6 +202,15 @@ class AuthRepoImpl implements AuthRepo {
           extra: {'skipAuth': true},
         );
         return response;
+      },
+    );
+  }
+
+  Future<Either<Failure, EditFCMResponseModel>> editFCM({required EditFCMModel editFCMModel}) {
+    return handleDioRequest(
+      request: () async {
+        final response = await apiConsumer.put(EndPoints.editFCM, body: editFCMModel.toJson());
+        return EditFCMResponseModel.fromJson(response);
       },
     );
   }

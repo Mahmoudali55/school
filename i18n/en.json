@@ -840,7 +840,7 @@
   "leave_requests": "Leave Requests",
   "request_leave": "Request Leave",
   "leave_reason": "Leave Reason",
-  "start_time": "Departure Time",
+  "start_time": "Start time",
   "end_time": "Return Time (Optional)",
   "leave_date": "Leave Date",
   "new_leave_request": "New Leave Request",

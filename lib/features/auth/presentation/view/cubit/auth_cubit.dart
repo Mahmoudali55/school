@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/network/status.state.dart';
 import 'package:my_template/features/auth/data/model/admission_request_model.dart';
+import 'package:my_template/features/auth/data/model/edit_fCM_request_model.dart';
 import 'package:my_template/features/auth/data/model/level_model.dart';
 import 'package:my_template/features/auth/data/model/parent_registration_model.dart';
 import 'package:my_template/features/auth/data/model/stage_model.dart';
@@ -134,16 +135,19 @@ class AuthCubit extends Cubit<AuthState> {
     );
 
     if (isClosed) return;
-    result.fold(
-      (error) {
+    await result.fold(
+      (error) async {
         final errorMessage = error.errMessage ?? "Login failed";
         if (!isClosed) {
           emit(state.copyWith(loginStatus: StatusState.failure(errorMessage)));
         }
       },
-      (success) {
+      (success) async {
         if (!isClosed) {
           _saveUserData(success);
+          print("======= [DEBUG] Starting editFcm after login =======");
+          await editFcm(EditFCMModel(userId: success.userId, fcm: fcmToken ?? ""));
+          print("======= [DEBUG] editFcm call finished =======");
           usernameLoginController.clear();
           passwordLoginController.clear();
           emit(state.copyWith(loginStatus: StatusState.success(success)));
@@ -315,6 +319,18 @@ class AuthCubit extends Cubit<AuthState> {
     result.fold(
       (error) => emit(state.copyWith(admissionStatus: StatusState.failure(error.errMessage))),
       (data) => emit(state.copyWith(admissionStatus: StatusState.success(data))),
+    );
+  }
+
+  Future<void> editFcm(EditFCMModel editFCMModel) async {
+    if (isClosed) return;
+    print("Executing editFcm with model: ${editFCMModel.toJson()}");
+    emit(state.copyWith(fcmStatus: const StatusState.loading()));
+    final result = await authRepo.editFCM(editFCMModel: editFCMModel);
+    if (isClosed) return;
+    result.fold(
+      (error) => emit(state.copyWith(fcmStatus: StatusState.failure(error.errMessage))),
+      (data) => emit(state.copyWith(fcmStatus: StatusState.success(data))),
     );
   }
 }
