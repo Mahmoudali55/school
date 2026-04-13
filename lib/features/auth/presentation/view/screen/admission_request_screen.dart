@@ -8,7 +8,6 @@ import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.da
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_dropdown_form_field.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_searchable_dropdown.dart';
-import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
 import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
@@ -39,6 +38,9 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
   final _parentPassportNumberController = TextEditingController();
   final _parentNationalIdController = TextEditingController();
   final _studentCountController = TextEditingController(text: "1");
+
+  int _currentStep = 0;
+  final int _totalSteps = 3;
 
   String _parentResidencyType = "2";
   String _parentGender = "0";
@@ -151,241 +153,13 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _SectionHeader(title: AppLocalKay.parent_info.tr()),
-                  Gap(12.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomFormField(
-                          title: AppLocalKay.first_name.tr(),
-                          controller: _parentFirstNameController,
-                          validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
-                        ),
-                      ),
-                      Gap(12.w),
-                      Expanded(
-                        child: CustomFormField(
-                          title: AppLocalKay.last_name.tr(),
-                          controller: _parentLastNameController,
-                          validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Gap(12.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomFormField(
-                          title: AppLocalKay.grandfather_name.tr(),
-                          controller: _parentGrandfatherNameController,
-                          validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
-                        ),
-                      ),
-                      Gap(12.w),
-                      Expanded(
-                        child: CustomFormField(
-                          title: AppLocalKay.family_name.tr(),
-                          controller: _parentFamilyNameController,
-                          validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Gap(12.h),
-                  BlocBuilder<AuthCubit, AuthState>(
-                    buildWhen: (p, c) => p.nationalityStatus != c.nationalityStatus,
-                    builder: (context, state) {
-                      final nationalities = state.nationalityStatus.data ?? [];
-                      final isLoading = state.nationalityStatus.isLoading;
-
-                      // Auto-select first if not selected and data available
-                      if (_parentNationalityCode == null && nationalities.isNotEmpty) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          setState(
-                            () => _parentNationalityCode = nationalities.first.nationalityCode,
-                          );
-                        });
-                      }
-
-                      final selectedNationality = nationalities.firstWhere(
-                        (n) => n.nationalityCode == _parentNationalityCode,
-                        orElse: () => NationalityModel(nationalityCode: 0, nationalityNameAr: ''),
-                      );
-
-                      return CustomSearchableDropdown<NationalityModel>(
-                        title: AppLocalKay.nationality.tr(),
-                        hint: isLoading ? "Loading..." : AppLocalKay.nationality.tr(),
-                        value: selectedNationality.nationalityCode == 0
-                            ? null
-                            : selectedNationality,
-                        items: nationalities,
-                        itemLabel: (n) => n.nationalityNameAr,
-                        onChanged: (n) =>
-                            setState(() => _parentNationalityCode = n?.nationalityCode),
-                        submitted: false,
-                        errorText: AppLocalKay.required.tr(),
-                      );
-                    },
-                  ),
-                  Gap(12.h),
-                  Text(AppLocalKay.religion.tr(), style: AppTextStyle.formTitleStyle(context)),
-                  Gap(8.h),
-                  BlocBuilder<AuthCubit, AuthState>(
-                    buildWhen: (p, c) => p.religionStatus != c.religionStatus,
-                    builder: (context, state) {
-                      final religions = state.religionStatus.data ?? [];
-                      final isLoading = state.religionStatus.isLoading;
-
-                      // Auto-select first if not selected yet and data is available
-                      if (_parentReligionCode == null && religions.isNotEmpty) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          setState(() => _parentReligionCode = religions.first.religionCode);
-                        });
-                      }
-
-                      return CustomDropdownFormField<int>(
-                        value: _parentReligionCode,
-                        hint: isLoading ? "Loading..." : AppLocalKay.religion.tr(),
-                        items: isLoading
-                            ? []
-                            : religions
-                                  .map(
-                                    (r) => DropdownMenuItem<int>(
-                                      value: r.religionCode,
-                                      child: Text(r.religionNameAr),
-                                    ),
-                                  )
-                                  .toList(),
-                        onChanged: isLoading
-                            ? null
-                            : (v) => setState(() => _parentReligionCode = v),
-                        errorText: AppLocalKay.required.tr(),
-                        submitted: false,
-                      );
-                    },
-                  ),
-                  Gap(12.h),
-                  Text(
-                    AppLocalKay.residency_type.tr(),
-                    style: AppTextStyle.formTitleStyle(context),
-                  ),
-                  Gap(8.h),
-                  CustomDropdownFormField<String>(
-                    value: _parentResidencyType,
-                    items: [
-                      DropdownMenuItem(value: "2", child: Text(AppLocalKay.national_id_card.tr())),
-                      DropdownMenuItem(value: "1", child: Text(AppLocalKay.resident_card.tr())),
-                    ],
-                    onChanged: (v) => setState(() => _parentResidencyType = v!),
-                    errorText: AppLocalKay.required.tr(),
-                    submitted: false,
-                  ),
-                  Gap(12.h),
-                  CustomFormField(
-                    title: AppLocalKay.nationalId.tr(),
-                    controller: _parentNationalIdController,
-                    keyboardType: TextInputType.number,
-                    validator: (v) {
-                      if (v!.isEmpty) return AppLocalKay.required.tr();
-                      if (v.length != 10) return "يجب أن يكون 10 أرقام";
-                      return null;
-                    },
-                  ),
-                  Gap(12.h),
-                  CustomFormField(
-                    title: AppLocalKay.passport_number.tr(),
-                    controller: _parentPassportNumberController,
-                  ),
-                  Gap(12.h),
-                  CustomFormField(
-                    title: AppLocalKay.student_phone.tr(),
-                    keyboardType: TextInputType.phone,
-                    controller: _parentPhoneController,
-                    validator: (v) {
-                      if (v!.isEmpty) return AppLocalKay.required.tr();
-                      if (v.length != 10 || !v.startsWith("05")) {
-                        return "يجب أن يكون 10 أرقام ويبدأ بـ 05";
-                      }
-                      return null;
-                    },
-                  ),
-                  Gap(12.h),
-                  Text(AppLocalKay.gender.tr(), style: AppTextStyle.formTitleStyle(context)),
-                  Gap(8.h),
-                  CustomDropdownFormField<String>(
-                    errorText: '',
-                    submitted: false,
-                    value: _parentGender,
-                    items: [
-                      DropdownMenuItem(value: "0", child: Text(AppLocalKay.male.tr())),
-                      DropdownMenuItem(value: "1", child: Text(AppLocalKay.female.tr())),
-                    ],
-                    onChanged: (v) => setState(() => _parentGender = v!),
-                  ),
-                  Gap(12.h),
-                  _SectionHeader(title: AppLocalKay.student_info.tr()),
-                  Gap(12.h),
-                  CustomFormField(
-                    title: AppLocalKay.student_count.tr(),
-                    controller: _studentCountController,
-                    keyboardType: TextInputType.number,
-                    onChanged: (v) {
-                      int? count = int.tryParse(v);
-                      if (count != null && count > 0) _updateStudentForms(count);
-                    },
-                  ),
-                  const Divider(),
-                  ...List.generate(_studentControllers.length, (index) {
-                    return _buildStudentSection(index);
-                  }),
+                  _buildStepIndicator(),
+                  Gap(24.h),
+                  if (_currentStep == 0) _buildParentPersonalInfoStep(state),
+                  if (_currentStep == 1) _buildParentIdentityStep(state),
+                  if (_currentStep == 2) _buildStudentsStep(state),
                   Gap(32.h),
-                  CustomButton(
-                    isLoading: state.admissionStatus.isLoading,
-                    radius: 12.r,
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        final parentModel = ParentRegistrationModel(
-                          pFirstName: _parentFirstNameController.text,
-                          pSecondName: _parentLastNameController.text,
-                          pGrandName: _parentGrandfatherNameController.text,
-                          pFamilyName: _parentFamilyNameController.text,
-                          pNationCode: _parentNationalityCode ?? 0,
-                          pReligionCode: _parentReligionCode ?? 0,
-                          idType: int.tryParse(_parentResidencyType) ?? 1,
-                          idNo: _parentNationalIdController.text,
-                          pPassportNo: _parentPassportNumberController.text,
-                          pMobNo: _parentPhoneController.text,
-                          pGender: int.tryParse(_parentGender) ?? 0,
-                          registrationStudents: _studentControllers.map((s) {
-                            return StudentRegistrationModel(
-                              sFirstName: s.name.text,
-                              sIdNo: s.idNo.text,
-                              regDate: s.regDate.text,
-                              birthDate: s.birthDate.text,
-                              ageYear: int.tryParse(s.years.text) ?? 0,
-                              ageMonth: int.tryParse(s.months.text) ?? 0,
-                              ageDay: int.tryParse(s.days.text) ?? 0,
-                              gender: int.tryParse(s.gender) ?? 0,
-                              sectionCode: int.tryParse(s.section ?? '') ?? 0,
-                              stageCode: int.tryParse(s.stage ?? '') ?? 0,
-                              levelCode: int.tryParse(s.grade ?? '') ?? 0,
-                            );
-                          }).toList(),
-                        );
-                        context.read<AuthCubit>().registerParent(parentModel);
-                      }
-                    },
-                    child: state.admissionStatus.isLoading
-                        ? CustomLoading(color: AppColor.whiteColor(context), size: 20)
-                        : Text(
-                            AppLocalKay.submit_admission.tr(),
-                            style: AppTextStyle.bodyLarge(
-                              context,
-                              color: AppColor.whiteColor(context),
-                            ),
-                          ),
-                  ),
+                  _buildNavigationButtons(state),
                   Gap(40.h),
                 ],
               ),
@@ -394,6 +168,349 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
         },
       ),
     );
+  }
+
+  Widget _buildStepIndicator() {
+    final labels = [
+      AppLocalKay.parent_info.tr(),
+      AppLocalKay.parent_identity_info.tr(),
+      AppLocalKay.student_info.tr(),
+    ];
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double stepWidth = constraints.maxWidth / _totalSteps;
+        double progressWidth = (stepWidth * _currentStep) + (stepWidth / 2);
+        return Stack(
+          children: [
+            Positioned(
+              top: 15.w,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: 2.h,
+                color: Colors.grey.shade300,
+              ),
+            ),
+            // Active Line Progress
+            Positioned(
+              top: 15.w,
+              left: 0,
+              width: progressWidth,
+              child: Container(
+                height: 2.h,
+                color: AppColor.primaryColor(context),
+              ),
+            ),
+            Row(
+              children: List.generate(_totalSteps, (index) {
+                bool isActive = index <= _currentStep;
+                bool isLast = index == _totalSteps - 1;
+                return Expanded(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: 30.w,
+                        height: 30.w,
+                        decoration: BoxDecoration(
+                          color: isActive ? AppColor.primaryColor(context) : Colors.grey.shade300,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: AppColor.whiteColor(context), width: 2.w),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "${index + 1}",
+                            style: TextStyle(
+                              color: isActive ? Colors.white : Colors.grey.shade600,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Gap(8.h),
+                      Text(
+                        labels[index],
+                        textAlign: TextAlign.center,
+                        style: AppTextStyle.bodySmall(context).copyWith(
+                          color: isActive ? AppColor.primaryColor(context) : Colors.grey.shade600,
+                          fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+                          fontSize: 10.sp,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                );
+              }),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildParentPersonalInfoStep(AuthState state) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: CustomFormField(
+                title: AppLocalKay.first_name.tr(),
+                controller: _parentFirstNameController,
+                validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
+              ),
+            ),
+            Gap(12.w),
+            Expanded(
+              child: CustomFormField(
+                title: AppLocalKay.last_name.tr(),
+                controller: _parentLastNameController,
+                validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
+              ),
+            ),
+          ],
+        ),
+        Gap(12.h),
+        Row(
+          children: [
+            Expanded(
+              child: CustomFormField(
+                title: AppLocalKay.grandfather_name.tr(),
+                controller: _parentGrandfatherNameController,
+                validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
+              ),
+            ),
+            Gap(12.w),
+            Expanded(
+              child: CustomFormField(
+                title: AppLocalKay.family_name.tr(),
+                controller: _parentFamilyNameController,
+                validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
+              ),
+            ),
+          ],
+        ),
+        Gap(12.h),
+        BlocBuilder<AuthCubit, AuthState>(
+          buildWhen: (p, c) => p.nationalityStatus != c.nationalityStatus,
+          builder: (context, state) {
+            final nationalities = state.nationalityStatus.data ?? [];
+            final isLoading = state.nationalityStatus.isLoading;
+
+            if (_parentNationalityCode == null && nationalities.isNotEmpty) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                setState(() => _parentNationalityCode = nationalities.first.nationalityCode);
+              });
+            }
+
+            final selectedNationality = nationalities.firstWhere(
+              (n) => n.nationalityCode == _parentNationalityCode,
+              orElse: () => NationalityModel(nationalityCode: 0, nationalityNameAr: ''),
+            );
+
+            return CustomSearchableDropdown<NationalityModel>(
+              title: AppLocalKay.nationality.tr(),
+              hint: isLoading ? "Loading..." : AppLocalKay.nationality.tr(),
+              value: selectedNationality.nationalityCode == 0 ? null : selectedNationality,
+              items: nationalities,
+              itemLabel: (n) => n.nationalityNameAr,
+              onChanged: (n) => setState(() => _parentNationalityCode = n?.nationalityCode),
+              submitted: false,
+              errorText: AppLocalKay.required.tr(),
+            );
+          },
+        ),
+        Gap(12.h),
+        Text(AppLocalKay.religion.tr(), style: AppTextStyle.formTitleStyle(context)),
+        Gap(8.h),
+        BlocBuilder<AuthCubit, AuthState>(
+          buildWhen: (p, c) => p.religionStatus != c.religionStatus,
+          builder: (context, state) {
+            final religions = state.religionStatus.data ?? [];
+            final isLoading = state.religionStatus.isLoading;
+
+            if (_parentReligionCode == null && religions.isNotEmpty) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                setState(() => _parentReligionCode = religions.first.religionCode);
+              });
+            }
+
+            return CustomDropdownFormField<int>(
+              value: _parentReligionCode,
+              hint: isLoading ? "Loading..." : AppLocalKay.religion.tr(),
+              items: isLoading
+                  ? []
+                  : religions
+                        .map(
+                          (r) => DropdownMenuItem<int>(
+                            value: r.religionCode,
+                            child: Text(r.religionNameAr),
+                          ),
+                        )
+                        .toList(),
+              onChanged: isLoading ? null : (v) => setState(() => _parentReligionCode = v),
+              errorText: AppLocalKay.required.tr(),
+              submitted: false,
+            );
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildParentIdentityStep(AuthState state) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomDropdownFormField<String>(
+          value: _parentResidencyType,
+          items: [
+            DropdownMenuItem(value: "2", child: Text(AppLocalKay.national_id_card.tr())),
+            DropdownMenuItem(value: "1", child: Text(AppLocalKay.resident_card.tr())),
+          ],
+          onChanged: (v) => setState(() => _parentResidencyType = v!),
+          errorText: AppLocalKay.required.tr(),
+          submitted: false,
+        ),
+        Gap(12.h),
+        CustomFormField(
+          title: AppLocalKay.nationalId.tr(),
+          controller: _parentNationalIdController,
+          keyboardType: TextInputType.number,
+          validator: (v) {
+            if (v!.isEmpty) return AppLocalKay.required.tr();
+            if (v.length != 10) return "يجب أن يكون 10 أرقام";
+            return null;
+          },
+        ),
+        Gap(12.h),
+        CustomFormField(
+          title: AppLocalKay.passport_number.tr(),
+          controller: _parentPassportNumberController,
+        ),
+        Gap(12.h),
+        CustomFormField(
+          title: AppLocalKay.student_phone.tr(),
+          keyboardType: TextInputType.phone,
+          controller: _parentPhoneController,
+          validator: (v) {
+            if (v!.isEmpty) return AppLocalKay.required.tr();
+            if (v.length != 10 || !v.startsWith("05")) {
+              return "يجب أن يكون 10 أرقام ويبدأ بـ 05";
+            }
+            return null;
+          },
+        ),
+        Gap(12.h),
+        Text(AppLocalKay.gender.tr(), style: AppTextStyle.formTitleStyle(context)),
+        Gap(8.h),
+        CustomDropdownFormField<String>(
+          errorText: '',
+          submitted: false,
+          value: _parentGender,
+          items: [
+            DropdownMenuItem(value: "0", child: Text(AppLocalKay.male.tr())),
+            DropdownMenuItem(value: "1", child: Text(AppLocalKay.female.tr())),
+          ],
+          onChanged: (v) => setState(() => _parentGender = v!),
+        ),
+        Gap(12.h),
+        CustomFormField(
+          title: AppLocalKay.student_count.tr(),
+          controller: _studentCountController,
+          keyboardType: TextInputType.number,
+          onChanged: (v) {
+            int? count = int.tryParse(v);
+            if (count != null && count > 0) _updateStudentForms(count);
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStudentsStep(AuthState state) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ...List.generate(_studentControllers.length, (index) {
+          return _buildStudentSection(index);
+        }),
+      ],
+    );
+  }
+
+  Widget _buildNavigationButtons(AuthState state) {
+    return Row(
+      children: [
+        if (_currentStep > 0)
+          Expanded(
+            child: CustomButton(
+              onPressed: () => setState(() => _currentStep--),
+              color: Colors.grey.shade200,
+              child: Text(
+                AppLocalKay.back.tr(),
+                style: AppTextStyle.bodyMedium(context).copyWith(color: AppColor.primaryColor(context)),
+              ),
+            ),
+          ),
+        if (_currentStep > 0) Gap(12.w),
+        Expanded(
+          child: CustomButton(
+            isLoading: state.admissionStatus.isLoading,
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                if (_currentStep < _totalSteps - 1) {
+                  setState(() => _currentStep++);
+                } else {
+                  _submitForm();
+                }
+              }
+            },
+            child: Text(
+              _currentStep < _totalSteps - 1
+                  ? (AppLocalKay.next.tr() ?? "التالي")
+                  : (AppLocalKay.submit_admission.tr()),
+              style: AppTextStyle.bodyMedium(context).copyWith(color: AppColor.whiteColor(context)),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _submitForm() {
+    final parentModel = ParentRegistrationModel(
+      pFirstName: _parentFirstNameController.text,
+      pSecondName: _parentLastNameController.text,
+      pGrandName: _parentGrandfatherNameController.text,
+      pFamilyName: _parentFamilyNameController.text,
+      pNationCode: _parentNationalityCode ?? 0,
+      pReligionCode: _parentReligionCode ?? 0,
+      idType: int.tryParse(_parentResidencyType) ?? 1,
+      idNo: _parentNationalIdController.text,
+      pPassportNo: _parentPassportNumberController.text,
+      pMobNo: _parentPhoneController.text,
+      pGender: int.tryParse(_parentGender) ?? 0,
+      registrationStudents: _studentControllers.map((s) {
+        return StudentRegistrationModel(
+          sFirstName: s.name.text,
+          sIdNo: s.idNo.text,
+          regDate: s.regDate.text,
+          birthDate: s.birthDate.text,
+          ageYear: int.tryParse(s.years.text) ?? 0,
+          ageMonth: int.tryParse(s.months.text) ?? 0,
+          ageDay: int.tryParse(s.days.text) ?? 0,
+          gender: int.tryParse(s.gender) ?? 0,
+          sectionCode: int.tryParse(s.section ?? '') ?? 0,
+          stageCode: int.tryParse(s.stage ?? '') ?? 0,
+          levelCode: int.tryParse(s.grade ?? '') ?? 0,
+        );
+      }).toList(),
+    );
+    context.read<AuthCubit>().registerParent(parentModel);
   }
 
   Widget _buildStudentSection(int index) {
