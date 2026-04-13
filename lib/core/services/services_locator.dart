@@ -6,12 +6,7 @@ import 'package:my_template/core/network/api_consumer.dart';
 import 'package:my_template/core/network/app_interceptors.dart';
 import 'package:my_template/core/network/dio_consumer.dart';
 import 'package:my_template/core/services/ai_service.dart';
-import 'package:my_template/core/services/camera_service.dart';
-import 'package:my_template/core/services/face_detection_service.dart';
-import 'package:my_template/features/attendance/cubit/attendance_cubit.dart';
-import 'package:my_template/features/attendance/cubit/face_recognition_cubit.dart';
-import 'package:my_template/features/attendance/data/repository/attendance_repo.dart';
-import 'package:my_template/features/attendance/data/repository/face_recognition_repo.dart';
+
 import 'package:my_template/features/auth/data/repository/auth_repo.dart';
 import 'package:my_template/features/auth/presentation/view/cubit/auth_cubit.dart';
 import 'package:my_template/features/bus/data/repo/bus_repo.dart';
