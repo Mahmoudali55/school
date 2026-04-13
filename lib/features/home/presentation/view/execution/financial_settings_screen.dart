@@ -42,7 +42,7 @@ class _FinancialSettingsScreenState extends State<FinancialSettingsScreen> {
     );
     if (picked != null) {
       setState(() {
-        String formattedDate = DateFormat('dd/MM/yyyy').format(picked);
+        String formattedDate = DateFormat('dd/MM/yyyy', 'en').format(picked);
         if (isFromDate) {
           fromDate = formattedDate;
         } else {

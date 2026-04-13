@@ -18,26 +18,34 @@ class schoolApp extends StatefulWidget {
 class _schoolAppState extends State<schoolApp> {
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(360, 690),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      ensureScreenSize: true,
-      useInheritedMediaQuery: true,
-      builder: (_, child) {
-        return MaterialApp(
-          localizationsDelegates: [...context.localizationDelegates, CountryLocalizations.delegate],
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-          debugShowCheckedModeBanner: false,
-          theme: appThemeData(context),
-          initialRoute: RoutesName.splashScreen,
-          onGenerateRoute: AppRouters.onGenerateRoute,
-          navigatorKey: AppRouters.navigatorKey,
-          builder: BotToastInit(),
-          navigatorObservers: [BotToastNavigatorObserver()],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isTablet = constraints.maxWidth >= 600;
+        final Size designSize = isTablet
+            ? Size(constraints.maxWidth, constraints.maxHeight)
+            : const Size(360, 690);
+        return ScreenUtilInit(
+          designSize: designSize,
+          minTextAdapt: true,
+          splitScreenMode: true,
+          ensureScreenSize: true,
+          useInheritedMediaQuery: true,
+          builder: (_, child) {
+            return MaterialApp(
+              localizationsDelegates: [...context.localizationDelegates, CountryLocalizations.delegate],
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+              debugShowCheckedModeBanner: false,
+              theme: appThemeData(context),
+              initialRoute: RoutesName.splashScreen,
+              onGenerateRoute: AppRouters.onGenerateRoute,
+              navigatorKey: AppRouters.navigatorKey,
+              builder: BotToastInit(),
+              navigatorObservers: [BotToastNavigatorObserver()],
+            );
+          },
         );
-      },
+      }
     );
   }
 }

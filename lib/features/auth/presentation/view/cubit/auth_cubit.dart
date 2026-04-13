@@ -98,7 +98,12 @@ class AuthCubit extends Cubit<AuthState> {
     if (isClosed) return;
     emit(state.copyWith(registerStatus: StatusState.loading()));
 
-    final fcmToken = await FirebaseMessaging.instance.getToken();
+    String? fcmToken;
+    try {
+      fcmToken = await FirebaseMessaging.instance.getToken();
+    } catch (e) {
+      debugPrint("Error getting FCM token: $e");
+    }
     final result = await authRepo.register(
       username: userNameController.text,
       nationalId: nationalIdController.text,
@@ -127,7 +132,12 @@ class AuthCubit extends Cubit<AuthState> {
     if (isClosed) return;
     emit(state.copyWith(loginStatus: StatusState.loading()));
 
-    final fcmToken = await FirebaseMessaging.instance.getToken();
+    String? fcmToken;
+    try {
+      fcmToken = await FirebaseMessaging.instance.getToken();
+    } catch (e) {
+      debugPrint("Error getting FCM token: $e");
+    }
     final result = await authRepo.login(
       username: usernameLoginController.text,
       password: passwordLoginController.text,
