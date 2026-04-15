@@ -43,6 +43,16 @@ post_install do |installer|
     target.build_configurations.each do |config|
       # تحديد أقل إصدار iOS
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.5'
+      
+      # تفعيل صلاحيات محددة فقط بحسب الطلب لحزمة permission_handler
+      config.build_settings['PREPROCESSOR_DEFINITIONS'] ||= [
+        '$(inherited)',
+        'PERMISSION_CAMERA=1',
+        'PERMISSION_PHOTOS=1',
+        'PERMISSION_LOCATION=1',
+        'PERMISSION_MICROPHONE=1',
+        'PERMISSION_NOTIFICATIONS=1'
+      ]
     end
   end
 end

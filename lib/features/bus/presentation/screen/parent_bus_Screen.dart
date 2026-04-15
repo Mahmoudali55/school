@@ -232,7 +232,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                   if (context.mounted) {
                     CommonMethods.showToast(
                       message: AppLocalKay.phone_app_cant_open.tr(),
-                      backgroundColor: AppColor.errorColor(context),
+                      backgroundColor: AppColor.errorColor(context, listen: false),
                     );
                   }
                 }
@@ -240,7 +240,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                 if (context.mounted) {
                   CommonMethods.showToast(
                     message: AppLocalKay.phone_not_available.tr(),
-                    backgroundColor: AppColor.errorColor(context),
+                    backgroundColor: AppColor.errorColor(context, listen: false),
                   );
                 }
               }
@@ -256,8 +256,11 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
     if (selectedBusData.lat != null && selectedBusData.lng != null) {
       final String googleMapsUrl =
           "https://www.google.com/maps/search/?api=1&query=${selectedBusData.lat},${selectedBusData.lng}";
+      
+      final RenderBox? box = context.findRenderObject() as RenderBox?;
       Share.share(
         "${AppLocalKay.share_location.tr()} ${selectedBusData.childName}\n$googleMapsUrl",
+        sharePositionOrigin: box != null ? box.localToGlobal(Offset.zero) & box.size : null,
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -353,7 +356,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(AppLocalKay.alert_cancel.tr()),
-                          backgroundColor: AppColor.errorColor(context),
+                          backgroundColor: AppColor.errorColor(context, listen: false),
                         ),
                       );
                     }
@@ -663,9 +666,9 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
                 SnackBar(
                   content: Text(
                     AppLocalKay.alert_sent.tr(),
-                    style: AppTextStyle.bodyMedium(context, color: AppColor.whiteColor(context)),
+                    style: AppTextStyle.bodyMedium(context, listen: false, color: AppColor.whiteColor(context, listen: false)),
                   ),
-                  backgroundColor: AppColor.errorColor(context),
+                  backgroundColor: AppColor.errorColor(context, listen: false),
                 ),
               );
             },

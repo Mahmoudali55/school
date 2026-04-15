@@ -80,13 +80,16 @@ class BusDetails extends StatelessWidget {
   }
 
   Widget _buildBusLineDetails(BuildContext context, busLine) {
+    final width = MediaQuery.sizeOf(context).width;
+    final isTablet = width > 600;
+
     return GridView.count(
-      crossAxisCount: 2,
+      crossAxisCount: isTablet ? 4 : 2,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       crossAxisSpacing: 12.w,
       mainAxisSpacing: 12.h,
-      childAspectRatio: 1.1,
+      childAspectRatio: isTablet ? 1.4 : 1.1,
       children: [
         _buildDetailItem(
           context,
@@ -140,13 +143,16 @@ class BusDetails extends StatelessWidget {
   }
 
   Widget _buildDefaultDetails(BuildContext context) {
+    final width = MediaQuery.sizeOf(context).width;
+    final isTablet = width > 600;
+
     return GridView.count(
-      crossAxisCount: 2,
+      crossAxisCount: isTablet ? 4 : 2,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       crossAxisSpacing: 12.w,
       mainAxisSpacing: 12.h,
-      childAspectRatio: 1.1,
+      childAspectRatio: isTablet ? 1.4 : 1.1,
       children: [
         _buildDetailItem(
           context,
@@ -203,41 +209,50 @@ class BusDetails extends StatelessWidget {
               : const Color(0xFFE5E7EB),
         ),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: EdgeInsets.all(6.w),
-            decoration: BoxDecoration(
-              color: selectedBusData.busColor.withOpacity(0.1),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, size: 16.w, color: selectedBusData.busColor),
-          ),
-          Gap(8.w),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                title,
-                style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.all(6.w),
+              decoration: BoxDecoration(
+                color: selectedBusData.busColor.withOpacity(0.1),
+                shape: BoxShape.circle,
               ),
-              if (isTappable) ...[
-                Gap(4.w),
-                Icon(Icons.touch_app_rounded, size: 12.w, color: AppColor.primaryColor(context)),
+              child: Icon(icon, size: 16.w, color: selectedBusData.busColor),
+            ),
+            Gap(8.w),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: Text(
+                    title,
+                    style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                if (isTappable) ...[
+                  Gap(4.w),
+                  Icon(Icons.touch_app_rounded, size: 12.w, color: AppColor.primaryColor(context)),
+                ],
               ],
-            ],
-          ),
-          Gap(8.w),
-          Text(
-            value,
-            style: AppTextStyle.titleSmall(
-              context,
-            ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
+            ),
+            Gap(8.w),
+            Text(
+              value,
+              style: AppTextStyle.titleSmall(
+                context,
+              ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }

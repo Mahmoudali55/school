@@ -29,11 +29,11 @@ class ClassAbsentModel extends Equatable {
 
   factory ClassAbsentModel.fromJson(Map<String, dynamic> json) {
     return ClassAbsentModel(
-      levelCode: json['LEVEL_CODE'] as int? ?? 0,
-      classCode: json['CLASS_CODE'] as int? ?? 0,
-      studentCode: json['STUDENT_CODE'] as int? ?? 0,
+      levelCode: (json['LEVEL_CODE'] as num?)?.toInt() ?? 0,
+      classCode: (json['CLASS_CODE'] as num?)?.toInt() ?? 0,
+      studentCode: (json['STUDENT_CODE'] as num?)?.toInt() ?? 0,
       notes: json['NOTES'] ?? '',
-      absentType: json['ABSENT_TYPE'] as int? ?? 0,
+      absentType: (json['ABSENT_TYPE'] as num?)?.toInt() ?? 0,
       studentFullName: json['StudentfullName'] ?? '',
       absentDate: json['ABSENTDATE']?.toString(),
       classCodes: json['classcodes']?.toString(),

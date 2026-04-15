@@ -61,6 +61,10 @@ class DropdownSelectStudentWidget extends StatelessWidget {
           else
             DropdownButtonFormField<StudentMiniInfo>(
               initialValue: selectedStudent,
+              itemHeight: 60.h,
+              isExpanded: true,
+           
+              
               decoration: InputDecoration(
                 labelStyle: AppTextStyle.bodyMedium(context, color: AppColor.grey300Color(context)),
                 border: OutlineInputBorder(

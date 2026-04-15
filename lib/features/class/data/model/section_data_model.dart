@@ -11,8 +11,8 @@ class SectionDataModel extends Equatable {
   /// تحويل من JSON إلى كائن
   factory SectionDataModel.fromJson(Map<String, dynamic> json) {
     return SectionDataModel(
-      sectionCode: json['sectioncode'] as int,
-      sectionName: json['sectionname'] as String,
+      sectionCode: (json['sectioncode'] as num?)?.toInt() ?? 0,
+      sectionName: json['sectionname'] as String? ?? '',
     );
   }
 

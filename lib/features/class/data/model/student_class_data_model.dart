@@ -27,8 +27,8 @@ class StudentItem extends Equatable {
 
   factory StudentItem.fromJson(Map<String, dynamic> json) {
     return StudentItem(
-      studentCode: json['STUDENT_CODE'] as int,
-      studentName: json['S_NAME'] as String,
+      studentCode: (json['STUDENT_CODE'] as num?)?.toInt() ?? 0,
+      studentName: json['S_NAME'] as String? ?? '',
     );
   }
 

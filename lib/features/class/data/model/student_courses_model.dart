@@ -16,9 +16,9 @@ class StudentCoursesModel extends Equatable {
 
   factory StudentCoursesModel.fromJson(Map<String, dynamic> json) {
     return StudentCoursesModel(
-      levelCode: json['LEVEL_CODE'] as int,
-      courseCode: json['COURSE_CODE'] as int,
-      courseNameAr: json['COURSE_NAME_AR'] as String,
+      levelCode: (json['LEVEL_CODE'] as num?)?.toInt() ?? 0,
+      courseCode: (json['COURSE_CODE'] as num?)?.toInt() ?? 0,
+      courseNameAr: json['COURSE_NAME_AR'] as String? ?? '',
       notes: json['NOTES'],
       courseNameEn: '',
     );
