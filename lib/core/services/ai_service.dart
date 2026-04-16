@@ -6,7 +6,7 @@ class AIService {
   late final GenerativeModel _model;
 
   AIService() {
-    _model = GenerativeModel(model: 'gemini-2.5-flash-lite-preview-09-2025', apiKey: _apiKey);
+    _model = GenerativeModel(model: 'gemini-3-flash-preview', apiKey: _apiKey);
   }
 
   /// Generate lesson ideas based on subject and topic
