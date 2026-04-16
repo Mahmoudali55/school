@@ -76,6 +76,10 @@
 	<string>يحتاج التطبيق لمعرفة موقعك لعرض ومتابعة خط سير الحافلة المدرسية.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>يحتاج التطبيق لمعرفة موقعك لتتبع الحافلات المدرسية والرحلات وتنبيهك باقترابها.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>يحتاج التطبيق لمعرفة موقعك لتتبع الحافلات المدرسية والرحلات وتنبيهك باقترابها.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>يحتاج التطبيق إلى الصلاحية لحفظ الصور أو الملفات في معرض الصور.</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>tel</string>
