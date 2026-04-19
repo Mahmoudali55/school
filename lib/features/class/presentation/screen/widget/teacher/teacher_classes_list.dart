@@ -67,10 +67,12 @@ class TeacherClassesList extends StatelessWidget {
       builder: (context) {
         return BlocProvider.value(
           value: classCubit..getLessons(),
-          child: TeacherLessonsSheet(
-            classInfo: classInfo,
-            classCubit: classCubit,
-            homeCubit: homeCubit,
+          child: SafeArea(
+            child: TeacherLessonsSheet(
+              classInfo: classInfo,
+              classCubit: classCubit,
+              homeCubit: homeCubit,
+            ),
           ),
         );
       },

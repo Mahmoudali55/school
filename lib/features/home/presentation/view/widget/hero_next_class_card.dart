@@ -46,12 +46,12 @@ class HeroNextClassCard extends StatelessWidget {
             if (isBreak) continue;
 
             try {
-              final timeFormat = DateFormat('HH:mm');
+              final timeFormat = DateFormat('HH:mm', "en_US");
               final startStr = s.startTime.substring(0, 5);
               final endStr = s.endTime.substring(0, 5);
               final start = timeFormat.parse(startStr);
               final end = timeFormat.parse(endStr);
-              final current = timeFormat.parse(DateFormat('HH:mm').format(now));
+              final current = timeFormat.parse(DateFormat('HH:mm', "en_US").format(now));
 
               if (current.isAfter(start) && current.isBefore(end)) {
                 activeClass = s;

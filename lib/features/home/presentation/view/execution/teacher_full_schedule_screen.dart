@@ -114,6 +114,7 @@ class _TeacherFullScheduleScreenState extends State<TeacherFullScheduleScreen> {
                 width: 70.w,
                 margin: EdgeInsets.only(right: 12.w),
                 decoration: BoxDecoration(
+                  border: Border.all(color: isSelected ? AppColor.primaryColor(context) : AppColor.greyColor(context), width: 0.5),
                   color: isSelected ? AppColor.primaryColor(context) : AppColor.whiteColor(context),
                   borderRadius: BorderRadius.circular(16.r),
                   boxShadow: isSelected
@@ -129,15 +130,7 @@ class _TeacherFullScheduleScreenState extends State<TeacherFullScheduleScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      _days[index].substring(0, 1),
-                      style: AppTextStyle.bodyLarge(context).copyWith(
-                        color: isSelected
-                            ? AppColor.whiteColor(context)
-                            : AppColor.greyColor(context),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  
                     Text(
                       _days[index],
                       style: AppTextStyle.bodySmall(context).copyWith(

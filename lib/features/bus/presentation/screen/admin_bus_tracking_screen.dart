@@ -205,29 +205,5 @@ class _AdminBusTrackingScreenState extends State<AdminBusTrackingScreen>
     );
   }
 
-  void _showEmergencyDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(AppLocalKay.emergency_all_buses.tr()),
-        content: Text(AppLocalKay.emergency_content.tr()),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text(AppLocalKay.cancel.tr())),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              CommonMethods.showToast(
-                message: AppLocalKay.general_alert_sent.tr(),
-                type: ToastType.success,
-              );
-            },
-            child: Text(AppLocalKay.emergency_send_all.tr()),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColor.errorColor(context, listen: false),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  
 }

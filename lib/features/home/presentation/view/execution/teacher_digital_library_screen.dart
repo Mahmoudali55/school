@@ -516,278 +516,280 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
           value: context.read<HomeCubit>(),
           child: StatefulBuilder(
             builder: (context, setModalState) {
-              return Container(
-                padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom,
-                  left: 20.w,
-                  right: 20.w,
-                  top: 20.h,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(32.r),
-                    topRight: Radius.circular(32.r),
+              return SafeArea(
+                child: Container(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                    left: 20.w,
+                    right: 20.w,
+                    top: 20.h,
                   ),
-                ),
-                child: BlocConsumer<HomeCubit, HomeState>(
-                  listener: (context, state) {
-                    if (state.uploadedFilesStatus?.isSuccess ?? false) {
-                      setState(() {
-                        _uploadedFileUrl = state.uploadedFilesStatus?.data?.first;
-                      });
-                      CommonMethods.showToast(message: AppLocalKay.file_uploaded.tr());
-                      context.read<HomeCubit>().resetUploadedFilesStatus();
-                    }
-
-                    if (state.addDigitalLibraryStatus.isSuccess) {
-                      CommonMethods.showToast(
-                        message: state.addDigitalLibraryStatus.data?.msg ?? AppLocalKay.done.tr(),
-                      );
-                      context.read<HomeCubit>().resetAddDigitalLibraryStatus();
-                      Navigator.pop(context);
-                    } else if (state.addDigitalLibraryStatus.isFailure) {
-                      CommonMethods.showToast(
-                        message: state.addDigitalLibraryStatus.error ?? "",
-                        type: ToastType.error,
-                      );
-                      context.read<HomeCubit>().resetAddDigitalLibraryStatus();
-                    }
-                  },
-                  builder: (context, state) {
-                    return Form(
-                      key: formKey,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              AppLocalKay.digital_library_upload.tr(),
-                              style: AppTextStyle.titleMedium(
-                                context,
-                              ).copyWith(fontWeight: FontWeight.bold),
-                            ),
-                            Gap(20.h),
-                            Text(
-                              AppLocalKay.file_name.tr(),
-                              style: AppTextStyle.formTitleStyle(context),
-                            ),
-                            Gap(8.h),
-                            CustomFormField(
-                              hintText: AppLocalKay.enter_file_name.tr(),
-                              validator: (v) =>
-                                  v!.isEmpty ? AppLocalKay.enter_file_name.tr() : null,
-
-                              onChanged: (v) => title = v,
-                            ),
-                            Gap(16.h),
-                            // Level dropdown from teacherLevel API
-                            Text(
-                              AppLocalKay.student_grade.tr(),
-                              style: AppTextStyle.formTitleStyle(context),
-                            ),
-                            Gap(8.h),
-                            if (state.teacherLevelStatus.isLoading)
-                              Center(
-                                child: CustomLoading(
-                                  color: AppColor.accentColor(context),
-                                  size: 24.w,
-                                ),
-                              )
-                            else
-                              DropdownButtonFormField<int>(
-                                value: selectedLevelCode,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12.r),
-                                    borderSide: BorderSide(color: Colors.grey.shade300),
-                                  ),
-                                  contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 16.w,
-                                    vertical: 14.h,
-                                  ),
-                                  errorText: submitted && selectedLevelCode == null
-                                      ? AppLocalKay.required.tr()
-                                      : null,
-                                ),
-                                hint: Text(AppLocalKay.level.tr()),
-                                items: [
-                                  ...(state.teacherLevelStatus.data ?? []).map(
-                                    (level) => DropdownMenuItem<int>(
-                                      value: level.levelCode,
-                                      child: Text(level.levelName),
-                                    ),
-                                  ),
-                                ],
-                                onChanged: (v) => setModalState(() => selectedLevelCode = v),
-                                validator: (_) => null,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(32.r),
+                      topRight: Radius.circular(32.r),
+                    ),
+                  ),
+                  child: BlocConsumer<HomeCubit, HomeState>(
+                    listener: (context, state) {
+                      if (state.uploadedFilesStatus?.isSuccess ?? false) {
+                        setState(() {
+                          _uploadedFileUrl = state.uploadedFilesStatus?.data?.first;
+                        });
+                        CommonMethods.showToast(message: AppLocalKay.file_uploaded.tr());
+                        context.read<HomeCubit>().resetUploadedFilesStatus();
+                      }
+                
+                      if (state.addDigitalLibraryStatus.isSuccess) {
+                        CommonMethods.showToast(
+                          message: state.addDigitalLibraryStatus.data?.msg ?? AppLocalKay.done.tr(),
+                        );
+                        context.read<HomeCubit>().resetAddDigitalLibraryStatus();
+                        Navigator.pop(context);
+                      } else if (state.addDigitalLibraryStatus.isFailure) {
+                        CommonMethods.showToast(
+                          message: state.addDigitalLibraryStatus.error ?? "",
+                          type: ToastType.error,
+                        );
+                        context.read<HomeCubit>().resetAddDigitalLibraryStatus();
+                      }
+                    },
+                    builder: (context, state) {
+                      return Form(
+                        key: formKey,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppLocalKay.digital_library_upload.tr(),
+                                style: AppTextStyle.titleMedium(
+                                  context,
+                                ).copyWith(fontWeight: FontWeight.bold),
                               ),
-                            Gap(16.h),
-                            Text(
-                              AppLocalKay.notes.tr(),
-                              style: AppTextStyle.formTitleStyle(context),
-                            ),
-                            Gap(8.h),
-                            CustomFormField(
-                              hintText: AppLocalKay.notes.tr(),
-                              onChanged: (v) => notes = v,
-                              maxLines: 3,
-                            ),
-                            Gap(16.h),
-                            Text(
-                              AppLocalKay.upload_file.tr(),
-                              style: AppTextStyle.formTitleStyle(context),
-                            ),
-                            Gap(8.h),
-                            GestureDetector(
-                              onTap: () async {
-                                final result = await FilePicker.platform.pickFiles(
-                                  type: FileType.custom,
-                                  allowedExtensions: [
-                                    'pdf',
-                                    'ppt',
-                                    'pptx',
-                                    'doc',
-                                    'docx',
-                                    'mp4',
-                                    'avi',
-                                  ],
-                                );
-
-                                if (result != null && result.files.single.path != null) {
-                                  setState(() {
-                                    _fileName = result.files.single.name;
-                                  });
-                                  if (context.mounted) {
-                                    context.read<HomeCubit>().uploadFiles([
-                                      result.files.single.path!,
-                                    ]);
-                                  }
-                                }
-                              },
-                              child: Container(
-                                width: double.infinity,
-                                padding: EdgeInsets.all(16.w),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey.shade300),
-                                  borderRadius: BorderRadius.circular(12.r),
-                                ),
-                                child: state.uploadedFilesStatus?.isLoading ?? false
-                                    ? Column(
-                                        children: [
-                                          CustomLoading(
-                                            color: AppColor.accentColor(context),
-                                            size: 30.w,
-                                          ),
-                                          Gap(8.h),
-                                          Text(AppLocalKay.loading.tr()),
-                                        ],
-                                      )
-                                    : Column(
-                                        children: [
-                                          Icon(
-                                            _uploadedFileUrl != null
-                                                ? Icons.check_circle
-                                                : Icons.cloud_upload,
-                                            size: 40.w,
-                                            color: _uploadedFileUrl != null
-                                                ? AppColor.secondAppColor(context)
-                                                : AppColor.greyColor(context),
-                                          ),
-                                          Gap(8.h),
-                                          Text(
-                                            _fileName ?? AppLocalKay.choose_file.tr(),
-                                            textAlign: TextAlign.center,
-                                            style: AppTextStyle.titleMedium(
-                                              context,
-                                            ).copyWith(fontWeight: FontWeight.bold),
-                                          ),
-                                          Gap(8.h),
-                                          if (_uploadedFileUrl != null &&
-                                              _uploadedFileUrl!.isNotEmpty) ...[
-                                            Gap(12.h),
-                                            CustomButton(
-                                              radius: 12.r,
-                                              onPressed: () {
-                                                context.read<HomeCubit>().imageFileName(
-                                                  _uploadedFileUrl!,
-                                                );
-                                              },
-                                              child:
-                                                  context
-                                                          .watch<HomeCubit>()
-                                                          .state
-                                                          .imageFileNameStatus
-                                                          ?.isLoading ??
-                                                      false
-                                                  ? CustomLoading(
-                                                      color: AppColor.whiteColor(context),
-                                                      size: 15.w,
-                                                    )
-                                                  : Text(
-                                                      AppLocalKay.display.tr(),
-                                                      style: AppTextStyle.titleLarge(context)
-                                                          .copyWith(
-                                                            color: AppColor.whiteColor(context),
-                                                          ),
-                                                    ),
-                                            ),
-                                          ],
-                                        ],
+                              Gap(20.h),
+                              Text(
+                                AppLocalKay.file_name.tr(),
+                                style: AppTextStyle.formTitleStyle(context),
+                              ),
+                              Gap(8.h),
+                              CustomFormField(
+                                hintText: AppLocalKay.enter_file_name.tr(),
+                                validator: (v) =>
+                                    v!.isEmpty ? AppLocalKay.enter_file_name.tr() : null,
+                
+                                onChanged: (v) => title = v,
+                              ),
+                              Gap(16.h),
+                              // Level dropdown from teacherLevel API
+                              Text(
+                                AppLocalKay.student_grade.tr(),
+                                style: AppTextStyle.formTitleStyle(context),
+                              ),
+                              Gap(8.h),
+                              if (state.teacherLevelStatus.isLoading)
+                                Center(
+                                  child: CustomLoading(
+                                    color: AppColor.accentColor(context),
+                                    size: 24.w,
+                                  ),
+                                )
+                              else
+                                DropdownButtonFormField<int>(
+                                  value: selectedLevelCode,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.r),
+                                      borderSide: BorderSide(color: Colors.grey.shade300),
+                                    ),
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 16.w,
+                                      vertical: 14.h,
+                                    ),
+                                    errorText: submitted && selectedLevelCode == null
+                                        ? AppLocalKay.required.tr()
+                                        : null,
+                                  ),
+                                  hint: Text(AppLocalKay.level.tr()),
+                                  items: [
+                                    ...(state.teacherLevelStatus.data ?? []).map(
+                                      (level) => DropdownMenuItem<int>(
+                                        value: level.levelCode,
+                                        child: Text(level.levelName),
                                       ),
+                                    ),
+                                  ],
+                                  onChanged: (v) => setModalState(() => selectedLevelCode = v),
+                                  validator: (_) => null,
+                                ),
+                              Gap(16.h),
+                              Text(
+                                AppLocalKay.notes.tr(),
+                                style: AppTextStyle.formTitleStyle(context),
                               ),
-                            ),
-                            if (submitted && _uploadedFileUrl == null)
-                              Padding(
-                                padding: EdgeInsets.only(top: 8.h),
-                                child: Text(
-                                  AppLocalKay.required.tr(),
-                                  style: AppTextStyle.bodySmall(
-                                    context,
-                                  ).copyWith(color: Colors.red),
+                              Gap(8.h),
+                              CustomFormField(
+                                hintText: AppLocalKay.notes.tr(),
+                                onChanged: (v) => notes = v,
+                                maxLines: 3,
+                              ),
+                              Gap(16.h),
+                              Text(
+                                AppLocalKay.upload_file.tr(),
+                                style: AppTextStyle.formTitleStyle(context),
+                              ),
+                              Gap(8.h),
+                              GestureDetector(
+                                onTap: () async {
+                                  final result = await FilePicker.platform.pickFiles(
+                                    type: FileType.custom,
+                                    allowedExtensions: [
+                                      'pdf',
+                                      'ppt',
+                                      'pptx',
+                                      'doc',
+                                      'docx',
+                                      'mp4',
+                                      'avi',
+                                    ],
+                                  );
+                
+                                  if (result != null && result.files.single.path != null) {
+                                    setState(() {
+                                      _fileName = result.files.single.name;
+                                    });
+                                    if (context.mounted) {
+                                      context.read<HomeCubit>().uploadFiles([
+                                        result.files.single.path!,
+                                      ]);
+                                    }
+                                  }
+                                },
+                                child: Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.all(16.w),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey.shade300),
+                                    borderRadius: BorderRadius.circular(12.r),
+                                  ),
+                                  child: state.uploadedFilesStatus?.isLoading ?? false
+                                      ? Column(
+                                          children: [
+                                            CustomLoading(
+                                              color: AppColor.accentColor(context),
+                                              size: 30.w,
+                                            ),
+                                            Gap(8.h),
+                                            Text(AppLocalKay.loading.tr()),
+                                          ],
+                                        )
+                                      : Column(
+                                          children: [
+                                            Icon(
+                                              _uploadedFileUrl != null
+                                                  ? Icons.check_circle
+                                                  : Icons.cloud_upload,
+                                              size: 40.w,
+                                              color: _uploadedFileUrl != null
+                                                  ? AppColor.secondAppColor(context)
+                                                  : AppColor.greyColor(context),
+                                            ),
+                                            Gap(8.h),
+                                            Text(
+                                              _fileName ?? AppLocalKay.choose_file.tr(),
+                                              textAlign: TextAlign.center,
+                                              style: AppTextStyle.titleMedium(
+                                                context,
+                                              ).copyWith(fontWeight: FontWeight.bold),
+                                            ),
+                                            Gap(8.h),
+                                            if (_uploadedFileUrl != null &&
+                                                _uploadedFileUrl!.isNotEmpty) ...[
+                                              Gap(12.h),
+                                              CustomButton(
+                                                radius: 12.r,
+                                                onPressed: () {
+                                                  context.read<HomeCubit>().imageFileName(
+                                                    _uploadedFileUrl!,
+                                                  );
+                                                },
+                                                child:
+                                                    context
+                                                            .watch<HomeCubit>()
+                                                            .state
+                                                            .imageFileNameStatus
+                                                            ?.isLoading ??
+                                                        false
+                                                    ? CustomLoading(
+                                                        color: AppColor.whiteColor(context),
+                                                        size: 15.w,
+                                                      )
+                                                    : Text(
+                                                        AppLocalKay.display.tr(),
+                                                        style: AppTextStyle.titleLarge(context)
+                                                            .copyWith(
+                                                              color: AppColor.whiteColor(context),
+                                                            ),
+                                                      ),
+                                              ),
+                                            ],
+                                          ],
+                                        ),
                                 ),
                               ),
-                            Gap(32.h),
-                            CustomButton(
-                              radius: 12.r,
-                              child: state.addDigitalLibraryStatus.isLoading
-                                  ? CustomLoading(color: AppColor.whiteColor(context), size: 20.w)
-                                  : Text(
-                                      AppLocalKay.save.tr(),
-                                      style: AppTextStyle.bodyLarge(context, color: Colors.white),
-                                      textAlign: TextAlign.center,
-                                    ),
-
-                              onPressed: () {
-                                setModalState(() => submitted = true);
-                                if (formKey.currentState!.validate() && _uploadedFileUrl != null) {
-                                  final teacherCode =
-                                      int.tryParse(HiveMethods.getUserCode().toString()) ?? 0;
-
-                                  if (selectedLevelCode == null) {
-                                    setModalState(() {});
-                                    return;
+                              if (submitted && _uploadedFileUrl == null)
+                                Padding(
+                                  padding: EdgeInsets.only(top: 8.h),
+                                  child: Text(
+                                    AppLocalKay.required.tr(),
+                                    style: AppTextStyle.bodySmall(
+                                      context,
+                                    ).copyWith(color: Colors.red),
+                                  ),
+                                ),
+                              Gap(32.h),
+                              CustomButton(
+                                radius: 12.r,
+                                child: state.addDigitalLibraryStatus.isLoading
+                                    ? CustomLoading(color: AppColor.whiteColor(context), size: 20.w)
+                                    : Text(
+                                        AppLocalKay.save.tr(),
+                                        style: AppTextStyle.bodyLarge(context, color: Colors.white),
+                                        textAlign: TextAlign.center,
+                                      ),
+                
+                                onPressed: () {
+                                  setModalState(() => submitted = true);
+                                  if (formKey.currentState!.validate() && _uploadedFileUrl != null) {
+                                    final teacherCode =
+                                        int.tryParse(HiveMethods.getUserCode().toString()) ?? 0;
+                
+                                    if (selectedLevelCode == null) {
+                                      setModalState(() {});
+                                      return;
+                                    }
+                
+                                    context.read<HomeCubit>().addDigitalLibrary(
+                                      request: AddDigitalLibraryRequestModel(
+                                        fileName: title ?? "",
+                                        filepath: _uploadedFileUrl!,
+                                        levelCode: selectedLevelCode!,
+                                        teacherCode: teacherCode,
+                                        notes: notes,
+                                      ),
+                                    );
                                   }
-
-                                  context.read<HomeCubit>().addDigitalLibrary(
-                                    request: AddDigitalLibraryRequestModel(
-                                      fileName: title ?? "",
-                                      filepath: _uploadedFileUrl!,
-                                      levelCode: selectedLevelCode!,
-                                      teacherCode: teacherCode,
-                                      notes: notes,
-                                    ),
-                                  );
-                                }
-                              },
-                            ),
-                            Gap(32.h),
-                          ],
+                                },
+                              ),
+                              Gap(32.h),
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               );
             },

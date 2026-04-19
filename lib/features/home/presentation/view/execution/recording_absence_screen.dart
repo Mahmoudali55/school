@@ -209,38 +209,40 @@ class _RecordingAbsenceScreenState extends State<RecordingAbsenceScreen> {
             int absentCount = _absences.length;
             int totalCount = state.studentDataStatus.data?.students.length ?? 0;
 
-            return Padding(
-              padding: EdgeInsets.all(16.r),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  FadeInDown(
-                    duration: const Duration(milliseconds: 400),
-                    child: _buildSelectionCard(state),
-                  ),
-                  Gap(20.h),
-                  if (_selectedClass != null)
+            return SafeArea(
+              child: Padding(
+                padding: EdgeInsets.all(16.r),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    FadeInDown(
+                      duration: const Duration(milliseconds: 400),
+                      child: _buildSelectionCard(state),
+                    ),
+                    Gap(20.h),
+                    if (_selectedClass != null)
+                      FadeInUp(
+                        duration: const Duration(milliseconds: 500),
+                        child: _buildAbsenceSummaryCard(absentCount, totalCount, state),
+                      ),
+                    const Spacer(),
                     FadeInUp(
-                      duration: const Duration(milliseconds: 500),
-                      child: _buildAbsenceSummaryCard(absentCount, totalCount, state),
+                      duration: const Duration(milliseconds: 600),
+                      child: CustomButton(
+                        child: state.addClassAbsentStatus.isLoading
+                            ? CustomLoading(color: AppColor.whiteColor(context), size: 20.sp)
+                            : Text(
+                                AppLocalKay.user_management_save.tr(),
+                                style: AppTextStyle.titleMedium(
+                                  context,
+                                ).copyWith(color: AppColor.whiteColor(context)),
+                              ),
+                        radius: 12.r,
+                        onPressed: state.addClassAbsentStatus.isLoading ? null : _saveAttendance,
+                      ),
                     ),
-                  const Spacer(),
-                  FadeInUp(
-                    duration: const Duration(milliseconds: 600),
-                    child: CustomButton(
-                      child: state.addClassAbsentStatus.isLoading
-                          ? CustomLoading(color: AppColor.whiteColor(context), size: 20.sp)
-                          : Text(
-                              AppLocalKay.user_management_save.tr(),
-                              style: AppTextStyle.titleMedium(
-                                context,
-                              ).copyWith(color: AppColor.whiteColor(context)),
-                            ),
-                      radius: 12.r,
-                      onPressed: state.addClassAbsentStatus.isLoading ? null : _saveAttendance,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           },

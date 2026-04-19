@@ -53,7 +53,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
     if (picked != null) {
       setState(() {
         _dueDate = picked;
-        _dateController.text = DateFormat('yyyy-MM-dd').format(picked);
+        _dateController.text = DateFormat('yyyy-MM-dd', "en_US").format(picked);
       });
     }
   }
@@ -73,7 +73,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
 
       _dateController.text = lesson.lessonDate;
       try {
-        _dueDate = DateFormat('yyyy-MM-dd').parse(lesson.lessonDate.split(' ').first);
+        _dueDate = DateFormat('yyyy-MM-dd', "en_US").parse(lesson.lessonDate.split(' ').first);
       } catch (e) {
         _dueDate = DateTime.now();
       }
@@ -413,7 +413,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                             classCode: _selectedClassCode!,
                             lesson: _titleController.text,
                             lessonPath: _uploadedFileUrl ?? "",
-                            lessonDate: DateFormat('yyyy-MM-dd').format(_dueDate!),
+                            lessonDate: DateFormat('yyyy-MM-dd', "en_US").format(_dueDate!),
                             teacherCode: int.parse(HiveMethods.getUserCode()),
                             notes: _notesController.text,
                             courseCode: _selectedSubjectCode!,

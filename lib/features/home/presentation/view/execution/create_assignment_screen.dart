@@ -72,14 +72,14 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
         if (_dueDate == null) {
           // Try common formats
           try {
-            _dueDate = DateFormat("yyyy-MM-dd").parse(widget.homework!.hwDate);
+            _dueDate = DateFormat("yyyy-MM-dd", "en_US").parse(widget.homework!.hwDate);
           } catch (_) {
             try {
-              _dueDate = DateFormat("dd/MM/yyyy").parse(widget.homework!.hwDate);
+              _dueDate = DateFormat("dd/MM/yyyy", "en_US").parse(widget.homework!.hwDate);
             } catch (_) {
               // Try ISO with time
               try {
-                _dueDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(widget.homework!.hwDate);
+                _dueDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss", "en_US").parse(widget.homework!.hwDate);
               } catch (e) {
                 debugPrint("All date parsing failed. Keeping raw string.");
               }
@@ -92,7 +92,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
 
       _dateController = TextEditingController(
         text: _dueDate != null
-            ? DateFormat('yyyy-MM-dd').format(_dueDate!)
+            ? DateFormat('yyyy-MM-dd', 'en').format(_dueDate!)
             : (widget.homework?.hwDate ?? ''),
       );
 
@@ -440,13 +440,13 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
                           stageCode: int.parse(HiveMethods.getUserStage().toString()),
                           level: _selectedLevelCode!,
                           classCode: _selectedClassCode!,
-                          hwDate: DateFormat('yyyy-MM-dd').format(_dueDate!),
+                          hwDate: DateFormat('yyyy-MM-dd', "en_US").format(_dueDate!),
                           notes: _notesController.text,
                           homeworkDetails: [
                             HomeworkDetailsModel(
                               levelCode: _selectedLevelCode!,
                               classCode: _selectedClassCode!,
-                              hwDate: DateFormat('yyyy-MM-dd').format(_dueDate!),
+                              hwDate: DateFormat('yyyy-MM-dd', "en_US").format(_dueDate!),
                               hw: _descriptionController.text,
                               notes: _notesController.text,
                               courseCode: _selectedSubjectCode!,
@@ -482,7 +482,7 @@ class _CreateAssignmentScreenState extends State<CreateAssignmentScreen> {
     if (picked != null) {
       setState(() {
         _dueDate = picked;
-        _dateController.text = DateFormat('yyyy-MM-dd').format(picked);
+        _dateController.text = DateFormat('yyyy-MM-dd', "en_US").format(picked);
       });
     }
   }

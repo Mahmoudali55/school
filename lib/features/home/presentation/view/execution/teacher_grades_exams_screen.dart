@@ -125,9 +125,7 @@ class _TeacherGradesExamsScreenState extends State<TeacherGradesExamsScreen> {
                         ],
                       ),
                     )
-                  else ...[
-                    FadeInDown(child: _buildPerformanceChart(state.classMonthResultStatus.data!)),
-                    Gap(24.h),
+                  else ...[ 
                     _buildSectionHeader(AppLocalKay.grades_exams_teacher.tr()),
                     Gap(16.h),
                     ...state.classMonthResultStatus.data!.map((result) {

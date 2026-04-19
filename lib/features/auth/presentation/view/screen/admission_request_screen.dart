@@ -91,7 +91,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
   void _calculateAge(String birthDate, _StudentFormControllers s) {
     if (birthDate.isEmpty) return;
     try {
-      DateTime birth = DateFormat('yyyy-MM-dd').parse(birthDate);
+      DateTime birth = DateFormat('yyyy-MM-dd', 'en').parse(birthDate);
       DateTime now = DateTime.now();
 
       int years = now.year - birth.year;
@@ -561,7 +561,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
                 lastDate: DateTime(2100),
               );
               if (picked != null) {
-                setState(() => s.regDate.text = DateFormat('yyyy-MM-dd').format(picked));
+                setState(() => s.regDate.text = DateFormat('yyyy-MM-dd', 'en').format(picked));
               }
             },
             validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
@@ -581,7 +581,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
               );
               if (picked != null) {
                 setState(() {
-                  s.birthDate.text = DateFormat('yyyy-MM-dd').format(picked);
+                  s.birthDate.text = DateFormat('yyyy-MM-dd, en').format(picked);
                   _calculateAge(s.birthDate.text, s);
                 });
               }

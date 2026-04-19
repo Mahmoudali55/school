@@ -41,12 +41,12 @@ class AdminBusDetails extends StatelessWidget {
           ),
           Gap(16.h),
           GridView.count(
-            crossAxisCount: 2,
+            crossAxisCount: MediaQuery.sizeOf(context).width > 600 ? 4 : 2,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             crossAxisSpacing: 12.w,
             mainAxisSpacing: 12.h,
-            childAspectRatio: 1.1,
+            childAspectRatio: MediaQuery.sizeOf(context).width > 600 ? 1.0 : 1.1,
             children: [
               /// Bus Number (using Plate No)
               _buildDetailItem(
@@ -130,6 +130,8 @@ class AdminBusDetails extends StatelessWidget {
         border: Border.all(color: const Color(0xFFE5E7EB)),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             padding: EdgeInsets.all(6.w),
@@ -142,10 +144,12 @@ class AdminBusDetails extends StatelessWidget {
           Gap(10.h),
           Text(
             title,
+            textAlign: TextAlign.center,
             style: AppTextStyle.bodySmall(context).copyWith(color: const Color(0xFF6B7280)),
           ),
           Text(
             value,
+            textAlign: TextAlign.center,
             style: AppTextStyle.bodyMedium(
               context,
             ).copyWith(fontWeight: FontWeight.w600, color: const Color(0xFF1F2937)),
