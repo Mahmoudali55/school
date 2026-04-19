@@ -76,7 +76,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
     );
 
     if (widget.isManagement == true) {
-      context.read<ClassCubit>().sectionData(userId: HiveMethods.getType());
+      context.read<ClassCubit>().sectionData(userId: HiveMethods.getUserid());
     } else {
       final stageCode = int.tryParse(HiveMethods.getUserStage().toString()) ?? 0;
       context.read<HomeCubit>().teacherLevel(stageCode);

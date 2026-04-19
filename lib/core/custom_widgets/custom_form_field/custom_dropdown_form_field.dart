@@ -22,8 +22,11 @@ class CustomDropdownFormField<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    T? effectiveValue = items.any((item) => item.value == value) ? value : null;
+
     return DropdownButtonFormField<T>(
-      value: value,
+      value: effectiveValue,
+      isExpanded: true,
       dropdownColor: AppColor.whiteColor(context),
       style: TextStyle(color: AppColor.blackColor(context), fontSize: 14.sp),
       autovalidateMode: submitted ? AutovalidateMode.always : AutovalidateMode.disabled,

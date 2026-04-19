@@ -209,7 +209,14 @@ class ClassCubit extends Cubit<ClassState> {
   }
 
   Future<void> sectionData({required String userId}) async {
-    emit(state.copyWith(sectionDataStatus: const StatusState.loading()));
+    emit(
+      state.copyWith(
+        sectionDataStatus: const StatusState.loading(),
+        clearSection: true,
+        clearStage: true,
+        clearLevel: true,
+      ),
+    );
     final result = await _classRepo.sectionData(userId: userId);
     if (isClosed) return;
     result.fold(
@@ -219,7 +226,7 @@ class ClassCubit extends Cubit<ClassState> {
   }
 
   Future<void> stageData({required int sectionId}) async {
-    emit(state.copyWith(stageDataStatus: const StatusState.loading()));
+    emit(state.copyWith(stageDataStatus: const StatusState.loading(), clearStage: true, clearLevel: true));
     final result = await _classRepo.stageData(sectionCode: sectionId);
     if (isClosed) return;
     result.fold(
@@ -229,7 +236,7 @@ class ClassCubit extends Cubit<ClassState> {
   }
 
   Future<void> levelData({required int stage}) async {
-    emit(state.copyWith(levelDataStatus: const StatusState.loading()));
+    emit(state.copyWith(levelDataStatus: const StatusState.loading(), clearLevel: true));
     final result = await _classRepo.levelData(stage: stage);
     if (isClosed) return;
     result.fold(
@@ -282,7 +289,8 @@ class ClassCubit extends Cubit<ClassState> {
     emit(
       state.copyWith(
         selectedSection: section,
-        selectedStage: null,
+        clearStage: true,
+        clearLevel: true,
         stageDataStatus: const StatusState.initial(),
       ),
     );
@@ -295,7 +303,7 @@ class ClassCubit extends Cubit<ClassState> {
     emit(
       state.copyWith(
         selectedStage: stage,
-        selectedLevel: null,
+        clearLevel: true,
         sectionDataStatus: const StatusState.initial(),
       ),
     );

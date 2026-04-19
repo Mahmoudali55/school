@@ -39,7 +39,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
   void initState() {
     super.initState();
     // Load initial data for management
-    context.read<ClassCubit>().sectionData(userId: HiveMethods.getType());
+    context.read<ClassCubit>().sectionData(userId: HiveMethods.getUserid());
   }
 
   final List<String> _filters = [
@@ -147,7 +147,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                         CustomDropdownFormField<SectionDataModel>(
                           hint: AppLocalKay.section.tr(),
                           value: state.selectedSection,
-                          items: (state.sectionDataStatus.data ?? []).map((section) {
+                          items: (state.sectionDataStatus.data ?? []).toSet().toList().map((section) {
                             return DropdownMenuItem<SectionDataModel>(
                               value: section,
                               child: Text(section.sectionName),
@@ -177,7 +177,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                               ? 'اختر المرحلة'
                               : 'Select Stage',
                           value: state.selectedStage,
-                          items: (state.stageDataStatus.data ?? []).map((stage) {
+                          items: (state.stageDataStatus.data ?? []).toSet().toList().map((stage) {
                             return DropdownMenuItem<StageDataModel>(
                               value: stage,
                               child: Text(stage.stageNameAr),
@@ -210,7 +210,7 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
                         CustomDropdownFormField<LevelModel>(
                           hint: AppLocalKay.level.tr(),
                           value: state.selectedLevel,
-                          items: (state.levelDataStatus?.data ?? []).map((level) {
+                          items: (state.levelDataStatus?.data ?? []).toSet().toList().map((level) {
                             return DropdownMenuItem<LevelModel>(
                               value: level,
                               child: Text(level.levelName),

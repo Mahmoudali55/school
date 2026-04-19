@@ -356,7 +356,7 @@ class ClassRepoImpl extends ClassRepo {
       request: () async {
         final response = await apiConsumer.get(
           EndPoints.SectionData,
-          queryParameters: {"id": userId},
+          queryParameters: {"Code": userId},
         );
         final String dataString = response['Data'] as String;
         return SectionDataModel.listFromJsonString(dataString);

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_dropdown_form_field.dart';
@@ -33,9 +34,9 @@ class _AdminScheduleGeneratorScreenState extends State<AdminScheduleGeneratorScr
     super.initState();
     // Assuming we have a way to get the current userId, for now passing a placeholder or getting it from a shared state if available.
     // In this app, many repositories use userId.
-    context.read<ScheduleCubit>().getSections('1');
+    context.read<ScheduleCubit>().getSections(HiveMethods.getUserid());
   }
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
