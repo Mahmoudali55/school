@@ -156,16 +156,18 @@ class _RecordingAbsenceScreenState extends State<RecordingAbsenceScreen> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) {
-        return _AbsenceSelectionBottomSheet(
-          students: studentData.students,
-          initialAbsences: Map.from(_absences),
-          existingAbsentCodes: existingCodes,
-          onConfirm: (updatedAbsences) {
-            setState(() {
-              _absences.clear();
-              _absences.addAll(updatedAbsences);
-            });
-          },
+        return SafeArea(
+          child: _AbsenceSelectionBottomSheet(
+            students: studentData.students,
+            initialAbsences: Map.from(_absences),
+            existingAbsentCodes: existingCodes,
+            onConfirm: (updatedAbsences) {
+              setState(() {
+                _absences.clear();
+                _absences.addAll(updatedAbsences);
+              });
+            },
+          ),
         );
       },
     );

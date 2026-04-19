@@ -581,7 +581,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
               );
               if (picked != null) {
                 setState(() {
-                  s.birthDate.text = DateFormat('yyyy-MM-dd, en').format(picked);
+                  s.birthDate.text = DateFormat('yyyy-MM-dd', 'en').format(picked);
                   _calculateAge(s.birthDate.text, s);
                 });
               }
