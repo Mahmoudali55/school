@@ -100,14 +100,21 @@ class _LayoutScreenState extends State<LayoutScreen> {
         BlocProvider(create: (context) => sl<ProfileCubit>(), lazy: true),
         BlocProvider(create: (context) => sl<ScheduleCubit>()),
       ],
-      child: Scaffold(
-        backgroundColor: AppColor.scaffoldColor(context),
-        body: _navItems[_currentIndex].screen,
-        bottomNavigationBar: BottomNavBar(
-          items: _navItems,
-          currentIndex: _currentIndex,
-          onTap: (index) => setState(() => _currentIndex = index),
-          selectedColor: _getSelectedColor(role),
+      child: PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) {
+          if (didPop) return;
+          // Optionally handle back button press here (e.g., show a toast or dialog)
+        },
+        child: Scaffold(
+          backgroundColor: AppColor.scaffoldColor(context),
+          body: _navItems[_currentIndex].screen,
+          bottomNavigationBar: BottomNavBar(
+            items: _navItems,
+            currentIndex: _currentIndex,
+            onTap: (index) => setState(() => _currentIndex = index),
+            selectedColor: _getSelectedColor(role),
+          ),
         ),
       ),
     );

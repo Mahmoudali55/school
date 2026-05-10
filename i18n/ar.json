@@ -1232,5 +1232,6 @@
  "student_name":"اسم الطالب",
   "balance_details_trans_no": "رقم التحويل",
   "uniform_tax": "الضريبة",
-  "total_fees":"إجمالي الرسوم"
+  "total_fees":"إجمالي الرسوم",
+  "payment_method":"أو اختر وسيلة الدفع التقسيطي:"
 }

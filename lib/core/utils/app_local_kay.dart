@@ -1194,4 +1194,5 @@ class AppLocalKay {
   static const String total_fees = "total_fees";
   static const String start_date = "start_date";
   static const String end_date = "end_date";
+  static const String payment_method = "payment_method";
 }

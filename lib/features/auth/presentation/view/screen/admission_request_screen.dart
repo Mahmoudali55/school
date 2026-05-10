@@ -260,6 +260,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
               child: CustomFormField(
                 title: AppLocalKay.first_name.tr(),
                 controller: _parentFirstNameController,
+                maxLength: 50,
                 validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
               ),
             ),
@@ -268,6 +269,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
               child: CustomFormField(
                 title: AppLocalKay.last_name.tr(),
                 controller: _parentLastNameController,
+                maxLength: 50,
                 validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
               ),
             ),
@@ -280,6 +282,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
               child: CustomFormField(
                 title: AppLocalKay.grandfather_name.tr(),
                 controller: _parentGrandfatherNameController,
+                maxLength: 50,
                 validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
               ),
             ),
@@ -288,6 +291,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
               child: CustomFormField(
                 title: AppLocalKay.family_name.tr(),
                 controller: _parentFamilyNameController,
+                maxLength: 50,
                 validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
               ),
             ),
@@ -380,6 +384,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
           title: AppLocalKay.nationalId.tr(),
           controller: _parentNationalIdController,
           keyboardType: TextInputType.number,
+          maxLength: 10,
           validator: (v) {
             if (v!.isEmpty) return AppLocalKay.required.tr();
             if (v.length != 10) return "يجب أن يكون 10 أرقام";
@@ -390,12 +395,14 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
         CustomFormField(
           title: AppLocalKay.passport_number.tr(),
           controller: _parentPassportNumberController,
+          maxLength: 15,
         ),
         Gap(12.h),
         CustomFormField(
           title: AppLocalKay.student_phone.tr(),
           keyboardType: TextInputType.phone,
           controller: _parentPhoneController,
+          maxLength: 10,
           validator: (v) {
             if (v!.isEmpty) return AppLocalKay.required.tr();
             if (v.length != 10 || !v.startsWith("05")) {
@@ -448,6 +455,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
         if (_currentStep > 0)
           Expanded(
             child: CustomButton(
+              radius: 12.r,
               onPressed: () => setState(() => _currentStep--),
               color: Colors.grey.shade200,
               child: Text(
@@ -459,6 +467,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
         if (_currentStep > 0) Gap(12.w),
         Expanded(
           child: CustomButton(
+            radius: 12.r,
             isLoading: state.admissionStatus.isLoading,
             onPressed: () {
               if (_formKey.currentState!.validate()) {
@@ -534,6 +543,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
           CustomFormField(
             title: "اسم الطالب",
             controller: s.name,
+            maxLength: 50,
             validator: (v) => v!.isEmpty ? AppLocalKay.required.tr() : null,
           ),
           Gap(12.h),
@@ -541,6 +551,7 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
             title: AppLocalKay.student_id_no.tr(),
             controller: s.idNo,
             keyboardType: TextInputType.number,
+            maxLength: 10,
             validator: (v) {
               if (v!.isEmpty) return AppLocalKay.required.tr();
               if (v.length != 10) return "يجب أن يكون 10 أرقام";

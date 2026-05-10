@@ -19,6 +19,8 @@ class ShowStudentBalanceScreen extends StatefulWidget {
 }
 
 class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
+  int selectedPaymentMethod = -1; // -1: none, 0: Tabby, 1: Tamara
+
   @override
   void initState() {
     super.initState();
@@ -157,6 +159,52 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
 
                       Gap(14.h),
 
+                      /// Payment Methods Section
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          AppLocalKay.payment_method.tr(),
+                          style: AppTextStyle.bodySmall(context).copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey.shade700,
+                          ),
+                        ),
+                      ),
+                      Gap(10.h),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildPaymentMethodCard(
+                              context,
+                              image: "assets/image/tabby.jpeg",
+                              label: "Tabby",
+                              isSelected: selectedPaymentMethod == 0,
+                              onTap: () {
+                                setState(() {
+                                  selectedPaymentMethod = 0;
+                                });
+                              },
+                            ),
+                          ),
+                          Gap(12.w),
+                          Expanded(
+                            child: _buildPaymentMethodCard(
+                              context,
+                              image: "assets/image/tamar.jpeg",
+                              label: "Tamara",
+                              isSelected: selectedPaymentMethod == 1,
+                              onTap: () {
+                                setState(() {
+                                  selectedPaymentMethod = 1;
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      Gap(16.h),
+
                       /// Pay Now Button
                       SizedBox(
                         width: double.infinity,
@@ -169,7 +217,7 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                             shadowColor: AppColor.primaryColor(context).withOpacity(0.4),
                           ),
                           onPressed: () {
-                            // TODO: navigate to payment
+                            // TODO: navigate to payment with selectedPaymentMethod
                           },
                           child: Text(
                             AppLocalKay.pay_now.tr(),
@@ -185,6 +233,67 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
               },
             );
           },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPaymentMethodCard(
+    BuildContext context, {
+    required String image,
+    required String label,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: EdgeInsets.all(8.w),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected ? AppColor.primaryColor(context) : Colors.grey.shade300,
+            width: isSelected ? 2 : 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: isSelected 
+                ? AppColor.primaryColor(context).withOpacity(0.2)
+                : Colors.black.withOpacity(0.05),
+              blurRadius: isSelected ? 8 : 5,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Image.asset(image, height: 40.h, fit: BoxFit.contain),
+                if (isSelected)
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Icon(
+                      Icons.check_circle,
+                      color: AppColor.primaryColor(context),
+                      size: 16.sp,
+                    ),
+                  ),
+              ],
+            ),
+            Gap(4.h),
+            Text(
+              label,
+              style: AppTextStyle.labelSmall(context).copyWith(
+                fontWeight: FontWeight.bold,
+                color: isSelected ? AppColor.primaryColor(context) : Colors.black87,
+              ),
+            ),
+          ],
         ),
       ),
     );

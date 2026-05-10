@@ -1160,6 +1160,7 @@
   "balance_details_trans_no": "Transfer No",
   "uniform_tax": "Uniform Tax",
   "total_fees": "Total Fees",
-  "student_name": "Student Name"
+  "student_name": "Student Name",
+  "payment_method": "Payment Method"
 }
 

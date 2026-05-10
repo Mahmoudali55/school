@@ -65,18 +65,18 @@ class _HomeParentScreenState extends State<HomeParentScreen> {
                   StudentSnapshotWidget(studentCode: selectedStudent?.studentCode),
                   Gap(25.h),
                   RequestsSectionWidget(selectedStudent: selectedStudent, students: students ?? []),
-                  Gap(25.h),
-                  const UrgentAlertsWidget(),
-                  if (state.parentsStudentStatus.isFailure)
-                    Padding(
-                      padding: EdgeInsets.only(top: 20.h),
-                      child: Center(
-                        child: Text(
-                          state.parentsStudentStatus.error ?? "حدث خطأ في تحميل بيانات الطلاب",
-                          style: TextStyle(color: AppColor.errorColor(context), fontSize: 16),
-                        ),
-                      ),
-                    ),
+                  // Gap(25.h),
+                  // const UrgentAlertsWidget(),
+                  // if (state.parentsStudentStatus.isFailure)
+                  //   Padding(
+                  //     padding: EdgeInsets.only(top: 20.h),
+                  //     child: Center(
+                  //       child: Text(
+                  //         state.parentsStudentStatus.error ?? "حدث خطأ في تحميل بيانات الطلاب",
+                  //         style: TextStyle(color: AppColor.errorColor(context), fontSize: 16),
+                  //       ),
+                  //     ),
+                  //   ),
                   Gap(30.h),
                 ],
               ),

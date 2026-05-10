@@ -21,52 +21,59 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColor.whiteColor(context),
-      appBar: CustomAppBar(
-        context,
-        title: Text(AppLocalKay.login.tr()),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: SingleChildScrollView(
-          child: BlocListener<AuthCubit, AuthState>(
-            listener: (context, state) {
-              if (state.loginStatus.isSuccess) {
-                NavigatorMethods.pushNamed(
-                  context,
-                  RoutesName.layoutScreen,
-                  arguments: context.read<AuthCubit>().getRouteType(),
-                );
-              }
-              if (state.loginStatus.isFailure) {
-                CommonMethods.showToast(
-                  message: state.loginStatus.error ?? "Login failed",
-                  type: ToastType.error,
-                );
-              }
-            },
-            child: Column(
-              children: [
-                const LoginHeader(),
-                const LoginForm(),
-                const SignUpLink(),
-                const Gap(10),
-                TextButton(
-                  onPressed: () =>
-                      NavigatorMethods.pushNamed(context, RoutesName.admissionRequestScreen),
-                  child: Text(
-                    AppLocalKay.admission_navigation.tr(),
-                    style: AppTextStyle.bodyMedium(context).copyWith(
-                      color: AppColor.primaryColor(context),
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        // Optionally handle back button press here
+      },
+      child: Scaffold(
+        backgroundColor: AppColor.whiteColor(context),
+        appBar: CustomAppBar(
+          context,
+          title: Text(AppLocalKay.login.tr()),
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(10),
+          child: SingleChildScrollView(
+            child: BlocListener<AuthCubit, AuthState>(
+              listener: (context, state) {
+                if (state.loginStatus.isSuccess) {
+                  NavigatorMethods.pushNamed(
+                    context,
+                    RoutesName.layoutScreen,
+                    arguments: context.read<AuthCubit>().getRouteType(),
+                  );
+                }
+                if (state.loginStatus.isFailure) {
+                  CommonMethods.showToast(
+                    message: state.loginStatus.error ?? "Login failed",
+                    type: ToastType.error,
+                  );
+                }
+              },
+              child: Column(
+                children: [
+                  const LoginHeader(),
+                  const LoginForm(),
+                  const SignUpLink(),
+                  const Gap(10),
+                  TextButton(
+                    onPressed: () =>
+                        NavigatorMethods.pushNamed(context, RoutesName.admissionRequestScreen),
+                    child: Text(
+                      AppLocalKay.admission_navigation.tr(),
+                      style: AppTextStyle.bodyMedium(context).copyWith(
+                        color: AppColor.primaryColor(context),
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
