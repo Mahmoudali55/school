@@ -84,6 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     title: AppLocalKay.username.tr(),
                     controller: cubit.userNameController,
                     keyboardType: TextInputType.name,
+                    maxLength: 50,
                     prefixIcon: const Icon(Icons.person_outline),
                     validator: (value) => value!.isEmpty ? AppLocalKay.username.tr() : null,
                   ),
@@ -94,6 +95,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     title: AppLocalKay.nationalId.tr(),
                     controller: cubit.nationalIdController,
                     keyboardType: TextInputType.number,
+                    maxLength: 10,
                     prefixIcon: const Icon(Icons.badge_outlined),
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     validator: (value) {
@@ -111,6 +113,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     title: AppLocalKay.email.tr(),
                     controller: cubit.emailController,
                     keyboardType: TextInputType.emailAddress,
+                    maxLength: 100,
                     prefixIcon: const Icon(Icons.email),
                     validator: (value) => value!.isEmpty ? AppLocalKay.email.tr() : null,
                   ),

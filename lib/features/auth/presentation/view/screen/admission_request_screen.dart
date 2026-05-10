@@ -131,13 +131,16 @@ class _AdmissionRequestScreenState extends State<AdmissionRequestScreen> {
         ),
       ),
       body: BlocConsumer<AuthCubit, AuthState>(
+        listenWhen: (previous, current) => previous.admissionStatus != current.admissionStatus,
         listener: (context, state) {
           if (state.admissionStatus.isSuccess) {
             final msg = (state.admissionStatus.data is Map)
                 ? (state.admissionStatus.data['msg'] ?? "تم إرسال الطلبات بنجاح")
                 : "تم إرسال الطلبات بنجاح";
             CommonMethods.showToast(message: msg, type: ToastType.success);
-            Navigator.pop(context);
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            }
           } else if (state.admissionStatus.isFailure) {
             CommonMethods.showToast(
               message: state.admissionStatus.error ?? "حدث خطأ ما",
