@@ -35,7 +35,7 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.greyColor(context).withValues(alpha: (0.1)),
+      backgroundColor: AppColor.scaffoldColor(context),
       appBar: CustomAppBar(
         context,
         title: Text(AppLocalKay.paymentHistory.tr(), style: AppTextStyle.titleLarge(context)),
@@ -122,14 +122,12 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
                                 ),
                               ),
                               Gap(4.h),
-                              Text(
-                                receipt['studentName'] ?? '',
-                                style: AppTextStyle.bodySmall(context).copyWith(
-                                  color: AppColor.greyColor(context).withValues(alpha: (0.6)),
+                                Text(
+                                  receipt['studentName'] ?? '',
+                                  style: AppTextStyle.bodySmall(context).copyWith(
+                                    color: AppColor.greyColor(context).withValues(alpha: (0.6)),
+                                  ),
                                 ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
                             ],
                           ),
                         ),

@@ -256,16 +256,21 @@ class _PaymentReceiptScreenState extends State<PaymentReceiptScreen> {
   Widget _buildDetailRow(BuildContext context, String title, String value, {bool isHighlight = false}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
           style: AppTextStyle.bodyMedium(context).copyWith(color: AppColor.greyColor(context).withValues(alpha: (0.6))),
         ),
-        Text(
-          value,
-          style: AppTextStyle.bodyMedium(context).copyWith(
-            fontWeight: FontWeight.bold,
-            color: isHighlight ? AppColor.primaryColor(context) : AppColor.greyColor(context).withValues(alpha: (0.8)),
+        Gap(16.w),
+        Expanded(
+          child: Text(
+            value,
+            textAlign: TextAlign.end,
+            style: AppTextStyle.bodyMedium(context).copyWith(
+              fontWeight: FontWeight.bold,
+              color: isHighlight ? AppColor.primaryColor(context) : AppColor.greyColor(context).withValues(alpha: (0.8)),
+            ),
           ),
         ),
       ],

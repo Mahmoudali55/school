@@ -23,7 +23,7 @@ class ShowStudentBalanceScreen extends StatefulWidget {
 }
 
 class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
-  int selectedPaymentMethod = -1; // -1: none, 0: Tabby, 1: Tamara
+  Map<int, int> selectedPaymentMethods = {}; // index: selected payment method
 
   @override
   void initState() {
@@ -193,8 +193,8 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                               context,
                               image: "assets/image/tabby.jpeg",
                               label: "Tabby",
-                              isSelected: selectedPaymentMethod == 0,
-                              onTap: () => setState(() => selectedPaymentMethod = 0),
+                              isSelected: (selectedPaymentMethods[index] ?? -1) == 0,
+                              onTap: () => setState(() => selectedPaymentMethods[index] = 0),
                             ),
                           ),
                           Gap(12.w),
@@ -203,8 +203,8 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                               context,
                               image: "assets/image/tamar.jpeg",
                               label: "Tamara",
-                              isSelected: selectedPaymentMethod == 1,
-                              onTap: () => setState(() => selectedPaymentMethod = 1),
+                              isSelected: (selectedPaymentMethods[index] ?? -1) == 1,
+                              onTap: () => setState(() => selectedPaymentMethods[index] = 1),
                             ),
                           ),
                         ],
@@ -217,8 +217,8 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                               context,
                               icon: Icons.credit_card,
                               label: "بطاقة ائتمان",
-                              isSelected: selectedPaymentMethod == 2,
-                              onTap: () => setState(() => selectedPaymentMethod = 2),
+                              isSelected: (selectedPaymentMethods[index] ?? -1) == 2,
+                              onTap: () => setState(() => selectedPaymentMethods[index] = 2),
                             ),
                           ),
                           Gap(12.w),
@@ -227,8 +227,8 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                               context,
                               icon: Icons.account_balance,
                               label: "تحويل بنكي",
-                              isSelected: selectedPaymentMethod == 3,
-                              onTap: () => setState(() => selectedPaymentMethod = 3),
+                              isSelected: (selectedPaymentMethods[index] ?? -1) == 3,
+                              onTap: () => setState(() => selectedPaymentMethods[index] = 3),
                             ),
                           ),
                         ],
@@ -248,14 +248,14 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                             shadowColor: AppColor.primaryColor(context).withOpacity(0.4),
                           ),
                           onPressed: () {
-                            if (selectedPaymentMethod == -1) {
+                            if ((selectedPaymentMethods[index] ?? -1) == -1) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text('الرجاء اختيار طريقة الدفع أولاً', style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.white))),
                               );
                               return;
                             }
 
-                            if (selectedPaymentMethod == 2) {
+                            if ((selectedPaymentMethods[index] ?? -1) == 2) {
                               // Show Credit Card Bottom Sheet
                               showModalBottomSheet(
                                 context: context,
@@ -266,7 +266,7 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                               return;
                             }
 
-                            if (selectedPaymentMethod == 3) {
+                            if ((selectedPaymentMethods[index] ?? -1) == 3) {
                               // Show Bank Transfer Bottom Sheet
                               showModalBottomSheet(
                                 context: context,
@@ -288,12 +288,12 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                               Navigator.pop(context); // Close dialog
 
                               final transactionId = 'TRX${DateTime.now().millisecondsSinceEpoch.toString().substring(5)}';
-                              final paymentMethodName = selectedPaymentMethod == 0 ? 'Tabby' : 'Tamara';
+                              final paymentMethodName = (selectedPaymentMethods[index] ?? -1) == 0 ? 'Tabby' : 'Tamara';
                               final dateStr = DateTime.now().toIso8601String();
 
                               // Save the receipt locally
                               HiveMethods.savePaymentReceipt({
-                                'studentName': student.studentName,
+                                'studentName':  '${student.studentName} ${HiveMethods.getUserName()}',
                                 'studentCode': student.studentCode.toString(),
                                 'amount': student.balance,
                                 'paymentMethod': paymentMethodName,
@@ -305,7 +305,7 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => PaymentReceiptScreen(
-                                    studentName: student.studentName,
+                                    studentName: '${student.studentName} ${HiveMethods.getUserName()}',
                                     studentCode: student.studentCode.toString(),
                                     amount: student.balance,
                                     paymentMethod: paymentMethodName,
