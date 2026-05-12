@@ -105,14 +105,14 @@ class AILessonAssistantScreen extends StatelessWidget {
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppColor.primaryColor(context), AppColor.primaryColor(context).withOpacity(0.7)],
+          colors: [AppColor.primaryColor(context), AppColor.primaryColor(context).withValues(alpha:(0.7))],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
-            color: AppColor.primaryColor(context).withOpacity(0.3),
+            color: AppColor.primaryColor(context).withValues(alpha:(0.3)),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),

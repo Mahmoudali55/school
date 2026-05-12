@@ -369,7 +369,7 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
       child: Container(
         margin: EdgeInsets.only(bottom: 14.h),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColor.whiteColor(context),
           borderRadius: BorderRadius.circular(18.r),
           boxShadow: [
             BoxShadow(

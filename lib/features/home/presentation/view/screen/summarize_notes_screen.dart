@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -315,14 +316,14 @@ class _SummarizeNotesScreenState extends State<SummarizeNotesScreen> {
                     child: Icon(icon, color: AppColor.primaryColor(context)),
                   ),
             filled: true,
-            fillColor: Colors.white,
+            fillColor: AppColor.whiteColor(context),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: Colors.grey.withAlpha(51)),
+              borderSide: BorderSide(color: AppColor.greyColor(context).withValues(alpha: 0.2)),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide(color: Colors.grey.withAlpha(51)),
+              borderSide: BorderSide(color: AppColor.greyColor(context).withValues(alpha: 0.2)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
@@ -333,7 +334,7 @@ class _SummarizeNotesScreenState extends State<SummarizeNotesScreen> {
             if (value == null || value.trim().isEmpty) {
               return '';
             }
-            if (label == 'الملاحظات' && value.trim().length < 1) {
+            if (label == AppLocalKay.notes.tr() && value.trim().length < 1) {
               // Adjusted validation
               return AppLocalKay.notes_validation_error.tr();
             }
@@ -369,21 +370,18 @@ class _SummarizeNotesScreenState extends State<SummarizeNotesScreen> {
           ? SizedBox(
               height: 20.h,
               width: 20.w,
-              child: const CircularProgressIndicator(
-                strokeWidth: 2,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
+              child:CustomLoading(color: AppColor.whiteColor(context)),
             )
           : Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.auto_awesome, color: Colors.white),
+                 Icon(Icons.auto_awesome, color:AppColor.whiteColor(context)),
                 Gap(8.w),
                 Text(
                   AppLocalKay.summarize_button.tr(),
                   style: AppTextStyle.titleMedium(
                     context,
-                  ).copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                  ).copyWith(color: AppColor.whiteColor(context), fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -394,14 +392,14 @@ class _SummarizeNotesScreenState extends State<SummarizeNotesScreen> {
     if (state.summaryStatus.isLoading) {
       return Container(
         padding: EdgeInsets.all(20.w),
-        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15.r)),
+        decoration: BoxDecoration(color: AppColor.whiteColor(context), borderRadius: BorderRadius.circular(15.r)),
         child: Column(
           children: [
-            const CircularProgressIndicator(color: Color(0xFF10B981)),
+            const CustomLoading(color: Color(0xFF10B981)),
             Gap(10.h),
             Text(
               AppLocalKay.generating_summary_loading.tr(),
-              style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey[600]),
+              style: AppTextStyle.bodyMedium(context).copyWith(color: AppColor.grey600Color(context)),
             ),
           ],
         ),

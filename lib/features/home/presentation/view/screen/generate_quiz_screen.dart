@@ -51,7 +51,7 @@ class _GenerateQuizScreenState extends State<GenerateQuizScreen> {
           style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColor.whiteColor(context),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
@@ -304,7 +304,7 @@ class _GenerateQuizScreenState extends State<GenerateQuizScreen> {
             hintText: hint,
             prefixIcon: Icon(icon, color: AppColor.primaryColor(context)),
             filled: true,
-            fillColor: Colors.white,
+            fillColor: AppColor.whiteColor(context),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
               borderSide: BorderSide(color: AppColor.greyColor(context).withValues(alpha: (0.2))),

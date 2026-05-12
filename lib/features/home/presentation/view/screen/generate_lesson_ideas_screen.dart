@@ -276,7 +276,7 @@ class _GenerateLessonIdeasScreenState extends State<GenerateLessonIdeasScreen> {
             hintText: hint,
             prefixIcon: Icon(icon, color: AppColor.primaryColor(context)),
             filled: true,
-            fillColor: Colors.white,
+            fillColor: AppColor.whiteColor(context),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
               borderSide: BorderSide(color: AppColor.greyColor(context).withValues(alpha: (0.2))),
