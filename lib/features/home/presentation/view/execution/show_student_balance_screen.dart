@@ -86,7 +86,7 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                     borderRadius: BorderRadius.circular(20),
                     gradient: LinearGradient(
                       colors: [
-                        AppColor.primaryColor(context).withOpacity(0.1), // تدرج ناعم
+                        AppColor.primaryColor(context).withValues(alpha:(0.1)), // تدرج ناعم
                         Colors.grey.shade50,
                       ],
                       begin: Alignment.topLeft,
@@ -94,7 +94,7 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.08),
+                        color: Colors.black.withValues(alpha:(0.08)),
                         blurRadius: 12,
                         offset: const Offset(0, 6),
                       ),
@@ -107,7 +107,7 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                         children: [
                           CircleAvatar(
                             radius: 28.r,
-                            backgroundColor: AppColor.primaryColor(context).withOpacity(0.2),
+                            backgroundColor: AppColor.primaryColor(context).withValues(alpha:(0.2)),
                             child: Icon(
                               Icons.school_rounded,
                               color: AppColor.primaryColor(context),
@@ -151,7 +151,7 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                           borderRadius: BorderRadius.circular(14),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.green.shade200.withOpacity(0.2),
+                              color: Colors.green.shade200.withValues(alpha: 0.2),
                               blurRadius: 8,
                               offset: const Offset(0, 4),
                             ),
@@ -313,7 +313,7 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                             AppLocalKay.pay_now.tr(),
                             style: AppTextStyle.bodyMedium(
                               context,
-                            ).copyWith(color: Colors.white, fontWeight: FontWeight.w600),
+                            ).copyWith(color: AppColor.whiteColor(context), fontWeight: FontWeight.w600),
                           ),
                         ),
                       ),

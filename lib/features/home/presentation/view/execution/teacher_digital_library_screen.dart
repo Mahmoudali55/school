@@ -144,12 +144,12 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
                           Container(
                             padding: EdgeInsets.all(8.w),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.2),
+                              color: AppColor.whiteColor(context).withValues(alpha:(0.2)),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
                               Icons.library_books_rounded,
-                              color: Colors.white,
+                              color:AppColor.whiteColor(context),
                               size: 20.w,
                             ),
                           ),
@@ -163,7 +163,7 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
                           borderRadius: BorderRadius.circular(15.r),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: Colors.black.withValues(alpha:(0.1)),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
@@ -207,22 +207,22 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 12.w),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.15),
+                          color: AppColor.whiteColor(context).withValues(alpha:(0.15)),
                           borderRadius: BorderRadius.circular(15.r),
-                          border: Border.all(color: Colors.white.withOpacity(0.3)),
+                          border: Border.all(color: AppColor.whiteColor(context).withValues(alpha:(0.3))),
                         ),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<int>(
                             value: _selectedLevelCode,
-                            dropdownColor: Colors.white,
-                            icon: const Icon(
+                            dropdownColor: AppColor.whiteColor(context),
+                            icon:  Icon(
                               Icons.keyboard_arrow_down_rounded,
-                              color: Colors.white,
+                              color: AppColor.whiteColor(context),
                             ),
                             hint: Text(
                               AppLocalKay.level.tr(),
                               style: TextStyle(
-                                color: Colors.white.withOpacity(0.9),
+                                color: AppColor.whiteColor(context).withValues(alpha:(0.9)),
                                 fontSize: 13.sp,
                               ),
                             ),
@@ -236,7 +236,7 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
                                       style: TextStyle(
                                         fontSize: 14.sp,
                                         color: _selectedLevelCode == level.levelCode
-                                            ? Colors.white
+                                            ? AppColor.whiteColor(context)
                                             : Colors.black87,
                                       ),
                                     ),
@@ -373,7 +373,7 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
           borderRadius: BorderRadius.circular(18.r),
           boxShadow: [
             BoxShadow(
-              color: cardAccent.withOpacity(0.08),
+              color: cardAccent.withValues(alpha:(0.08)),
               blurRadius: 12,
               spreadRadius: 1,
               offset: const Offset(0, 4),
@@ -411,7 +411,7 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
                             width: 48.w,
                             height: 48.w,
                             decoration: BoxDecoration(
-                              color: iconColor.withOpacity(0.12),
+                              color: iconColor.withValues(alpha:(0.12)),
                               borderRadius: BorderRadius.circular(14.r),
                             ),
                             child: Center(
@@ -473,7 +473,7 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                               decoration: BoxDecoration(
-                                color: cardAccent.withOpacity(0.1),
+                                color: cardAccent.withValues(alpha: (0.1)),
                                 borderRadius: BorderRadius.circular(8.r),
                               ),
                               child: Text(
@@ -525,7 +525,7 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
                     top: 20.h,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppColor.whiteColor(context),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(32.r),
                       topRight: Radius.circular(32.r),
@@ -756,7 +756,7 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
                                     ? CustomLoading(color: AppColor.whiteColor(context), size: 20.w)
                                     : Text(
                                         AppLocalKay.save.tr(),
-                                        style: AppTextStyle.bodyLarge(context, color: Colors.white),
+                                        style: AppTextStyle.bodyLarge(context, color: AppColor.whiteColor(context)),
                                         textAlign: TextAlign.center,
                                       ),
                 
