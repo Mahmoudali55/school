@@ -1197,6 +1197,24 @@
   "enterCardHolderName": "Please enter the name",
   "cardHolderLabel": "Cardholder Name",
   "payNowWithAmount": "Pay Now ({amount} SAR)",
-  "creditCard": "Credit Card"
+  "creditCard": "Credit Card",
+   "cardNumberRequired": "Card number is required",
+  "cardNumberDigitsOnly": "Card number must contain digits only",
+  "cardNumberLength": "Card number must be 16 digits",
+  "cardHolderRequired": "Cardholder name is required",
+  "cardHolderTooShort": "Name is too short",
+  "cardHolderTooLong": "Name is too long",
+  "cardHolderEnglishOnly": "Name must contain English letters only",
+  "cardHolderFullName": "Enter first and last name",
+  "expiryRequired": "Expiry date is required",
+  "expiryInvalidFormat": "Invalid date format (MM/YY)",
+  "expiryInvalidMonth": "Invalid month (01-12)",
+  "expiryInvalidYear": "Invalid year",
+  "cardExpired": "Card has expired",
+  "cvvRequired": "CVV is required",
+  "cvvDigitsOnly": "CVV must contain digits only",
+  "cvvInvalidLength": "CVV must be 3 or 4 digits",
+  "CARDHOLDER": "Cardholder Name",
+  "EXPIRY": "Expiry Date"
 }
 

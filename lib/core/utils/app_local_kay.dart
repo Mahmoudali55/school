@@ -1231,6 +1231,24 @@ class AppLocalKay {
   static const String cardHolderLabel = "cardHolderLabel";
   static const String payNowWithAmount = "payNowWithAmount";
   static const String creditCard = "creditCard";
-  
+  static const String cardNumberRequired = "cardNumberRequired";
+  static const String cardNumberDigitsOnly = "cardNumberDigitsOnly";
+  static const String cardNumberLength = "cardNumberLength";
+  static const String cardHolderRequired = "cardHolderRequired";
+  static const String cardHolderTooShort = "cardHolderTooShort";
+  static const String cardHolderTooLong = "cardHolderTooLong";
+  static const String cardHolderEnglishOnly = "cardHolderEnglishOnly";
+  static const String cardHolderFullName = "cardHolderFullName";
+  static const String expiryRequired = "expiryRequired";
+  static const String expiryInvalidFormat = "expiryInvalidFormat";
+  static const String expiryInvalidMonth = "expiryInvalidMonth";
+  static const String expiryInvalidYear = "expiryInvalidYear";
+  static const String cardExpired = "cardExpired";
+  static const String cvvRequired = "cvvRequired";
+  static const String cvvDigitsOnly = "cvvDigitsOnly";
+  static const String cvvInvalidLength = "cvvInvalidLength";
+  static const String CARDHOLDER = "CARDHOLDER";
+  static const String EXPIRY = "EXPIRY";
+
 }
   

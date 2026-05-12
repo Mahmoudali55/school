@@ -77,7 +77,7 @@ class _PaymentReceiptScreenState extends State<PaymentReceiptScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.greyColor(context).withValues(alpha: (0.1)),
+      backgroundColor: AppColor.whiteColor(context),
       appBar: CustomAppBar(
         context,
         title: Text(AppLocalKay.paymentReceipt.tr(), style: AppTextStyle.titleLarge(context)),
