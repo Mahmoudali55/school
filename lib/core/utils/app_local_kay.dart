@@ -1249,6 +1249,8 @@ class AppLocalKay {
   static const String cvvInvalidLength = "cvvInvalidLength";
   static const String CARDHOLDER = "CARDHOLDER";
   static const String EXPIRY = "EXPIRY";
+  static const String CVV = "CVV";
+  static const String PAYMENT_METHOD_REQUIRED = "PAYMENT_METHOD_REQUIRED";
 
 }
   

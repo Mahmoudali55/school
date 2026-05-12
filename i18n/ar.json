@@ -1287,5 +1287,6 @@
   "cvvDigitsOnly": "CVV يجب أن يحتوي على أرقام فقط",
   "cvvInvalidLength": "CVV يجب أن يكون 3 أو 4 أرقام",
   "CARDHOLDER": "اسم حامل البطاقة",
-  "EXPIRY": "تاريخ الانتهاء"
+  "EXPIRY": "تاريخ الانتهاء",
+  "PAYMENT_METHOD_REQUIRED": "الرجاء اختيار طريقة الدفع أولاً"
 }

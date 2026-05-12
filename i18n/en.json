@@ -1215,6 +1215,7 @@
   "cvvDigitsOnly": "CVV must contain digits only",
   "cvvInvalidLength": "CVV must be 3 or 4 digits",
   "CARDHOLDER": "Cardholder Name",
-  "EXPIRY": "Expiry Date"
+  "EXPIRY": "Expiry Date",
+  "PAYMENT_METHOD_REQUIRED": "Please select a payment method first"
 }
 

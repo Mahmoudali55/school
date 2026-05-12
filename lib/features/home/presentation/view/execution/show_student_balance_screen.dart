@@ -4,16 +4,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
+import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/core/utils/common_methods.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 import 'package:my_template/features/home/presentation/view/execution/payment_history_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/payment_receipt_screen.dart';
 import 'package:my_template/features/home/presentation/view/widget/parent/payment/credit_card_bottom_sheet.dart';
 import 'package:my_template/features/home/presentation/view/widget/parent/payment/bank_transfer_bottom_sheet.dart';
+import 'package:my_template/features/home/presentation/view/widget/parent/payment/payment_method_card_widget.dart';
 
 class ShowStudentBalanceScreen extends StatefulWidget {
   const ShowStudentBalanceScreen({super.key});
@@ -163,7 +167,7 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                             ),
                             Gap(6.h),
                             Text(
-                              "${student.balance} ر.س",
+                              "${student.balance} ${AppLocalKay.sarCurrency.tr()}",
                               style: AppTextStyle.titleLarge(
                                 context,
                               ).copyWith(fontWeight: FontWeight.bold, color: Colors.green.shade900),
@@ -189,8 +193,7 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                       Row(
                         children: [
                           Expanded(
-                            child: _buildPaymentMethodCard(
-                              context,
+                            child: PaymentMethodCardWidget(
                               image: "assets/image/tabby.jpeg",
                               label: "Tabby",
                               isSelected: (selectedPaymentMethods[index] ?? -1) == 0,
@@ -199,8 +202,8 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                           ),
                           Gap(12.w),
                           Expanded(
-                            child: _buildPaymentMethodCard(
-                              context,
+                            child: PaymentMethodCardWidget(
+                              
                               image: "assets/image/tamar.jpeg",
                               label: "Tamara",
                               isSelected: (selectedPaymentMethods[index] ?? -1) == 1,
@@ -213,20 +216,18 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                       Row(
                         children: [
                           Expanded(
-                            child: _buildPaymentMethodCard(
-                              context,
+                            child: PaymentMethodCardWidget(
                               icon: Icons.credit_card,
-                              label: "بطاقة ائتمان",
+                              label: AppLocalKay.creditCard.tr(),
                               isSelected: (selectedPaymentMethods[index] ?? -1) == 2,
                               onTap: () => setState(() => selectedPaymentMethods[index] = 2),
                             ),
                           ),
                           Gap(12.w),
                           Expanded(
-                            child: _buildPaymentMethodCard(
-                              context,
+                            child: PaymentMethodCardWidget(
                               icon: Icons.account_balance,
-                              label: "تحويل بنكي",
+                              label: AppLocalKay.bankTransfer.tr(),
                               isSelected: (selectedPaymentMethods[index] ?? -1) == 3,
                               onTap: () => setState(() => selectedPaymentMethods[index] = 3),
                             ),
@@ -239,19 +240,11 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                       /// Pay Now Button
                       SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColor.primaryColor(context),
-                            padding: EdgeInsets.symmetric(vertical: 14.h),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                            elevation: 3,
-                            shadowColor: AppColor.primaryColor(context).withOpacity(0.4),
-                          ),
+                        child: CustomButton(
+                          radius: 12.r,
                           onPressed: () {
                             if ((selectedPaymentMethods[index] ?? -1) == -1) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('الرجاء اختيار طريقة الدفع أولاً', style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.white))),
-                              );
+                              CommonMethods.showToast(message: AppLocalKay.PAYMENT_METHOD_REQUIRED.tr(),type: ToastType.error);
                               return;
                             }
 
@@ -335,67 +328,5 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
     );
   }
 
-  Widget _buildPaymentMethodCard(
-    BuildContext context, {
-    String? image,
-    IconData? icon,
-    required String label,
-    required bool isSelected,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: EdgeInsets.all(8.w),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected ? AppColor.primaryColor(context) : Colors.grey.shade300,
-            width: isSelected ? 2 : 1,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: isSelected 
-                ? AppColor.primaryColor(context).withOpacity(0.2)
-                : Colors.black.withOpacity(0.05),
-              blurRadius: isSelected ? 8 : 5,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                if (image != null) Image.asset(image, height: 40.h, fit: BoxFit.contain),
-                if (icon != null) Icon(icon, size: 40.sp, color: isSelected ? AppColor.primaryColor(context) : Colors.grey.shade600),
-                if (isSelected)
-                  Positioned(
-                    top: -4,
-                    right: -4,
-                    child: Icon(
-                      Icons.check_circle,
-                      color: AppColor.primaryColor(context),
-                      size: 16.sp,
-                    ),
-                  ),
-              ],
-            ),
-            Gap(4.h),
-            Text(
-              label,
-              style: AppTextStyle.labelSmall(context).copyWith(
-                fontWeight: FontWeight.bold,
-                color: isSelected ? AppColor.primaryColor(context) : Colors.black87,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  
 }
