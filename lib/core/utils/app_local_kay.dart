@@ -1195,4 +1195,42 @@ class AppLocalKay {
   static const String start_date = "start_date";
   static const String end_date = "end_date";
   static const String payment_method = "payment_method";
+  static const String paymentReceipt = "paymentReceipt";
+  static const String paymentSuccess = "paymentSuccess";
+  static const String studentName = "studentName";
+  static const String studentCode = "studentCode";
+  static const String paymentMethod = "paymentMethod";
+  static const String transactionId = "transactionId";
+  static const String paymentDateTime = "paymentDateTime";
+  static const String schoolManagementSystem = "schoolManagementSystem";
+  static const String shareReceipt = "shareReceipt";
+  static const String paymentReceiptShareText = "paymentReceiptShareText";
+  static const String shareError = "shareError";
+  static const String sarCurrency = "sarCurrency";
+  static const String paymentHistory = "paymentHistory";
+  static const String  noPreviousReceipts = "noPreviousReceipts";
+  static const String receiptAmount = "receiptAmount";
+  static const String receiptIcon = "receiptIcon";
+  static const String paymentMethodCash = "paymentMethodCash";
+  static const String paymentMethodCard = "paymentMethodCard";
+  static const String paymentMethodTransfer = "paymentMethodTransfer";
+  static const String bankTransferConfirmation= "bankTransferConfirmation";
+  static const String bankTransferInstruction = "bankTransferInstruction";
+  static const String attachReceiptFirst = "attachReceiptFirst";
+  static const String uploadReceiptImage = "uploadReceiptImage";
+  static const String sendAndConfirmPayment = "sendAndConfirmPayment";
+  static const String bankTransfer = "bankTransfer";
+  static const String creditCardPayment = "creditCardPayment";
+  static const String cardNumber = "cardNumber";
+  static const String enterCardNumber = "enterCardNumber";
+  static const String expiryDate = "expiryDate";
+  static const String requiredField = "requiredField";
+  static const String cvv = "cvv";
+  static const String cardHolderName = "cardHolderName";
+  static const String enterCardHolderName = "enterCardHolderName";
+  static const String cardHolderLabel = "cardHolderLabel";
+  static const String payNowWithAmount = "payNowWithAmount";
+  static const String creditCard = "creditCard";
+  
 }
+  

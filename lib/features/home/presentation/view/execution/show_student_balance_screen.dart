@@ -10,6 +10,10 @@ import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
+import 'package:my_template/features/home/presentation/view/execution/payment_history_screen.dart';
+import 'package:my_template/features/home/presentation/view/execution/payment_receipt_screen.dart';
+import 'package:my_template/features/home/presentation/view/widget/parent/payment/credit_card_bottom_sheet.dart';
+import 'package:my_template/features/home/presentation/view/widget/parent/payment/bank_transfer_bottom_sheet.dart';
 
 class ShowStudentBalanceScreen extends StatefulWidget {
   const ShowStudentBalanceScreen({super.key});
@@ -38,6 +42,17 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () => Navigator.pop(context),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.history_rounded),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PaymentHistoryScreen()),
+              );
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(16.w),
@@ -179,11 +194,7 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                               image: "assets/image/tabby.jpeg",
                               label: "Tabby",
                               isSelected: selectedPaymentMethod == 0,
-                              onTap: () {
-                                setState(() {
-                                  selectedPaymentMethod = 0;
-                                });
-                              },
+                              onTap: () => setState(() => selectedPaymentMethod = 0),
                             ),
                           ),
                           Gap(12.w),
@@ -193,11 +204,31 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                               image: "assets/image/tamar.jpeg",
                               label: "Tamara",
                               isSelected: selectedPaymentMethod == 1,
-                              onTap: () {
-                                setState(() {
-                                  selectedPaymentMethod = 1;
-                                });
-                              },
+                              onTap: () => setState(() => selectedPaymentMethod = 1),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Gap(12.h),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildPaymentMethodCard(
+                              context,
+                              icon: Icons.credit_card,
+                              label: "بطاقة ائتمان",
+                              isSelected: selectedPaymentMethod == 2,
+                              onTap: () => setState(() => selectedPaymentMethod = 2),
+                            ),
+                          ),
+                          Gap(12.w),
+                          Expanded(
+                            child: _buildPaymentMethodCard(
+                              context,
+                              icon: Icons.account_balance,
+                              label: "تحويل بنكي",
+                              isSelected: selectedPaymentMethod == 3,
+                              onTap: () => setState(() => selectedPaymentMethod = 3),
                             ),
                           ),
                         ],
@@ -217,7 +248,73 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                             shadowColor: AppColor.primaryColor(context).withOpacity(0.4),
                           ),
                           onPressed: () {
-                            // TODO: navigate to payment with selectedPaymentMethod
+                            if (selectedPaymentMethod == -1) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text('الرجاء اختيار طريقة الدفع أولاً', style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.white))),
+                              );
+                              return;
+                            }
+
+                            if (selectedPaymentMethod == 2) {
+                              // Show Credit Card Bottom Sheet
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                builder: (context) => CreditCardBottomSheet(student: student),
+                              );
+                              return;
+                            }
+
+                            if (selectedPaymentMethod == 3) {
+                              // Show Bank Transfer Bottom Sheet
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                builder: (context) => BankTransferBottomSheet(student: student),
+                              );
+                              return;
+                            }
+                            
+                            // Mocking the payment processing for Tabby/Tamara
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) => const Center(child: CircularProgressIndicator()),
+                            );
+
+                            Future.delayed(const Duration(seconds: 2), () {
+                              Navigator.pop(context); // Close dialog
+
+                              final transactionId = 'TRX${DateTime.now().millisecondsSinceEpoch.toString().substring(5)}';
+                              final paymentMethodName = selectedPaymentMethod == 0 ? 'Tabby' : 'Tamara';
+                              final dateStr = DateTime.now().toIso8601String();
+
+                              // Save the receipt locally
+                              HiveMethods.savePaymentReceipt({
+                                'studentName': student.studentName,
+                                'studentCode': student.studentCode.toString(),
+                                'amount': student.balance,
+                                'paymentMethod': paymentMethodName,
+                                'transactionId': transactionId,
+                                'date': dateStr,
+                              });
+
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PaymentReceiptScreen(
+                                    studentName: student.studentName,
+                                    studentCode: student.studentCode.toString(),
+                                    amount: student.balance,
+                                    paymentMethod: paymentMethodName,
+                                    transactionId: transactionId,
+                                    date: DateTime.now(),
+                                  ),
+                                ),
+                              );
+                            });
                           },
                           child: Text(
                             AppLocalKay.pay_now.tr(),
@@ -240,7 +337,8 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
 
   Widget _buildPaymentMethodCard(
     BuildContext context, {
-    required String image,
+    String? image,
+    IconData? icon,
     required String label,
     required bool isSelected,
     required VoidCallback onTap,
@@ -271,12 +369,14 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
         child: Column(
           children: [
             Stack(
+              alignment: Alignment.center,
               children: [
-                Image.asset(image, height: 40.h, fit: BoxFit.contain),
+                if (image != null) Image.asset(image, height: 40.h, fit: BoxFit.contain),
+                if (icon != null) Icon(icon, size: 40.sp, color: isSelected ? AppColor.primaryColor(context) : Colors.grey.shade600),
                 if (isSelected)
                   Positioned(
-                    top: 0,
-                    right: 0,
+                    top: -4,
+                    right: -4,
                     child: Icon(
                       Icons.check_circle,
                       color: AppColor.primaryColor(context),

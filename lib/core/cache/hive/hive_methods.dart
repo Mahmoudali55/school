@@ -142,4 +142,17 @@ class HiveMethods {
     _box.delete('sectionCode');
     _box.delete('classCode');
   }
+
+  /// Payment Receipts History
+  static void savePaymentReceipt(Map<String, dynamic> receiptData) {
+    List<dynamic> currentReceipts = _box.get('payment_receipts', defaultValue: []);
+    // Insert new receipt at the beginning
+    currentReceipts.insert(0, receiptData);
+    _box.put('payment_receipts', currentReceipts);
+  }
+
+  static List<Map<String, dynamic>> getPaymentReceipts() {
+    List<dynamic> receipts = _box.get('payment_receipts', defaultValue: []);
+    return receipts.map((e) => Map<String, dynamic>.from(e)).toList();
+  }
 }
