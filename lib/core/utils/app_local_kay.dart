@@ -1251,6 +1251,11 @@ class AppLocalKay {
   static const String EXPIRY = "EXPIRY";
   static const String CVV = "CVV";
   static const String PAYMENT_METHOD_REQUIRED = "PAYMENT_METHOD_REQUIRED";
+  static const String SEARCH_HINT = "SEARCH_HINT";
+  static const String BOOKS = "BOOKS";
+  static const String NOTES = "NOTES";
+  static const String VIDEOS = "VIDEOS";
+  static const String NO_RESULTS = "NO_RESULTS";
 
 }
   

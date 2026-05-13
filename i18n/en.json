@@ -1216,6 +1216,11 @@
   "cvvInvalidLength": "CVV must be 3 or 4 digits",
   "CARDHOLDER": "Cardholder Name",
   "EXPIRY": "Expiry Date",
-  "PAYMENT_METHOD_REQUIRED": "Please select a payment method first"
+  "PAYMENT_METHOD_REQUIRED": "Please select a payment method first",
+   "SEARCH_HINT": "Search for books, notes, or videos...",
+  "BOOKS": "Books",
+  "NOTES": "Notes",
+  "VIDEOS": "Videos",
+  "NO_RESULTS": "No results found"
 }
 

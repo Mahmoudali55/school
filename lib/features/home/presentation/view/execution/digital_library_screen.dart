@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/home/data/models/get_digital_library_model.dart';
@@ -97,7 +98,7 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
                         children: [
                           IconButton(
                             onPressed: () => Navigator.pop(context),
-                            icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white),
+                            icon:  Icon(Icons.arrow_back_ios_new_rounded, color: AppColor.whiteColor(context)),
                             padding: EdgeInsets.zero,
                           ),
                           Gap(8.w),
@@ -105,12 +106,12 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
                             AppLocalKay.digital_library.tr(),
                             style: AppTextStyle.titleLarge(
                               context,
-                            ).copyWith(fontWeight: FontWeight.bold, color: Colors.white),
+                            ).copyWith(fontWeight: FontWeight.bold, color: AppColor.whiteColor(context)),
                           ),
                           const Spacer(),
                           Icon(
                             Icons.auto_stories_rounded,
-                            color: Colors.white.withOpacity(0.8),
+                            color: AppColor.whiteColor(context).withValues(alpha: (0.8)),
                             size: 24.w,
                           ),
                         ],
@@ -119,11 +120,11 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
                       // Search Bar
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: AppColor.whiteColor(context),
                           borderRadius: BorderRadius.circular(15.r),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: AppColor.blackColor(context).withValues(alpha: (0.1)),
                               blurRadius: 10,
                               offset: const Offset(0, 4),
                             ),
@@ -133,11 +134,11 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
                           controller: _searchController,
                           onChanged: (v) => setState(() => _searchQuery = v),
                           decoration: InputDecoration(
-                            hintText: 'ابحث عن كتب، مذكرات، أو فيديوهات...',
-                            hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 13.sp),
+                            hintText: AppLocalKay.SEARCH_HINT.tr(),
+                            hintStyle: TextStyle(color: AppColor.greyColor(context), fontSize: 13.sp),
                             prefixIcon: Icon(
                               Icons.search_rounded,
-                              color: Colors.grey.shade400,
+                              color: AppColor.greyColor(context),
                               size: 22.w,
                             ),
                             suffixIcon: _searchQuery.isNotEmpty
@@ -160,12 +161,12 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
                       TabBar(
                         controller: _tabController,
                         isScrollable: true,
-                        indicatorColor: Colors.white,
+                        indicatorColor: AppColor.whiteColor(context),
                         indicatorWeight: 3,
                         indicatorSize: TabBarIndicatorSize.label,
                         dividerColor: Colors.transparent,
-                        labelColor: Colors.white,
-                        unselectedLabelColor: Colors.white.withOpacity(0.6),
+                        labelColor: AppColor.whiteColor(context),
+                        unselectedLabelColor: AppColor.whiteColor(context).withValues(alpha: 0.6),
                         labelStyle: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
                         tabs: _categories.map((cat) => Tab(text: cat)).toList(),
                       ),
@@ -203,9 +204,9 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
       final category = _categories[_selectedCategoryIndex];
       filteredItems = filteredItems.where((item) {
         final ext = item.fileExtension.toLowerCase();
-        if (category == 'الكتب') return ['pdf'].contains(ext);
-        if (category == 'الفيديوهات') return ['mp4', 'avi', 'mov'].contains(ext);
-        if (category == 'المذكرات') return ['doc', 'docx', 'ppt', 'pptx'].contains(ext);
+        if (category == "الكتب") return ['pdf'].contains(ext);
+        if (category == "الفيديوهات") return ['mp4', 'avi', 'mov'].contains(ext);
+        if (category == "المذكرات") return ['doc', 'docx', 'ppt', 'pptx'].contains(ext);
         return true;
       }).toList();
     }
@@ -219,7 +220,7 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
               Icon(Icons.search_off_rounded, size: 70.w, color: Colors.grey.shade200),
               Gap(16.h),
               Text(
-                _searchQuery.isNotEmpty ? 'لا توجد نتائج للبحث' : 'لا توجد ملفات حالياً',
+                _searchQuery.isNotEmpty ? AppLocalKay.NO_RESULTS.tr() : AppLocalKay.NOTES.tr(),
                 style: AppTextStyle.titleMedium(context).copyWith(color: Colors.grey.shade400),
               ),
             ],
@@ -272,11 +273,11 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
       child: Container(
         margin: EdgeInsets.only(bottom: 14.h),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColor.whiteColor(context),
           borderRadius: BorderRadius.circular(18.r),
           boxShadow: [
             BoxShadow(
-              color: cardAccent.withOpacity(0.08),
+              color: cardAccent.withValues(alpha:(0.08)),
               blurRadius: 12,
               spreadRadius: 1,
               offset: const Offset(0, 4),
@@ -312,7 +313,7 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
                             width: 48.w,
                             height: 48.w,
                             decoration: BoxDecoration(
-                              color: iconColor.withOpacity(0.12),
+                              color: iconColor.withValues(alpha:(0.12)),
                               borderRadius: BorderRadius.circular(14.r),
                             ),
                             child: Center(
@@ -359,7 +360,7 @@ class _DigitalLibraryScreenState extends State<DigitalLibraryScreen>
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                               decoration: BoxDecoration(
-                                color: cardAccent.withOpacity(0.1),
+                                color: cardAccent.withValues(alpha: (0.1)),
                                 borderRadius: BorderRadius.circular(8.r),
                               ),
                               child: Text(

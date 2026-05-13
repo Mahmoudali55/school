@@ -1288,5 +1288,10 @@
   "cvvInvalidLength": "CVV يجب أن يكون 3 أو 4 أرقام",
   "CARDHOLDER": "اسم حامل البطاقة",
   "EXPIRY": "تاريخ الانتهاء",
-  "PAYMENT_METHOD_REQUIRED": "الرجاء اختيار طريقة الدفع أولاً"
+  "PAYMENT_METHOD_REQUIRED": "الرجاء اختيار طريقة الدفع أولاً",
+  "SEARCH_HINT": "ابحث عن كتب، مذكرات، أو فيديوهات...",
+  "BOOKS": "الكتب",
+  "NOTES": "المذكرات",
+  "VIDEOS": "الفيديوهات",
+  "NO_RESULTS": "لا توجد نتائج"
 }
