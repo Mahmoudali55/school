@@ -32,6 +32,8 @@ class _CreditCardBottomSheetState extends State<CreditCardBottomSheet> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   bool _isFlipped = false;
+  bool _saveCard = false;
+  List<Map<String, dynamic>> _savedCards = [];
 
   // ─── Controllers ─────────────────────────────────────────────
 
@@ -41,6 +43,18 @@ class _CreditCardBottomSheetState extends State<CreditCardBottomSheet> {
   final _cvvCtrl        = TextEditingController();
 
   // ─── Lifecycle ───────────────────────────────────────────────
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedCards();
+  }
+
+  void _loadSavedCards() {
+    setState(() {
+      _savedCards = HiveMethods.getSavedCreditCards();
+    });
+  }
 
   @override
   void dispose() {
@@ -72,6 +86,14 @@ class _CreditCardBottomSheetState extends State<CreditCardBottomSheet> {
         'transactionId': transactionId,
         'date': dateStr,
       });
+
+      if (_saveCard) {
+        HiveMethods.saveCreditCard({
+          'number': _cardNumberCtrl.text,
+          'holder': _cardHolderCtrl.text,
+          'expiry': _expiryCtrl.text,
+        });
+      }
 
       Navigator.pop(context);
       Navigator.pushReplacement(
@@ -116,6 +138,8 @@ class _CreditCardBottomSheetState extends State<CreditCardBottomSheet> {
               Gap(20.h),
               _buildTitle(context),
               Gap(20.h),
+              _buildSavedCardsList(context),
+              Gap(20.h),
 
               // ── Animated Card ─────────────────────────────
               AnimatedCreditCard(
@@ -128,6 +152,8 @@ class _CreditCardBottomSheetState extends State<CreditCardBottomSheet> {
 
               Gap(28.h),
               _buildForm(context),
+              Gap(12.h),
+              _buildSaveCardCheckbox(context),
               Gap(24.h),
               _buildPayButton(context),
             ],
@@ -148,6 +174,110 @@ class _CreditCardBottomSheetState extends State<CreditCardBottomSheet> {
           color: AppColor.greyColor(context).withOpacity(0.3),
           borderRadius: BorderRadius.circular(2.r),
         ),
+      ),
+    );
+  }
+
+  Widget _buildSavedCardsList(BuildContext context) {
+    if (_savedCards.isEmpty) return const SizedBox.shrink();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          AppLocalKay.savedCards.tr(),
+          style: AppTextStyle.bodyMedium(context).copyWith(
+            fontWeight: FontWeight.bold,
+            color: AppColor.primaryColor(context),
+          ),
+        ),
+        Gap(12.h),
+        SizedBox(
+          height: 60.h,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: _savedCards.length,
+            separatorBuilder: (_, __) => Gap(12.w),
+            itemBuilder: (context, index) {
+              final card = _savedCards[index];
+              final last4 = card['number'].replaceAll(' ', '').substring(card['number'].replaceAll(' ', '').length - 4);
+              
+              return InkWell(
+                onTap: () => _selectCard(card),
+                borderRadius: BorderRadius.circular(12.r),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                  decoration: BoxDecoration(
+                    color: AppColor.primaryColor(context).withOpacity(0.05),
+                    borderRadius: BorderRadius.circular(12.r),
+                    border: Border.all(
+                      color: AppColor.primaryColor(context).withOpacity(0.2),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.credit_card, size: 20.sp, color: AppColor.primaryColor(context)),
+                      Gap(8.w),
+                      Text(
+                        '**** $last4',
+                        style: AppTextStyle.bodySmall(context).copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Gap(8.w),
+                      IconButton(
+                        icon: Icon(Icons.close, size: 16.sp, color: Colors.red),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        onPressed: () {
+                          HiveMethods.deleteSavedCreditCard(index);
+                          _loadSavedCards();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _selectCard(Map<String, dynamic> card) {
+    setState(() {
+      _cardNumberCtrl.text = card['number'];
+      _cardHolderCtrl.text = card['holder'];
+      _expiryCtrl.text = card['expiry'];
+      _cvvCtrl.clear(); // Always clear CVV for security
+      _isFlipped = false;
+    });
+  }
+
+  Widget _buildSaveCardCheckbox(BuildContext context) {
+    return InkWell(
+      onTap: () => setState(() => _saveCard = !_saveCard),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 24.w,
+            height: 24.w,
+            child: Checkbox(
+              value: _saveCard,
+              onChanged: (val) => setState(() => _saveCard = val ?? false),
+              activeColor: AppColor.primaryColor(context),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.r)),
+            ),
+          ),
+          Gap(8.w),
+          Expanded(
+            child: Text(
+              AppLocalKay.saveCard.tr(),
+              style: AppTextStyle.bodySmall(context),
+            ),
+          ),
+        ],
       ),
     );
   }

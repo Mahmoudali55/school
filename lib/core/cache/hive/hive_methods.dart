@@ -155,4 +155,32 @@ class HiveMethods {
     List<dynamic> receipts = _box.get('payment_receipts', defaultValue: []);
     return receipts.map((e) => Map<String, dynamic>.from(e)).toList();
   }
+
+  /// Saved Credit Cards
+  static void saveCreditCard(Map<String, dynamic> cardData) {
+    List<dynamic> currentCards = _box.get('saved_cards', defaultValue: []);
+    
+    // Check if card already exists (by number) to avoid duplicates
+    int existingIndex = currentCards.indexWhere((c) => c['number'] == cardData['number']);
+    if (existingIndex != -1) {
+      currentCards[existingIndex] = cardData; // Update existing
+    } else {
+      currentCards.add(cardData); // Add new
+    }
+    
+    _box.put('saved_cards', currentCards);
+  }
+
+  static List<Map<String, dynamic>> getSavedCreditCards() {
+    List<dynamic> cards = _box.get('saved_cards', defaultValue: []);
+    return cards.map((e) => Map<String, dynamic>.from(e)).toList();
+  }
+
+  static void deleteSavedCreditCard(int index) {
+    List<dynamic> cards = _box.get('saved_cards', defaultValue: []);
+    if (index >= 0 && index < cards.length) {
+      cards.removeAt(index);
+      _box.put('saved_cards', cards);
+    }
+  }
 }

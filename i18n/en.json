@@ -1221,6 +1221,9 @@
   "BOOKS": "Books",
   "NOTES": "Notes",
   "VIDEOS": "Videos",
-  "NO_RESULTS": "No results found"
+  "NO_RESULTS": "No results found",
+  "saveCard": "Save card details for future use",
+  "savedCards": "Saved Cards",
+  "useSavedCard": "Use saved card"
 }
 

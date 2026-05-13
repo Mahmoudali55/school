@@ -1256,6 +1256,9 @@ class AppLocalKay {
   static const String NOTES = "NOTES";
   static const String VIDEOS = "VIDEOS";
   static const String NO_RESULTS = "NO_RESULTS";
+  static const String saveCard = "saveCard";
+  static const String savedCards = "savedCards";
+  static const String useSavedCard = "useSavedCard";
 
 }
   
