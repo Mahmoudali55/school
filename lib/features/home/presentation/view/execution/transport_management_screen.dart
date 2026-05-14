@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/home/data/models/bus_data_model.dart';
@@ -66,7 +67,7 @@ class TransportManagementScreen extends StatelessWidget {
         gradient: LinearGradient(colors: [Colors.blue.shade600, Colors.blue.shade400]),
         boxShadow: [
           BoxShadow(
-            color: Colors.blue.withOpacity(0.3),
+            color: Colors.blue.withValues(alpha: (0.3)),
             blurRadius: 15,
             offset: const Offset(0, 8),
           ),
@@ -79,22 +80,23 @@ class TransportManagementScreen extends StatelessWidget {
             AppLocalKay.total_buses.tr(),
             buses.length.toString(),
             Icons.directions_bus,
+            context,
           ),
-          _buildStatItem(AppLocalKay.active.tr(), activeCount.toString(), Icons.check_circle),
-          _buildStatItem(AppLocalKay.maintenance.tr(), maintenanceCount.toString(), Icons.build),
+          _buildStatItem(AppLocalKay.active.tr(), activeCount.toString(), Icons.check_circle, context),
+          _buildStatItem(AppLocalKay.maintenance.tr(), maintenanceCount.toString(), Icons.build, context),
         ],
       ),
     );
   }
 
-  Widget _buildStatItem(String title, String value, IconData icon) {
+  Widget _buildStatItem(String title, String value, IconData icon,BuildContext context) {
     return Column(
       children: [
-        Icon(icon, color: Colors.white, size: 30),
+        Icon(icon, color: AppColor.whiteColor(context), size: 30),
         Gap(8),
         Text(
           value,
-          style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+          style:  TextStyle(color: AppColor.whiteColor(context), fontSize: 20, fontWeight: FontWeight.bold),
         ),
         Text(title, style: const TextStyle(color: Colors.white70)),
       ],

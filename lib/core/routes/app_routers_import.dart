@@ -10,7 +10,6 @@ import 'package:my_template/features/class/presentation/cubit/schedule_cubit.dar
 import 'package:my_template/features/class/presentation/execution/admin_schedule_generator_screen.dart';
 import 'package:my_template/features/class/presentation/screen/assignments_screen.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
-import 'package:my_template/features/home/presentation/view/execution/Teacher_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/digital_library_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/grades_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/leave_parent_screen.dart';
@@ -31,9 +30,7 @@ import 'package:my_template/features/profile/presentation/cubit/profile_cubit.da
 import 'package:my_template/features/profile/presentation/screen/parent_profile_screen.dart';
 import 'package:my_template/features/profile/presentation/screen/profile_screen.dart';
 import 'package:my_template/features/uniform/presentation/screen/uniform_admin_screen.dart';
-
 import '../../features/auth/presentation/view/cubit/auth_cubit.dart';
-import '../../features/splash/presentation/view/screen/splash_screen.dart' show SplashScreen;
+import '../../features/splash/presentation/view/screen/splash_screen.dart' ;
 import '../services/services_locator.dart';
-
 part 'app_routers.dart';

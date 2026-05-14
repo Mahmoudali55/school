@@ -51,6 +51,7 @@ class _StudentClassesScreenState extends State<StudentClassesScreen> {
           ).copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
+        leading: null,
         elevation: 0,
       ),
       body: Padding(

@@ -1259,6 +1259,10 @@ class AppLocalKay {
   static const String saveCard = "saveCard";
   static const String savedCards = "savedCards";
   static const String useSavedCard = "useSavedCard";
+  static const String REASON = "REASON";
+  static const String REQUEST_DATE = "REQUEST_DATE";
+  static const String NODATA = "NO_DATA";
+  static const String DISPLAY_DOWNLOAD = "DISPLAY_DOWNLOAD";
 
 }
   

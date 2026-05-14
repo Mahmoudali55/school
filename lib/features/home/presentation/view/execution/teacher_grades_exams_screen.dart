@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-
 import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -303,7 +302,7 @@ class _TeacherGradesExamsScreenState extends State<TeacherGradesExamsScreen> {
                         backDrawRodData: BackgroundBarChartRodData(
                           show: true,
                           toY: entry.value.courseDegree ?? 100,
-                          color: AppColor.primaryColor(context).withOpacity(0.1),
+                          color: AppColor.primaryColor(context).withValues(alpha: (0.1)),
                         ),
                       ),
                     ],
@@ -346,7 +345,7 @@ class _TeacherGradesExamsScreenState extends State<TeacherGradesExamsScreen> {
           borderRadius: BorderRadius.circular(24.r),
           boxShadow: [
             BoxShadow(
-              color: AppColor.blackColor(context).withOpacity(0.04),
+              color: AppColor.blackColor(context).withValues(alpha: (0.04)),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -362,7 +361,7 @@ class _TeacherGradesExamsScreenState extends State<TeacherGradesExamsScreen> {
                     Container(
                       padding: EdgeInsets.all(10.w),
                       decoration: BoxDecoration(
-                        color: color.withOpacity(0.1),
+                        color: color.withValues(alpha: (0.1)),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(Icons.school_rounded, color: color, size: 20.w),
@@ -394,7 +393,7 @@ class _TeacherGradesExamsScreenState extends State<TeacherGradesExamsScreen> {
               borderRadius: BorderRadius.circular(10.r),
               child: LinearProgressIndicator(
                 value: progress,
-                backgroundColor: color.withOpacity(0.1),
+                backgroundColor: color.withValues(alpha: (0.1)),
                 color: color,
                 minHeight: 8.h,
               ),

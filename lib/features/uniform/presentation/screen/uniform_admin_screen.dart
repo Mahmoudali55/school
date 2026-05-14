@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/features/home/data/models/get_uniform_data_model.dart';
@@ -53,17 +54,17 @@ class UniformAdminScreen extends StatelessWidget {
     return ListView.separated(
       padding: const EdgeInsets.all(16),
       itemCount: orders.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 16),
+      separatorBuilder: (_, __) => const Gap( 16),
       itemBuilder: (context, index) {
         final order = orders[index];
 
         return Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColor.whiteColor(context),
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: (0.05)),
                 blurRadius: 12,
                 offset: const Offset(0, 4),
               ),
@@ -87,7 +88,7 @@ class UniformAdminScreen extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: AppColor.primaryColor(context).withOpacity(0.1),
+                        color: AppColor.primaryColor(context).withValues(alpha: (0.1)),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
@@ -100,12 +101,12 @@ class UniformAdminScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 6),
+                const Gap( 6),
                 Text(
                   "${AppLocalKay.code.tr()} : ${order.studentCode}",
                   style: TextStyle(color: AppColor.grey600Color(context)),
                 ),
-                const SizedBox(height: 18),
+                const Gap( 18),
 
                 /// Measurements Row
                 Row(
@@ -117,7 +118,7 @@ class UniformAdminScreen extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: 18),
+                Gap( 18),
 
                 /// Notes
                 if (order.notes.isNotEmpty)

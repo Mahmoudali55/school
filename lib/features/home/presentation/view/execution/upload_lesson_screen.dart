@@ -172,7 +172,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                 key: _formKey,
                 child: ListView(
                   children: [
-                    /// القسم والمرحلة
+                   
                     Text(
                       AppLocalKay.user_management_class.tr(),
                       style: AppTextStyle.formTitleStyle(context),
@@ -209,7 +209,7 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
 
                     Gap(16.h),
 
-                    /// الشعبة
+                    
                     Text(
                       AppLocalKay.class_name_assigment.tr(),
                       style: AppTextStyle.formTitleStyle(context),
@@ -232,7 +232,6 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
 
                     Gap(16.h),
 
-                    // المادة
                     Text(
                       AppLocalKay.user_management_subject.tr(),
                       style: AppTextStyle.formTitleStyle(context),
@@ -387,8 +386,6 @@ class _UploadLessonScreenState extends State<UploadLessonScreen> {
                     ),
 
                     Gap(24.h),
-
-                    /// زر الرفع
                     CustomButton(
                       radius: 12.r,
                       child: (state.addLessonsStatus.isLoading || state.editLessonsStatus.isLoading)

@@ -1219,11 +1219,15 @@
   "PAYMENT_METHOD_REQUIRED": "Please select a payment method first",
    "SEARCH_HINT": "Search for books, notes, or videos...",
   "BOOKS": "Books",
-  "NOTES": "Notes",
   "VIDEOS": "Videos",
   "NO_RESULTS": "No results found",
   "saveCard": "Save card details for future use",
   "savedCards": "Saved Cards",
-  "useSavedCard": "Use saved card"
+  "useSavedCard": "Use saved card",
+  "REASON": "Reason",
+  "NOTES":"Notes",
+  "REQUEST_DATE":"Request Date",
+  "NO_DATA":"No data found",
+  "DISPLAY_DOWNLOAD": "Download or View"
 }
 

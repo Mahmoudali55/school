@@ -21,7 +21,7 @@ class ScheduleScreen extends StatefulWidget {
 }
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
-  int _selectedDay = DateTime.now().weekday - 1; // اليوم الحالي
+  int _selectedDay = DateTime.now().weekday - 1; 
 
   final List<String> _days = [
     'الإثنين',

@@ -135,11 +135,7 @@ class AppRouters {
         );
       case RoutesName.studentAIAssistantScreen:
         return MaterialPageRoute(builder: (_) => const StudentAIAssistantScreen());
-      case RoutesName.teacherScreen:
-        return MaterialPageRoute(
-          builder: (_) =>
-              BlocProvider(create: (context) => sl<HomeCubit>(), child: const TeacherScreen()),
-        );
+     
       case RoutesName.adminScheduleGeneratorScreen:
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
@@ -157,3 +153,4 @@ class AppRouters {
     }
   }
 }
+        

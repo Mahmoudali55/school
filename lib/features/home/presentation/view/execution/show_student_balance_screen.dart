@@ -69,7 +69,7 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
             }
 
             if (balances.isEmpty) {
-              return Center(child: Text("لا توجد بيانات", style: AppTextStyle.bodyMedium(context)));
+              return Center(child: Text(AppLocalKay.NODATA.tr(), style: AppTextStyle.bodyMedium(context)));
             }
 
             return ListView.separated(
@@ -79,14 +79,14 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                 final student = balances[index];
 
                 return
-                /// تعديل الألوان للشاشة لتكون أكثر عصريّة
+                
                 Container(
                   padding: EdgeInsets.all(16.w),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     gradient: LinearGradient(
                       colors: [
-                        AppColor.primaryColor(context).withValues(alpha:(0.1)), // تدرج ناعم
+                        AppColor.primaryColor(context).withValues(alpha:(0.1)), 
                         Colors.grey.shade50,
                       ],
                       begin: Alignment.topLeft,
