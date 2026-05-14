@@ -11,36 +11,56 @@ class ShortcutCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
-      color: AppColor.whiteColor(context),
+    return Container(
+      padding: EdgeInsets.all(12.w),
+      decoration: BoxDecoration(
+        color: AppColor.whiteColor(context),
+        borderRadius: BorderRadius.circular(20.r),
+        boxShadow: [
+          BoxShadow(
+            color: shortcut.color.withValues(alpha: 0.08),
+            blurRadius: 15,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: EdgeInsets.all(8.w),
+            padding: EdgeInsets.all(10.w),
             decoration: BoxDecoration(
-              color: shortcut.color.withValues(alpha: (0.1)),
-              borderRadius: BorderRadius.circular(12),
+              color: shortcut.color.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(16.r),
             ),
-            child: Icon(shortcut.icon, color: shortcut.color, size: 20.w),
+            child: Icon(
+              shortcut.icon,
+              color: shortcut.color,
+              size: 24.sp,
+            ),
           ),
-          Gap(6.h),
+          Gap(10.h),
           Text(
             shortcut.title,
             textAlign: TextAlign.center,
-            style: AppTextStyle.bodySmall(
-              context,
-            ).copyWith(fontSize: 10.sp, fontWeight: FontWeight.bold),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: AppTextStyle.bodyMedium(context).copyWith(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.bold,
+              color: AppColor.blackColor(context),
+            ),
           ),
+          Gap(4.h),
           Text(
             shortcut.description,
             textAlign: TextAlign.center,
-            style: AppTextStyle.bodySmall(
-              context,
-              color: Colors.grey[600],
-            ).copyWith(fontSize: 8.sp),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: AppTextStyle.bodySmall(context, color: AppColor.grey600Color(context)).copyWith(
+              fontSize: 9.sp,
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ],
       ),

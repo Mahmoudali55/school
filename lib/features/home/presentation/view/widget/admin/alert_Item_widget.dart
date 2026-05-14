@@ -22,7 +22,7 @@ class AlertItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: AppColor.blackColor(context).withOpacity(0.03),
+            color: AppColor.blackColor(context).withValues(alpha: 0.03),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),

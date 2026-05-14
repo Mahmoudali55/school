@@ -5,24 +5,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/routes/routes_name.dart';
 import 'package:my_template/core/services/services_locator.dart';
-import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/alert_model.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/view/execution/financial_settings_screen.dart';
 import 'package:my_template/features/home/presentation/view/execution/transport_management_screen.dart';
 import 'package:my_template/features/home/presentation/view/widget/admin/shortcut_card_widget.dart';
+import 'package:my_template/features/home/presentation/view/widget/admin/widgets/dashboard_section_header.dart';
 
 class ManagementShortcuts extends StatelessWidget {
   final List<ManagementShortcut> shortcuts = [
-    // ManagementShortcut(
-    //   title: AppLocalKay.reports_title.tr(),
-    //   description: AppLocalKay.reports_desc.tr(),
-    //   icon: Icons.analytics,
-    //   color: Colors.orange,
-    //   onTap: (context) =>
-    //       Navigator.push(context, MaterialPageRoute(builder: (context) => ReportsPage())),
-    // ),
     ManagementShortcut(
       title: AppLocalKay.transport_title.tr(),
       description: AppLocalKay.transport_desc.tr(),
@@ -53,7 +45,6 @@ class ManagementShortcuts extends StatelessWidget {
         ),
       ),
     ),
-
     ManagementShortcut(
       title: AppLocalKay.school_uniform.tr(),
       description: AppLocalKay.uniform_orders.tr(),
@@ -68,7 +59,6 @@ class ManagementShortcuts extends StatelessWidget {
       color: Colors.indigo,
       onTap: (context) => Navigator.pushNamed(context, RoutesName.leaveAdminScreen),
     ),
-
     ManagementShortcut(
       title: AppLocalKay.teachers_ar.tr(),
       description: AppLocalKay.teachers_ar.tr(),
@@ -92,19 +82,19 @@ class ManagementShortcuts extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          AppLocalKay.quickLinks.tr(),
-          style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.bold),
+        DashboardSectionHeader(
+          title: AppLocalKay.quickLinks.tr(),
         ),
-        Gap(12.h),
+        Gap(16.h),
         GridView.builder(
           shrinkWrap: true,
+          padding: EdgeInsets.symmetric(horizontal: 4.w),
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: 140.w,
-            mainAxisSpacing: 12.h,
-            crossAxisSpacing: 12.w,
-            childAspectRatio: .85,
+            mainAxisSpacing: 16.h,
+            crossAxisSpacing: 16.w,
+            childAspectRatio: 0.9,
           ),
           itemCount: shortcuts.length,
           itemBuilder: (context, index) => GestureDetector(

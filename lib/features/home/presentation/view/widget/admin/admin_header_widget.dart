@@ -45,7 +45,7 @@ class AdminHeader extends StatelessWidget {
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: AppColor.blackColor(context).withOpacity(0.1),
+                color: AppColor.blackColor(context).withValues(alpha: 0.1),
                 blurRadius: 6,
                 offset: const Offset(0, 3),
               ),

@@ -2,10 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/metric_card_model.dart';
 import 'package:my_template/features/home/presentation/view/widget/admin/metric_card_widget.dart';
+import 'package:my_template/features/home/presentation/view/widget/admin/widgets/dashboard_section_header.dart';
 
 class MetricsDashboard extends StatelessWidget {
   final Map<String, Map<String, dynamic>> metricsData;
@@ -23,7 +23,7 @@ class MetricsDashboard extends StatelessWidget {
         MetricCard(
           title: key,
           value: data['value'] ?? "0",
-          change: data['change'] ?? "0",
+          change: data['change'] ?? "",
           isPositive: data['isPositive'] ?? true,
           icon: icon,
           color: color,
@@ -41,19 +41,17 @@ class MetricsDashboard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          AppLocalKay.generalView.tr(),
-          style: AppTextStyle.titleMedium(
-            context,
-          ).copyWith(fontSize: 16.sp, fontWeight: FontWeight.bold),
+        DashboardSectionHeader(
+          title: AppLocalKay.generalView.tr(),
         ),
-        Gap(12.h),
+        Gap(16.h),
         SizedBox(
-          height: 150.h,
+          height: 140.h,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: metrics.length,
-            separatorBuilder: (_, __) => Gap(12.w),
+            padding: EdgeInsets.symmetric(horizontal: 4.w),
+            separatorBuilder: (_, __) => Gap(16.w),
             itemBuilder: (context, index) => MetricCardWidget(metric: metrics[index]),
           ),
         ),

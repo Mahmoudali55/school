@@ -14,7 +14,6 @@ import 'package:my_template/features/home/presentation/view/widget/admin/managem
 import 'package:my_template/features/home/presentation/view/widget/admin/metrics_dashboard_widget.dart';
 import 'package:my_template/features/home/presentation/view/widget/admin/mini_charts_widget.dart';
 
-// ------------------- Main Screen -------------------
 class AdminHomeScreen extends StatelessWidget {
   const AdminHomeScreen({super.key});
 
@@ -22,78 +21,100 @@ class AdminHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.whiteColor(context),
-      body: SafeArea(
-        child: BlocBuilder<HomeCubit, HomeState>(
-          builder: (context, state) {
-            final data = state.data;
-            final adminData = data is AdminHomeModel ? data : null;
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              AppColor.primaryColor(context).withValues(alpha: 0.03),
+              AppColor.whiteColor(context),
+              AppColor.secondAppColor(context).withValues(alpha: 0.02),
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: BlocBuilder<HomeCubit, HomeState>(
+            builder: (context, state) {
+              final data = state.data;
+              final adminData = data is AdminHomeModel ? data : null;
 
-            if (state.isLoading && data == null) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (adminData != null) {
-              return LayoutBuilder(
-                builder: (context, constraints) {
-                  final isLandscape = constraints.maxWidth > constraints.maxHeight;
+              if (state.isLoading && data == null) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (adminData != null) {
+                return LayoutBuilder(
+                  builder: (context, constraints) {
+                    final isLandscape = constraints.maxWidth > constraints.maxHeight;
 
-                  if (isLandscape) {
                     return SingleChildScrollView(
-                      padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+                      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           AdminHeader(name: HiveMethods.getUserName2()),
-                          Gap(20.h),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                flex: 3,
-                                child: Column(
-                                  children: [
-                                    MetricsDashboard(metricsData: adminData.metrics),
-                                    Gap(20.h),
-                                    MiniCharts(chartsData: adminData.miniCharts ?? []),
-                                    Gap(20.h),
-                                    AlertsAndActivity(),
-                                  ],
-                                ),
-                              ),
-                              Gap(20.w),
-                              Expanded(flex: 2, child: ManagementShortcuts()),
-                            ],
-                          ),
+                          Gap(24.h),
+                          if (isLandscape)
+                            _buildLandscapeLayout(context, adminData)
+                          else
+                            _buildPortraitLayout(context, adminData),
                         ],
                       ),
                     );
-                  }
-
-                  return SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AdminHeader(name: HiveMethods.getUserName2()),
-                        Gap(20.h),
-                        MetricsDashboard(metricsData: adminData.metrics),
-                        Gap(20.h),
-                        // MiniCharts(chartsData: adminData.miniCharts ?? []),
-                       // Gap(20.h),
-                       // AlertsAndActivity(),
-                        Gap(20.h),
-                        ManagementShortcuts(),
-                        Gap(20.h),
-                      ],
-                    ),
-                  );
-                },
-              );
-            } else if (state.errorMessage != null && data == null) {
-              return Center(child: Text(state.errorMessage!));
-            }
-            return const SizedBox.shrink();
-          },
+                  },
+                );
+              } else if (state.errorMessage != null && data == null) {
+                return Center(child: Text(state.errorMessage!));
+              }
+              return const SizedBox.shrink();
+            },
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _buildPortraitLayout(BuildContext context, AdminHomeModel adminData) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        MetricsDashboard(metricsData: adminData.metrics),
+        Gap(24.h),
+        if (adminData.miniCharts != null && adminData.miniCharts!.isNotEmpty) ...[
+          MiniCharts(chartsData: adminData.miniCharts!),
+          Gap(24.h),
+        ],
+        AlertsAndActivity(),
+        Gap(24.h),
+        ManagementShortcuts(),
+        Gap(24.h),
+      ],
+    );
+  }
+
+  Widget _buildLandscapeLayout(BuildContext context, AdminHomeModel adminData) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 3,
+          child: Column(
+            children: [
+              MetricsDashboard(metricsData: adminData.metrics),
+              Gap(24.h),
+              if (adminData.miniCharts != null && adminData.miniCharts!.isNotEmpty) ...[
+                MiniCharts(chartsData: adminData.miniCharts!),
+                Gap(24.h),
+              ],
+              AlertsAndActivity(),
+            ],
+          ),
+        ),
+        Gap(24.w),
+        Expanded(
+          flex: 2,
+          child: ManagementShortcuts(),
+        ),
+      ],
     );
   }
 }
