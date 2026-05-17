@@ -7,6 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/routes/app_routers_import.dart';
 import 'core/routes/routes_name.dart';
 import 'core/theme/style.dart';
+import 'core/custom_widgets/offline_widget/offline_gate.dart';
+import 'core/custom_widgets/security/security_gate.dart';
 
 class schoolApp extends StatefulWidget {
   const schoolApp({super.key});
@@ -40,7 +42,13 @@ class _schoolAppState extends State<schoolApp> {
               initialRoute: RoutesName.splashScreen,
               onGenerateRoute: AppRouters.onGenerateRoute,
               navigatorKey: AppRouters.navigatorKey,
-              builder: BotToastInit(),
+              builder: (context, child) {
+                final botToastBuilder = BotToastInit();
+                final botToastChild = botToastBuilder(context, child);
+                return SecurityGate(
+                  child: OfflineGate(child: botToastChild),
+                );
+              },
               navigatorObservers: [BotToastNavigatorObserver()],
             );
           },
