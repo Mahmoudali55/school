@@ -1267,6 +1267,9 @@ class AppLocalKay {
   static const String STUDENT = "STUDENT";
   static const String NEXT_TRIP = "NEXT_TRIP";
   static const String CANCEL_TRIP = "CANCEL_TRIP";
+  static const String NO_TEACHERS_FOUND = "NO_TEACHERS_FOUND";
+  static const String SEARCH_TEACHER = "SEARCH_TEACHER";
+  static const String COURSE_CODE = "COURSE_CODE";
 
 }
   

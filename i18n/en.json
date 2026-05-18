@@ -1232,6 +1232,9 @@
   "TEACHER":"Teacher",
   "STUDENT":"Student",
   "NEXT_TRIP":"Next Trip",
-  "CANCEL_TRIP":"Expected arrival within 5 minutes"
+  "CANCEL_TRIP":"Expected arrival within 5 minutes",
+  "NO_TEACHERS_FOUND":"No teachers found",
+  "SEARCH_TEACHER":"Search for a teacher...",
+  "COURSE_CODE": "Course Code {}"
 }
 

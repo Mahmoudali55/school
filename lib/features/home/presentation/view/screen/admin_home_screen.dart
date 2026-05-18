@@ -22,17 +22,7 @@ class AdminHomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.whiteColor(context),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              AppColor.primaryColor(context).withValues(alpha: 0.03),
-              AppColor.whiteColor(context),
-              AppColor.secondAppColor(context).withValues(alpha: 0.02),
-            ],
-          ),
-        ),
+        
         child: SafeArea(
           child: BlocBuilder<HomeCubit, HomeState>(
             builder: (context, state) {
@@ -54,7 +44,7 @@ class AdminHomeScreen extends StatelessWidget {
                           AdminHeader(name: HiveMethods.getUserName2()),
                           Gap(24.h),
                           if (isLandscape)
-                            _buildLandscapeLayout(context, adminData)
+                           _buildLandscapeLayout(context, adminData)
                           else
                             _buildPortraitLayout(context, adminData),
                         ],
@@ -78,13 +68,13 @@ class AdminHomeScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         MetricsDashboard(metricsData: adminData.metrics),
-        Gap(24.h),
-        if (adminData.miniCharts != null && adminData.miniCharts!.isNotEmpty) ...[
-          MiniCharts(chartsData: adminData.miniCharts!),
-          Gap(24.h),
-        ],
+        // Gap(24.h),
+        // if (adminData.miniCharts != null && adminData.miniCharts!.isNotEmpty) ...[
+        //   MiniCharts(chartsData: adminData.miniCharts!),
+        //   Gap(24.h),
+        // ],
         AlertsAndActivity(),
-        Gap(24.h),
+         Gap(24.h),
         ManagementShortcuts(),
         Gap(24.h),
       ],
@@ -100,12 +90,13 @@ class AdminHomeScreen extends StatelessWidget {
           child: Column(
             children: [
               MetricsDashboard(metricsData: adminData.metrics),
-              Gap(24.h),
-              if (adminData.miniCharts != null && adminData.miniCharts!.isNotEmpty) ...[
-                MiniCharts(chartsData: adminData.miniCharts!),
-                Gap(24.h),
-              ],
-              AlertsAndActivity(),
+            //   Gap(24.h),
+            //   if (adminData.miniCharts != null && adminData.miniCharts!.isNotEmpty) ...[
+            //     MiniCharts(chartsData: adminData.miniCharts!),
+           
+            //   ],
+                 Gap(24.h),
+               AlertsAndActivity(),
             ],
           ),
         ),

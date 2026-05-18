@@ -24,45 +24,51 @@ class ShortcutCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: EdgeInsets.all(10.w),
-            decoration: BoxDecoration(
-              color: shortcut.color.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(16.r),
-            ),
-            child: Icon(
-              shortcut.icon,
-              color: shortcut.color,
-              size: 24.sp,
-            ),
+      child: Center(
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: EdgeInsets.all(10.w),
+                decoration: BoxDecoration(
+                  color: shortcut.color.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(16.r),
+                ),
+                child: Icon(
+                  shortcut.icon,
+                  color: shortcut.color,
+                  size: 24.sp,
+                ),
+              ),
+              Gap(8.h),
+              Text(
+                shortcut.title,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyle.bodyMedium(context).copyWith(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.bold,
+                  color: AppColor.blackColor(context),
+                ),
+              ),
+              Gap(2.h),
+              Text(
+                shortcut.description,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyle.bodySmall(context, color: AppColor.grey600Color(context)).copyWith(
+                  fontSize: 9.sp,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
           ),
-          Gap(10.h),
-          Text(
-            shortcut.title,
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyle.bodyMedium(context).copyWith(
-              fontSize: 12.sp,
-              fontWeight: FontWeight.bold,
-              color: AppColor.blackColor(context),
-            ),
-          ),
-          Gap(4.h),
-          Text(
-            shortcut.description,
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: AppTextStyle.bodySmall(context, color: AppColor.grey600Color(context)).copyWith(
-              fontSize: 9.sp,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
