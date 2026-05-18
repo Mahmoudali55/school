@@ -445,14 +445,14 @@ class _ClassReportsScreenState extends State<ClassReportsScreen> {
     if (value >= 90) return Colors.green;
     if (value >= 80) return Colors.blue;
     if (value >= 70) return Colors.orange;
-    return Colors.red;
+    return AppColor.errorColor(context);
   }
 
   Color _getBehaviorColor(int points) {
     if (points >= 90) return Colors.green;
     if (points >= 80) return Colors.blue;
     if (points >= 70) return Colors.orange;
-    return Colors.red;
+    return AppColor.errorColor(context);
   }
 
   IconData _getBehaviorIcon(int points) {

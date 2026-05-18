@@ -1,7 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
+import 'package:my_template/core/utils/app_local_kay.dart';
 
 class BusStatusCardWidget extends StatelessWidget {
   const BusStatusCardWidget({super.key});
@@ -17,22 +20,22 @@ class BusStatusCardWidget extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.directions_bus_rounded, color: Colors.green, size: 32.w),
+                Icon(Icons.directions_bus_rounded, color: AppColor.successColor(context), size: 32.w),
                 Gap(12.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "الحافلة قادمة",
+                         AppLocalKay.NEXT_TRIP.tr(),
                         style: AppTextStyle.titleLarge(context).copyWith(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
-                          color: Colors.green,
+                          color: AppColor.successColor(context),
                         ),
                       ),
                       Text(
-                        "متوقع الوصول خلال ٥ دقائق",
+                        AppLocalKay.CANCEL_TRIP.tr(),
                         style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.grey[600]),
                       ),
                     ],
@@ -44,7 +47,7 @@ class BusStatusCardWidget extends StatelessWidget {
             LinearProgressIndicator(
               value: 0.7,
               backgroundColor: Colors.grey[300],
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+              valueColor: AlwaysStoppedAnimation<Color>(AppColor.successColor(context)),
               borderRadius: BorderRadius.circular(10.r),
             ),
           ],

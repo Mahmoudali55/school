@@ -1300,5 +1300,9 @@
   "NOTES":"الملاحظات",
   "REQUEST_DATE":"تاريخ الطلب",
   "NO_DATA":"لا توجد بيانات",
-  "DISPLAY_DOWNLOAD":"عرض / تحميل"
+  "DISPLAY_DOWNLOAD":"عرض / تحميل",
+  "TEACHER":"المعلم",
+  "STUDENT":"الطالب",
+  "NEXT_TRIP":"الحافلة قادمة",
+  "CANCEL_TRIP":"متوقع الوصول خلال ٥ دقائق"
 }

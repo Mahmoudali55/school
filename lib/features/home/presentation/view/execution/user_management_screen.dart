@@ -124,7 +124,7 @@ class UserManagementScreen extends StatelessWidget {
               },
             ),
             IconButton(
-              icon: Icon(Icons.delete, color: Colors.red, size: 20.w),
+              icon: Icon(Icons.delete, color: AppColor.errorColor(context), size: 20.w),
               onPressed: () {
                 // Delete user
               },

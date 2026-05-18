@@ -84,7 +84,7 @@ class RouteScreen extends StatelessWidget {
 
                 Row(
                   children: [
-                    Icon(Icons.access_time, color: Colors.green),
+                    Icon(Icons.access_time, color: AppColor.successColor(context)),
                     Gap(8.w),
                     Text(
                       'الوقت المتوقع: 12 دقيقة',

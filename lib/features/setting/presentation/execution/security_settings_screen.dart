@@ -223,7 +223,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(AppLocalKay.settings_saved_success.tr()),
-        backgroundColor: Colors.green,
+        backgroundColor: AppColor.successColor(context),
       ),
     );
     Navigator.pop(context);

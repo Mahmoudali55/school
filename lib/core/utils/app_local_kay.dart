@@ -1263,6 +1263,10 @@ class AppLocalKay {
   static const String REQUEST_DATE = "REQUEST_DATE";
   static const String NODATA = "NO_DATA";
   static const String DISPLAY_DOWNLOAD = "DISPLAY_DOWNLOAD";
+  static const String TEACHER = "TEACHER";
+  static const String STUDENT = "STUDENT";
+  static const String NEXT_TRIP = "NEXT_TRIP";
+  static const String CANCEL_TRIP = "CANCEL_TRIP";
 
 }
   

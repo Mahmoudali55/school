@@ -21,8 +21,8 @@ class TeacherInfoCard extends StatelessWidget {
             // Teacher Avatar
             CircleAvatar(
               radius: 30,
-              backgroundColor: Colors.green[100],
-              child: Icon(Icons.person, size: 30, color: Colors.green[700]),
+              backgroundColor: AppColor.successColor(context).withValues(alpha: 0.1),
+              child: Icon(Icons.person, size: 30, color: AppColor.successColor(context).withValues(alpha: 0.8)),
             ),
             const Gap( 16),
             // Teacher Info

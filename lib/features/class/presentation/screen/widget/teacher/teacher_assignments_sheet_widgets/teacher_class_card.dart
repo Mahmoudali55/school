@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/data/model/teacher_classes_models.dart';
@@ -51,7 +52,7 @@ class TeacherClassCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.green[50],
+                    color: AppColor.successColor(context).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Column(
@@ -60,7 +61,7 @@ class TeacherClassCard extends StatelessWidget {
                         '${classInfo.studentCount} ${AppLocalKay.student.tr()}',
                         style: AppTextStyle.bodySmall(
                           context,
-                        ).copyWith(color: Colors.green[700], fontWeight: FontWeight.bold),
+                        ).copyWith(color: AppColor.successColor(context).withValues(alpha: 0.8), fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -126,8 +127,8 @@ class TeacherClassCard extends StatelessWidget {
     return OutlinedButton(
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
-        foregroundColor: Colors.green,
-        side: const BorderSide(color: Colors.green),
+        foregroundColor: AppColor.successColor(context),
+        side:  BorderSide(color: AppColor.successColor(context)),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         padding: EdgeInsets.zero,
       ),

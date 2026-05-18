@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
 class LoginHistoryScreen extends StatelessWidget {
@@ -89,8 +90,8 @@ class LoginHistoryScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildStatItem(context, _loginHistory.length.toString(), 'محاولات الدخول', Colors.blue),
-          _buildStatItem(context, successfulLogins.toString(), 'ناجحة', Colors.green),
-          _buildStatItem(context, failedLogins.toString(), 'فاشلة', Colors.red),
+          _buildStatItem(context, successfulLogins.toString(), 'ناجحة', AppColor.successColor(context)),
+          _buildStatItem(context, failedLogins.toString(), 'فاشلة', AppColor.errorColor(context)),
         ],
       ),
     );
@@ -130,7 +131,7 @@ class LoginHistoryScreen extends StatelessWidget {
       child: ListTile(
         leading: Icon(
           record.successful ? Icons.check_circle : Icons.error,
-          color: record.successful ? Colors.green : Colors.red,
+          color: record.successful ? AppColor.successColor(context) : AppColor.errorColor(context),
         ),
         title: Text(
           record.device,
@@ -153,7 +154,7 @@ class LoginHistoryScreen extends StatelessWidget {
                 'فاشل',
                 style: AppTextStyle.bodyMedium(
                   context,
-                  color: Colors.red,
+                  color: AppColor.errorColor(context),
                 ).copyWith(fontWeight: FontWeight.bold),
               ),
       ),

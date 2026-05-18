@@ -27,7 +27,7 @@ class LibraryItemDetailScreen extends StatelessWidget {
 
     if (['pdf'].contains(ext)) {
       icon = Icons.picture_as_pdf_outlined;
-      color = Colors.redAccent;
+      color = AppColor.errorColor(context).withValues(alpha: 0.1);
     } else if (['mp4', 'avi', 'mov'].contains(ext)) {
       icon = Icons.play_circle_outline_rounded;
       color = Colors.blueAccent;

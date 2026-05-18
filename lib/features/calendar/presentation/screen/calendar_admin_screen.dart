@@ -347,10 +347,10 @@ class _AdminCalendarScreenState extends State<AdminCalendarScreen> {
       Color color;
       switch (colorStr) {
         case 'red':
-          color = Colors.red;
+          color = AppColor.errorColor(context);
           break;
         case 'green':
-          color = Colors.green;
+          color = AppColor.successColor(context);
           break;
         case 'blue':
           color = Colors.blue;

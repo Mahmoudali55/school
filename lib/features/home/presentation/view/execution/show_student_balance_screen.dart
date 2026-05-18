@@ -146,12 +146,12 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                         padding: EdgeInsets.symmetric(vertical: 14.h),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
-                            colors: [Colors.green.shade100, Colors.green.shade50],
+                            colors: [AppColor.successColor(context).withValues(alpha: (0.1)), AppColor.successColor(context).withValues(alpha: (0.05))],
                           ),
                           borderRadius: BorderRadius.circular(14),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.green.shade200.withValues(alpha: 0.2),
+                              color: AppColor.successColor(context).withValues(alpha: 0.2),
                               blurRadius: 8,
                               offset: const Offset(0, 4),
                             ),
@@ -163,14 +163,14 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
                               AppLocalKay.financial_desc.tr(),
                               style: AppTextStyle.bodySmall(
                                 context,
-                              ).copyWith(color: Colors.green.shade800),
+                              ).copyWith(color: AppColor.successColor(context).withValues(alpha: 0.8)),
                             ),
                             Gap(6.h),
                             Text(
                               "${student.balance} ${AppLocalKay.sarCurrency.tr()}",
                               style: AppTextStyle.titleLarge(
                                 context,
-                              ).copyWith(fontWeight: FontWeight.bold, color: Colors.green.shade900),
+                              ).copyWith(fontWeight: FontWeight.bold, color: AppColor.successColor(context).withValues(alpha: 0.9)),
                             ),
                           ],
                         ),

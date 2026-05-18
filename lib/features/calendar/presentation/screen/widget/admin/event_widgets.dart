@@ -58,18 +58,18 @@ class EventCard extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                   decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.1),
+                    color: AppColor.errorColor(context).withOpacity(0.1),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.priority_high_rounded, color: Colors.red, size: 10.w),
+                      Icon(Icons.priority_high_rounded, color: AppColor.errorColor(context), size: 10.w),
                       Gap(2.w),
                       Text(
                         "أولوية عالية",
                         style: AppTextStyle.bodySmall(
                           context,
-                        ).copyWith(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 10.sp),
+                        ).copyWith(color: AppColor.errorColor(context), fontWeight: FontWeight.bold, fontSize: 10.sp),
                       ),
                     ],
                   ),

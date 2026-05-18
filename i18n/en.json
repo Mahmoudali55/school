@@ -1228,6 +1228,10 @@
   "NOTES":"Notes",
   "REQUEST_DATE":"Request Date",
   "NO_DATA":"No data found",
-  "DISPLAY_DOWNLOAD": "Download or View"
+  "DISPLAY_DOWNLOAD": "Download or View",
+  "TEACHER":"Teacher",
+  "STUDENT":"Student",
+  "NEXT_TRIP":"Next Trip",
+  "CANCEL_TRIP":"Expected arrival within 5 minutes"
 }
 

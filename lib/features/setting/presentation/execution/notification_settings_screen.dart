@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
@@ -276,7 +277,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(AppLocalKay.settings_saved_success.tr()),
-        backgroundColor: Colors.green,
+        backgroundColor: AppColor.successColor(context),
       ),
     );
     Navigator.pop(context);
@@ -309,7 +310,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                       AppLocalKay.settings_saved_success.tr(),
                       style: AppTextStyle.bodyMedium(context),
                     ),
-                    backgroundColor: Colors.green,
+                    backgroundColor: AppColor.successColor(context),
                   ),
                 );
               },

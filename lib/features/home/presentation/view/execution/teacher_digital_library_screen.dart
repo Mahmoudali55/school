@@ -746,7 +746,7 @@ class _TeacherDigitalLibraryScreenState extends State<TeacherDigitalLibraryScree
                                     AppLocalKay.required.tr(),
                                     style: AppTextStyle.bodySmall(
                                       context,
-                                    ).copyWith(color: Colors.red),
+                                    ).copyWith(color: AppColor.errorColor(context)),
                                   ),
                                 ),
                               Gap(32.h),

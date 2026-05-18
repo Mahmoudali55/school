@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
@@ -104,7 +105,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
 
             // موافقة
             Card(
-              color: Colors.green[50],
+              color: AppColor.successColor(context).withValues(alpha:0.1),
               child: Padding(
                 padding: EdgeInsets.all(16.w),
                 child: Column(
@@ -114,14 +115,14 @@ class PrivacyPolicyScreen extends StatelessWidget {
                       AppLocalKay.consent_title.tr(),
                       style: AppTextStyle.titleLarge(
                         context,
-                      ).copyWith(fontWeight: FontWeight.bold, color: Colors.green[800]),
+                      ).copyWith(fontWeight: FontWeight.bold, color: AppColor.successColor(context)),
                     ),
                     Gap( 8.h),
                     Text(
                       AppLocalKay.consent_text.tr(),
                       style: AppTextStyle.bodyMedium(
                         context,
-                      ).copyWith(height: 1.6, color: Colors.green[800]),
+                      ).copyWith(height: 1.6, color: AppColor.successColor(context)),
                     ),
                   ],
                 ),

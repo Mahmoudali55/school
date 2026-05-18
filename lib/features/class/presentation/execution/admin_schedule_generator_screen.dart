@@ -57,7 +57,7 @@ class _AdminScheduleGeneratorScreenState extends State<AdminScheduleGeneratorScr
           if (state.saveScheduleStatus.isFailure) {
             CommonMethods.showToast(
               message: state.saveScheduleStatus.error ?? '',
-              backgroundColor: Colors.red,
+              backgroundColor: AppColor.errorColor(context),
             );
           }
         },

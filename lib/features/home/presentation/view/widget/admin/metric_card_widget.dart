@@ -36,7 +36,7 @@ class MetricCardWidget extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
                   decoration: BoxDecoration(
-                    color: (metric.isPositive ? Colors.green : Colors.red).withValues(alpha: 0.1),
+                    color: (metric.isPositive ? AppColor.successColor(context) : AppColor.errorColor(context)).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(20.r),
                   ),
                   child: Row(
@@ -44,14 +44,14 @@ class MetricCardWidget extends StatelessWidget {
                       Icon(
                         metric.isPositive ? Icons.arrow_upward : Icons.arrow_downward,
                         size: 10.sp,
-                        color: metric.isPositive ? Colors.green : Colors.red,
+                        color: metric.isPositive ? AppColor.successColor(context) : AppColor.errorColor(context),
                       ),
                       Gap(2.w),
                       Text(
                         metric.change,
                         style: AppTextStyle.bodySmall(context).copyWith(
                           fontSize: 10.sp,
-                          color: metric.isPositive ? Colors.green : Colors.red,
+                          color: metric.isPositive ? AppColor.successColor(context) : AppColor.errorColor(context),
                           fontWeight: FontWeight.bold,
                         ),
                       ),

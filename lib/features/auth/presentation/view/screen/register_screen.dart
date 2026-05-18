@@ -9,6 +9,7 @@ import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.da
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
 import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
 import 'package:my_template/core/routes/routes_name.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/core/utils/common_methods.dart';
 import 'package:my_template/core/utils/navigator_methods.dart';
@@ -30,11 +31,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
       children: [
         Icon(
           isValid ? Icons.check_circle : Icons.circle_outlined,
-          color: isValid ? Colors.green : Colors.grey,
+          color: isValid ? AppColor.successColor(context) : Colors.grey,
           size: 18,
         ),
         const Gap(8),
-        Text(text, style: TextStyle(color: isValid ? Colors.green : Colors.grey, fontSize: 13)),
+        Text(text, style: TextStyle(color: isValid ? AppColor.successColor(context) : Colors.grey, fontSize: 13)),
       ],
     );
   }
@@ -149,7 +150,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ? null
                         : Icon(
                             state.isPasswordMatch ? Icons.check_circle : Icons.error,
-                            color: state.isPasswordMatch ? Colors.green : Colors.red,
+                            color: state.isPasswordMatch ? AppColor.successColor(context) : AppColor.errorColor(context),
                           ),
                   ),
                   const Gap(16),

@@ -46,7 +46,7 @@ class _CustomSearchableDropdownState<T> extends State<CustomSearchableDropdown<T
               color: AppColor.textFormFillColor(context),
               borderRadius: BorderRadius.circular(12.r),
               border: Border.all(
-                color: widget.submitted && widget.value == null ? Colors.red : Colors.grey.shade300,
+                color: widget.submitted && widget.value == null ? AppColor.errorColor(context) : Colors.grey.shade300,
               ),
             ),
             child: Row(
@@ -75,7 +75,7 @@ class _CustomSearchableDropdownState<T> extends State<CustomSearchableDropdown<T
             padding: EdgeInsets.only(top: 4.h, right: 12.w),
             child: Text(
               widget.errorText!,
-              style: TextStyle(color: Colors.red, fontSize: 12.sp),
+              style: TextStyle(color: AppColor.errorColor(context), fontSize: 12.sp),
             ),
           ),
       ],

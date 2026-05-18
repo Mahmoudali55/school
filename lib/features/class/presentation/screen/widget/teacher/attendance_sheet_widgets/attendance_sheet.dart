@@ -439,13 +439,13 @@
 //             Container(
 //               padding: EdgeInsets.all(30.r),
 //               decoration: BoxDecoration(
-//                 color: Colors.green.withValues(alpha: 0.05),
+//                 color: AppColor.successColor(context).withValues(alpha: 0.05),
 //                 shape: BoxShape.circle,
 //               ),
 //               child: Icon(
 //                 Icons.check_circle_outline_rounded,
 //                 size: 80.sp,
-//                 color: Colors.green.withValues(alpha: 0.5),
+//                 color: AppColor.successColor(context).withValues(alpha: 0.5),
 //               ),
 //             ),
 //             Gap(24.h),

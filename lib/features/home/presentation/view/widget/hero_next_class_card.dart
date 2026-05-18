@@ -81,12 +81,12 @@ class HeroNextClassCard extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.all(12.w),
                   decoration: BoxDecoration(
-                    color: (hasClassesToday ? Colors.green : Colors.blue).withValues(alpha: 0.1),
+                    color: (hasClassesToday ? AppColor.successColor(context) : Colors.blue).withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     hasClassesToday ? Icons.done_all_rounded : Icons.event_available_rounded,
-                    color: hasClassesToday ? Colors.green : Colors.blue,
+                    color: hasClassesToday ? AppColor.successColor(context) : Colors.blue,
                     size: 30.w,
                   ),
                 ),

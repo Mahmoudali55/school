@@ -264,7 +264,7 @@ class _ParentBusTrackingScreenState extends State<ParentBusTrackingScreen>
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("الموقع غير متاح حالياً"), backgroundColor: Colors.red),
+        SnackBar(content: Text("الموقع غير متاح حالياً"), backgroundColor: AppColor.errorColor(context)),
       );
     }
   }

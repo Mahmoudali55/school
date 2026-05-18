@@ -336,7 +336,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('تم ضبط منبه لحصة ${item.subjectName}'),
-        backgroundColor: Colors.green,
+        backgroundColor: AppColor.successColor(context),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
@@ -33,7 +34,7 @@ class AssignmentCard extends StatelessWidget {
         statusIcon = Icons.check_circle;
         break;
       case AppLocalKay.status_graded:
-        statusColor = Colors.green;
+        statusColor = AppColor.successColor(context);
         statusIcon = Icons.grade;
         break;
     }
@@ -45,7 +46,7 @@ class AssignmentCard extends StatelessWidget {
           width: 50.w,
           height: 50.w,
           decoration: BoxDecoration(
-            color: statusColor.withOpacity(0.1),
+            color: statusColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(statusIcon, color: statusColor),
@@ -70,7 +71,7 @@ class AssignmentCard extends StatelessWidget {
                 'الدرجة: ${assignment['grade']}',
                 style: AppTextStyle.bodySmall(
                   context,
-                ).copyWith(color: Colors.green, fontWeight: FontWeight.bold),
+                ).copyWith(color: AppColor.successColor(context).withValues(alpha: 0.8), fontWeight: FontWeight.bold),
               ),
             ],
           ],

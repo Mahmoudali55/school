@@ -226,7 +226,7 @@ class _CreditCardBottomSheetState extends State<CreditCardBottomSheet> {
                       ),
                       Gap(8.w),
                       IconButton(
-                        icon: Icon(Icons.close, size: 16.sp, color: Colors.red),
+                        icon: Icon(Icons.close, size: 16.sp, color: AppColor.errorColor(context)),
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
                         onPressed: () {

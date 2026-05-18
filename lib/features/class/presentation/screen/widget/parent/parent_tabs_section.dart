@@ -338,7 +338,7 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.error_outline, size: 48, color: Colors.red[300]),
+            Icon(Icons.error_outline, size: 48, color: AppColor.errorColor(context).withValues(alpha: (0.2))),
             const Gap(16),
             Text(status.error ?? "Error loading homework", textAlign: TextAlign.center),
           ],

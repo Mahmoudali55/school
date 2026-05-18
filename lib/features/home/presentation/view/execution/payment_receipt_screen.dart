@@ -116,12 +116,12 @@ class _PaymentReceiptScreenState extends State<PaymentReceiptScreen> {
                         Container(
                           padding: EdgeInsets.all(16.w),
                           decoration: BoxDecoration(
-                            color: Colors.green.shade50,
+                            color: AppColor.successColor(context).withValues(alpha: (0.1)),
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
                             Icons.check_circle,
-                            color: Colors.green,
+                            color: AppColor.successColor(context),
                             size: 64.sp,
                           ),
                         ),
@@ -132,7 +132,7 @@ class _PaymentReceiptScreenState extends State<PaymentReceiptScreen> {
                           AppLocalKay.paymentSuccess.tr(),
                           style: AppTextStyle.titleLarge(context).copyWith(
                             fontWeight: FontWeight.bold,
-                            color: Colors.green.shade700,
+                            color: AppColor.successColor(context).withValues(alpha: 0.7),
                           ),
                         ),
                         Gap(8.h),

@@ -6,6 +6,7 @@ import 'package:gap/gap.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_form_field/custom_form_field.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 
@@ -15,7 +16,6 @@ class ClassManagementScreen extends StatefulWidget {
   @override
   State<ClassManagementScreen> createState() => _ClassManagementScreenState();
 }
-
 class _ClassManagementScreenState extends State<ClassManagementScreen> {
   final List<SchoolClass> _classes = [
     SchoolClass('الصف الأول', 'أ', 25, 'فاطمة علي'),
@@ -62,7 +62,7 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: _addNewClass,
         backgroundColor: const Color(0xFF2E5BFF),
-        child: Icon(Icons.add, color: Colors.white),
+        child: Icon(Icons.add, color: AppColor.whiteColor(context)),
       ),
     );
   }
@@ -81,20 +81,19 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildStatItem(totalClasses.toString(), AppLocalKay.classes.tr(), Colors.blue),
-          _buildStatItem(totalStudents.toString(), AppLocalKay.students.tr(), Colors.green),
+          _buildStatItem(totalStudents.toString(), AppLocalKay.students.tr(), AppColor.successColor(context)),
           _buildStatItem('5', AppLocalKay.teachers.tr(), Colors.orange),
         ],
       ),
     );
   }
-
   Widget _buildStatItem(String value, String label, Color color) {
     return Column(
       children: [
         Container(
           width: 40.w,
           height: 40.w,
-          decoration: BoxDecoration(color: color.withOpacity(0.1), shape: BoxShape.circle),
+          decoration: BoxDecoration(color: color.withValues(alpha: 0.1), shape: BoxShape.circle),
           child: Center(
             child: Text(
               value,
@@ -118,7 +117,7 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
       margin: EdgeInsets.only(bottom: 12.h),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: const Color(0xFF2E5BFF).withOpacity(0.1),
+          backgroundColor: const Color(0xFF2E5BFF).withValues(alpha: 0.1),
           child: Icon(Icons.class_, color: const Color(0xFF2E5BFF)),
         ),
         title: Text(
@@ -128,8 +127,8 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('المعلم: ${schoolClass.teacher}'),
-            Text('عدد الطلاب: ${schoolClass.studentCount}'),
+            Text('${AppLocalKay.teacher.tr()}: ${schoolClass.teacher}'),
+            Text('${AppLocalKay.student.tr()}: ${schoolClass.studentCount}'),
           ],
         ),
         trailing: Row(
@@ -140,7 +139,7 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
               onPressed: () => _editClass(schoolClass),
             ),
             IconButton(
-              icon: Icon(Icons.delete, size: 20.w, color: Colors.red),
+              icon: Icon(Icons.delete, size: 20.w, color: AppColor.errorColor(context)),
               onPressed: () => _deleteClass(schoolClass),
             ),
           ],
@@ -216,12 +215,12 @@ class _ClassManagementScreenState extends State<ClassManagementScreen> {
                 });
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('تم حذف الصف بنجاح'), backgroundColor: Colors.green),
+                  SnackBar(content: Text('تم حذف الصف بنجاح'), backgroundColor: AppColor.successColor(context)),
                 );
               },
               child: Text(
                 AppLocalKay.dialog_delete_confirm.tr(),
-                style: AppTextStyle.bodyMedium(context).copyWith(color: Colors.red),
+                style: AppTextStyle.bodyMedium(context).copyWith(color: AppColor.errorColor(context)),
               ),
             ),
           ],

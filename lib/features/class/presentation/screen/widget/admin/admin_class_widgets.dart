@@ -25,10 +25,10 @@ class AdminClassCard extends StatelessWidget {
   Widget build(BuildContext context) {
     double fillPercentage = (schoolClass.currentStudents / schoolClass.capacity) * 100;
     Color statusColor = fillPercentage >= 90
-        ? Colors.red
+        ? AppColor.errorColor(context)
         : fillPercentage >= 70
         ? Colors.orange
-        : Colors.green;
+        : AppColor.successColor(context);
 
     return Card(
       margin: EdgeInsets.only(bottom: 12.h),

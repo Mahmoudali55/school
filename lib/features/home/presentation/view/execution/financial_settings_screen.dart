@@ -294,7 +294,7 @@ class _FinancialSettingsScreenState extends State<FinancialSettingsScreen> {
                         Gap(12.h),
 
                         Expanded(
-                          child: _buildDataList(revenueData, Colors.green, Icons.attach_money),
+                          child: _buildDataList(revenueData, AppColor.successColor(context), Icons.attach_money),
                         ),
                       ],
                     );
@@ -323,7 +323,7 @@ class _FinancialSettingsScreenState extends State<FinancialSettingsScreen> {
                   "${income.toStringAsFixed(0)} ر.س",
                   style: AppTextStyle.titleLarge(
                     context,
-                  ).copyWith(fontWeight: FontWeight.bold, color: Colors.green),
+                  ).copyWith(fontWeight: FontWeight.bold, color: AppColor.successColor(context)),
                 ),
                 Gap(4.h),
                 Text(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/features/profile/presentation/screen/widget/card_style.dart';
 
@@ -39,7 +40,7 @@ class AchievementTile extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(Icons.verified, color: Colors.green),
+           Icon(Icons.verified, color: AppColor.successColor(context)),
         ],
       ),
     );

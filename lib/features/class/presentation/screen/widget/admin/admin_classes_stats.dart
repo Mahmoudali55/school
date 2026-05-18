@@ -37,7 +37,7 @@ class AdminClassesStats extends StatelessWidget {
             context,
             totalStudents.toString(),
             AppLocalKay.students.tr(),
-            Colors.green,
+            AppColor.successColor(context),
           ),
           _buildStatItem(
             context,

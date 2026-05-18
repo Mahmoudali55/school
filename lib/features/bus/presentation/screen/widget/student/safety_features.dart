@@ -22,7 +22,7 @@ class SafetyFeatures extends StatelessWidget {
       {
         'title': AppLocalKay.emergency_management.tr(),
         'icon': Icons.emergency_rounded,
-        'color': Colors.red,
+        'color': AppColor.errorColor(context),
       },
     ];
 

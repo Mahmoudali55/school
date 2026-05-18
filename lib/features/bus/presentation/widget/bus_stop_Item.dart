@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 
 class BusStopItem extends StatelessWidget {
@@ -46,10 +47,10 @@ class BusStopItem extends StatelessWidget {
             ),
             child: Center(
               child: isCompleted
-                  ? Icon(Icons.check, color: Colors.white, size: 14.w)
+                  ? Icon(Icons.check, color:AppColor.whiteColor(context), size: 14.w)
                   : isNext
                   ? Container(
-                      width: 10.w,
+                      width: 10.w, 
                       height: 10.w,
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,

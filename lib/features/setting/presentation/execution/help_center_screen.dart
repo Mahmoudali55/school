@@ -88,7 +88,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
               children: [
                 _buildQuickCard('الدعم الفني', Icons.support_agent, Colors.blue),
                 Gap(12.w),
-                _buildQuickCard('الفيديو التعليمي', Icons.video_library, Colors.green),
+                _buildQuickCard('الفيديو التعليمي', Icons.video_library, AppColor.successColor(context)),
                 Gap(12.w),
                 _buildQuickCard('الاتصال بالدعم', Icons.contact_support, Colors.orange),
                 Gap(12.w),
@@ -243,7 +243,7 @@ class _HelpCenterScreenState extends State<HelpCenterScreen> {
               Text('اتصل بالدعم الفني', style: AppTextStyle.bodyLarge(context)),
               Gap(16.h),
               ListTile(
-                leading: Icon(Icons.phone, color: Colors.green),
+                leading: Icon(Icons.phone, color: AppColor.successColor(context)),
                 title: Text('الهاتف', style: AppTextStyle.bodyMedium(context)),
                 subtitle: Text('+966 123 456 789', style: AppTextStyle.bodySmall(context)),
                 onTap: () {

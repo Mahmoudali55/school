@@ -36,18 +36,18 @@ class _TakeAttendanceScreenState extends State<TakeAttendanceScreen> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   child: ListTile(
                     leading: CircleAvatar(
-                      backgroundColor: isPresent ? Colors.green.shade100 : Colors.grey.shade200,
+                      backgroundColor: isPresent ? AppColor.successColor(context).withValues(alpha: 0.1) : Colors.grey.shade200,
                       child: Text(
                         '${index + 1}',
                         style: TextStyle(
-                          color: isPresent ? Colors.green.shade800 : Colors.grey.shade600,
+                          color: isPresent ? AppColor.successColor(context).withValues(alpha: 0.8) : Colors.grey.shade600,
                         ),
                       ),
                     ),
                     title: Text('${AppLocalKay.student.tr()} ${index + 1}'),
                     trailing: Checkbox(
                       value: isPresent,
-                      activeColor: Colors.green,
+                      activeColor: AppColor.successColor(context),
                       onChanged: (value) {
                         setState(() => _attendance[index] = value!);
                       },

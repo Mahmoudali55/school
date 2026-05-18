@@ -138,14 +138,14 @@ class TransportManagementScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
                   decoration: BoxDecoration(
                     color: isActive
-                        ? Colors.green.withValues(alpha: (0.1))
+                        ? AppColor.successColor(context).withValues(alpha: (0.1))
                         : Colors.orange.withValues(alpha: (0.1)),
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Text(
                     isActive ? AppLocalKay.active.tr() : AppLocalKay.maintenance.tr(),
                     style: TextStyle(
-                      color: isActive ? Colors.green : Colors.orange,
+                      color: isActive ? AppColor.successColor(context) : Colors.orange,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

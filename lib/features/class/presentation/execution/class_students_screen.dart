@@ -107,8 +107,8 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _buildStatItem(_students.length.toString(), AppLocalKay.btn_students.tr(), Colors.blue),
-          _buildStatItem('5', AppLocalKay.user_management_attendees.tr(), Colors.green),
-          _buildStatItem('0', AppLocalKay.user_management_absent.tr(), Colors.red),
+          _buildStatItem('5', AppLocalKay.user_management_attendees.tr(), AppColor.successColor(context)),
+          _buildStatItem('0', AppLocalKay.user_management_absent.tr(), AppColor.errorColor(context)),
           _buildStatItem('85%', AppLocalKay.checkin.tr(), Colors.orange),
         ],
       ),
@@ -182,7 +182,7 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
               value: 'delete',
               child: Text(
                 AppLocalKay.user_management_delete.tr(),
-                style: AppTextStyle.bodyMedium(context, color: Colors.red),
+                style: AppTextStyle.bodyMedium(context, color: AppColor.errorColor(context)),
               ),
             ),
           ],
@@ -285,12 +285,12 @@ class _ClassStudentsScreenState extends State<ClassStudentsScreen> {
                 });
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('تم حذف الطالب بنجاح'), backgroundColor: Colors.green),
+                  SnackBar(content: Text('تم حذف الطالب بنجاح'), backgroundColor: AppColor.successColor(context)),
                 );
               },
               child: Text(
                 AppLocalKay.delete.tr(),
-                style: AppTextStyle.bodyMedium(context, color: Colors.red),
+                style: AppTextStyle.bodyMedium(context, color: AppColor.errorColor(context)),
               ),
             ),
           ],

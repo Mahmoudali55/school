@@ -36,7 +36,7 @@ class RecentNotificationsSection extends StatelessWidget {
                   },
                   child: Text(
                     AppLocalKay.show_all.tr(),
-                    style: AppTextStyle.bodyMedium(context, color: Colors.green),
+                    style: AppTextStyle.bodyMedium(context, color: AppColor.successColor(context)),
                   ),
                 ),
               ],
