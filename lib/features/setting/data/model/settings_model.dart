@@ -7,6 +7,11 @@ class SettingsModel extends Equatable {
   final bool deadlineReminders;
   final bool announcements;
   final bool emailNotifications;
+  // Privacy
+  final bool showProfile;
+  final bool showEmail;
+  final bool showPhone;
+  final bool allowSearch;
 
   const SettingsModel({
     this.languageCode = 'ar',
@@ -15,6 +20,10 @@ class SettingsModel extends Equatable {
     this.deadlineReminders = true,
     this.announcements = true,
     this.emailNotifications = false,
+    this.showProfile = true,
+    this.showEmail = false,
+    this.showPhone = false,
+    this.allowSearch = true,
   });
 
   SettingsModel copyWith({
@@ -24,6 +33,10 @@ class SettingsModel extends Equatable {
     bool? deadlineReminders,
     bool? announcements,
     bool? emailNotifications,
+    bool? showProfile,
+    bool? showEmail,
+    bool? showPhone,
+    bool? allowSearch,
   }) {
     return SettingsModel(
       languageCode: languageCode ?? this.languageCode,
@@ -32,6 +45,10 @@ class SettingsModel extends Equatable {
       deadlineReminders: deadlineReminders ?? this.deadlineReminders,
       announcements: announcements ?? this.announcements,
       emailNotifications: emailNotifications ?? this.emailNotifications,
+      showProfile: showProfile ?? this.showProfile,
+      showEmail: showEmail ?? this.showEmail,
+      showPhone: showPhone ?? this.showPhone,
+      allowSearch: allowSearch ?? this.allowSearch,
     );
   }
 
@@ -43,5 +60,9 @@ class SettingsModel extends Equatable {
     deadlineReminders,
     announcements,
     emailNotifications,
+    showProfile,
+    showEmail,
+    showPhone,
+    allowSearch,
   ];
 }

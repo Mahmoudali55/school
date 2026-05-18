@@ -2,11 +2,11 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 
 class AIService {
   static const String _apiKey =
-      'AIzaSyBvPf6PA6ASViqiTpptMopOBTn2YXUkPgY'; // TODO: Replace with actual API key
+      'AIzaSyBpA9erTsmKnEuAG5rByJ1scGwWQOmCnes'; // TODO: Replace with actual API key
   late final GenerativeModel _model;
 
   AIService() {
-    _model = GenerativeModel(model: 'gemini-3-flash-preview', apiKey: _apiKey);
+    _model = GenerativeModel(model: 'gemini-3.1-flash-lite', apiKey: _apiKey);
   }
 
   /// Generate lesson ideas based on subject and topic

@@ -26,6 +26,10 @@ abstract class SettingsRepo {
       deadlineReminders: HiveMethods.getNotificationSetting('deadlineReminders'),
       announcements: HiveMethods.getNotificationSetting('announcements'),
       emailNotifications: HiveMethods.getNotificationSetting('emailNotifications'),
+      showProfile: HiveMethods.getPrivacySetting('showProfile', defaultValue: true),
+      showEmail: HiveMethods.getPrivacySetting('showEmail', defaultValue: false),
+      showPhone: HiveMethods.getPrivacySetting('showPhone', defaultValue: false),
+      allowSearch: HiveMethods.getPrivacySetting('allowSearch', defaultValue: true),
     );
   }
 
@@ -35,6 +39,10 @@ abstract class SettingsRepo {
 
   void updateNotificationSetting(String key, bool value) {
     HiveMethods.updateNotificationSetting(key, value);
+  }
+
+  void updatePrivacySetting(String key, bool value) {
+    HiveMethods.updatePrivacySetting(key, value);
   }
 }
 

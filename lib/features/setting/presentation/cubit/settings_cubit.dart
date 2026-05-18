@@ -52,6 +52,32 @@ class SettingsCubit extends Cubit<SettingsState> {
     }
   }
 
+  void togglePrivacy(String key, bool value) {
+    if (state is SettingsLoaded) {
+      _settingsRepo.updatePrivacySetting(key, value);
+      final current = (state as SettingsLoaded).settings;
+
+      SettingsModel updated;
+      switch (key) {
+        case 'showProfile':
+          updated = current.copyWith(showProfile: value);
+          break;
+        case 'showEmail':
+          updated = current.copyWith(showEmail: value);
+          break;
+        case 'showPhone':
+          updated = current.copyWith(showPhone: value);
+          break;
+        case 'allowSearch':
+          updated = current.copyWith(allowSearch: value);
+          break;
+        default:
+          updated = current;
+      }
+      emit(SettingsLoaded(updated));
+    }
+  }
+
   Future<void> changePassword(
     BuildContext context,
     String oldPasswordController,

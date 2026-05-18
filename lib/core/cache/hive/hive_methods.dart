@@ -70,6 +70,15 @@ class HiveMethods {
     _box.put(key, value);
   }
 
+  // ─── Privacy Settings ───────────────────────────────────────────────────────
+  static bool getPrivacySetting(String key, {bool defaultValue = true}) {
+    return _box.get('privacy_$key', defaultValue: defaultValue);
+  }
+
+  static void updatePrivacySetting(String key, bool value) {
+    _box.put('privacy_$key', value);
+  }
+
   static String getType() {
     return _box.get('type', defaultValue: '');
   }

@@ -65,6 +65,14 @@ class GeneralSettingsSection extends StatelessWidget {
   }
 
   void _navigateToPrivacySettings(BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => PrivacySettingsScreen()));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BlocProvider(
+          create: (context) => sl<SettingsCubit>()..loadSettings(),
+          child: const PrivacySettingsScreen(),
+        ),
+      ),
+    );
   }
 }
