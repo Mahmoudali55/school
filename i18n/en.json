@@ -1235,6 +1235,10 @@
   "CANCEL_TRIP":"Expected arrival within 5 minutes",
   "NO_TEACHERS_FOUND":"No teachers found",
   "SEARCH_TEACHER":"Search for a teacher...",
-  "COURSE_CODE": "Course Code {}"
+  "COURSE_CODE": "Course Code {}",
+  "NO_PENDING_REQUESTS":"There are no pending call requests for students at the moment.",
+  "URGENT":"Urgent",
+  "NO_TEACHERS_FOUND_URGENT": "No teachers found for urgent call. Please try again later.",
+  "SERVER_CONNECTION_ERROR":"Failed to connect to the server"
 }
 

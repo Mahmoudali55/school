@@ -1270,6 +1270,9 @@ class AppLocalKay {
   static const String NO_TEACHERS_FOUND = "NO_TEACHERS_FOUND";
   static const String SEARCH_TEACHER = "SEARCH_TEACHER";
   static const String COURSE_CODE = "COURSE_CODE";
-
+  static const String NO_PENDING_REQUESTS = "NO_PENDING_REQUESTS";
+  static const String URGENT = "URGENT";
+  static const String NO_TEACHERS_FOUND_URGENT = "NO_TEACHERS_FOUND_URGENT";
+  static const String SERVER_CONNECTION_ERROR = "SERVER_CONNECTION_ERROR";
 }
   

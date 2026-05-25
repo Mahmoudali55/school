@@ -22,7 +22,7 @@ class TeacherFullScheduleScreen extends StatefulWidget {
 }
 
 class _TeacherFullScheduleScreenState extends State<TeacherFullScheduleScreen> {
-  int _selectedDayIndex = DateTime.now().weekday % 7; // Sunday=0, Monday=1, ..., Saturday=6
+  late int _selectedDayIndex;
 
   final List<String> _days = [
     "الأحد",
@@ -30,8 +30,6 @@ class _TeacherFullScheduleScreenState extends State<TeacherFullScheduleScreen> {
     "الثلاثاء",
     "الأربعاء",
     "الخميس",
-    "الجمعة",
-    "السبت",
   ];
 
   final Map<String, String> _englishToArabicDays = {
@@ -47,12 +45,31 @@ class _TeacherFullScheduleScreenState extends State<TeacherFullScheduleScreen> {
   @override
   void initState() {
     super.initState();
+    _selectedDayIndex = _getInitialDayIndex();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         final code = int.tryParse(HiveMethods.getUserCode()) ?? 0;
         context.read<HomeCubit>().teacherTimeTable(Code: code);
       }
     });
+  }
+
+  int _getInitialDayIndex() {
+    final weekday = DateTime.now().weekday;
+    switch (weekday) {
+      case DateTime.sunday:
+        return 0;
+      case DateTime.monday:
+        return 1;
+      case DateTime.tuesday:
+        return 2;
+      case DateTime.wednesday:
+        return 3;
+      case DateTime.thursday:
+        return 4;
+      default:
+        return 0; // Default to Sunday on weekends (Friday/Saturday)
+    }
   }
 
   @override

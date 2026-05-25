@@ -2,7 +2,7 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 
 class AIService {
   static const String _apiKey =
-      'AIzaSyBpA9erTsmKnEuAG5rByJ1scGwWQOmCnes'; // TODO: Replace with actual API key
+      'AIzaSyCUJXwIWqzT89_TyhypMXdUviW2xrOVs_0';
   late final GenerativeModel _model;
 
   AIService() {

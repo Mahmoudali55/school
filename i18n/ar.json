@@ -1307,5 +1307,9 @@
   "CANCEL_TRIP":"متوقع الوصول خلال ٥ دقائق",
   "NO_TEACHERS_FOUND":"لا يوجد مدرسون مطابقون",
   "SEARCH_TEACHER":"ابحث عن مدرس...",
-  "COURSE_CODE":"كود المادة: {}"
+  "COURSE_CODE":"كود المادة: {}",
+  "NO_PENDING_REQUESTS":"لا توجد أي طلبات استدعاء معلقة حالياً للطلاب.",
+  "URGENT":"عاجل",
+  "NO_TEACHERS_FOUND_URGENT":"لا يوجد مدرسون مطابقون - عاجل",
+  "SERVER_CONNECTION_ERROR":"تعذر الاتصال بالخادم"
 }
