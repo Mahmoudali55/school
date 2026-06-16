@@ -392,10 +392,13 @@ class HomeRepoImpl implements HomeRepo {
       request: () async {
         final fileName = filePath.split('/').last.split('\\').last;
         final url =
-            'https://delta-asg.com:56513/DeltagroupService/School/userimge?imageFileName=$fileName';
+            'https://delta-asg.com:56513/DeltagroupService/School/userimage?imageFileName=$fileName';
 
         final response = await apiConsumer.get(url);
 
+        if (response is Map && response.containsKey('Data')) {
+          return response['Data'] as String;
+        }
         return response.toString();
       },
     );
