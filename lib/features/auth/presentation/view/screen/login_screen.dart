@@ -16,8 +16,23 @@ import 'package:my_template/features/auth/presentation/view/screen/widgets/login
 import 'package:my_template/features/auth/presentation/view/screen/widgets/login_header.dart';
 import 'package:my_template/features/auth/presentation/view/screen/widgets/sign_up_link.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<AuthCubit>().clearLoginFields();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

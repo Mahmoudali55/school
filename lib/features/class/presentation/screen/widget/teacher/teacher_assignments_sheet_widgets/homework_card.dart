@@ -139,15 +139,16 @@ class HomeworkCard extends StatelessWidget {
                     children: [
                       // Date
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                         decoration: BoxDecoration(
                           color: Color(0xFFf0fff4),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(Icons.calendar_today, size: 16, color: Color(0xFF38a169)),
-                            const Gap(8),
+                            const Gap(5),
                             Text(
                               item.hwDate,
                               style: TextStyle(
@@ -155,36 +156,26 @@ class HomeworkCard extends StatelessWidget {
                                 fontWeight: FontWeight.w600,
                                 fontSize: 14,
                               ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
                       ),
 
-                      const Spacer(),
-
+                    Gap(10.w),
                       // Action buttons
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[50],
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Row(
-                          children: [
-                            _buildModernButton(
-                              icon: Icons.edit,
-                              label: AppLocalKay.edit.tr(),
-                              color: AppColor.primaryColor(context),
-                              onTap: onEdit,
-                            ),
-                            const Gap(5),
-                            _buildModernButton(
-                              icon: Icons.delete,
-                              label: AppLocalKay.delete.tr(),
-                              color: AppColor.errorColor(context),
-                              onTap: onDelete,
-                            ),
-                          ],
-                        ),
+                      _buildModernButton(
+                        icon: Icons.edit,
+                        label: AppLocalKay.edit.tr(),
+                        color: AppColor.primaryColor(context),
+                        onTap: onEdit,
+                      ),
+                      const Gap(15),
+                      _buildModernButton(
+                        icon: Icons.delete,
+                        label: AppLocalKay.delete.tr(),
+                        color: AppColor.errorColor(context),
+                        onTap: onDelete,
                       ),
                     ],
                   ),
@@ -211,18 +202,23 @@ class HomeworkCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(10),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(color: color),
           ),
           child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(icon, color: color, size: 18),
               const Gap(6),
-              Text(
-                label,
-                style: TextStyle(color: color, fontWeight: FontWeight.w600, fontSize: 13),
+              Flexible(
+                child: Text(
+                  label,
+                  style: TextStyle(color: color, fontWeight: FontWeight.w600, fontSize: 13),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
