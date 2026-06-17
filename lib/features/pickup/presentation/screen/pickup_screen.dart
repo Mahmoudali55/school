@@ -147,9 +147,10 @@ class _PickUpAdminScreenState extends State<PickUpAdminScreen> with TickerProvid
   }
 
   Widget _buildStatsDashboard(List<AutomaticCallItem> requests) {
-    final pendingCount = requests.where((r) => r.flag == 1).length;
+    // New mapping: 0 = pending (معلق), 1 = ready (جاهز للاستلام), 2 = preparing (جاري التجهيز)
+    final pendingCount = requests.where((r) => r.flag == 0).length;
     final preparingCount = requests.where((r) => r.flag == 2).length;
-    final readyCount = requests.where((r) => r.flag == 3).length;
+    final readyCount = requests.where((r) => r.flag == 1).length;
 
     return Container(
       height: 95.h,
@@ -602,11 +603,14 @@ class _PickUpAdminScreenState extends State<PickUpAdminScreen> with TickerProvid
 
   Color _getStatusColor(int flag, BuildContext context) {
     switch (flag) {
-      case 1:
+      // 0 = pending
+      case 0:
         return const Color(0xFFFF9F1C);
+      // 2 = preparing
       case 2:
         return const Color(0xFF2EC4B6);
-      case 3:
+      // 1 = ready
+      case 1:
         return const Color(0xFF20BF55);
       case 4:
         return const Color(0xFFE71D36);
@@ -617,11 +621,11 @@ class _PickUpAdminScreenState extends State<PickUpAdminScreen> with TickerProvid
 
   String _getStatusText(int flag) {
     switch (flag) {
-      case 1:
+      case 0:
         return AppLocalKay.status_pending.tr();
       case 2:
         return AppLocalKay.status_preparing.tr();
-      case 3:
+      case 1:
         return AppLocalKay.status_ready.tr();
       case 4:
         return AppLocalKay.status_picked_up.tr();
