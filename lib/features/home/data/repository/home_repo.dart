@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/error/failures.dart';
 import 'package:my_template/core/network/api_consumer.dart';
@@ -391,12 +392,18 @@ class HomeRepoImpl implements HomeRepo {
     return handleDioRequest(
       request: () async {
         final fileName = filePath.split('/').last.split('\\').last;
-        final url =
-            'https://delta-asg.com:56513/DeltagroupService/School/userimge?imageFileName=$fileName';
-
-        final response = await apiConsumer.get(url);
-
-        return response.toString();
+        final response = await apiConsumer.get(
+          EndPoints.image,
+          queryParameters: {"imageFileName": fileName},
+        );
+        
+        if (response is Map && response.containsKey('Data')) {
+          return response['Data'] ?? '';
+        }
+        if (response is String) {
+          return response;
+        }
+        return '';
       },
     );
   }
@@ -463,42 +470,61 @@ class HomeRepoImpl implements HomeRepo {
   Future<Either<Failure, List<String>>> uploadFile({required List<String> filePaths}) {
     return handleDioRequest(
       request: () async {
-        final uri = Uri.parse('https://delta-asg.com:56513/DeltagroupService/School/UploadFiles');
-
-        var request = http.MultipartRequest('POST', uri);
-
-        // إضافة Authorization header
+        final url = 'https://delta-asg.com:56513/DeltagroupService/School/UploadFiles';
+        final formData = FormData();
         final token = HiveMethods.getToken();
-        if (token != null && token.isNotEmpty) {
-          request.headers['Authorization'] = 'Bearer $token';
-        }
 
-        // إضافة الملفات
         for (var path in filePaths) {
-          request.files.add(
-            await http.MultipartFile.fromPath(
-              'files', // اسم الحقل في الـ API
-              path,
-              filename: path.split('/').last,
+          final fileName = path.split('/').last;
+          final ext = fileName.split('.').last.toLowerCase();
+
+          MediaType? contentType;
+          if (ext == 'pdf') {
+            contentType = MediaType('application', 'pdf');
+          } else if (['mp4', 'mov'].contains(ext)) {
+            contentType = MediaType('video', ext == 'mov' ? 'quicktime' : ext);
+          } else if (ext == 'avi') {
+            contentType = MediaType('video', 'x-msvideo');
+          } else if (['jpg', 'jpeg', 'png'].contains(ext)) {
+            contentType = MediaType('image', ext == 'jpg' ? 'jpeg' : ext);
+          } else if (['ppt', 'pptx'].contains(ext)) {
+            contentType = MediaType('application', 'vnd.ms-powerpoint');
+          } else if (['doc', 'docx'].contains(ext)) {
+            contentType = MediaType('application', 'msword');
+          }
+
+          formData.files.add(
+            MapEntry(
+              'files',
+              await MultipartFile.fromFile(
+                path,
+                filename: fileName,
+                contentType: contentType,
+              ),
             ),
           );
         }
 
-        final streamedResponse = await request.send();
-        final response = await http.Response.fromStream(streamedResponse);
+        final dio = Dio();
+        final response = await dio.post(
+          url,
+          data: formData,
+          options: Options(
+            headers: {
+              if (token != null) 'Authorization': 'Bearer $token',
+            },
+          ),
+        );
 
         if (response.statusCode == 200 || response.statusCode == 201) {
-          final decoded = jsonDecode(response.body);
-
+          final decoded = response.data;
           if (decoded is List) {
-            // ✅ ارجع List<String> فقط
-            final List<String> uploadedFilePaths = decoded.map((path) => path.toString()).toList();
-            return uploadedFilePaths;
+            return decoded.map((path) => path.toString()).toList();
           } else {
-            throw Exception('Unexpected response format: ${response.body}');
+            throw Exception('Unexpected response format: $decoded');
           }
         } else {
-          throw Exception('Server error: ${response.statusCode}, ${response.body}');
+          throw Exception('Server error: ${response.statusCode}, ${response.data}');
         }
       },
     );

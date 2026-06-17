@@ -331,9 +331,7 @@ class ClassRepoImpl extends ClassRepo {
         final url =
             'https://delta-asg.com:56513/DeltagroupService/School/userimge?imageFileName=$fileName';
 
-        final response = await apiConsumer.get(url);
-
-        return response.toString();
+        return url;
       },
     );
   }

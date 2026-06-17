@@ -499,8 +499,9 @@ class _GradesScreenState extends State<GradesScreen> with TickerProviderStateMix
     final avg = _calculateAverage(grades);
     gradesText += "\n🏆 *${AppLocalKay.cumulative_rate.tr()} ${avg.toStringAsFixed(1)}%*";
 
-    SharePlus.instance.share(
-      ShareParams(text: gradesText, subject: AppLocalKay.grades_report.tr()),
+    Share.share(
+      gradesText,
+      subject: AppLocalKay.grades_report.tr(),
     );
   }
 

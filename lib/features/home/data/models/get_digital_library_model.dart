@@ -40,10 +40,26 @@ class DigitalLibraryItem extends Equatable {
   }
 
   // Helper to detect file type from path
-  String get fileExtension {
-    final parts = filePath.toLowerCase().split('.');
-    return parts.isNotEmpty ? parts.last : '';
-  }
+  // في DigitalLibraryItem
+String get fileExtension {
+  // خد آخر جزء بعد آخر نقطة حقيقية
+  final name = filePath.split('/').last.split('\\').last;
+  final lastDot = name.lastIndexOf('.');
+  if (lastDot == -1) return '';
+  return name.substring(lastDot + 1).toLowerCase();
+}
+
+String get cleanFileName {
+  final name = filePath.split('/').last.split('\\').last;
+  // إزالة التكرار زي ".pdf_.pdf" → ".pdf"
+  final ext = fileExtension;
+  if (ext.isEmpty) return name;
+  // شيل كل الامتدادات الزيادة قبل الامتداد الأخير
+  final withoutExt = name.substring(0, name.lastIndexOf('.$ext'));
+  // لو الجزء اللي قبله فيه نفس الامتداد كمان، شيله
+  final cleaned = withoutExt.replaceAll(RegExp(r'\.' + ext + r'[_\s]*$', caseSensitive: false), '');
+  return '$cleaned.$ext';
+}
 
   @override
   List<Object?> get props => [id, fileName, filePath, levelCode, teacherCode, notes, teacherName];

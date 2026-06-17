@@ -98,6 +98,14 @@
 		<string>en</string>
 		<string>ar</string>
 	</array>
+	
+	<!-- تصحيح أذونات الملفات -->
+	<key>UIFileSharingEnabled</key>
+	<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	
+	<!-- تصحيح NSAppTransportSecurity -->
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
