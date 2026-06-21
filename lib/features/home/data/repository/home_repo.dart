@@ -43,6 +43,7 @@ import 'package:my_template/features/home/data/models/teacher_courses_model.dart
 import 'package:my_template/features/home/data/models/teacher_data_model.dart';
 import 'package:my_template/features/home/data/models/teacher_level_model.dart';
 import 'package:my_template/features/home/data/models/teacher_time_table_model.dart';
+import 'package:video_compress/video_compress.dart';
 
 import '../models/home_models.dart';
 
@@ -466,7 +467,7 @@ class HomeRepoImpl implements HomeRepo {
     );
   }
 
-  @override
+ @override
   Future<Either<Failure, List<String>>> uploadFile({required List<String> filePaths}) {
     return handleDioRequest(
       request: () async {
@@ -475,8 +476,27 @@ class HomeRepoImpl implements HomeRepo {
         final token = HiveMethods.getToken();
 
         for (var path in filePaths) {
-          final fileName = path.split('/').last;
-          final ext = fileName.split('.').last.toLowerCase();
+          String finalPath = path;
+          String ext = path.split('.').last.toLowerCase();
+
+          // Compress video before uploading to avoid 500 Server Error due to large size
+          if (['mp4', 'mov', 'avi'].contains(ext)) {
+            try {
+              final info = await VideoCompress.compressVideo(
+                path,
+                quality: VideoQuality.MediumQuality,
+                deleteOrigin: false,
+              );
+              if (info != null && info.file != null) {
+                finalPath = info.file!.path;
+                ext = finalPath.split('.').last.toLowerCase();
+              }
+            } catch (e) {
+              // If compression fails, we fallback to original file
+            }
+          }
+
+          final fileName = finalPath.split('/').last;
 
           MediaType? contentType;
           if (ext == 'pdf') {
@@ -497,7 +517,7 @@ class HomeRepoImpl implements HomeRepo {
             MapEntry(
               'files',
               await MultipartFile.fromFile(
-                path,
+                finalPath,
                 filename: fileName,
                 contentType: contentType,
               ),
@@ -529,7 +549,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   Future<Either<Failure, List<TeacherDataModel>>> teacherData({required var searchVal}) {
     return handleDioRequest(
       request: () async {

@@ -2,7 +2,20 @@ part of 'services_locator.dart';
 
 final sl = GetIt.instance;
 Future<void> initDependencies() async {
-  sl.registerLazySingleton<InternetConnection>(() => InternetConnection());
+  sl.registerLazySingleton<InternetConnection>(
+    () => InternetConnection.createInstance(
+      customCheckOptions: [
+        InternetCheckOption(
+          uri: Uri.parse('https://google.com'),
+          timeout: const Duration(seconds: 10),
+        ),
+        InternetCheckOption(
+          uri: Uri.parse('https://delta-asg.com:56513'),
+          timeout: const Duration(seconds: 10),
+        ),
+      ],
+    ),
+  );
   sl.registerLazySingleton<AppInterceptors>(() => AppInterceptors());
   sl.registerLazySingleton<Dio>(() => Dio());
   sl.registerFactory<ApiConsumer>(() => DioConsumer(client: sl()));
