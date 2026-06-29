@@ -755,7 +755,7 @@ class HomeRepoImpl implements HomeRepo {
             "value": "$teachersCount",
             "change": teachersCount > 0 ? "+${(teachersCount * 0.05).toInt()}" : "0",
             "isPositive": true,
-            "icon": Icons.person,
+            "icon": Icons.co_present_rounded,
             "color": const Color(0xFFF59E0B),
           },
           "الحافلات النشطة": {

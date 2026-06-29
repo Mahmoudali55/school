@@ -258,7 +258,7 @@
   "absenceDistribution": "Absence Distribution",
   "successDistribution": "Success Rates in Subjects",
   "notificationsAndActivities": "Notifications and Activities",
-  "quickLinks": "Quick Links for Admin",
+  "quickLinks": "statistics Links for Admin",
   "user_management_title": "User Management",
   "user_management_desc": "Students and Teachers",
   "class_management_title": "Classes Management",
@@ -1239,6 +1239,7 @@
   "NO_PENDING_REQUESTS":"There are no pending call requests for students at the moment.",
   "URGENT":"Urgent",
   "NO_TEACHERS_FOUND_URGENT": "No teachers found for urgent call. Please try again later.",
-  "SERVER_CONNECTION_ERROR":"Failed to connect to the server"
+  "SERVER_CONNECTION_ERROR":"Failed to connect to the server",
+  "clear_results":"statistics"
 }
 

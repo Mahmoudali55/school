@@ -137,9 +137,9 @@ class _InteractiveScheduleTableState extends State<InteractiveScheduleTable> {
 
         // Responsive sizes with safe minimums
         final dayWidth = (80.w).clamp(70.0, 100.0);
-        final cellWidth = isLandscape ? (120.w).clamp(110.0, 150.0) : (140.w).clamp(130.0, 180.0);
-        final headerHeight = isLandscape ? (35.h).clamp(30.0, 45.0) : (40.h).clamp(35.0, 50.0);
-        final cellHeight = isLandscape ? (80.h).clamp(70.0, 120.0) : (100.h).clamp(90.0, 150.0);
+        final cellWidth = isLandscape ? (120.w).clamp(110.0, 150.0) : (190.w).clamp(130.0, 180.0);
+        final headerHeight = isLandscape ? (35.h).clamp(30.0, 45.0) : (50.h).clamp(35.0, 50.0);
+        final cellHeight = isLandscape ? (80.h).clamp(70.0, 120.0) : (120.h).clamp(90.0, 150.0);
 
         return BlocListener<ScheduleCubit, ScheduleState>(
           listenWhen: (prev, curr) => prev.validationStatus != curr.validationStatus,
@@ -185,7 +185,7 @@ class _InteractiveScheduleTableState extends State<InteractiveScheduleTable> {
                     // Days Vertical Sticky + Main Grid
                     Expanded(
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           // Sticky Days Column (Vertical)
                           SingleChildScrollView(

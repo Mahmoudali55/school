@@ -270,7 +270,7 @@ class _RequestsSectionWidgetState extends State<RequestsSectionWidget> {
                                             return AutomaticCallItem(
                                               id: const Uuid().v4(),
                                               transdate: DateFormat(
-                                                'yyyy-MM-dd HH:mm:ss',
+                                                'yyyy-MM-dd HH:mm:ss ', 'en',
                                               ).format(DateTime.now()),
                                               studentcode: s.studentCode,
                                               stageCode: s.stageCode ?? 0,

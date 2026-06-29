@@ -12,7 +12,6 @@ import 'package:my_template/features/home/presentation/view/widget/admin/admin_h
 import 'package:my_template/features/home/presentation/view/widget/admin/alerts_and_activity_widget.dart';
 import 'package:my_template/features/home/presentation/view/widget/admin/management_shortcuts_widget.dart';
 import 'package:my_template/features/home/presentation/view/widget/admin/metrics_dashboard_widget.dart';
-import 'package:my_template/features/home/presentation/view/widget/admin/mini_charts_widget.dart';
 
 class AdminHomeScreen extends StatelessWidget {
   const AdminHomeScreen({super.key});

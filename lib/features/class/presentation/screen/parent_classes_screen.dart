@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
-import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
-import 'package:my_template/core/theme/app_colors.dart';
+
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';

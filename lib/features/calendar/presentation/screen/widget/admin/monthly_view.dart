@@ -9,6 +9,7 @@ import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/calendar/presentation/cubit/calendar_cubit.dart';
 import 'package:my_template/features/calendar/presentation/execution/add_event_screen.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/admin/admin_calendar_models.dart';
+import 'package:my_template/features/calendar/presentation/screen/widget/admin/event_widgets.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 
@@ -191,63 +192,66 @@ class MonthlyView extends StatelessWidget {
   }
 
   Widget _buildUpcomingEventItem(BuildContext context, AdminCalendarEvent event) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 12.h),
-      padding: EdgeInsets.all(12.w),
-      decoration: BoxDecoration(
-        color: AppColor.whiteColor(context),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: AppColor.blackColor(context).withOpacity(0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 1),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 4.w,
-            height: 40.h,
-            decoration: BoxDecoration(color: event.color, borderRadius: BorderRadius.circular(2)),
-          ),
-          Gap(12.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  event.title,
-                  style: AppTextStyle.bodyMedium(
-                    context,
-                  ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
-                ),
-                Gap(4.h),
-                Text(
-                  "${event.date} • ${event.time}",
-                  style: AppTextStyle.bodySmall(
-                    context,
-                  ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
-                ),
-              ],
+    return GestureDetector(
+      onTap: () => showEventDetailsBottomSheet(context, event),
+      child: Container(
+        margin: EdgeInsets.only(bottom: 12.h),
+        padding: EdgeInsets.all(12.w),
+        decoration: BoxDecoration(
+          color: AppColor.whiteColor(context),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: AppColor.blackColor(context).withOpacity(0.05),
+              blurRadius: 4,
+              offset: const Offset(0, 1),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-            decoration: BoxDecoration(
-              color: event.color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(6),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 4.w,
+              height: 40.h,
+              decoration: BoxDecoration(color: event.color, borderRadius: BorderRadius.circular(2)),
             ),
-            child: Text(
-              event.type,
-              style: AppTextStyle.bodySmall(
-                context,
-              ).copyWith(fontSize: 10.sp, color: event.color, fontWeight: FontWeight.w600),
+            Gap(12.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    event.title,
+                    style: AppTextStyle.bodyMedium(
+                      context,
+                    ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
+                  ),
+                  Gap(4.h),
+                  Text(
+                    "${event.date} • ${event.time}",
+                    style: AppTextStyle.bodySmall(
+                      context,
+                    ).copyWith(fontSize: 11.sp, color: const Color(0xFF6B7280)),
+                  ),
+                ],
+              ),
             ),
-          ),
-          if (event.originalEvent != null) _buildActionMenu(context, event),
-        ],
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+              decoration: BoxDecoration(
+                color: event.color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Text(
+                event.type,
+                style: AppTextStyle.bodySmall(
+                  context,
+                ).copyWith(fontSize: 10.sp, color: event.color, fontWeight: FontWeight.w600),
+              ),
+            ),
+            if (event.originalEvent != null) _buildActionMenu(context, event),
+          ],
+        ),
       ),
     );
   }

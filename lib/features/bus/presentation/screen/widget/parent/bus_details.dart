@@ -89,7 +89,8 @@ class BusDetails extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       crossAxisSpacing: 12.w,
       mainAxisSpacing: 12.h,
-      childAspectRatio: isTablet ? 1.4 : 1.1,
+      childAspectRatio: isTablet ? 1.2: 1.1,
+      
       children: [
         _buildDetailItem(
           context,

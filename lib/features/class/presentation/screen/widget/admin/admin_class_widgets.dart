@@ -189,12 +189,14 @@ class AdminClassCard extends StatelessWidget {
               children: [
                 Icon(icon, size: 16.w, color: color),
                 Gap(4.h),
-                Text(
-                  label,
-                  style: AppTextStyle.bodySmall(context).copyWith(fontSize: fontSize),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                Flexible(
+                  child: Text(
+                    label,
+                    style: AppTextStyle.bodySmall(context).copyWith(fontSize: fontSize),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             ),

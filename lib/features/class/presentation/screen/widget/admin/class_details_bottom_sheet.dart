@@ -308,63 +308,7 @@ class _ClassDetailsBottomSheetState extends State<ClassDetailsBottomSheet>
   }
 
   // ─── Schedule Card ──────────────────────────────────────────────────────────
-  Widget _buildScheduleCard(ScheduleModel period) {
-    final isBreak = period.subjectName == 'فسحة' || period.subjectName == 'Break';
-    return Card(
-      margin: EdgeInsets.only(bottom: 10.h),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.r)),
-      color: isBreak ? Colors.orange.shade50 : AppColor.whiteColor(context),
-      elevation: 0,
-      child: ListTile(
-        leading: Container(
-          width: 42.w,
-          height: 42.w,
-          decoration: BoxDecoration(
-            color: isBreak
-                ? Colors.orange.withValues(alpha: 0.15)
-                : AppColor.primaryColor(context).withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(10.r),
-          ),
-          child: Center(
-            child: Text(
-              '${period.period}',
-              style: AppTextStyle.titleSmall(context).copyWith(
-                fontWeight: FontWeight.bold,
-                color: isBreak ? Colors.orange : AppColor.primaryColor(context),
-              ),
-            ),
-          ),
-        ),
-        title: Text(
-          period.subjectName,
-          style: AppTextStyle.bodyMedium(context).copyWith(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Text(
-          period.teacherName,
-          style: AppTextStyle.bodySmall(context).copyWith(color: AppColor.greyColor(context)),
-        ),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              '${period.startTime} - ${period.endTime}',
-              style: AppTextStyle.bodySmall(
-                context,
-              ).copyWith(fontWeight: FontWeight.bold, color: AppColor.textColor(context)),
-            ),
-            if (period.room != null && period.room!.isNotEmpty)
-              Text(
-                period.room!,
-                style: AppTextStyle.bodySmall(
-                  context,
-                ).copyWith(color: AppColor.greyColor(context), fontSize: 10.sp),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
+
 
   // ─── Month Picker ───────────────────────────────────────────────────────────
   Widget _buildMonthPicker() {

@@ -26,7 +26,7 @@ class DropdownSelectStudentWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: AppColor.blackColor(context).withOpacity(0.1),
+            color: AppColor.blackColor(context).withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -61,7 +61,7 @@ class DropdownSelectStudentWidget extends StatelessWidget {
           else
             DropdownButtonFormField<StudentMiniInfo>(
               initialValue: selectedStudent,
-              itemHeight: 60.h,
+              itemHeight: 90.h,
               isExpanded: true,
            
               

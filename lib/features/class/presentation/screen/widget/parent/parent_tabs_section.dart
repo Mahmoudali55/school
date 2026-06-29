@@ -514,7 +514,7 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
 
   Widget _buildDayPicker() {
     return SizedBox(
-      height: 45.h,
+      height: 50.h,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: _days.length,
@@ -545,7 +545,7 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
                 child: Text(
                   _days[index],
                   style: AppTextStyle.labelLarge(context).copyWith(
-                    color: isSelected ? Colors.white : AppColor.blackColor(context),
+                    color: isSelected ? AppColor.whiteColor(context) : AppColor.blackColor(context),
                     fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                   ),
                 ),
@@ -604,7 +604,10 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
       }
 
       return ListView.separated(
-        padding: EdgeInsets.symmetric(vertical: 8.h),
+         padding: EdgeInsets.only(
+    top: 8.h,
+    bottom: 20.h, // أو 24
+  ),
         itemCount: schedule.length,
         separatorBuilder: (context, index) => const Gap(12),
         itemBuilder: (context, index) {
@@ -627,8 +630,7 @@ class _ParentTabsSectionState extends State<ParentTabsSection> with SingleTicker
             child: Row(
               children: [
                 Container(
-                  width: 50.w,
-                  height: 50.w,
+                  width: 50.w,                
                   decoration: BoxDecoration(
                     color: AppColor.infoColor(context).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12.r),

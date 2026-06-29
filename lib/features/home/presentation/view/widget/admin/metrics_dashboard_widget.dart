@@ -46,7 +46,7 @@ class MetricsDashboard extends StatelessWidget {
         ),
         Gap(16.h),
         SizedBox(
-          height: 140.h,
+          height:MediaQuery.sizeOf(context).height * 0.15,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: metrics.length,

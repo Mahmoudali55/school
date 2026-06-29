@@ -9,6 +9,7 @@ import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/calendar/presentation/cubit/calendar_cubit.dart';
 import 'package:my_template/features/calendar/presentation/execution/add_event_screen.dart';
 import 'package:my_template/features/calendar/presentation/screen/widget/admin/admin_calendar_models.dart';
+import 'package:my_template/features/calendar/presentation/screen/widget/admin/event_widgets.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 
@@ -218,15 +219,17 @@ class WeeklyView extends StatelessWidget {
   }
 
   Widget _buildScheduleItem(BuildContext context, AdminCalendarEvent event) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 12.h),
-      padding: EdgeInsets.all(12.w),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF8F9FA),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: event.color.withOpacity(0.2)),
-      ),
-      child: Row(
+    return GestureDetector(
+      onTap: () => showEventDetailsBottomSheet(context, event),
+      child: Container(
+        margin: EdgeInsets.only(bottom: 12.h),
+        padding: EdgeInsets.all(12.w),
+        decoration: BoxDecoration(
+          color: const Color(0xFFF8F9FA),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: event.color.withOpacity(0.2)),
+        ),
+        child: Row(
         children: [
           Container(
             width: 4.w,
@@ -296,8 +299,9 @@ class WeeklyView extends StatelessWidget {
           if (event.originalEvent != null) _buildActionMenu(context, event),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildActionMenu(BuildContext context, AdminCalendarEvent event) {
     return PopupMenuButton<String>(

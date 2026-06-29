@@ -20,114 +20,117 @@ class EventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 12.h),
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: AppColor.whiteColor(context),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: AppColor.blackColor(context).withOpacity(0.05),
-            blurRadius: 4,
-            offset: const Offset(0, 1),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-                decoration: BoxDecoration(
-                  color: event.color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  event.type,
-                  style: AppTextStyle.bodySmall(
-                    context,
-                  ).copyWith(color: event.color, fontWeight: FontWeight.bold, fontSize: 10.sp),
-                ),
-              ),
-              const Spacer(),
-              // Priority fallback
-              if (event.priority == "مهم")
+    return GestureDetector(
+      onTap: () => showEventDetailsBottomSheet(context, event),
+      child: Container(
+        margin: EdgeInsets.only(bottom: 12.h),
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          color: AppColor.whiteColor(context),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: AppColor.blackColor(context).withOpacity(0.05),
+              blurRadius: 4,
+              offset: const Offset(0, 1),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                   decoration: BoxDecoration(
-                    color: AppColor.errorColor(context).withOpacity(0.1),
+                    color: event.color.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.priority_high_rounded, color: AppColor.errorColor(context), size: 10.w),
-                      Gap(2.w),
-                      Text(
-                        "أولوية عالية",
-                        style: AppTextStyle.bodySmall(
-                          context,
-                        ).copyWith(color: AppColor.errorColor(context), fontWeight: FontWeight.bold, fontSize: 10.sp),
-                      ),
-                    ],
+                  child: Text(
+                    event.type,
+                    style: AppTextStyle.bodySmall(
+                      context,
+                    ).copyWith(color: event.color, fontWeight: FontWeight.bold, fontSize: 10.sp),
                   ),
                 ),
-              if (event.originalEvent != null) _buildActionMenu(context),
-            ],
-          ),
-          Gap(12.h),
-          Text(
-            event.title,
-            style: AppTextStyle.titleMedium(
-              context,
-            ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
-          ),
-          Gap(8.h),
-
-          if (event.description.isNotEmpty) ...[
+                const Spacer(),
+                // Priority fallback
+                if (event.priority == "مهم")
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                    decoration: BoxDecoration(
+                      color: AppColor.errorColor(context).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.priority_high_rounded, color: AppColor.errorColor(context), size: 10.w),
+                        Gap(2.w),
+                        Text(
+                          "أولوية عالية",
+                          style: AppTextStyle.bodySmall(
+                            context,
+                          ).copyWith(color: AppColor.errorColor(context), fontWeight: FontWeight.bold, fontSize: 10.sp),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (event.originalEvent != null) _buildActionMenu(context),
+              ],
+            ),
             Gap(12.h),
             Text(
-              event.description,
-              style: AppTextStyle.bodySmall(
+              event.title,
+              style: AppTextStyle.titleMedium(
                 context,
-              ).copyWith(color: const Color(0xFF4B5563), height: 1.4),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+              ).copyWith(fontWeight: FontWeight.bold, color: const Color(0xFF1F2937)),
             ),
-          ],
-          Gap(12.h),
-          const Divider(),
-          Gap(8.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // المشاركون
-              SizedBox(
-                height: 24.h,
-                child: Stack(
-                  children: List.generate(
-                    event.participants.length,
-                    (index) => Positioned(
-                      left: index * 16.w,
-                      child: Container(
-                        width: 24.w,
-                        height: 24.w,
-                        decoration: BoxDecoration(
-                          color: AppColor.primaryColor(context).withOpacity(0.1),
-                          shape: BoxShape.circle,
-                          border: Border.all(color: AppColor.whiteColor(context), width: 1.5),
+            Gap(8.h),
+  
+            if (event.description.isNotEmpty) ...[
+              Gap(12.h),
+              Text(
+                event.description,
+                style: AppTextStyle.bodySmall(
+                  context,
+                ).copyWith(color: const Color(0xFF4B5563), height: 1.4),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+            Gap(12.h),
+            const Divider(),
+            Gap(8.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // المشاركون
+                SizedBox(
+                  height: 24.h,
+                  child: Stack(
+                    children: List.generate(
+                      event.participants.length,
+                      (index) => Positioned(
+                        left: index * 16.w,
+                        child: Container(
+                          width: 24.w,
+                          height: 24.w,
+                          decoration: BoxDecoration(
+                            color: AppColor.primaryColor(context).withOpacity(0.1),
+                            shape: BoxShape.circle,
+                            border: Border.all(color: AppColor.whiteColor(context), width: 1.5),
+                          ),
+                          child: Center(child: Icon(Icons.person_outline_rounded, size: 12.w)),
                         ),
-                        child: Center(child: Icon(Icons.person_outline_rounded, size: 12.w)),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -308,3 +311,192 @@ class CalendarEmptyState extends StatelessWidget {
     );
   }
 }
+
+void showEventDetailsBottomSheet(BuildContext context, AdminCalendarEvent event) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+    ),
+    backgroundColor: AppColor.whiteColor(context),
+    builder: (context) {
+      final isAr = context.locale.languageCode == 'ar';
+      return Padding(
+        padding: EdgeInsets.only(
+          left: 20.w,
+          right: 20.w,
+          top: 12.h,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 24.h,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Handle Bar
+            Center(
+              child: Container(
+                width: 48.w,
+                height: 5.h,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+            Gap(20.h),
+            
+            // Header Row (Type Badge & Close Button)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                  decoration: BoxDecoration(
+                    color: event.color.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    event.type,
+                    style: AppTextStyle.bodySmall(context).copyWith(
+                      color: event.color,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12.sp,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.close_rounded),
+                  constraints: const BoxConstraints(),
+                  padding: EdgeInsets.zero,
+                ),
+              ],
+            ),
+            Gap(16.h),
+            
+            // Title
+            Text(
+              event.title,
+              style: AppTextStyle.titleLarge(context).copyWith(
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF1F2937),
+              ),
+            ),
+            Gap(20.h),
+            
+            const Divider(),
+            Gap(16.h),
+            
+            // Time & Date
+            _buildDetailRow(
+              context,
+              icon: Icons.calendar_today_rounded,
+              iconColor: const Color(0xFF9C27B0),
+              label: isAr ? "التاريخ" : "Date",
+              value: event.date,
+            ),
+            Gap(16.h),
+            _buildDetailRow(
+              context,
+              icon: Icons.access_time_rounded,
+              iconColor: const Color(0xFF9C27B0),
+              label: isAr ? "الوقت" : "Time",
+              value: event.time,
+            ),
+            
+            if (event.location.isNotEmpty) ...[
+              Gap(16.h),
+              _buildDetailRow(
+                context,
+                icon: Icons.location_on_rounded,
+                iconColor: Colors.redAccent,
+                label: isAr ? "الموقع" : "Location",
+                value: event.location,
+              ),
+            ],
+            
+            if (event.priority.isNotEmpty) ...[
+              Gap(16.h),
+              _buildDetailRow(
+                context,
+                icon: Icons.label_important_rounded,
+                iconColor: event.priority == "مهم" ? AppColor.errorColor(context) : Colors.orange,
+                label: isAr ? "الأولوية" : "Priority",
+                value: event.priority == "مهم" ? (isAr ? "أولوية عالية" : "High Priority") : event.priority,
+              ),
+            ],
+            
+            if (event.description.isNotEmpty) ...[
+              Gap(20.h),
+              const Divider(),
+              Gap(16.h),
+              Text(
+                isAr ? "التفاصيل" : "Details",
+                style: AppTextStyle.titleMedium(context).copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF1F2937),
+                ),
+              ),
+              Gap(8.h),
+              Text(
+                event.description,
+                style: AppTextStyle.bodyMedium(context).copyWith(
+                  color: const Color(0xFF4B5563),
+                  height: 1.5,
+                ),
+              ),
+            ],
+            Gap(12.h),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+Widget _buildDetailRow(
+  BuildContext context, {
+  required IconData icon,
+  required Color iconColor,
+  required String label,
+  required String value,
+}) {
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Container(
+        padding: EdgeInsets.all(8.w),
+        decoration: BoxDecoration(
+          color: iconColor.withOpacity(0.1),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(icon, color: iconColor, size: 18.w),
+      ),
+      Gap(12.w),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: AppTextStyle.bodySmall(context).copyWith(
+                color: const Color(0xFF9CA3AF),
+                fontSize: 11.sp,
+              ),
+            ),
+            Gap(2.h),
+            Text(
+              value,
+              style: AppTextStyle.bodyMedium(context).copyWith(
+                color: const Color(0xFF374151),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+

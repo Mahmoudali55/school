@@ -33,7 +33,7 @@ class StudentGradesWidget extends StatelessWidget {
         }
 
         return SizedBox(
-          height: 140.h,
+          height: 150.h,
           child: PageView.builder(
             controller: _pageController,
             physics: grades.length <= 1

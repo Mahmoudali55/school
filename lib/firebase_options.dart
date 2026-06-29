@@ -26,10 +26,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.macOS:
         return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -51,22 +48,20 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAmXTOFQl3Zx7Y64O_xl4aA7vSkjMz652s',
-    appId: '1:607440639793:android:ba6e161310adca60884210',
+    appId: '1:607440639793:android:bcdd8c7ffcfa26fb884210',
     messagingSenderId: '607440639793',
     projectId: 'chatappproject-f51f9',
     storageBucket: 'chatappproject-f51f9.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBdR9QdXM5pK-o25eBSzGoON0KY3SyECgw',
-    appId: '1:607440639793:ios:6d551907a6648b93884210',
+    appId: '1:607440639793:ios:72e6c93cecc048e6884210',
     messagingSenderId: '607440639793',
     projectId: 'chatappproject-f51f9',
     storageBucket: 'chatappproject-f51f9.firebasestorage.app',
     androidClientId: '607440639793-afgfm476384uhdapn5grboltso97gkah.apps.googleusercontent.com',
-    iosBundleId: 'com.example.myTemplate',
+    iosBundleId: 'com.asg.school',
   );
-
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyBdR9QdXM5pK-o25eBSzGoON0KY3SyECgw',
     appId: '1:607440639793:ios:6d551907a6648b93884210',
@@ -75,5 +70,14 @@ class DefaultFirebaseOptions {
     storageBucket: 'chatappproject-f51f9.firebasestorage.app',
     androidClientId: '607440639793-afgfm476384uhdapn5grboltso97gkah.apps.googleusercontent.com',
     iosBundleId: 'com.example.myTemplate',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyBs8Lhljb_LwmfwY5Xy6hOl-SpcLSSKd8o',
+    appId: '1:607440639793:web:2034e89500c5b616884210',
+    messagingSenderId: '607440639793',
+    projectId: 'chatappproject-f51f9',
+    authDomain: 'chatappproject-f51f9.firebaseapp.com',
+    storageBucket: 'chatappproject-f51f9.firebasestorage.app',
   );
 }

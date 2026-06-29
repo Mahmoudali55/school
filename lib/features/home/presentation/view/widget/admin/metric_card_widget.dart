@@ -13,7 +13,7 @@ class MetricCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GlassContainer(
-      width: 150.w,
+      width: MediaQuery.sizeOf(context).width * 0.3,
       borderRadius: 24.r,
       padding: EdgeInsets.all(16.w),
       opacity: 0.05,
@@ -32,32 +32,7 @@ class MetricCardWidget extends StatelessWidget {
                 ),
                 child: Icon(metric.icon, color: metric.color, size: 20.w),
               ),
-              if (metric.change.isNotEmpty)
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
-                  decoration: BoxDecoration(
-                    color: (metric.isPositive ? AppColor.successColor(context) : AppColor.errorColor(context)).withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        metric.isPositive ? Icons.arrow_upward : Icons.arrow_downward,
-                        size: 10.sp,
-                        color: metric.isPositive ? AppColor.successColor(context) : AppColor.errorColor(context),
-                      ),
-                      Gap(2.w),
-                      Text(
-                        metric.change,
-                        style: AppTextStyle.bodySmall(context).copyWith(
-                          fontSize: 10.sp,
-                          color: metric.isPositive ? AppColor.successColor(context) : AppColor.errorColor(context),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+             
             ],
           ),
           Column(
