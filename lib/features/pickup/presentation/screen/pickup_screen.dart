@@ -11,6 +11,12 @@ import 'package:my_template/core/utils/app_local_kay.dart';
 import 'package:my_template/features/home/data/models/get_automatic_call_model.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
 import 'package:my_template/features/home/presentation/cubit/home_state.dart';
+import 'package:my_template/features/pickup/presentation/screen/widget/pick_up_empty_state.dart';
+import 'package:my_template/features/pickup/presentation/screen/widget/pick_up_error_state.dart';
+import 'package:my_template/features/pickup/presentation/screen/widget/pick_up_request_card.dart';
+import 'package:my_template/features/pickup/presentation/screen/widget/pick_up_stats_dashboard.dart';
+
+
 
 class PickUpAdminScreen extends StatefulWidget {
   const PickUpAdminScreen({super.key});
@@ -19,23 +25,11 @@ class PickUpAdminScreen extends StatefulWidget {
   State<PickUpAdminScreen> createState() => _PickUpAdminScreenState();
 }
 
-class _PickUpAdminScreenState extends State<PickUpAdminScreen> with TickerProviderStateMixin {
-  late AnimationController _listController;
-
+class _PickUpAdminScreenState extends State<PickUpAdminScreen> {
   @override
   void initState() {
     super.initState();
-    _listController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 800),
-    );
     _refreshData();
-  }
-
-  @override
-  void dispose() {
-    _listController.dispose();
-    super.dispose();
   }
 
   void _refreshData() {
@@ -81,38 +75,8 @@ class _PickUpAdminScreenState extends State<PickUpAdminScreen> with TickerProvid
       ),
       body: Stack(
         children: [
-          // Background soft ambient glows
-          Positioned(
-            top: -100.h,
-            right: -100.w,
-            child: Container(
-              width: 320.w,
-              height: 320.h,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColor.primaryColor(context).withValues(alpha: 0.06),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: -50.h,
-            left: -100.w,
-            child: Container(
-              width: 280.w,
-              height: 280.h,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColor.secondAppColor(context).withValues(alpha: 0.04),
-              ),
-            ),
-          ),
-
-          BlocConsumer<HomeCubit, HomeState>(
-            listener: (context, state) {
-              if (state.getAutomaticCallStatus?.isSuccess == true) {
-                _listController.forward(from: 0);
-              }
-            },
+          _BackgroundGlows(),
+          BlocBuilder<HomeCubit, HomeState>(
             builder: (context, state) {
               final status = state.getAutomaticCallStatus;
               if (status?.isLoading == true) {
@@ -127,16 +91,20 @@ class _PickUpAdminScreenState extends State<PickUpAdminScreen> with TickerProvid
                   child: Column(
                     children: [
                       Gap(kToolbarHeight + 60.h),
-                      // Dynamic Modern Statistics Summary
-                      _buildStatsDashboard(requests),
+                      PickUpStatsDashboard(requests: requests),
                       Expanded(
-                        child: _buildRequestsList(context, requests),
+                        child: _RequestsList(requests: requests),
                       ),
                     ],
                   ),
                 );
               } else if (status?.isFailure == true) {
-                return Center(child: _buildErrorState(status?.error ?? "Error loading requests"));
+                return Center(
+                  child: PickUpErrorState(
+                    message: status?.error ?? "Error loading requests",
+                    onRetry: _refreshData,
+                  ),
+                );
               }
               return const SizedBox.shrink();
             },
@@ -145,157 +113,53 @@ class _PickUpAdminScreenState extends State<PickUpAdminScreen> with TickerProvid
       ),
     );
   }
+}
 
-  Widget _buildStatsDashboard(List<AutomaticCallItem> requests) {
-    // New mapping: 0 = pending (معلق), 1 = ready (جاهز للاستلام), 2 = preparing (جاري التجهيز)
-    final pendingCount = requests.where((r) => r.flag == 0).length;
-    final preparingCount = requests.where((r) => r.flag == 2).length;
-    final readyCount = requests.where((r) => r.flag == 1).length;
+class _BackgroundGlows extends StatelessWidget {
+  const _BackgroundGlows();
 
-    return Container(
-      height: 95.h,
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        children: [
-          _buildStatCard(
-            "الكل",
-            requests.length.toString(),
-            Icons.group_rounded,
-            const Color(0xFF6366F1),
-          ),
-          _buildStatCard(
-            AppLocalKay.status_pending.tr(),
-            pendingCount.toString(),
-            Icons.hourglass_empty_rounded,
-            const Color(0xFFFF9F1C),
-          ),
-          _buildStatCard(
-            AppLocalKay.status_preparing.tr(),
-            preparingCount.toString(),
-            Icons.sync_rounded,
-            const Color(0xFF2EC4B6),
-          ),
-          _buildStatCard(
-            AppLocalKay.status_ready.tr(),
-            readyCount.toString(),
-            Icons.done_all_rounded,
-            const Color(0xFF20BF55),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatCard(String label, String value, IconData icon, Color color) {
-    return Container(
-      width: 110.w,
-      margin: EdgeInsets.only(right: 12.w),
-      padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
-      decoration: BoxDecoration(
-        color: AppColor.surfaceColor(context),
-        borderRadius: BorderRadius.circular(20.r),
-        border: Border.all(color: AppColor.borderColor(context), width: 1),
-        boxShadow: [
-          BoxShadow(
-            color: AppColor.shadowColor(context).withValues(alpha: 0.02),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: EdgeInsets.all(5.r),
-                decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(icon, size: 14.r, color: color),
-              ),
-              Text(
-                value,
-                style: AppTextStyle.titleMedium(context).copyWith(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 16.sp,
-                  color: color,
-                ),
-              ),
-            ],
-          ),
-          Text(
-            label,
-            style: AppTextStyle.bodySmall(context).copyWith(
-              fontWeight: FontWeight.bold,
-              fontSize: 10.sp,
-              color: AppColor.textColor(context).withValues(alpha: 0.6),
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildErrorState(String message) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24.w),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: EdgeInsets.all(28.r),
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned(
+          top: -100.h,
+          right: -100.w,
+          child: Container(
+            width: 320.w,
+            height: 320.h,
             decoration: BoxDecoration(
-              color: AppColor.errorColor(context).withValues(alpha: 0.05),
               shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.wifi_off_rounded,
-              color: AppColor.errorColor(context).withValues(alpha: 0.8),
-              size: 72.r,
+              color: AppColor.primaryColor(context).withValues(alpha: 0.06),
             ),
           ),
-          const Gap(24),
-          Text(
-            AppLocalKay.SERVER_CONNECTION_ERROR.tr(),
-            style: AppTextStyle.titleLarge(context).copyWith(fontWeight: FontWeight.w900),
-          ),
-          const Gap(8),
-          Text(
-            message,
-            textAlign: TextAlign.center,
-            style: AppTextStyle.bodyMedium(context).copyWith(color: AppColor.hintColor(context)),
-          ),
-          const Gap(32),
-          ElevatedButton.icon(
-            onPressed: _refreshData,
-            icon:  Icon(Icons.refresh_rounded, color: AppColor.whiteColor(context)),
-            label: const Text("إعادة المحاولة", style: TextStyle(fontWeight: FontWeight.bold)),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColor.primaryColor(context),
-              foregroundColor: AppColor.whiteColor(context),
-              padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 14.h),
-              elevation: 4,
-              shadowColor: AppColor.primaryColor(context).withValues(alpha: 0.3),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+        ),
+        Positioned(
+          bottom: -50.h,
+          left: -100.w,
+          child: Container(
+            width: 280.w,
+            height: 280.h,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColor.secondAppColor(context).withValues(alpha: 0.04),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
+}
 
-  Widget _buildRequestsList(BuildContext context, List<AutomaticCallItem> requests) {
+class _RequestsList extends StatelessWidget {
+  const _RequestsList({required this.requests});
+
+  final List<AutomaticCallItem> requests;
+
+  @override
+  Widget build(BuildContext context) {
     if (requests.isEmpty) {
-      return _buildEmptyState();
+      return const PickUpEmptyState();
     }
 
     return ListView.builder(
@@ -303,334 +167,8 @@ class _PickUpAdminScreenState extends State<PickUpAdminScreen> with TickerProvid
       itemCount: requests.length,
       physics: const BouncingScrollPhysics(),
       itemBuilder: (context, index) {
-        return AnimatedBuilder(
-          animation: _listController,
-          builder: (context, child) {
-            final double slowIndex = index * 0.08;
-            final double animValue = Curves.easeOut.transform(
-              (_listController.value - slowIndex).clamp(0, 1),
-            );
-
-            return Opacity(
-              opacity: animValue,
-              child: Transform.translate(
-                offset: Offset(0, 40 * (1 - animValue)),
-                child: child,
-              ),
-            );
-          },
-          child: _buildRequestCard(context, requests[index]),
-        );
+        return PickUpRequestCard(request: requests[index]);
       },
     );
-  }
-
-  Widget _buildEmptyState() {
-    return ListView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      children: [
-        Container(
-          height: MediaQuery.of(context).size.height * 0.65,
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                height: 160.r,
-                width: 160.r,
-                decoration: BoxDecoration(
-                  color: AppColor.primaryColor(context).withValues(alpha: 0.04),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.celebration_rounded,
-                  size: 64.r,
-                  color: AppColor.primaryColor(context).withValues(alpha: 0.2),
-                ),
-              ),
-              const Gap(24),
-              Text(
-                AppLocalKay.NO_PENDING_REQUESTS.tr(),
-                style: AppTextStyle.titleLarge(context).copyWith(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 22.sp,
-                  color: AppColor.textColor(context),
-                ),
-              ),
-              const Gap(10),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 50.w),
-                child: Text(
-                  AppLocalKay.NO_PENDING_REQUESTS.tr(),
-                  textAlign: TextAlign.center,
-                  style: AppTextStyle.bodyMedium(
-                    context,
-                  ).copyWith(color: AppColor.hintColor(context), height: 1.5),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildRequestCard(BuildContext context, AutomaticCallItem request) {
-    final statusColor = _getStatusColor(request.flag, context);
-    final statusText = _getStatusText(request.flag);
-    final initials = request.studentname.trim().isNotEmpty
-        ? request.studentname.trim().split(' ').map((e) => e[0]).take(2).join().toUpperCase()
-        : '?';
-
-    return Container(
-      margin: EdgeInsets.only(bottom: 18.h),
-      decoration: BoxDecoration(
-        color: AppColor.surfaceColor(context),
-        borderRadius: BorderRadius.circular(24.r),
-        boxShadow: [
-          BoxShadow(
-            color: AppColor.shadowColor(context).withValues(alpha: 0.04),
-            blurRadius: 16,
-            offset: const Offset(0, 8),
-          ),
-        ],
-        border: Border.all(
-          color: AppColor.borderColor(context),
-          width: 0.8,
-        ),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Stack(
-        children: [
-          // Left Stripe Color Indicator
-          Positioned(
-            left: 0,
-            top: 0,
-            bottom: 0,
-            child: Container(
-              width: 5.w,
-              color: statusColor,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 16.h),
-            child: Column(
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // Styled avatar
-                    Container(
-                      height: 52.r,
-                      width: 52.r,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [statusColor.withValues(alpha: 0.12), statusColor.withValues(alpha: 0.04)],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: statusColor.withValues(alpha: 0.15),
-                          width: 1,
-                        ),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        initials,
-                        style: AppTextStyle.titleMedium(context).copyWith(
-                          color: statusColor,
-                          fontWeight: FontWeight.w900,
-                          fontSize: 15.sp,
-                        ),
-                      ),
-                    ),
-                    Gap(14.w),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            request.studentname,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: AppTextStyle.bodyLarge(context).copyWith(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 15.sp,
-                            ),
-                          ),
-                          Gap(4.h),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
-                            decoration: BoxDecoration(
-                              color: AppColor.scaffoldColor(context),
-                              borderRadius: BorderRadius.circular(8.r),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.school_outlined,
-                                  size: 11.r,
-                                  color: AppColor.textColor(context).withValues(alpha: 0.55),
-                                ),
-                                Gap(4.w),
-                                Text(
-                                  "كود الطالب: ${request.studentcode}",
-                                  style: AppTextStyle.bodySmall(context).copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 9.sp,
-                                    color: AppColor.textColor(context).withValues(alpha: 0.55),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    _buildGlowStatus(context, statusColor, statusText),
-                  ],
-                ),
-                if (request.notes.isNotEmpty) ...[
-                  Gap(12.h),
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-                    decoration: BoxDecoration(
-                      color: AppColor.scaffoldColor(context).withValues(alpha: 0.5),
-                      borderRadius: BorderRadius.circular(12.r),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(
-                          Icons.speaker_notes_outlined,
-                          size: 12.r,
-                          color: AppColor.textColor(context).withValues(alpha: 0.6),
-                        ),
-                        Gap(8.w),
-                        Expanded(
-                          child: Text(
-                            request.notes,
-                            style: AppTextStyle.bodySmall(context).copyWith(
-                              height: 1.3,
-                              color: AppColor.textColor(context).withValues(alpha: 0.7),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-                Gap(12.h),
-                Divider(
-                  height: 1,
-                  thickness: 0.5,
-                  color: AppColor.dividerColor(context).withValues(alpha: 0.4),
-                ),
-                Gap(10.h),
-                // Footer
-                Row(
-                  children: [
-                    Icon(
-                      Icons.access_time_rounded,
-                      size: 13.r,
-                      color: AppColor.textColor(context).withValues(alpha: 0.4),
-                    ),
-                    Gap(6.w),
-                    Text(
-                      _formatDate(request.transdate),
-                      style: AppTextStyle.bodySmall(context).copyWith(
-                        color: AppColor.textColor(context).withValues(alpha: 0.5),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 10.sp,
-                      ),
-                    ),
-                    const Spacer(),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
-                      decoration: BoxDecoration(
-                        color: AppColor.errorColor(context).withValues(alpha: 0.08),
-                        borderRadius: BorderRadius.circular(6.r),
-                      ),
-                      child: Text(
-                        AppLocalKay.URGENT.tr(),
-                        style: AppTextStyle.bodySmall(context).copyWith(
-                          fontSize: 9.sp,
-                          fontWeight: FontWeight.w900,
-                          color: AppColor.errorColor(context),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  String _formatDate(String transDate) {
-    try {
-      final DateTime dt = DateTime.parse(transDate);
-      return DateFormat('hh:mm a').format(dt);
-    } catch (e) {
-      return transDate;
-    }
-  }
-
-  Widget _buildGlowStatus(BuildContext context, Color color, String text) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: color.withValues(alpha: 0.2), width: 0.8),
-      ),
-      child: Text(
-        text,
-        style: AppTextStyle.bodySmall(context).copyWith(
-          color: color,
-          fontWeight: FontWeight.w900,
-          fontSize: 9.sp,
-        ),
-      ),
-    );
-  }
-
-  Color _getStatusColor(int flag, BuildContext context) {
-    switch (flag) {
-      // 0 = pending
-      case 0:
-        return const Color(0xFFFF9F1C);
-      // 2 = preparing
-      case 2:
-        return const Color(0xFF2EC4B6);
-      // 1 = ready
-      case 1:
-        return const Color(0xFF20BF55);
-      case 4:
-        return const Color(0xFFE71D36);
-      default:
-        return AppColor.primaryColor(context);
-    }
-  }
-
-  String _getStatusText(int flag) {
-    switch (flag) {
-      case 0:
-        return AppLocalKay.status_pending.tr();
-      case 2:
-        return AppLocalKay.status_preparing.tr();
-      case 1:
-        return AppLocalKay.status_ready.tr();
-      case 4:
-        return AppLocalKay.status_picked_up.tr();
-      default:
-        return AppLocalKay.status_pending.tr();
-    }
   }
 }

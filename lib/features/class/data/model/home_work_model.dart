@@ -6,6 +6,7 @@ class HomeWorkModel extends Equatable {
   final int classCode;
   final String hwDate;
   final int courseCode;
+  final String HW_path;
   final String hw;
   final String notes;
   final int? schoolCode;
@@ -17,6 +18,7 @@ class HomeWorkModel extends Equatable {
     required this.classCode,
     required this.hwDate,
     required this.courseCode,
+    required this.HW_path,
     required this.hw,
     required this.notes,
     this.schoolCode,
@@ -32,6 +34,7 @@ class HomeWorkModel extends Equatable {
       courseCode: int.tryParse(json['COURSE_CODE']?.toString() ?? '0') ?? 0,
       hw: json['HW']?.toString() ?? '',
       notes: json['NOTES']?.toString() ?? '',
+      HW_path: json['HW_path']?.toString() ?? '',
       schoolCode: int.tryParse(json['SCHOOL_CODE']?.toString() ?? ''),
       courseName: json['COURSE_NAME']?.toString() ?? '',
     );
@@ -48,5 +51,6 @@ class HomeWorkModel extends Equatable {
     notes,
     schoolCode,
     courseName,
+    HW_path,
   ];
 }

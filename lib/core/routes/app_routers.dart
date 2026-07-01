@@ -74,8 +74,11 @@ class AppRouters {
           date = args['date'];
         }
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => sl<ClassCubit>(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => sl<ClassCubit>()),
+              BlocProvider(create: (context) => sl<HomeCubit>()),
+            ],
             child: AssignmentsScreen(code: code, hwDate: date),
           ),
         );

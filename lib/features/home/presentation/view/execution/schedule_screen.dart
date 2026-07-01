@@ -24,23 +24,19 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   int _selectedDay = DateTime.now().weekday - 1; 
 
   final List<String> _days = [
+    'الأحد',
     'الإثنين',
     'الثلاثاء',
     'الأربعاء',
     'الخميس',
-    'الجمعة',
-    'السبت',
-    'الأحد',
   ];
 
   final Map<String, String> _englishToArabicDays = {
+    'Sunday': 'الأحد',
     'Monday': 'الإثنين',
     'Tuesday': 'الثلاثاء',
     'Wednesday': 'الأربعاء',
     'Thursday': 'الخميس',
-    'Friday': 'الجمعة',
-    'Saturday': 'السبت',
-    'Sunday': 'الأحد',
   };
 
   @override

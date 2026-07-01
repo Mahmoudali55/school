@@ -115,7 +115,7 @@ class _StudentSnapshotWidgetState extends State<StudentSnapshotWidget> {
           child: BlocBuilder<HomeCubit, HomeState>(
             builder: (context, state) {
               final count = (_studentCode != null)
-                  ? state.studentAbsentCountStatus.data?.firstOrNull?.absentCount ?? 0
+                  ? state.studentAbsentCountStatus.data?.firstOrNull?.absentCount ??1
                   : 0;
 
               return StudentAbsenceWidget(count: count);

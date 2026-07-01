@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,14 +8,19 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
+import 'package:my_template/core/custom_widgets/custom_loading/custom_loading.dart';
+import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
 import 'package:my_template/core/images/app_images.dart';
+import 'package:my_template/core/services/file_viewer_utils.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
+import 'package:my_template/core/utils/common_methods.dart';
 import 'package:my_template/features/class/data/model/home_work_model.dart';
 import 'package:my_template/features/class/presentation/cubit/class_cubit.dart';
 import 'package:my_template/features/class/presentation/cubit/class_state.dart';
 import 'package:my_template/features/home/presentation/cubit/home_cubit.dart';
+import 'package:my_template/features/home/presentation/cubit/home_state.dart';
 
 class AssignmentsScreen extends StatefulWidget {
   final int? code;
@@ -26,6 +33,10 @@ class AssignmentsScreen extends StatefulWidget {
 }
 
 class _AssignmentsScreenState extends State<AssignmentsScreen> {
+  /// المسار (HW_path) بتاع المرفق اللي بيتفتح دلوقتي - عشان نعرض اللودينج على الكارد الصح بس
+  String? _openingPath;
+  String _openingFileName = '';
+
   @override
   void initState() {
     super.initState();
@@ -64,6 +75,39 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
     }
   }
 
+  /// بيشيل مسار المجلدات ويزيل تكرار الامتداد، زي "file.pdf_.pdf" → "file.pdf"
+  String _cleanFileName(String rawPath) {
+    if (rawPath.isEmpty) return '';
+
+    String name = rawPath.split('/').last.split('\\').last;
+    final dotIndex = name.lastIndexOf('.');
+    if (dotIndex == -1) return name;
+
+    final ext = name.substring(dotIndex + 1);
+    String base = name.substring(0, dotIndex);
+
+    final extPattern = RegExp(r'[_.\s]+' + RegExp.escape(ext) + r'$', caseSensitive: false);
+    while (extPattern.hasMatch(base)) {
+      base = base.replaceAll(extPattern, '');
+    }
+
+    return '$base.$ext';
+  }
+
+  /// يُستدعى عند الضغط على زرار المرفق في أي كارد
+  void _openAttachment(String hwPath) {
+    if (hwPath.isEmpty) return;
+    final fileName = _cleanFileName(hwPath);
+    if (fileName.isEmpty) return;
+
+    setState(() {
+      _openingPath = hwPath;
+      _openingFileName = fileName;
+    });
+
+    context.read<HomeCubit>().imageFileName(fileName);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,67 +121,90 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: BlocBuilder<ClassCubit, ClassState>(
-        builder: (context, state) {
-          if (state.homeWorkStatus.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state.homeWorkStatus.isFailure) {
-            return Center(
-              child: Column(
-                children: [
-                  SvgPicture.asset(AppImages.assetsGlobalIconEmptyFolderIcon),
-                  Gap(20.h),
-                  Text(
-                    state.homeWorkStatus.error ?? "حدث خطأ ما",
-                    style: AppTextStyle.bodyMedium(
-                      context,
-                    ).copyWith(color: AppColor.errorColor(context)),
-                  ),
-                ],
-              ),
+      body: BlocListener<HomeCubit, HomeState>(
+        listenWhen: (previous, current) =>
+            previous.imageFileNameStatus != current.imageFileNameStatus,
+        listener: (context, state) {
+          final status = state.imageFileNameStatus;
+
+          if (status.isSuccess) {
+            FileViewerUtils.displayFile(context, status.data!, _openingFileName);
+            context.read<HomeCubit>().resetImageFileNameStatus();
+            setState(() => _openingPath = null);
+          } else if (status.isFailure) {
+            CommonMethods.showToast(
+              message: status.error ?? "فشل في فتح الملف",
+              type: ToastType.error,
             );
-          } else if (state.homeWorkStatus.isSuccess) {
-            final assignments = state.homeWorkStatus.data ?? [];
-            if (assignments.isEmpty) {
+            context.read<HomeCubit>().resetImageFileNameStatus();
+            setState(() => _openingPath = null);
+          }
+        },
+        child: BlocBuilder<ClassCubit, ClassState>(
+          builder: (context, state) {
+            if (state.homeWorkStatus.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state.homeWorkStatus.isFailure) {
               return Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SvgPicture.asset(
-                      AppImages.assetsGlobalIconEmptyFolderIcon,
-                      colorFilter: ColorFilter.mode(
-                        AppColor.primaryColor(context),
-                        BlendMode.srcIn,
-                      ),
-                      width: 150.w,
-                      height: 150.h,
-                    ),
+                    SvgPicture.asset(AppImages.assetsGlobalIconEmptyFolderIcon),
                     Gap(20.h),
                     Text(
-                      AppLocalKay.no_assignments.tr(),
-                      style: AppTextStyle.bodyLarge(
+                      state.homeWorkStatus.error ?? "حدث خطأ ما",
+                      style: AppTextStyle.bodyMedium(
                         context,
-                      ).copyWith(color: AppColor.blackColor(context), fontWeight: FontWeight.bold),
+                      ).copyWith(color: AppColor.errorColor(context)),
                     ),
                   ],
                 ),
               );
+            } else if (state.homeWorkStatus.isSuccess) {
+              final assignments = state.homeWorkStatus.data ?? [];
+              if (assignments.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        AppImages.assetsGlobalIconEmptyFolderIcon,
+                        colorFilter: ColorFilter.mode(
+                          AppColor.primaryColor(context),
+                          BlendMode.srcIn,
+                        ),
+                        width: 150.w,
+                        height: 150.h,
+                      ),
+                      Gap(20.h),
+                      Text(
+                        AppLocalKay.no_assignments.tr(),
+                        style: AppTextStyle.bodyLarge(
+                          context,
+                        ).copyWith(color: AppColor.blackColor(context), fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              return ListView.builder(
+                padding: EdgeInsets.all(16.w),
+                itemCount: assignments.length,
+                itemBuilder: (context, index) {
+                  return _buildAssignmentCard(assignments[index]);
+                },
+              );
             }
-            return ListView.builder(
-              padding: EdgeInsets.all(16.w),
-              itemCount: assignments.length,
-              itemBuilder: (context, index) {
-                return _buildAssignmentCard(assignments[index]);
-              },
-            );
-          }
-          return const SizedBox.shrink();
-        },
+            return const SizedBox.shrink();
+          },
+        ),
       ),
     );
   }
 
   Widget _buildAssignmentCard(HomeWorkModel assignment) {
+    final hasAttachment = assignment.HW_path.isNotEmpty;
+    final isOpeningThis = _openingPath == assignment.HW_path;
+
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       margin: EdgeInsets.only(bottom: 16.h),
@@ -230,6 +297,56 @@ class _AssignmentsScreenState extends State<AssignmentsScreen> {
                 style: AppTextStyle.bodySmall(
                   context,
                 ).copyWith(color: AppColor.grey600Color(context)),
+              ),
+            ],
+
+            if (hasAttachment) ...[
+              Gap(12.h),
+              InkWell(
+                borderRadius: BorderRadius.circular(12.r),
+                onTap: isOpeningThis ? null : () => _openAttachment(assignment.HW_path),
+                child: Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+                  decoration: BoxDecoration(
+                    color: AppColor.primaryColor(context).withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(12.r),
+                    border: Border.all(color: AppColor.primaryColor(context).withValues(alpha: 0.15)),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.attach_file_rounded,
+                        size: 18,
+                        color: AppColor.primaryColor(context),
+                      ),
+                      Gap(8.w),
+                      Expanded(
+                        child: Text(
+                          "عرض المرفق",
+                          style: AppTextStyle.bodySmall(context).copyWith(
+                            color: AppColor.primaryColor(context),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      isOpeningThis
+                          ? SizedBox(
+                              width: 18,
+                              height: 18,
+                              child: CustomLoading(
+                                color: AppColor.primaryColor(context),
+                                size: 18.w,
+                              ),
+                            )
+                          : Icon(
+                              Icons.download_rounded,
+                              size: 18,
+                              color: AppColor.primaryColor(context),
+                            ),
+                    ],
+                  ),
+                ),
               ),
             ],
 
