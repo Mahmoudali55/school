@@ -117,6 +117,16 @@ class FileViewerUtils {
 
   static Future<void> _openExternalFile(String fileContent, String fileName) async {
     try {
+      // 1. If fileContent is already an existing local file path, open it directly
+      final localFile = File(fileContent);
+      if (await localFile.exists()) {
+        final result = await OpenFilex.open(localFile.path);
+        if (result.type != ResultType.done) {
+          CommonMethods.showToast(message: "لا يمكن فتح هذا النوع من الملفات", type: ToastType.error);
+        }
+        return;
+      }
+
       final bytes = await _resolveBytes(fileContent);
       if (bytes.isEmpty) {
         CommonMethods.showToast(message: "الملف فارغ أو غير موجود", type: ToastType.error);
@@ -138,6 +148,17 @@ class FileViewerUtils {
   }
 
   static Future<Uint8List> _resolveBytes(String content) async {
+    // 1. Check if it's an existing local file
+    final localFile = File(content);
+    if (await localFile.exists()) {
+      return await localFile.readAsBytes();
+    }
+
+    // 2. Check if it's raw PDF string starting with %PDF
+    if (content.startsWith('%PDF')) {
+      return Uint8List.fromList(latin1.encode(content));
+    }
+
     final normalized = _stripBase64Prefix(content.trim());
     if (_isLikelyBase64(normalized)) {
       return base64Decode(normalized);

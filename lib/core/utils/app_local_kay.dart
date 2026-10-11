@@ -1274,5 +1274,7 @@ class AppLocalKay {
   static const String URGENT = "URGENT";
   static const String NO_TEACHERS_FOUND_URGENT = "NO_TEACHERS_FOUND_URGENT";
   static const String SERVER_CONNECTION_ERROR = "SERVER_CONNECTION_ERROR";
+  static const String DOWNLOAD_ACCOUNT_STATEMENT = "DOWNLOAD_ACCOUNT_STATEMENT";
+  static const String ACCOUNT_STATEMENT = "ACCOUNT_STATEMENT";
 }
   

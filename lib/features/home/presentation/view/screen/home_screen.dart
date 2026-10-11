@@ -12,14 +12,11 @@ import 'package:my_template/features/home/presentation/view/widget/home_header_w
 import 'package:my_template/features/home/presentation/view/widget/quick_actions_section.dart';
 import 'package:my_template/features/home/presentation/view/widget/recent_notifications_section.dart';
 import 'package:my_template/features/home/presentation/view/widget/upcoming_tasks_section.dart';
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
-
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {

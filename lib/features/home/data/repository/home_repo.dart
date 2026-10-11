@@ -1,12 +1,15 @@
 import 'dart:convert';
-
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/error/failures.dart';
 import 'package:my_template/core/network/api_consumer.dart';
+import 'package:my_template/core/network/contants.dart';
 import 'package:my_template/core/network/end_points.dart';
 import 'package:my_template/features/home/data/models/add_automatic_call_request_model.dart';
 import 'package:my_template/features/home/data/models/add_automatic_call_response_model.dart';
@@ -44,9 +47,7 @@ import 'package:my_template/features/home/data/models/teacher_data_model.dart';
 import 'package:my_template/features/home/data/models/teacher_level_model.dart';
 import 'package:my_template/features/home/data/models/teacher_time_table_model.dart';
 import 'package:video_compress/video_compress.dart';
-
 import '../models/home_models.dart';
-
 abstract interface class HomeRepo {
   Future<Either<Failure, StudentHomeModel>> getStudentHomeData();
   Future<Either<Failure, TeacherHomeModel>> getTeacherHomeData();
@@ -78,30 +79,23 @@ abstract interface class HomeRepo {
   Future<Either<Failure, AddUniformResponseModel>> addUniform({
     required AddUniformRequestModel request,
   });
-
   Future<Either<Failure, GetUniformDataResponse>> getUniforms({int? code, int? id});
-
   Future<Either<Failure, EditUniformResponse>> editUniform({
     required EditUniformRequestModel request,
   });
-
   Future<Either<Failure, List<TeacherLevelModel>>> teacherLevel({required int stageCode});
-
   Future<Either<Failure, List<TeacherClassModels>>> teacherClasses({
     required int sectionCode,
     required int stageCode,
     required int levelCode,
   });
   Future<Either<Failure, List<TeacherCoursesModel>>> teacherCourses({required int code});
-
   Future<Either<Failure, AddHomeworkResponseModel>> addHomework({
     required AddHomeworkModelRequest request,
   });
-
   Future<Either<Failure, AddHomeworkResponseModel>> editHomework({
     required AddHomeworkModelRequest request,
   });
-
   Future<Either<Failure, ClassHWDelModel>> deleteHomework({
     required int classCode,
     required String HWDATE,
@@ -126,6 +120,7 @@ abstract interface class HomeRepo {
     required AddDigitalLibraryRequestModel request,
   });
   Future<Either<Failure, List<DigitalLibraryItem>>> getDigitalLibrary({required int levelCode});
+  Future<Either<Failure, String>> downloadPdf({required int parentCode});
 }
 
 class HomeRepoImpl implements HomeRepo {
@@ -145,7 +140,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, List<StudentAbsentCount>>> studentAbsentCount({required int code}) async {
     return handleDioRequest(
@@ -160,7 +154,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, List<StudentAbsentData>>> studentAbsentDataDetails({
     required int code,
@@ -177,7 +170,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, List<ParentBalanceModel>>> parentBalance({required int code}) async {
     return handleDioRequest(
@@ -192,7 +184,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, List<StudentBalanceModel>>> studentBalance({required int code}) async {
     return handleDioRequest(
@@ -207,7 +198,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, EditPermissionsMobileResponse>> editPermissions({
     required EditPermissionsMobileRequest request,
@@ -222,7 +212,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, AddPermissionsResponse>> addPermissions({
     required AddPermissionsMobile request,
@@ -235,7 +224,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, EditUniformResponse>> editUniform({
     required EditUniformRequestModel request,
@@ -247,7 +235,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, AddUniformResponseModel>> addUniform({
     required AddUniformRequestModel request,
@@ -259,7 +246,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, List<StudentCourseDegree>>> studentCourseDegree({
     required int code,
@@ -277,7 +263,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, GetPermissionsMobile>> getPermissions({int? code}) async {
     return handleDioRequest(
@@ -291,7 +276,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, GetUniformDataResponse>> getUniforms({int? code, int? id}) async {
     return handleDioRequest(
@@ -304,7 +288,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, List<TeacherLevelModel>>> teacherLevel({required int stageCode}) async {
     return handleDioRequest(
@@ -318,7 +301,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, List<TeacherClassModels>>> teacherClasses({
     required int sectionCode,
@@ -340,7 +322,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   Future<Either<Failure, List<TeacherCoursesModel>>> teacherCourses({required int code}) async {
     return handleDioRequest(
       request: () async {
@@ -352,7 +333,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, AddHomeworkResponseModel>> addHomework({
     required AddHomeworkModelRequest request,
@@ -364,7 +344,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, AddHomeworkResponseModel>> editHomework({
     required AddHomeworkModelRequest request,
@@ -376,7 +355,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   Future<Either<Failure, AddLessonsResponse>> editLessons({
     required AddLessonsRequestModel request,
   }) async {
@@ -387,7 +365,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, String>> imageFileName({required String filePath}) async {
     return handleDioRequest(
@@ -397,7 +374,6 @@ class HomeRepoImpl implements HomeRepo {
           EndPoints.image,
           queryParameters: {"imageFileName": fileName},
         );
-        
         if (response is Map && response.containsKey('Data')) {
           return response['Data'] ?? '';
         }
@@ -408,7 +384,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, ClassHWDelModel>> deleteHomework({
     required int classCode,
@@ -424,7 +399,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   Future<Either<Failure, AddClassAbsentResponseModel>> addClassAbsent({
     required AddClassAbsentRequestModel request,
   }) {
@@ -439,7 +413,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, String>> getClassAbsent({
     required int classCode,
@@ -455,7 +428,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   Future<Either<Failure, AddLessonsResponse>> addLessons({
     required AddLessonsRequestModel request,
   }) async {
@@ -466,7 +438,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
  @override
   Future<Either<Failure, List<String>>> uploadFile({required List<String> filePaths}) {
     return handleDioRequest(
@@ -474,11 +445,9 @@ class HomeRepoImpl implements HomeRepo {
         final url = 'https://delta-asg.com:56513/DeltagroupService/School/UploadFiles';
         final formData = FormData();
         final token = HiveMethods.getToken();
-
         for (var path in filePaths) {
           String finalPath = path;
           String ext = path.split('.').last.toLowerCase();
-
           // Compress video before uploading to avoid 500 Server Error due to large size
           if (['mp4', 'mov', 'avi'].contains(ext)) {
             try {
@@ -495,9 +464,7 @@ class HomeRepoImpl implements HomeRepo {
               // If compression fails, we fallback to original file
             }
           }
-
           final fileName = finalPath.split('/').last;
-
           MediaType? contentType;
           if (ext == 'pdf') {
             contentType = MediaType('application', 'pdf');
@@ -512,7 +479,6 @@ class HomeRepoImpl implements HomeRepo {
           } else if (['doc', 'docx'].contains(ext)) {
             contentType = MediaType('application', 'msword');
           }
-
           formData.files.add(
             MapEntry(
               'files',
@@ -524,7 +490,6 @@ class HomeRepoImpl implements HomeRepo {
             ),
           );
         }
-
         final dio = Dio();
         final response = await dio.post(
           url,
@@ -535,7 +500,6 @@ class HomeRepoImpl implements HomeRepo {
             },
           ),
         );
-
         if (response.statusCode == 200 || response.statusCode == 201) {
           final decoded = response.data;
           if (decoded is List) {
@@ -560,7 +524,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, List<BusDataModel>>> busData() async {
     return handleDioRequest(
@@ -570,7 +533,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   Future<Either<Failure, List<TeacherTimeTableModel>>> teacherTimeTable({required int code}) async {
     return handleDioRequest(
       request: () async {
@@ -582,7 +544,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   Future<Either<Failure, AddAutomaticCallResponseModel>> addAutomaticCall({
     required AddAutomaticCallRequestModel request,
   }) async {
@@ -593,7 +554,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   Future<Either<Failure, GetAutomaticCallModel>> getAutomaticCall({required int stageCode}) async {
     return handleDioRequest(
       request: () async {
@@ -605,7 +565,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, AddDigitalLibraryResponseModel>> addDigitalLibrary({
     required AddDigitalLibraryRequestModel request,
@@ -635,7 +594,6 @@ class HomeRepoImpl implements HomeRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, List<GetIncomeListModel>>> getincomelist({
     required String fromdate,
@@ -883,6 +841,74 @@ class HomeRepoImpl implements HomeRepo {
           ScheduleItem(time: "09:30 ص", subject: "الرياضيات", className: "9أ"),
         ],
       ),
+    );
+  }
+  @override
+  Future<Either<Failure, String>> downloadPdf({required int parentCode}) async {
+    return handleDioRequest(
+      request: () async {
+        final dio = Dio();
+        final token = HiveMethods.getToken();
+
+        final response = await dio.get<dynamic>(
+          '${Constants.baseUrl}${EndPoints.downloadPdf}',
+          queryParameters: {"PARENTCODE": parentCode},
+          options: Options(
+            responseType: ResponseType.bytes,
+            headers: token != null ? {'Authorization': 'Bearer $token'} : null,
+          ),
+        );
+
+        if (response.data is List<int>) {
+          final bytes = Uint8List.fromList(response.data as List<int>);
+          if (bytes.isNotEmpty) {
+            final isPdf = bytes.length >= 4 &&
+                bytes[0] == 0x25 && // %
+                bytes[1] == 0x50 && // P
+                bytes[2] == 0x44 && // D
+                bytes[3] == 0x46;   // F
+
+            if (isPdf) {
+              final dir = await getTemporaryDirectory();
+              final filePath = '${dir.path}/Account_Statement_$parentCode.pdf';
+              final file = File(filePath);
+              await file.writeAsBytes(bytes, flush: true);
+              return filePath;
+            }
+
+            try {
+              final text = utf8.decode(bytes).trim();
+              if (text.startsWith('{')) {
+                final json = jsonDecode(text);
+                if (json is Map && json.containsKey('Data')) {
+                  final dataStr = json['Data']?.toString() ?? '';
+                  if (dataStr.isNotEmpty) {
+                    return dataStr;
+                  }
+                }
+              }
+              return text;
+            } catch (_) {
+              final dir = await getTemporaryDirectory();
+              final filePath = '${dir.path}/Account_Statement_$parentCode.pdf';
+              final file = File(filePath);
+              await file.writeAsBytes(bytes, flush: true);
+              return filePath;
+            }
+          }
+        } else if (response.data is String) {
+          final text = (response.data as String).trim();
+          if (text.startsWith('%PDF')) {
+            final dir = await getTemporaryDirectory();
+            final filePath = '${dir.path}/Account_Statement_$parentCode.pdf';
+            final file = File(filePath);
+            await file.writeAsBytes(latin1.encode(text), flush: true);
+            return filePath;
+          }
+          return text;
+        }
+        return '';
+      },
     );
   }
 }

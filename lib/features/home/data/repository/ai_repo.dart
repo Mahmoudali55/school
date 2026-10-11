@@ -8,14 +8,12 @@ abstract class AIRepo {
     required String topic,
     required String gradeLevel,
   });
-
   Future<Either<Failure, String>> generateQuiz({
     required String subject,
     required String topic,
     required int numberOfQuestions,
     required String questionType,
   });
-
   Future<Either<Failure, String>> summarizeNotes({required String notes, required String subject});
 }
 

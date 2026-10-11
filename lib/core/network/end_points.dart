@@ -70,4 +70,5 @@ class EndPoints {
   static const String getDigitalLibrary = 'DeltagroupService/School/GetDigitalLibrary';
   static const String getincomelist = 'DeltagroupService/School/Getincomelist';
   static const String editFCM = 'DeltagroupService/School/EditFCM';
+  static const String downloadPdf = 'DeltagroupService/School/download_pdf';
 }

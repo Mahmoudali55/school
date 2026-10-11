@@ -56,6 +56,7 @@
   "forgotPassword": "نسيت كلمة المرور ؟",
   "rememberMe": "تذكرني",
   "dontHaveAccount": "لا يوجد لديك حساب ؟",
+  "alreadyHaveAccount": "لديك حساب بالفعل؟",
   "welcomeBack": "مرحباً بعودتك!",
   "loginToContinue": "سجل الدخول للمتابعة ك ",
   "enterNewPassword": "أدخل كلمة المرور الجديدة وقم بتأكيدها",
@@ -1311,5 +1312,7 @@
   "NO_PENDING_REQUESTS":"لا توجد أي طلبات استدعاء معلقة حالياً للطلاب.",
   "URGENT":"عاجل",
   "NO_TEACHERS_FOUND_URGENT":"لا يوجد مدرسون مطابقون - عاجل",
-  "SERVER_CONNECTION_ERROR":"تعذر الاتصال بالخادم"
+  "SERVER_CONNECTION_ERROR":"تعذر الاتصال بالخادم",
+  "DOWNLOAD_ACCOUNT_STATEMENT": "تحميل كشف الحساب",
+  "ACCOUNT_STATEMENT": "كشف الحساب"
 }

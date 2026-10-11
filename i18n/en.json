@@ -56,6 +56,7 @@
   "forgotPassword": "Forgot Password?",
   "rememberMe": "Remember Me",
   "dontHaveAccount": "Don't have an account?",
+  "alreadyHaveAccount": "Already have an account?",
   "welcomeBack": "Welcome Back!",
   "loginToContinue": "Login to continue as ",
   "enterNewPassword": "Enter new password and confirm it",
@@ -1240,6 +1241,8 @@
   "URGENT":"Urgent",
   "NO_TEACHERS_FOUND_URGENT": "No teachers found for urgent call. Please try again later.",
   "SERVER_CONNECTION_ERROR":"Failed to connect to the server",
-  "clear_results":"statistics"
+  "clear_results":"statistics",
+  "DOWNLOAD_ACCOUNT_STATEMENT": "Download Account Statement",
+  "ACCOUNT_STATEMENT": "Account Statement"
 }
 

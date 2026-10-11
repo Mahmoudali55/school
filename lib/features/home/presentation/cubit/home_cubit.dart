@@ -577,4 +577,21 @@ class HomeCubit extends Cubit<HomeState> {
       (success) => emit(state.copyWith(getDigitalLibraryStatus: StatusState.success(success))),
     );
   }
+
+  Future<void> downloadPdf(int parentCode) async {
+    if (isClosed) return;
+    emit(state.copyWith(downloadPdfStatus: const StatusState.loading()));
+    final result = await _homeRepo.downloadPdf(parentCode: parentCode);
+    if (isClosed) return;
+    result.fold(
+      (error) =>
+          emit(state.copyWith(downloadPdfStatus: StatusState.failure(error.errMessage))),
+      (success) => emit(state.copyWith(downloadPdfStatus: StatusState.success(success))),
+    );
+  }
+
+  void resetDownloadPdfStatus() {
+    if (isClosed) return;
+    emit(state.copyWith(downloadPdfStatus: const StatusState.initial()));
+  }
 }

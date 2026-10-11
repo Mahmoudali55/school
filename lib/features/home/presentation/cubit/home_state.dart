@@ -74,6 +74,7 @@ class HomeState extends Equatable {
     this.addDigitalLibraryStatus = const StatusState.initial(),
     this.getDigitalLibraryStatus = const StatusState.initial(),
     this.getincomelistStatus = const StatusState.initial(),
+    this.downloadPdfStatus = const StatusState.initial(),
   });
 
   final StatusState<List<ParentsStudentData>> parentsStudentStatus;
@@ -111,6 +112,7 @@ class HomeState extends Equatable {
   final StatusState<AddDigitalLibraryResponseModel> addDigitalLibraryStatus;
   final StatusState<List<DigitalLibraryItem>> getDigitalLibraryStatus;
   final StatusState<List<GetIncomeListModel>> getincomelistStatus;
+  final StatusState<String> downloadPdfStatus;
 
   /// Main home data (TeacherHomeModel, StudentHomeModel, etc.)
   final HomeModel? data;
@@ -158,6 +160,7 @@ class HomeState extends Equatable {
     addDigitalLibraryStatus,
     getDigitalLibraryStatus,
     getincomelistStatus,
+    downloadPdfStatus,
   ];
 
   HomeState copyWith({
@@ -202,6 +205,7 @@ class HomeState extends Equatable {
     StatusState<GetAutomaticCallModel>? getAutomaticCallStatus,
     StatusState<AddDigitalLibraryResponseModel>? addDigitalLibraryStatus,
     StatusState<List<DigitalLibraryItem>>? getDigitalLibraryStatus,
+    StatusState<String>? downloadPdfStatus,
   }) {
     return HomeState(
       parentsStudentStatus: parentsStudentStatus ?? this.parentsStudentStatus,
@@ -242,6 +246,7 @@ class HomeState extends Equatable {
       addDigitalLibraryStatus: addDigitalLibraryStatus ?? this.addDigitalLibraryStatus,
       getDigitalLibraryStatus: getDigitalLibraryStatus ?? this.getDigitalLibraryStatus,
       getincomelistStatus: getincomelistStatus ?? this.getincomelistStatus,
+      downloadPdfStatus: downloadPdfStatus ?? this.downloadPdfStatus,
     );
   }
 }

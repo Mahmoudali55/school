@@ -7,6 +7,7 @@ import 'package:my_template/core/cache/hive/hive_methods.dart';
 import 'package:my_template/core/custom_widgets/buttons/custom_button.dart';
 import 'package:my_template/core/custom_widgets/custom_app_bar/custom_app_bar.dart';
 import 'package:my_template/core/custom_widgets/custom_toast/custom_toast.dart';
+import 'package:my_template/core/services/file_viewer_utils.dart';
 import 'package:my_template/core/theme/app_colors.dart';
 import 'package:my_template/core/theme/app_text_style.dart';
 import 'package:my_template/core/utils/app_local_kay.dart';
@@ -35,6 +36,15 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
     context.read<HomeCubit>().studentBalance(int.parse(HiveMethods.getUserCode()));
   }
 
+  void _downloadStatementPdf() {
+    final parentCode = int.tryParse(HiveMethods.getUserCode()) ?? 0;
+    if (parentCode > 0) {
+      context.read<HomeCubit>().downloadPdf(parentCode);
+    } else {
+      CommonMethods.showToast(message: AppLocalKay.NODATA.tr(), type: ToastType.error);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +57,25 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
+          // BlocBuilder<HomeCubit, HomeState>(
+          //   buildWhen: (previous, current) => previous.downloadPdfStatus != current.downloadPdfStatus,
+          //   builder: (context, state) {
+          //     return IconButton(
+          //       tooltip: AppLocalKay.ACCOUNT_STATEMENT.tr(),
+          //       icon: state.downloadPdfStatus.isLoading
+          //           ? SizedBox(
+          //               width: 20.w,
+          //               height: 20.h,
+          //               child: CircularProgressIndicator(
+          //                 strokeWidth: 2,
+          //                 color: AppColor.primaryColor(context),
+          //               ),
+          //             )
+          //           : const Icon(Icons.picture_as_pdf_rounded),
+          //       onPressed: state.downloadPdfStatus.isLoading ? null : _downloadStatementPdf,
+          //     );
+          //   },
+          // ),
           IconButton(
             icon: const Icon(Icons.history_rounded),
             onPressed: () {
@@ -58,25 +87,147 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
           ),
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.w),
-        child: BlocBuilder<HomeCubit, HomeState>(
-          builder: (context, state) {
-            final balances = state.studentBalanceStatus.data ?? [];
-
-            if (state.studentBalanceStatus.isLoading) {
-              return const Center(child: CircularProgressIndicator());
+      body: BlocConsumer<HomeCubit, HomeState>(
+        listener: (context, state) {
+          if (state.downloadPdfStatus.isSuccess) {
+            final data = state.downloadPdfStatus.data;
+            if (data != null && data.isNotEmpty) {
+              FileViewerUtils.displayFile(
+                context,
+                data,
+                'Account_Statement_${HiveMethods.getUserCode()}.pdf',
+              );
+            } else {
+              CommonMethods.showToast(
+                message: AppLocalKay.NODATA.tr(),
+                type: ToastType.error,
+              );
             }
+            context.read<HomeCubit>().resetDownloadPdfStatus();
+          } else if (state.downloadPdfStatus.isFailure) {
+            CommonMethods.showToast(
+              message: state.downloadPdfStatus.error ?? '',
+              type: ToastType.error,
+            );
+            context.read<HomeCubit>().resetDownloadPdfStatus();
+          }
+        },
+        builder: (context, state) {
+          final balances = state.studentBalanceStatus.data ?? [];
 
-            if (balances.isEmpty) {
-              return Center(child: Text(AppLocalKay.NODATA.tr(), style: AppTextStyle.bodyMedium(context)));
-            }
+          return Padding(
+            padding: EdgeInsets.all(16.w),
+            child: Column(
+              children: [
+                /// Account Statement PDF Card
+                Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.only(bottom: 16.h),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                  decoration: BoxDecoration(
+                    color: AppColor.whiteColor(context),
+                    borderRadius: BorderRadius.circular(16.r),
+                    border: Border.all(
+                      color: AppColor.primaryColor(context).withValues(alpha: 0.2),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColor.blackColor(context).withValues(alpha: 0.04),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.all(10.w),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFEF2F2),
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Icon(
+                          Icons.picture_as_pdf_rounded,
+                          color: const Color(0xFFDC2626),
+                          size: 24.sp,
+                        ),
+                      ),
+                      Gap(12.w),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              AppLocalKay.ACCOUNT_STATEMENT.tr(),
+                              style: AppTextStyle.titleSmall(context).copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Gap(2.h),
+                            Text(
+                              AppLocalKay.DOWNLOAD_ACCOUNT_STATEMENT.tr(),
+                              style: AppTextStyle.labelSmall(context).copyWith(
+                                color: Colors.grey.shade600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: state.downloadPdfStatus.isLoading ? null : _downloadStatementPdf,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColor.primaryColor(context),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.r),
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                          elevation: 0,
+                        ),
+                        icon: state.downloadPdfStatus.isLoading
+                            ? SizedBox(
+                                width: 14.w,
+                                height: 14.h,
+                                child: const CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              )
+                            : Icon(Icons.download_rounded, size: 16.sp),
+                        label: Text(
+                          AppLocalKay.DISPLAY_DOWNLOAD.tr(),
+                          style: AppTextStyle.labelSmall(context).copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
 
-            return ListView.separated(
-              itemCount: balances.length,
-              separatorBuilder: (_, __) => Gap(16.h),
-              itemBuilder: (context, index) {
-                final student = balances[index];
+                /// Students Balances List
+                Expanded(
+                  child: Builder(
+                    builder: (context) {
+                      if (state.studentBalanceStatus.isLoading) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      if (balances.isEmpty) {
+                        return Center(
+                          child: Text(
+                            AppLocalKay.NODATA.tr(),
+                            style: AppTextStyle.bodyMedium(context),
+                          ),
+                        );
+                      }
+
+                      return ListView.separated(
+                        itemCount: balances.length,
+                        separatorBuilder: (_, __) => Gap(16.h),
+                        itemBuilder: (context, index) {
+                          final student = balances[index];
 
                 return
                 
@@ -325,8 +476,11 @@ class _ShowStudentBalanceScreenState extends State<ShowStudentBalanceScreen> {
           },
         ),
       ),
-    );
-  }
-
-  
+    ],
+  ),
+);
+},
+),
+);
+}
 }

@@ -15,6 +15,7 @@ import 'package:my_template/core/utils/common_methods.dart';
 import 'package:my_template/core/utils/navigator_methods.dart';
 import 'package:my_template/features/auth/presentation/view/cubit/auth_cubit.dart';
 import 'package:my_template/features/auth/presentation/view/cubit/auth_state.dart';
+import 'package:my_template/features/auth/presentation/view/screen/widgets/sign_in_link.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -49,7 +50,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
         context,
         title: Text(AppLocalKay.register.tr()),
         centerTitle: true,
-        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            } else {
+              NavigatorMethods.pushNamed(context, RoutesName.loginScreen);
+            }
+          },
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -183,6 +193,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                     text: AppLocalKay.register.tr(),
                   ),
+                  const Gap(16),
+
+                  /// Login Link
+                  const SignInLink(),
                 ],
               );
             },

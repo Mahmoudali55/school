@@ -14,7 +14,6 @@ import 'package:my_template/features/home/presentation/view/screen/summarize_not
 
 class StudentAIAssistantScreen extends StatelessWidget {
   const StudentAIAssistantScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
